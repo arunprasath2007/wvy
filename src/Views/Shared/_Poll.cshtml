@@ -1,0 +1,30 @@
+﻿@model Post
+
+<form class="poll" action="~/posts/@Model.Id/vote" data-votes="@Model.Poll.VoteCount">
+    <table>
+        @foreach (var option in Model.Poll.Options) {
+            var width = (int)Math.Floor((option.VoteCount / (double)Model.Poll.VoteCount) * 100);
+            <tr @if (option.HasVoted) { <text>class="active" </text> }>
+                <td class="input">
+                    <label class="custom-control custom-radio">
+                      <input id="option-@option.Id" name="option" type="radio" class="custom-control-input" value="@option.Id" @if (option.HasVoted) { <text> checked</text>}>
+                      <span class="custom-control-indicator"></span>
+                    </label>
+                </td>
+                <td class="option" data-votes="@option.VoteCount">
+                    <div class="progress">
+                        <div class="progress-bar" style="width: @(width)%"></div>
+                    </div>
+                    <label for="option-@option.Id">@Html.Raw(option.Html)</label>
+                </td>
+                <td class="facepile">@option.Voters.Facepile(4, size: 32, retina: true, htmlAttributes: new { data_path = $"posts/{Model.Id}/votes/{option.Id}", data_toggle="modal", data_target= "#feedback-modal", data_modal_title="People who voted on this option" })</td>
+                <td class="votes">
+                    @if (option.VoteCount > 0) { 
+                        <a href="#votes" class="more" title="@Weavy.Core.Helpers.StringExtensions.SingularizeOrPluralize(option.VoteCount, "vote", "votes")" data-path="@($"posts/{Model.Id}/votes/{option.Id}")" data-toggle="modal" data-target="#feedback-modal" data-modal-title="People who voted on this option"><img src="@(WeavyRequestContext.Current.ApplicationPath)img/pixel.png" class="img-32 avatar" alt=""/><span>@option.VoteCount</span></a>
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+</form>
+

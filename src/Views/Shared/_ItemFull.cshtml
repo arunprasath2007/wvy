@@ -1,0 +1,42 @@
+﻿@model Item
+<p>
+    <a href="@Model.Url()">@Model.Title (item full)</a>
+</p>
+
+@*<article class="@Model.CssClass() @(WeavyRequestContext.Current.Item == null ? "content-full" : "" )">
+
+  @if (WeavyRequestContext.Current.Item != null) {
+    Html.RenderPartial("_ItemHeader");
+  } else if (!Model.Title.IsNullOrWhiteSpace()) {
+      <header>
+        <div class="title">
+          <h3><a href="@Model.Url()"><i class="handle fa fa-color @Model.MetaData().Icon" title="@Model.Kind"></i> @Model.Title</a></h3>
+          <div class="meta">
+            @if (Model.IsDraft || Model.LockedById == User.Id) {
+                <span class="label label-warning">Draft</span>
+            } else if (Model.IsLocked) {
+                <span class="label label-info">Locked</span>
+            }
+            @Model.MetaData().CreateVerb.PastTense() by @Model.CreatedBy.Link() @Html.Time(Model.CreatedAt)
+            @if (Model is ITaggable && !Model.Tags.IsNullOrEmpty()) {
+                <i class="fa fa-tags"></i>@Html.Raw(Model.Tags.Join(", ", x => @"<a href=""" + Model.App.Url() + "?q=" + Url.Encode("#" + x) + @""">#" + x + "</a>"))
+            }
+            @if (Model.Comments.Any()) {
+                <text>&ndash;</text> <a href="@Model.Url()#comments">@Model.Comments.SingularizeOrPluralize("comment", "comments")</a>
+            }
+          </div>
+        </div>
+        <div class="actions">
+          @Html.StarLink(Model, false)
+          <div class="dropdown">@{ Html.RenderPartial("_ItemMenu", Model); }</div>
+        </div>
+      </header>
+  }
+  <section class="body user-content">
+        @Html.DisplayGroups()
+  </section>
+
+  @if (WeavyRequestContext.Current.Item != null) {
+    Html.RenderPartial("_ItemFooter");
+  }
+</article>*@

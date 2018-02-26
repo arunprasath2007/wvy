@@ -1,0 +1,32 @@
+﻿<aside id="drawer-user" class="drawer drawer-right">
+    <header class="drawer-header">
+
+        <a class="btn btn-icon d-standalone sign-out" href="@Url.Action(nameof(AccountController.SignOut), typeof(AccountController).ControllerName(), new { area = "" })" title="Sign out" data-turbolinks="false">@Html.SvgIcon("lock", size:18)</a>
+        <a class="btn btn-icon d-embedded sign-out" href="@Url.Action(nameof(AccountController.SignOut), typeof(AccountController).ControllerName(), new { area = "" , path = "/notify" })" title="Sign out" data-widget-event data-widget-name="signingOut">@Html.SvgIcon("lock", size: 18)</a>
+
+        <a class="text-center pt-3 pb-2" href="@User.Url()">
+            @User.AvatarImg(64)
+            <p class="drawer-title px-1">@User.Title <small>@@@User.Username</small></p>
+        </a>
+        <nav class="nav nav-tabs" role="tablist">
+            <a class="nav-link active" href="#notifications" data-toggle="tab" role="tab">Notifications</a>
+            <a class="nav-link" href="#stars" data-toggle="tab" role="tab">Stars</a>
+            <a class="nav-link" href="#drafts" data-toggle="tab" role="tab">Drafts</a>
+            <button type="button" class="btn btn-icon ml-auto" data-read="notifications" title="Mark all as read">@Html.SvgIcon("check-all")</button>
+        </nav>
+    </header>
+    <div class="drawer-body scroll-y tab-content">
+        <div class="tab-pane active" id="notifications" role="tabpanel">
+            <div class="tab-loading">@Html.SvgSpinner()</div>
+            <div class="tab-remote" data-url="@(Url.Action<NotificationController>(c => c.Index()))"></div>
+        </div>
+        <div class="tab-pane" id="stars" role="tabpanel">
+            <div class="tab-loading">@Html.SvgSpinner()</div>
+            <div class="tab-remote" data-url="@(Url.Action<StarController>(c => c.Index()))"></div>
+        </div>
+        <div class="tab-pane" id="drafts" role="tabpanel">
+            <div class="tab-loading">@Html.SvgSpinner()</div>
+            <div class="tab-remote" data-url="@(Url.Action<ItemController>(c => c.Drafts()))"></div>
+        </div>
+    </div>
+</aside>

@@ -1,0 +1,328 @@
+﻿/// <reference path="../_core.scss" />
+
+// adapted to scss from https://github.com/mozilla/pdfjs-dist/blob/master/web/pdf_viewer.css
+// and https://github.com/mozilla/pdf.js/blob/master/web/viewer.css
+
+// backdrop for file previews
+.preview-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    min-height: 100vh;
+    z-index: $zindex-tooltip+1;
+    background-color: $black;
+    display: none;
+    padding: $navbar-height 0 0 0;
+}
+
+// custom navbar for photoswipe and file preview
+.navbar-preview {
+    color: color-yiq($black);
+    background-color: rgba($black, 0.8);
+
+    .btn-icon {
+        color: color-yiq($black);
+    }
+
+    .nav-link {
+        color: color-yiq($black);
+        padding: .25rem 0;
+
+        // make text as long as possible before clipping (considering icons and padding)
+        @include text-truncate;        
+        max-width: calc(100vw - 9.5rem); 
+        .area-messenger & {
+            max-width: calc(100vw - 5.5rem);
+        }
+
+        &.active {
+            color: color-yiq($black);
+        }
+    }
+
+    .navbar-nav {
+        padding-left: .5rem;
+        flex-direction: row;
+    }
+}
+
+// hide default photoswipe header
+.pswp__ui {
+    .pswp__top-bar {
+        display: none;
+    }
+}
+
+// loading icon when rendering pdf preview
+.loadingIcon {
+    position: absolute;
+    display: block;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: url('../img/spinner.svg') center no-repeat;
+    background-size: 48px;
+
+    &.global {
+        position: fixed;
+    }
+}
+
+#pdfToolbar {
+    position: fixed;
+    bottom: $navbar-height;
+    left: 0;
+    right: 0;
+    z-index: $zindex-tooltip+2;
+    margin: $spacer*2;
+    pointer-events: none;
+    text-align: center;
+
+    > div {
+        display: inline-block;
+        background-color: $backdrop-bg;
+        padding: .5rem;
+        border-radius: $border-radius;
+    }
+
+    .btn {
+        pointer-events: auto;
+        background-color: $white !important;
+    }
+}
+
+#pdfViewer {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: $spacer 0;
+
+    .canvasWrapper {
+        overflow: hidden;
+    }
+
+    .page {
+        direction: ltr;
+        width: 816px;
+        height: 1056px;
+        position: relative;
+        overflow: visible;
+        background-clip: content-box;
+        background-color: white;
+        border: 0;
+        margin: $spacer auto $spacer auto;
+        box-shadow: 2px 2px 10px rgba(0,0,0,.25);
+
+        &:first-child {
+            margin-top: 0;
+        }
+
+        canvas {
+            margin: 0;
+            display: block;
+        }
+
+        &.loading {
+            max-width: 100%;
+            max-height: 100%;
+            width: 240px;
+            height: 240px;
+            box-shadow: none;
+            overflow: hidden;
+            background-color: transparent;
+
+            img {
+                opacity: .5;
+            }
+        }
+    }
+}
+
+// no pdf thumbnails
+#pdfThumbs {
+    display: none;
+}
+
+// wrapper for #pdfViewer and #pdfThumbs
+.preview-document {
+    padding: 0;
+
+    @include media-breakpoint-up(md) {
+        margin-top: 0;
+    }
+
+
+    [hidden], template {
+        display: none !important;
+    }
+
+    .pdfPresentationMode {
+        &:fullscreen {
+            .pdfViewer {
+                .page {
+                    margin-bottom: 100%;
+                    border: 0;
+                }
+            }
+        }
+    }
+
+    .textLayer {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        overflow: hidden;
+        opacity: 0.2;
+        line-height: 1.0;
+
+        > div {
+            color: transparent;
+            position: absolute;
+            white-space: pre;
+            cursor: text;
+            transform-origin: 0% 0%;
+        }
+
+        .highlight {
+            margin: -1px;
+            padding: 1px;
+            background-color: rgb(180, 0, 170);
+            border-radius: 4px;
+
+            &.begin {
+                border-radius: 4px 0px 0px 4px;
+            }
+
+            &.end {
+                border-radius: 0px 4px 4px 0px;
+            }
+
+            &.middle {
+                border-radius: 0px;
+            }
+
+            &.selected {
+                background-color: rgb(0, 100, 0);
+            }
+        }
+
+        ::selection {
+            background: rgb(0,0,255);
+        }
+
+        ::-moz-selection {
+            background: rgb(0,0,255);
+        }
+
+        .endOfContent {
+            display: block;
+            position: absolute;
+            left: 0px;
+            top: 100%;
+            right: 0px;
+            bottom: 0px;
+            z-index: -1;
+            cursor: default;
+            user-select: none;
+
+            &.active {
+                top: 0px;
+            }
+        }
+    }
+
+    .annotationLayer {
+        section {
+            position: absolute;
+        }
+
+        .linkAnnotation {
+            > a {
+                position: absolute;
+                font-size: 1em;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7") 0 0 repeat;
+            }
+        }
+
+        .textAnnotation {
+            img {
+                position: absolute;
+                cursor: pointer;
+            }
+        }
+
+        .textWidgetAnnotation input,
+        .textWidgetAnnotation textarea,
+        .choiceWidgetAnnotation select,
+        .buttonWidgetAnnotation.checkBox input,
+        .buttonWidgetAnnotation.radioButton input {
+            background-color: rgba(0, 54, 255, 0.13);
+            border: 1px solid transparent;
+            box-sizing: border-box;
+            font-size: 9px;
+            height: 100%;
+            padding: 0 3px;
+            vertical-align: top;
+            width: 100%;
+
+            &[disabled] {
+                background: none;
+                border: 1px solid transparent;
+                cursor: not-allowed;
+            }
+
+            &:hover {
+                border: 1px solid #000;
+            }
+        }
+
+        .textWidgetAnnotation textarea {
+            font: message-box;
+            font-size: 9px;
+            resize: none;
+        }
+
+        .textWidgetAnnotation input:focus,
+        .textWidgetAnnotation textarea:focus,
+        .choiceWidgetAnnotation select:focus {
+            background: none;
+            border: 1px solid transparent;
+        }
+
+        .textWidgetAnnotation input.comb {
+            font-family: monospace;
+            padding-left: 2px;
+            padding-right: 0;
+
+            &:focus {
+                /*
+                Letter spacing is placed on the right side of each character. Hence, the
+                letter spacing of the last character may be placed outside the visible
+                area, causing horizontal scrolling. We avoid this by extending the width
+                when the element has focus and revert this when it loses focus.
+                */
+                width: 115%;
+            }
+        }
+
+        .buttonWidgetAnnotation.checkBox input,
+        .buttonWidgetAnnotation.radioButton input {
+            appearance: none;
+        }
+
+        .highlightAnnotation,
+        .underlineAnnotation,
+        .squigglyAnnotation,
+        .strikeoutAnnotation,
+        .fileAttachmentAnnotation {
+            cursor: pointer;
+        }
+    }
+}

@@ -1,0 +1,33 @@
+﻿@model AboutModel
+@{
+    Title = "About Weavy";
+    BackUrl = Url.Action<HomeController>(c => c.Index());
+}
+
+<div class="cover py-4">
+    <div class="container">
+        @Html.IconImg(128, htmlAttributes: new { @class = "mx-auto d-block" })
+        <div class="text-center py-2">Weavy v@(Model.Version) was put together by a team of talented developers in Malmö, Sweden &ndash; with help from the following awesome open source projects.</div>
+    </div>
+</div>
+
+
+<div class="container my-3">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th class="text-right" style="width:175px;">License</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var proj in Model.Projects) {
+                <tr data-href="@proj.Url">
+                    <td><a href="@proj.Url" target="_blank"><span>@proj.Name</span>@Html.SvgIcon("open-in-new", size: 18, htmlAttributes: new { @class = "i-inline ml-1" })</a></td>
+                    <td class="text-right"><a href="@proj.LicenseUrl" target="_blank">@proj.License</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

@@ -1,0 +1,117 @@
+/// <reference path="../_core.scss" />
+
+$md-menu-expand-duration: 0.3s;
+$md-menu-fade-duration: 0.2s;
+
+.dropdown-menu {
+    opacity: 0;
+    transition: opacity $md-menu-fade-duration $md-animation-curve-default;
+
+    &.show {
+        opacity: 1;
+        animation-name: md-dropdown-animation;
+        animation-duration: $md-menu-expand-duration;
+        animation-fill-mode: forwards;
+        animation-timing-function: $md-animation-curve-default;
+    }
+}
+
+@keyframes md-dropdown-animation {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.dropdown-toggle.btn-icon + .dropdown-menu {
+    margin-top: .5rem;
+}
+
+.dropup .dropdown-toggle.btn-icon + .dropdown-menu {
+    margin-top: 0;
+    margin-bottom: .5rem;
+}
+
+.dropdown-divider {
+    margin: 0;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding-right:1rem;
+
+    &:focus {
+        outline: none;
+    }
+
+    &:hover {
+        transition: background-color $md-animation-duration $md-animation-curve-fast-out-slow-in;
+    }
+
+    &:active {
+        background-color: $dropdown-link-hover-bg;
+        color: $dropdown-link-hover-color;
+    }
+
+    .i {
+        color: $icon-color;
+    }
+
+    > .i {
+        vertical-align: middle;
+        margin-right: .5rem;
+    }
+
+    span {
+        @include text-truncate();
+        flex: 1 1 0%;
+    }
+
+    &.active {
+        .i {
+            color: $white;
+        }
+    }
+}
+
+.dropdown-header {
+    text-transform: uppercase;
+    padding-top: $dropdown-item-padding-y/2;
+    padding-bottom: $dropdown-item-padding-y/2;
+
+    &:first-child {
+        padding-top: $dropdown-item-padding-y;
+    }
+}
+
+
+.dropdown-menu.textcomplete-dropdown {
+    opacity: 1;
+    max-width: 16rem;
+    z-index: $zindex-modal !important;
+
+    .textcomplete-item {
+        @extend .dropdown-item;
+        display: block;
+
+        a {
+            display: flex;
+            align-items: center;
+
+            > .i, > img {
+                vertical-align: middle;
+                margin-right: .5rem;
+            }
+
+            span {
+                @include text-truncate();
+                flex: 1 1 0%;
+            }
+        }
+    }
+}

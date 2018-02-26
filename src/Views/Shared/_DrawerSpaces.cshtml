@@ -1,0 +1,36 @@
+﻿<aside id="drawer-spaces" class="drawer drawer-left">
+    <header class="drawer-header">
+        @if (Space != null) {
+            <a class="text-center pt-3 pb-2" href="@Space.Url()">
+                @Space.AvatarImg(64)
+                <p class="drawer-title">@Space.Name</p>
+            </a>
+        } else {
+            <a class="text-center pt-3 pb-2" href="@(Url.Action<HomeController>(c => c.Index()))">
+                @Html.IconImg(64)
+                <p class="drawer-title">@Theme.GetName()</p>
+            </a>
+        }
+    </header>
+    <div class="drawer-body scroll-y">
+        <nav class="nav flex-column">
+            @if (Space != null) {
+                <a class="dropdown-item bg-light" href="@(Url.Action<HomeController>(c => c.Index()))">@Html.IconImg(24, retina: true) <span class="ml-2">@Theme.GetName()</span></a>
+                <div class="dropdown-divider"></div>
+            }
+
+            @if (Spaces.IsNullOrEmpty()) {
+                <div class="container-fluid mt-3">
+                    <p class="text-muted">You haven't joined any spaces yet. Go to <a href="@(Url.Action<SpaceController>(c => c.Index(null, null, null)))">spaces</a> to get started.</p>
+                </div>
+            } else {
+
+                foreach (var space in Spaces) {
+                    <a class="dropdown-item@(Space?.Id == space.Id ? " active" : "")" href="@space.Url()">@space.AvatarImg(24) <span class="ml-2">@space.Name</span> @Html.StarToggle(space)</a>
+                }
+
+                <a class="text-center py-2" href="@(Url.Action<SpaceController>(c => c.Index(null, null, null)))">All spaces</a>
+            }
+        </nav>
+    </div>
+</aside>

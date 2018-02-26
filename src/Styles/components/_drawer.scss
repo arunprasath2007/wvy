@@ -1,0 +1,115 @@
+/// <reference path="../_core.scss" />
+
+$drawer-left-width: 256px !default;
+$drawer-right-width: 320px !default;
+$zindex-drawer: $zindex-modal;
+$zindex-drawer-backdrop: $zindex-modal-backdrop;
+
+
+#drawer-user {
+    // hide "Mark all as read" unless the notifications tab is active
+    [data-toggle="tab"][href="#notifications"]:not(.active) ~ [data-read="notifications"] {
+        display: none;
+    }
+
+    .sign-out {
+        position:absolute;
+        top: .5rem;
+        left: .5rem;
+        color: rgba(255,255,255, .3);
+
+        @include hover-focus {
+            color: color-yiq($theme-800);
+        }
+    }
+}
+
+.drawer {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    z-index: $zindex-drawer;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    overflow: hidden;
+    background-color: $body-bg;
+    box-shadow: $md-shadow-8dp;
+
+    // transform offscreen
+    transition: transform;
+    will-change: transform;
+    transform-style: preserve-3d;    
+    @include material-animation-default();
+}
+
+// drawers initially closed (off screen)
+.drawer-left {
+    left: 0;
+    width: $drawer-left-width;
+    max-width: 80%;
+    transform: translateX(-$drawer-left-width - 10px);
+}
+
+.drawer-right {
+    right: 0;
+    width: $drawer-right-width;
+    max-width: 80%; // maybe we should allow this drawer to open full width and have a close button?
+    transform: translateX($drawer-right-width + 10px);
+}
+
+// show drawer by moving it on screen
+.drawer-in {
+    transform: translateX(0);
+}
+
+.drawer-header {
+    background-color: $theme-800;
+    padding: .5rem;
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    min-height: $navbar-height * 2;
+
+    &, a, .btn-icon {
+        color: color-yiq($theme-800) !important;
+    }
+}
+
+.drawer-title {
+    margin: .5rem 0;
+    @include text-truncate();
+}
+
+
+// backdrop (when drawer is open)
+.drawer-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: $zindex-drawer-backdrop;
+    visibility: hidden;
+    background-color: transparent;
+    transition-property: background-color;
+    @include material-animation-default();
+
+    .drawer-open & {
+        visibility: visible;
+        background-color: $backdrop-bg;
+    }
+
+    @supports (pointer-events: auto) {
+        background-color: $backdrop-bg;
+        opacity: 0;
+        transition-property: opacity;
+        visibility: visible;
+        pointer-events: none;
+
+        .drawer-open & {
+            pointer-events: auto;
+            opacity: 1;
+        }
+    }
+}

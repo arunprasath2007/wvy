@@ -1,0 +1,32 @@
+﻿@model Weavy.Core.Models.File
+
+<div class="dropdown">
+    <button type="button" class="btn btn-icon dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="Toggle Dropdown">
+        @Html.SvgIcon("dots-vertical")
+    </button>
+    <div class="dropdown-menu dropdown-menu-right">
+        @if (FileHelper.IsOfficeDocument(Model.Name)) {
+            <a class="dropdown-item" href="@Model.OfficeUrl()">@Html.SvgIcon(Model.IconName()) Open in @OfficeHelper.GetProductName(Model.Name)</a>
+        }
+        <a class="dropdown-item" href="@Model.ContentUrl(download: true)">@Html.SvgIcon("download") Download</a>
+        <button type="button" class="dropdown-item"  data-toggle="modal" data-target="#share-modal" data-share-type="@Model.Type" data-share-id="@Model.Id" data-share-title="Share file">@Html.SvgIcon("share-variant") Share</button>
+
+
+        @if (Request.Path != Model.Url()) {
+            <a class="dropdown-item" href="@Model.Url()">@Html.SvgIcon("information") Details</a>
+        }
+        @if (Folder is IIntegration) {
+            // nothing we can wo with files from dropbox, onedrive etc
+        } else {
+            if (Model.HasPermission(Permission.Edit)) {
+                <a class="dropdown-item" href="@Model.Url()/edit">@Html.SvgIcon("pencil") Edit</a>
+            }
+            if (Model.HasPermission(Permission.Delete)) {
+                <form action="@(Url.Action(nameof(TrashController.TrashFile), typeof(TrashController).ControllerName()))" method="post" data-turboform>
+                    <input type="hidden" name="@nameof(Model.Id)" value="@Model.Id" />
+                    <button type="submit" class="dropdown-item">@Html.SvgIcon("delete") Trash</button>
+                </form>
+            }
+        }
+    </div>
+</div>

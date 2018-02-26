@@ -1,0 +1,57 @@
+﻿@model Weavy.Core.Models.File
+@{
+    Title = "Content";
+}
+
+
+<nav class="navbar navbar-content">
+    @Model.Breadcrumb()
+    <div class="navbar-icons ml-auto">
+        @Html.StarToggle(Model)
+        @{ Html.RenderPartial("_FileMenu", Model); }
+    </div>
+</nav>
+
+<div class="container mt-3 mb-5">
+
+    <article class="file" data-file-id="@Model.Id">
+
+        @if (ViewBag.Format == PreviewFormat.Text) {
+            var lang = FileHelper.SyntaxHighlight(Model.Name);
+
+            if (lang != null) {
+                <pre class="language-@lang"><code class="language-@lang">@System.IO.File.ReadAllText(FileService.GetData(Model).FullName)</code></pre>
+            } else {
+                <pre class="document">@System.IO.File.ReadAllText(FileService.GetData(Model).FullName)</pre>
+            }
+
+        } else if (ViewBag.Format == PreviewFormat.Image || ViewBag.Format == PreviewFormat.Document) {
+            var attrs = Html.PreviewAttributes(Model, href: Model.Url());
+
+            <div class="text-center">
+                <figure class="figure">
+                    <a href="@Model.ContentUrl()" @Html.Raw(attrs.AsHtmlAttributes())><img src="@Model.ThumbUrl(480, 480)" class="figure-img img-fluid d-block mx-auto" alt="@Model.Name" /></a>
+                    <figcaption class="figure-caption"><a href="@Model.ContentUrl(download:true)">@(Model.Description ?? Model.Title)</a></figcaption>
+                </figure>
+            </div>
+
+        } else {
+            <h1 class="text-center mb-3"><a href="@Model.ContentUrl(download:true)">@Model.Name</a></h1>
+        }
+
+        <section class="file-comments" id="comments">
+            <div class="list-group comments" data-container="comments">
+                @Html.Partial("_Comments", Model.Comments)
+            </div>
+            @Html.Partial("_CommentForm", Model, new ViewDataDictionary() { { "container", ".comments" } })
+        </section>
+    </article>
+</div>
+
+@section footer {
+    @{
+        Html.RenderPartial("_FeedbackModal");
+        Html.RenderPartial("_ShareModal");
+        Html.RenderPartial("_EditCommentModal");
+    }
+}

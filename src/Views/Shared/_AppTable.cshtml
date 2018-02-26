@@ -1,0 +1,10 @@
+﻿@model App
+
+<tr data-id="@Model.Id" data-app-guid="@Model.AppGuid" data-allowed-children="@Model.AllowedChildrenString()" data-allowed-parents="@Model.AllowedParentsString()" data-href="@Model.Url()">
+    <td class="table-icon">@Html.SvgIcon(Model.IconName(), color: Model.IconColor())</td>
+    <td><a href="@Model.Url()">@Model.Title</a></td>
+    <td>@Html.Time(Model.ModifiedAt, format: "g")</td>
+    <td>@Model.Kind</td>
+    <td>--</td>
+    <td class="table-icon">@{ Html.RenderPartial("_AppMenu", Model);}</td>
+</tr>

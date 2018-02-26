@@ -1,0 +1,19 @@
+﻿/// <reference path="../_core.scss" />
+
+// presence indicator
+.presence {
+    display:inline-block;
+}
+
+.presence[data-active] {
+    position: relative;
+
+    &:after {
+        @include dot($success, 10px);
+        position: absolute;
+        bottom: -3px;
+        right: -3px;
+        border: 1px solid rgba($white, .5);
+    }
+}
+

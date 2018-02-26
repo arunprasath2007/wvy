@@ -1,0 +1,23 @@
+﻿<div class="space-switcher btn-group dropdown">
+    <a class="btn btn-transparent dropdown-toggle align-items-center" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        @(Space.AvatarImg(24, htmlAttributes: new { @class = "i mr-1" }))
+        <span>@Space.Name</span>
+        @Html.SvgIcon("menu-down")
+    </a>
+    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+        <form>
+            <div class="form-group">
+                <input id="space-switcher" type="search" class="form-control" placeholder="Find Space" />
+            </div>
+        </form>
+        
+        <div class="dropdown-item"><img class="avatar-36" src="@Weavy.Core.Helpers.UrlHelper.IconUrl(size:24)" alt="Home" /><label>The Pulse</label></div>
+        <div class="dropdown-item">@(new Space().AvatarImg(24, retina:true))<label>Development</label></div>
+        <div class="dropdown-item">@(new Space().AvatarImg(24, retina: true))<label>Team Alpha</label></div>
+        <div class="actions flex">
+            <a class="btn btn-transparent">ALL SPACES</a>
+            <button type="button" class="btn btn-transparent ml-auto"><svg class="i"><use xlink:href="#plus" /></svg></button>
+        </div>
+        
+    </div>
+</div>

@@ -1,0 +1,82 @@
+﻿@model ConnectSpaceModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html class="@HtmlClasses() overflow-y-hide" lang="@System.Threading.Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, maximum-scale=1, user-scalable=no"> @* Viewport must contain width=device-width, minimum-scale=1.0 to trigger GPU Rasterization https://www.chromium.org/developers/design-documents/chromium-graphics/how-to-get-gpu-rasterization *@
+    <title>Add space</title>
+    @Html.ThemeHead()
+    @Html.ThemeStyle("~/styles/weavy.scss", htmlAttributes: new { data_turbolinks_track = "reload" })
+    @Bundler.Scripts("~/scripts/weavy.bundle", htmlAttributes: new { data_turbolinks_track = "reload" })
+</head>
+<body class="@BodyClasses()" @BodyAttributes>
+    @Html.SvgSprite(inline: false)
+    <nav class="navbar-theme fixed-top">
+        <div class="navbar navbar-primary">
+            <div class="navbar-icons">@Html.SvgIcon("plus")</div>
+            <div class="navbar-middle">Connect space</div>
+        </div>
+    </nav>
+    <main>
+        <div class="container mt-3">
+
+            <p>We couldn't find a space connected to <strong>@Model.StripUrl</strong>.</p>
+
+            @using (Html.BeginForm(nameof(WidgetController.Connect), typeof(WidgetController).ControllerName(), FormMethod.Get, new { data_turboform = "" })) {
+                <div class="form-group">
+                    <label for="@nameof(Model.SearchTerm)">Search for an existing Space to connect...</label>
+                    <input type="hidden" name="@nameof(Model.StripUrl)" value="@Model.StripUrl" />
+                    <div class="input-group">
+                        @Html.TextBoxFor(m => m.SearchTerm, new { @class = "form-control", placeholder = "Search for a space" })
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn btn-primary px-2">@Html.SvgIcon("magnify", htmlAttributes: new { @class = "m-0" })</button>
+                        </span>
+                    </div>
+                </div>
+            }
+
+            @if (Model.SearchResult.HasItems()) {
+                using (Html.BeginForm(nameof(WidgetController.ConnectSpace), typeof(WidgetController).ControllerName(), FormMethod.Post, new { @class = "list-group mb-3", data_turboform = "" })) {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(x => x.StripUrl)
+                    foreach (var space in Model.SearchResult) {
+                        <button type="submit" name="@nameof(Model.SpaceId)" value="@space.Id" class="list-group-item list-group-item-action btn-list-group-item">
+                            @space.AvatarImg(32)
+                            <span class="ml-2">@space.Name</span>
+                        </button>
+                    }
+
+
+                }
+            }
+            @if (!Model.SearchResult.Query.Text.IsNullOrEmpty() && !Model.SearchResult.Any()) {
+                <p class="text-danger px-1 pb-2">Sorry, could not find any matching spaces. Why don't you add a new one?</p>
+            }
+
+            @using (Html.BeginForm(nameof(WidgetController.CreateSpace), typeof(WidgetController).ControllerName(), FormMethod.Post, new { data_turboform = "" })) {
+                var state = ViewData.ModelState[nameof(Model.Name)];
+                var feedback = state?.Errors?.FirstOrDefault()?.ErrorMessage;
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(x => x.StripUrl)
+                <div class="form-group">
+                    <label for="@nameof(Model.Name)">...or add a new Space</label>
+                    <div class="input-group">
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" + (feedback != null ? " is-invalid" : ""), placeholder = "Space name" })
+                        <div class="input-group-btn">
+                            <button type="submit" name="@nameof(ConnectSpaceModel.Button)" value="Add" class="btn btn-@(feedback != null ? "danger": "primary") px-2">@Html.SvgIcon("plus", htmlAttributes: new { @class = "m-0" })</button>
+                        </div>
+                    </div>
+                    @if (feedback != null) {
+                        <div class="text-danger px-1 py-2">@feedback</div>
+                    }
+                </div>
+            }
+
+
+        </div>
+    </main>
+</body>
+</html>

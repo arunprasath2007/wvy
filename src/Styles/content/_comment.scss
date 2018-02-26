@@ -1,0 +1,121 @@
+/// <reference path="../_core.scss" />
+
+.comment {
+    background-color: inherit;
+    border: 0;
+    margin: 0;
+    padding-left: 0;
+    padding-right: 0;
+
+    .media-body {
+        line-height: $line-height-base;
+    }
+
+    .image-grid {
+        margin: $card-spacer-y 0;
+    }
+
+    .file-list {
+        margin: $card-spacer-y 0;
+    }
+}
+
+.comment-feedback {
+    .btn {
+        position:relative;
+        bottom: .125rem;
+    }
+}
+
+.fake-comment {
+    .media-title {
+        flex: 1;
+    }
+
+    .fake-user {
+        width: 32px;
+        height: 32px;
+        background: $theme-300;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+
+    .fake-text {
+        height: 10px;
+        margin-bottom: 10px;
+        background: linear-gradient(91deg, $theme-300, $theme-200, $theme-300);
+        background-size: 300% 300%;
+        -webkit-animation: faketext-animation 4s ease infinite;
+        -moz-animation: faketext-animation 4s ease infinite;
+        animation: faketext-animation 4s ease infinite;
+
+        &.fake-text-25 {
+            width: 25%;
+        }
+
+        &.fake-text-50 {
+            width: 50%;
+        }
+
+        &.fake-text-75 {
+            width: 75%;
+        }
+
+        &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-image: url("/img/spinner.svg");
+            background-repeat: no-repeat;
+            background-position: 50%;
+            background-size: 48px;
+            background-color: #fff;
+            opacity: 0.15;
+        }
+
+        @-webkit-keyframes faketext-animation {
+            0% {
+                background-position: 0% 50%
+            }
+
+            50% {
+                background-position: 100% 51%
+            }
+
+            100% {
+                background-position: 0% 50%
+            }
+        }
+
+        @-moz-keyframes faketext-animation {
+            0% {
+                background-position: 0% 50%
+            }
+
+            50% {
+                background-position: 100% 51%
+            }
+
+            100% {
+                background-position: 0% 50%
+            }
+        }
+
+        @keyframes faketext-animation {
+            0% {
+                background-position: 0% 50%
+            }
+
+            50% {
+                background-position: 100% 51%
+            }
+
+            100% {
+                background-position: 0% 50%
+            }
+        }
+    }
+}

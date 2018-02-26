@@ -1,0 +1,44 @@
+/// <reference path="../_core.scss" />
+
+.icon-sprite {
+    color: $icon-color;
+}
+
+// See https://google.github.io/material-design-icons/#styling-icons-in-material-design
+.i {
+    fill: currentColor;
+    width: 1.5rem; // 24px
+    height: 1.5rem; // 24px
+
+    &.i-18 {
+        width: 1.125rem;
+        height: 1.125rem;
+    }
+
+    &.i-24 {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+
+    &.i-36 {
+        width: 2.25rem;
+        height: 2.25rem;
+    }
+
+    &.i-48 {
+        width: 3rem;
+        height: 3rem;
+    }
+
+    &.i-inline {
+        vertical-align: middle;
+    }
+
+    &.i-dark {
+        color: $icon-color;
+    }
+
+    &.i-light {
+        color: $white;
+    }
+}

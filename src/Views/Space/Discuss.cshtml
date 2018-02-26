@@ -1,0 +1,21 @@
+﻿@model PostsModel
+@{ 
+    Title = "Discuss";
+}
+
+<div class="container mt-3">
+    @Html.Partial("_PostForm", Model.Entity)
+    <div id="infinite-scroll-target" class="posts">
+        @Html.Partial("_Posts", Model.Posts)
+    </div>
+    @Html.ScrollMore(Model.Posts)
+</div>
+
+
+@section footer {
+    @{
+        Html.RenderPartial("_FeedbackModal");
+        Html.RenderPartial("_EditPostModal");
+        Html.RenderPartial("_EditCommentModal");
+    }
+}

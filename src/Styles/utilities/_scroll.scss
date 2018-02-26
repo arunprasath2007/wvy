@@ -1,0 +1,53 @@
+/// <reference path="../_core.scss" />
+@mixin scrollbar {
+    ::-webkit-scrollbar {
+        height: .5rem;
+        width: .5rem;
+    }
+
+    ::-webkit-scrollbar-button {
+        background: transparent;
+        display: none;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: $gray-100;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: $gray-300;
+    }
+}
+
+@mixin scroll {
+    backface-visibility: hidden;
+    -webkit-overflow-scrolling: touch; // ios momentum scrolling, cannot be used on the <body> element!
+    max-height: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
+@mixin scroll-x {
+    @include scroll;
+    overflow-y: hidden;
+    max-height: none;
+}
+
+@mixin scroll-y {
+    @include scroll;
+    overflow-x: hidden;
+    max-width: none;
+}
+
+.scroll {
+    @include scroll;
+}
+
+.scroll-x {
+    @include scroll-x;
+}
+
+.scroll-y {
+    @include scroll-y;
+}

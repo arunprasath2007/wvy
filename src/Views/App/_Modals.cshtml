@@ -1,0 +1,49 @@
+﻿@model ContentModel
+
+
+@*@if (Model.App.HasPermission(Permission.Create)) {
+    var folder = new App();
+    <div class="modal" id="new-folder-dialog" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">New folder</h5>
+                </div>
+                @using (Html.BeginForm(nameof(AppController.Insert), typeof(AppController).ControllerName(), new { id = Model.App.Id, guid = folder.AppGuid }, FormMethod.Post, new { autocomplete = "off", data_turboform = "", novalidate = "" })) {
+                    @Html.HiddenFor(x => folder.AppGuid)
+                    <div class="modal-body">
+                        <div class="input-group">
+                            <input class="form-control" placeholder="@nameof(folder.Name)" name="@nameof(folder.Name)" autofocus>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}*@
+
+
+@if (Model.App.HasPermission(Permission.Attach)) {
+    <div class="modal" id="filename-dialog" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">New <span id="filename-dialog-type"></span> document</h5>
+                </div>
+                @using (Html.BeginForm(nameof(AppController.CreateOffice), typeof(AppController).ControllerName(), new { id = Model.App.Id }, FormMethod.Post, null)) {
+                    <div class="modal-body">
+                        <div class="input-group">
+                            <input class="form-control" placeholder="Filename" name="name" id="name" autofocus>
+                            <span class="input-group-addon" id="basic-addon2"></span>
+                        </div>
+                    </div>
+                    @Html.Hidden("ext")
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@{
+    Html.RenderPartial("_ShareModal");
+}

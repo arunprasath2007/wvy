@@ -1,0 +1,50 @@
+/// <reference path="../_core.scss" />
+
+article.item {
+    overflow-wrap: break-word;
+
+    // user supplied content
+    .display-group[data-type=html] {
+        blockquote {
+            @extend .blockquote;
+            padding: .5rem 1rem;
+            border-left: .25rem solid $table-border-color;
+
+            footer {
+                @extend .blockquote-footer;
+            }
+        }
+
+        img:not(.eo) {
+            @include img-fluid;
+        }
+
+        pre:not([class*="language-"]) {
+            white-space: pre-wrap;
+        }
+
+        table {
+            @extend .table;
+        }
+    }
+
+    .comments {
+
+        .file-list, .image-grid {
+            max-width: map-get($grid-breakpoints, sm);
+        }
+    }
+
+    footer {
+        margin-top: 1rem;
+        padding: 1rem .5rem;
+        border-top: 1px solid$border-color;
+    }
+}
+
+// insert/edit note
+form.edit-note {
+    .html-editor {
+        height: calc(100vh - 276px);
+    }
+}

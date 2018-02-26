@@ -1,0 +1,6 @@
+/// <reference path="../_core.scss" />
+.highlight {
+    background-color: color("yellow", 200);
+    padding: .125em .2em;
+    @include border-radius;
+}

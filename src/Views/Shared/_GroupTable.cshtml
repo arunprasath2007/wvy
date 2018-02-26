@@ -1,0 +1,23 @@
+﻿@model SearchResult<Group, GroupQuery>
+
+@if (Model.Any()) {
+    foreach (var group in Model) {
+        <tr @(Html.Raw(group.IsTrashed ? @"class=""table-trashed""" : "")) data-href="@group.Url()">
+            <td class="table-icon">@group.AvatarImg(32)</td>
+            <td>
+                @if (group.Groupname == group.Title) {
+                    <a href="@group.Url()"><small>@@@group.Groupname</small></a>
+                } else {
+                    <a href="@group.Url()">@group.Title</a> <small>@@@group.Groupname</small>
+                }
+            </td>
+            <td class="text-right">@group.MemberIds.Count()</td>
+            <td class="table-icon">@{ Html.RenderPartial("_GroupMenu", group); }</td>
+        </tr>
+    }
+
+    <tr class="scroll-next d-none" data-next="@Url.ScrollNext(Model)">
+        <td colspan="4"></td>
+    </tr>
+}
+

@@ -1,0 +1,14 @@
+/// <reference path="../_core.scss" />
+
+
+.card {
+    .table {
+        margin:0;
+    }
+}
+
+.card-footer.bg-transparent {
+    background-color: transparent;
+    border-top: none;
+}
+

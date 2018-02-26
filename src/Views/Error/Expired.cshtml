@@ -1,0 +1,14 @@
+﻿@model ErrorModel
+@{
+    Layout = "~/Views/Shared/_LayoutBasic.cshtml";
+    Title = Model.Code + " " + Model.Description;
+}
+
+<div class="container">
+    <h1 class="display-1">@Model.Code @Model.Description</h1>
+    @if (User.SystemPermissions.Contains(Permission.ManageSystem)) {
+        <p>License expired. Please <a href="@Url.Action(nameof(Weavy.Web.Areas.Manage.Controllers.HomeController.License), typeof(Weavy.Web.Areas.Manage.Controllers.HomeController).ControllerName(), new { area = "Manage" })">update your license</a>.</p>
+    } else {
+        <p>License expired. Please contact your system administrator.</p>
+    }
+</div>

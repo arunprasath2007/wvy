@@ -1,0 +1,435 @@
+/// <reference path="../_core.scss" />
+
+// table with content in folder
+.table-content {
+    @extend .table-fixed;
+
+    thead {
+        display: none;
+    }
+
+    tr:first-child td {
+        border-top-color: transparent;
+    }
+    // name
+    td:nth-child(2), th:nth-child(2) {
+        width: 100%;
+        @include text-truncate;
+    }
+    // modified
+    td:nth-child(3), th:nth-child(3) {
+        width: 180px; // needs to be this wide to fit MM/DD/YYYY HH:mm AM/PM
+        display: none;
+    }
+    // type
+    td:nth-child(4), th:nth-child(4) {
+        display: none;
+        width: 120px;
+    }
+    // size
+    td:nth-child(5), th:nth-child(5) {
+        display: none;
+        text-align: right;
+        width: 100px;
+    }
+    // show columns on larger devices
+    @include media-breakpoint-up(sm) {
+        thead {
+            display: table-header-group;
+        }
+
+        td:nth-child(3), th:nth-child(3) {
+            display: table-cell;
+        }
+    }
+
+    @include media-breakpoint-up(md) {
+        td:nth-child(5), th:nth-child(5) {
+            display: table-cell;
+        }
+    }
+
+    @include media-breakpoint-up(lg) {
+        td:nth-child(4), th:nth-child(4) {
+            display: table-cell;
+        }
+    }
+}
+
+
+.table-attachments {
+    @extend .table-fixed;
+
+    tr td {
+        border-top-color: transparent;
+    }
+
+    td:nth-child(2), th:nth-child(2) {
+        width: 100%;
+        @include text-truncate;
+    }
+}
+
+.table-people, .table-members {
+    @extend .table-fixed;
+
+    thead {
+        display: none;
+    }
+
+    tr:first-child td {
+        border-top-color: transparent;
+    }
+    // name
+    td:nth-child(2), th:nth-child(2) {
+        width: 100%;
+        @include text-truncate;
+    }
+    // show columns on larger devices
+    @include media-breakpoint-up(sm) {
+        thead {
+            display: table-header-group;
+        }
+    }
+}
+
+
+.table-groups {
+    @extend .table-fixed;
+
+    thead {
+        display: none;
+    }
+
+    tr:first-child td {
+        border-top-color: transparent;
+    }
+    // name
+    td:nth-child(2), th:nth-child(2) {
+        width: 100%;
+        @include text-truncate;
+    }
+    // members
+    td:nth-child(3), th:nth-child(3) {
+        width: 85px;
+        @include text-truncate;
+        display: none;
+    }
+    // show columns on larger devices
+    @include media-breakpoint-up(sm) {
+        thead {
+            display: table-header-group;
+        }
+    }
+
+    @include media-breakpoint-up(md) {
+        td:nth-child(3), th:nth-child(3) {
+            display: table-cell;
+        }
+
+    }
+}
+
+
+.table-spaces {
+    @extend .table-fixed;
+
+    thead {
+        display: none;
+    }
+
+    tr:first-child td {
+        border-top-color: transparent;
+    }
+    // name
+    td:nth-child(2), th:nth-child(2) {
+        width: 100%;
+        @include text-truncate;
+    }
+    // apps
+    td:nth-child(3), th:nth-child(3) {
+        width: 55px;
+        @include text-truncate;
+        display: none;
+    }
+    // members
+    td:nth-child(4), th:nth-child(4) {
+        width: 85px;
+        @include text-truncate;
+        display: none;
+    }
+    // show columns on larger devices
+    @include media-breakpoint-up(sm) {
+        thead {
+            display: table-header-group;
+        }
+    }
+
+    @include media-breakpoint-up(md) {
+        td:nth-child(3), th:nth-child(3) {
+            display: table-cell;
+        }
+
+        td:nth-child(4), th:nth-child(4) {
+            display: table-cell;
+        }
+    }
+}
+
+// tables with icon + name
+.table-extensions {
+    @extend .table-fixed;
+
+    thead {
+        display: none;
+    }
+
+    tr:first-child td {
+        border-top-color: transparent;
+    }
+    // name
+    td:nth-child(2), th:nth-child(2) {
+        width: 100%;
+        @include text-truncate;
+    }
+    // description
+    td:nth-child(3), th:nth-child(3) {
+        display: none;
+    }
+    // show columns on larger devices
+    @include media-breakpoint-up(md) {
+        thead {
+            display: table-header-group;
+        }
+
+        td:nth-child(2), th:nth-child(2) {
+            width: 200px;
+        }
+
+        td:nth-child(3), th:nth-child(3) {
+            width: 100%;
+            display: table-cell;
+            @include text-truncate;
+        }
+    }
+}
+
+.table-daemons {
+    @extend .table-fixed;
+
+    thead {
+        display: none;
+    }
+
+    tr:first-child td {
+        border-top-color: transparent;
+    }
+    // name
+    td:nth-child(2), th:nth-child(2) {
+        width: 100%;
+        @include text-truncate;
+    }
+    // last
+    td:nth-child(3), th:nth-child(3) {
+        width: 160px;
+        display: none;
+    }
+    // next
+    td:nth-child(4), th:nth-child(4) {
+        width: 160px;
+        display: none;
+    }
+    // schedule
+    td:nth-child(5), th:nth-child(5) {
+        width: 160px;
+        display: none;
+    }
+    // show columns on larger devices
+    @include media-breakpoint-up(sm) {
+        thead {
+            display: table-header-group;
+        }
+        td:nth-child(5), th:nth-child(5) {
+            display: table-cell;
+        }
+    }
+
+    @include media-breakpoint-up(md) {
+        td:nth-child(3), th:nth-child(3) {
+            display: table-cell;
+        }
+
+        td:nth-child(4), th:nth-child(4) {
+            display: table-cell;
+        }
+    }
+}
+
+
+.table-logs {
+    @extend .table-fixed;
+
+    thead {
+        display: none;
+    }
+
+    tr:first-child td {
+        border-top-color: transparent;
+    }
+    // name
+    td:nth-child(2), th:nth-child(2) {
+        width: 100%;
+        @include text-truncate;
+    }
+
+    // modified
+    td:nth-child(3), th:nth-child(3) {
+        width: 180px; // needs to be this wide to fit MM/DD/YYYY HH:mm AM/PM
+        display: none;
+    }
+    // size
+    td:nth-child(4), th:nth-child(4) {
+        display: none;
+        text-align: right;
+        width: 100px;
+    }
+
+    // icons
+    td:nth-child(5), th:nth-child(5) {
+        width: 80px;
+    }
+
+    // show columns on larger devices
+    @include media-breakpoint-up(sm) {
+        thead {
+            display: table-header-group;
+        }
+
+        td:nth-child(3), th:nth-child(3) {
+            display: table-cell;
+        }
+    }
+
+    @include media-breakpoint-up(md) {
+        td:nth-child(4), th:nth-child(4) {
+            display: table-cell;
+        }
+    }
+}
+
+
+.table-signups {
+    @extend .table-fixed;
+
+    thead {
+        display: none;
+    }
+
+    tr:first-child td {
+        border-top-color: transparent;
+    }
+    // name
+    td:nth-child(2), th:nth-child(2) {
+        width: 100%;
+        @include text-truncate;
+    }
+
+    // status
+    td:nth-child(3), th:nth-child(3) {
+        width: 105px;
+        display: none;
+    }
+
+    // icons
+    td:nth-child(4), th:nth-child(4) {
+        width: 80px;
+        text-align: right;
+    }
+
+    // show columns on larger devices
+    @include media-breakpoint-up(sm) {
+        thead {
+            display: table-header-group;
+        }
+
+        td:nth-child(3), th:nth-child(3) {
+            display: table-cell;
+        }
+    }
+
+}
+
+
+// tables with icon + name
+.table-stars, .table-drafts, .table-likes, .table-votes {
+    @extend .table-fixed;
+
+    tr:first-child td {
+        border-top-color: transparent;
+    }
+    // name
+    td:nth-child(2), th:nth-child(2) {
+        width: 100%;
+        @include text-truncate;
+    }
+}
+
+.table-likes, .table-votes {
+    margin-bottom: 0;
+    tr td {
+        border: none;
+    }
+
+    td:nth-child(1), th:nth-child(1) {
+        padding-left: 0;
+        width: 32px;
+    }
+}
+
+
+.table-trash {
+    @extend .table-fixed;
+
+    thead {
+        display: none;
+    }
+
+    tr:first-child td {
+        border-top-color: transparent;
+    }
+    // name
+    td:nth-child(1), th:nth-child(1) {
+        width: 100%;
+        @include text-truncate;
+    }
+    // trashed
+    td:nth-child(2), th:nth-child(2) {
+        width: 180px; // needs to be this wide to fit MM/DD/YYYY HH:mm AM/PM
+        display: none;
+    }
+    // type
+    td:nth-child(3), th:nth-child(3) {
+        display: none;
+        width: 120px;
+    }
+    // actions
+    td:nth-child(4), th:nth-child(4) {
+        width: 80px;
+    }
+    // show columns on larger devices
+    @include media-breakpoint-up(sm) {
+        thead {
+            display: table-header-group;
+        }
+
+        td:nth-child(2), th:nth-child(2) {
+            display: table-cell;
+        }
+    }
+
+    @include media-breakpoint-up(md) {
+        td:nth-child(3), th:nth-child(3) {
+            display: table-cell;
+        }
+    }
+}

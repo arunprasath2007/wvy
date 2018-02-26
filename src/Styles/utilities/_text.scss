@@ -1,0 +1,17 @@
+/// <reference path="../_core.scss" />
+@mixin font-weight-strong {
+    font-weight: $font-weight-strong;
+}
+
+@mixin font-emphasis {
+    font-style: italic
+}
+
+.font-weight-strong {
+    @include font-weight-strong;
+}
+
+.font-emphasis {
+    @include font-emphasis;
+}
+

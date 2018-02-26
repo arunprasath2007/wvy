@@ -1,0 +1,24 @@
+﻿@model Post
+@{
+    Title = "Discuss";
+    var backurl = Model.SpaceId != null && Model.SpaceId != SpaceService.GlobalId ? Url.Action<SpaceController>(c => c.Discuss(Model.SpaceId.Value, null)) : Url.Action<PostController>(c => c.Index(null));
+}
+
+
+@section navbar_left {
+    <div class="navbar-icons">
+        <a class="btn btn-icon" href="@backurl">@Html.SvgIcon("arrow-left")</a>
+    </div>
+}
+
+<div class="container my-3">
+    @Html.Partial("_Post", Model, new ViewDataDictionary { { "details", true } })
+</div>
+
+@section footer {
+    @{
+        Html.RenderPartial("_FeedbackModal");
+        Html.RenderPartial("_EditPostModal");
+        Html.RenderPartial("_EditCommentModal");
+    }
+}

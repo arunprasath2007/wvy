@@ -1,0 +1,96 @@
+﻿@model SpaceStartModel
+@{
+    Title = "Home";
+    var space = WeavyContext.Current.Installation;
+}
+
+<div class="cover py-4">
+
+    <div class="container">
+        @Html.IconImg(128, htmlAttributes: new { @class = "mx-auto d-block" })
+        <div class="text-center py-2">This is the communications hub for your company. Use it to post announcements, notes, and stuff everyone needs to know.</div>
+        <form action="@Url.Action(nameof(SearchController.Index), typeof(SearchController).ControllerName())" method="get" class="pt-2" data-turboform>
+            <input class="form-control" type="text" role="search" name="q" value="" placeholder="Search @Theme.GetName()..." />
+        </form>
+    </div>
+    @if (User.SystemPermissions.Contains(Permission.ManageSystem)) {
+        <a class="btn btn-icon" href="@(Url.Action<Weavy.Web.Areas.Manage.Controllers.HomeController>(c => c.Index()))" title="Manage installation">@Html.SvgIcon("settings")</a>
+    }
+</div>
+
+<div class="container my-3">
+
+    <div class="facepile text-center my-3">
+        @foreach (var user in Model.People.Take(16)) {
+            @user.AvatarLink(size: 32, presence: true)
+        }
+        <a href="@(Url.Action<PeopleController>(c=>c.Index(null, null, null)))" class="btn btn-sm btn-round btn-light" title="More people">
+            @Html.SvgIcon("dots-horizontal", htmlAttributes: new { @class = "text-gray" })
+        </a>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <h6 class="col-title">Posts</h6>
+            @Html.Partial("_PostForm", User)
+            <div class="posts">
+                @if (Model.Posts.Any()) {
+                    foreach (var post in Model.Posts) {
+                        Html.RenderPartial("_Post", post);
+                    }
+                    if (Model.Posts.HasNextPage) {
+                        <a href="@(Url.Action<PostController>(c => c.Index(null)))" class="text-center d-block mb-3">More posts...</a>
+                    }
+                }
+            </div>
+        </div>
+        <div class="col-sm-6">
+
+
+                @if (Model.Notes.Any() || space.HasPermission(Permission.Edit)) {
+
+                    if (space.HasPermission(Permission.Edit)) {
+                        <h6 class="col-title d-flex">Notes <button class="btn btn-icon" type="button" data-toggle="modal" data-target="#note-modal" data-path="@(Url.Action<NotesController>(c => c.New(space.Id)))" title="Post sticky note">@Html.SvgIcon("plus")</button></h6>
+                    } else {
+                        <h6 class="col-title">Notes</h6>
+                    }
+
+                    <div class="notes">
+                    @if (Model.Notes.Any()) {
+                        foreach (var note in Model.Notes) {
+                            Html.RenderPartial("_Note", note);
+                        }
+                    } else {
+                        <p class="text-center text-muted">You're an admin and can post sticky notes here.</p>
+                    }
+                    </div>
+                }
+
+           
+
+            @if (Model.Content.Any()) {
+                <h6 class="col-title">Recently updated</h6>
+                <div class="card">
+                    <div class="list-group list-group-flush">
+                        @foreach (var content in Model.Content) {
+                            if (content is Weavy.Core.Models.File file) {
+                                @Html.Partial("_ListItemFile", file)
+                            } else {
+                                @Html.Partial("_ListItemContent", content)
+                            }
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section footer {
+    @{
+        Html.RenderPartial("_FeedbackModal");
+        Html.RenderPartial("_NoteModal");
+        Html.RenderPartial("_EditPostModal");
+        Html.RenderPartial("_EditCommentModal");
+    }
+}

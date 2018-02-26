@@ -1,0 +1,42 @@
+﻿@model Item
+@{
+    Title = "New " + Model.MetaData().Name;
+
+    var meta = Model.MetaData();
+    var attachmentids = (IEnumerable<int>)ViewBag.Attachmentids; // transient files
+}
+
+@section navbar_left {
+    <div class="navbar-icons">
+        <a class="btn btn-icon" href="@((Model.Parent ?? (IEntity)Model.App).Url())">@Html.SvgIcon("arrow-left")</a>
+    </div>
+}
+
+<div class="container-fluid mt-3">
+    @using (Html.BeginForm(nameof(AppController.Insert), typeof(AppController).ControllerName(), new { id = Model.AppId, guid = Model.ItemGuid }, FormMethod.Post, new { @class = "edit-note", autocomplete = "off", data_turboform = "", novalidate = "" })) {
+        @Html.HiddenFor(x => Model.AppId);
+        @Html.HiddenFor(x => Model.ParentId);
+        <div id="attachments">
+            @if (attachmentids != null && attachmentids.Any()) {
+                foreach (var att in attachmentids) {
+                    <input type="hidden" name="attachmentids" value="@att.ToString()" />
+                }
+            }
+        </div>
+        @Html.EditorsForModel()
+        <div class="form-buttons">
+            <button type="submit" class="btn btn-outline-primary">@Model.MetaData().CreateVerb</button>
+            @if (Model is IVersionable) {
+                <button type="submit" class="btn btn-link" name="operation" value="save">Save draft</button>
+            }
+            <button type="submit" class="btn btn-link" name="operation" value="cancel">Cancel</button>
+        </div>
+    }
+</div>
+
+
+@if (Model.HasPropertyWithTemplate("Html")) {
+    @section scripts{
+        @Html.InitHtmlEditor()
+    }
+}

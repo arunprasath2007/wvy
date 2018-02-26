@@ -1,0 +1,36 @@
+﻿@model Item
+@{
+    Title = Model.Title;
+}
+
+@section navbar_left {
+    <div class="navbar-icons">
+        <a class="btn btn-icon" href="@Model.Url()">@Html.SvgIcon("arrow-left")</a>
+    </div>
+}
+
+<div class="container-fluid mt-3">
+    @using (Html.BeginForm(nameof(ItemController.Update), typeof(ItemController).ControllerName(), new { id = Model.Id }, FormMethod.Post, new { @class = "edit-note", autocomplete = "off", data_turboform = "", novalidate = "" })) {
+        @Html.HttpMethodOverride(HttpVerbs.Put)
+        @Html.EditorsForModel()
+
+        <div class="form-buttons">
+            <button type="submit" name="button" value="@(nameof(ItemController.Update))" class="btn btn-primary" data-shortcut="Ctrl+Shift+S">@Model.MetaData().ModifyVerb</button>
+            @if (Model is IVersionable) {
+                <button type="submit" class="btn btn-link" name="operation" value="save">Save draft</button>
+                if (Model.IsDraft) {
+                    <button type="submit" class="btn btn-link" name="operation" value="discard">Discard changes</button>
+                }
+            }
+            <button type="submit" class="btn btn-link" name="operation" value="cancel">Cancel</button>
+        </div>
+        <input type="hidden" id="ItemId" name="ItemId" value="@Model.Id" />
+        <div id="attachments"></div>
+    }
+</div>
+
+@if (Model.HasPropertyWithTemplate("Html")) {
+    @section scripts{
+        @Html.InitHtmlEditor()
+    }
+}

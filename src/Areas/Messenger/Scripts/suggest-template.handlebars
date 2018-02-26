@@ -1,0 +1,8 @@
+<span>{{#if title_highlight}}{{{title_highlight}}}{{else}}{{title}}{{/if}}</span>
+{{#if breadcrumb}}
+<ol class="breadcrumb">
+  {{#each breadcrumb}}
+  <li>{{ellipsis title 32}}</li>
+  {{/each}}
+</ol>
+{{/if}}

@@ -1,0 +1,22 @@
+﻿@model SearchResult<Space, SpaceQuery>
+
+@if (Model.Any()) {
+    foreach (var space in Model) {
+        <tr class="@(space.IsArchived ? "table-archived" : "") @(space.IsTrashed ? "table-trashed" : "")" data-href="@(space.HasPermission(Permission.View) ? space.Url() : null)">
+            <td class="table-icon">@space.AvatarImg(32)</td>
+            <td>
+                <a href="@(space.HasPermission(Permission.View) ? space.Url() : null)">@space.Name</a>
+                @if (space.Alias != null) {<small>@@@space.Alias</small>}
+                @Html.Badge(space.Privacy)
+            </td>
+            <td class="text-right">@space.StripUrls.Count()</td>
+            <td class="text-right">@space.MemberIds.Count()</td>
+            <td class="table-icon">@{ Html.RenderPartial("_SpaceMenu", space);}</td>
+        </tr>
+    }
+
+    <tr class="scroll-next d-none" data-next="@Url.ScrollNext(Model)">
+        <td colspan="5"></td>
+    </tr>
+}
+

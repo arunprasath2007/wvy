@@ -1,0 +1,23 @@
+﻿@model App
+
+<p>
+    <a href="@Model.Url()">@Model.Title (app card)</a>
+</p>
+
+@*<article class="card-item item-icon @Model.CssClass()" data-id="@Model.Id" data-app-guid="@Model.AppGuid" data-allowed-children="@Model.AllowedChildrenString()" data-allowed-parents="@Model.AllowedParentsString()">
+  <div class="card-body">
+    <div class="card-header actions">
+      @Html.StarLink(Model, false)
+      <div class="dropdown">@{ Html.RenderPartial("_AppMenu", Model);}</div>
+    </div>
+    <a href="@Model.Url()" class="nocontext">
+      <div class="card-thumbnail">
+        <div class="thumbnail-background"><i class="@Model.Icon fa-fw fa-color"></i></div>
+      </div>
+      <div class="caption">
+        <h4 class="content-title" title="@Model.Title"><i class="handle fa-color @Model.Icon"></i> @Model.Name</h4>
+        <p class="meta">@Model.Description</p>
+      </div>
+    </a>
+  </div>
+</article>*@

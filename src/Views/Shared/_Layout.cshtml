@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html class="@HtmlClasses()" lang="@System.Threading.Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, maximum-scale=1, user-scalable=no"> @* Viewport must contain width=device-width, minimum-scale=1.0 to trigger GPU Rasterization https://www.chromium.org/developers/design-documents/chromium-graphics/how-to-get-gpu-rasterization *@
+    <meta name="turbolinks-cache-control" content="no-preview">
+    <title>@Html.Title(Title)</title>
+    @Html.ThemeHead()
+    @Html.ThemeStyle("~/styles/weavy.scss", htmlAttributes: new { data_turbolinks_track = "reload" })
+    @RenderSection("styles", required: false)
+    @Bundler.Scripts("~/scripts/weavy.bundle", htmlAttributes: new { data_turbolinks_track = "reload" })
+    @RenderSection("scripts", required: false)
+</head>
+<body class="@BodyClasses(IsSectionDefined("navbar_secondary") ? "has-navbar-secondary" : null)" @BodyAttributes>
+    @Html.SvgSprite(inline: false)
+
+    <nav class="navbar-theme fixed-top">
+        <div class="navbar navbar-primary">
+            @if (IsSectionDefined("navbar_left")) {
+                @RenderSection("navbar_left", required: false)
+            } else {
+                <div class="navbar-icons">
+                    <button type="button" class="btn btn-icon" id="space-menu" data-toggle="drawer" data-target="#drawer-spaces">@(Space?.AvatarImg(24) ?? Html.SvgIcon("menu"))</button>
+                    <a class="btn btn-icon" id="space-home" href="@(Space?.Url() ?? Url.Action<HomeController>(c => c.Index()))">@(Space?.AvatarImg(24) ?? Html.SvgIcon("menu"))</a>
+                </div>
+            }
+
+            @if (IsSectionDefined("navbar_middle")) {
+                @RenderSection("navbar_middle", required: false)
+            } else {
+                <div class="navbar-middle dropdown">
+                    <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" href="@Request.Path">
+                        <div class="title">@Title</div>
+                        <div class="subtitle">@(Space?.Name ?? Theme.GetName())</div>
+                    </button>
+                    <div class="dropdown-menu">
+                        @if (Space != null) {
+                            <a class="dropdown-item" href="@Space.Url()">@Html.SvgIcon("home") Home</a>
+                            if (Space.HasPermission(Permission.List)) {
+                                <a class="dropdown-item" href="@(Url.Action<SpaceController>(c => c.Content(Space.Id, null, null)))">@Html.SvgIcon("folder") Content</a>
+                                <a class="dropdown-item" href="@(Url.Action<SpaceController>(c => c.Discuss(Space.Id, null)))">@Html.SvgIcon("forum") Discuss</a>
+                            }
+                            if (Space.HasPermission(Permission.View)) {
+                                <a class="dropdown-item" href="@(Url.Action<SpaceController>(c => c.Members(Space.Id, null)))">@Html.SvgIcon("account-multiple") Members</a>
+                            }
+                        } else {
+                            <a class="dropdown-item" href="@(Url.Action<HomeController>(c => c.Index()))">@Html.SvgIcon("home") Home</a>
+                            <a class="dropdown-item" href="@(Url.Action<SpaceController>(c => c.Index(null, null, null)))">@Html.SvgIcon("view-grid") Spaces</a>
+                            <a class="dropdown-item" href="@(Url.Action<PeopleController>(c => c.Index(null, null, null)))">@Html.SvgIcon("account-multiple") People</a>
+                            if (User.SystemPermissions.Contains(Permission.ManageSystem)) {
+                                <a class="dropdown-item" href="@(Url.Action<Weavy.Web.Areas.Manage.Controllers.HomeController>(c => c.Index()))">@Html.SvgIcon("settings") Manage</a>
+                            }
+                        }
+                    </div>
+                </div>
+            }
+
+            @if (IsSectionDefined("navbar_right")) {
+                @RenderSection("navbar_right", required: false)
+            } else {
+                <div class="navbar-icons @(Space != null ? "d-standalone" : "")">
+                    <button type="button" class="btn btn-icon btn-badge" data-toggle="drawer" data-target="#drawer-user">@User.AvatarImg(24)<span class="badge badge-danger @(Badge.Notifications > 0 ? "" : "d-none")" data-badge="notification">@(Badge.Notifications > 0 ? Badge.Notifications.ToString() : "")</span></button>
+                </div>
+            }
+        </div>
+        @if (IsSectionDefined("navbar_secondary")) {
+            <div class="navbar navbar-secondary">
+                @RenderSection("navbar_secondary", required: false)
+            </div>
+        }
+    </nav>
+
+    <div class="alerts">
+        @Html.AlertMessages()
+    </div>
+
+    <main @if (IsSectionDefined("fab")) { <text> class="has-fab" </text> }>
+        @RenderBody()
+        @RenderSection("fab", required: false)
+    </main>
+
+    @{
+        Html.RenderPartial("_DrawerSpaces");
+        Html.RenderPartial("_DrawerUser");
+        Html.RenderPartial("_PhotoSwipe");
+        Html.RenderPartial("_Preview");
+        @RenderSection("footer", required: false)
+    }
+    <div class="drawer-backdrop"></div>
+    <audio id="notification-sound" src="~/audio/notification.mp3"></audio>
+    @Html.Scripts()
+</body>
+</html>

@@ -1,0 +1,63 @@
+﻿@model Space
+@{
+    Title = "Edit";
+}
+
+
+@section scripts {
+    <script>
+        $(document).on('click', '#copy-script-button', function () {
+            var el = $("#strip-script");
+            if (document.body.createTextRange) {
+                var tr = document.body.createTextRange();
+                tr.moveToElementText(el[0]);
+                tr.select();
+                tr.execCommand("Copy");
+            } else if (document.createRange) {
+                var r = document.createRange();
+                r.selectNodeContents(el[0]);
+                el[0].select();
+                document.execCommand('copy');
+            }
+            weavy.alert.success("Script copied to clipboard", 3000);
+        });
+    </script>
+}
+
+@section navbar_left {
+    <div class="navbar-icons">
+        <a class="btn btn-icon" href="@Model.Url()">@Html.SvgIcon("arrow-left")</a>
+    </div>
+}
+
+@section navbar_secondary {
+    @Html.Partial("_Navbar", Model)
+}
+
+<div class="container-fluid mt-3">
+    @if (Model.HasPermission(Permission.Admin)) {
+        using (Html.BeginForm(nameof(SpaceController.UpdateStrip), typeof(SpaceController).ControllerName(), new { id = Model.Id }, FormMethod.Post, new { autocomplete = "off", data_turboform = "", novalidate = "" })) {
+            @Html.HttpMethodOverride(HttpVerbs.Put)
+            @Html.EditorsForModel(group: "Strip")
+
+            <div class="form-group">
+                <label>Embed Script</label>
+                <textarea class="form-control" style="height:100px" readonly="readonly" id="strip-script">@Model.StripScript(min:true)</textarea>
+                <small class="form-text text-muted">Copy and paste the script just before the <code>&lt;/body&gt;</code> tag on the site where you want Weavy to appear.</small>
+            </div>
+
+            <div class="form-buttons">
+                <button type="submit" class="btn btn-primary btn-load waves-effect">Save</button>
+                <a href="@Url.Action(nameof(SpaceController.Index))" class="btn btn-outline-secondary mr-auto waves-effect">Cancel</a>
+                <button type="button" id="copy-script-button" class="btn btn-outline-secondary waves-effect">Copy script</button>
+            </div>
+        }
+    } else {
+        <fieldset disabled>
+            @Html.EditorsForModel(group: "external")
+        </fieldset>
+        <div class="form-buttons">
+            <a href="@(Url.Action<SpaceController>(c => c.Index(null, null, null)))" class="btn btn-outline-secondary waves-effect">Back</a>
+        </div>
+    }
+</div>

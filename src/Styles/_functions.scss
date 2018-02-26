@@ -1,0 +1,72 @@
+/// <reference path="_bootstrap.scss" />
+// Overrides for vendor/bootstrap/_functions.scss
+
+// Changed value from 150 to 186 when getting contrasting color, see http://stackoverflow.com/questions/3942878/how-to-decide-font-color-in-white-or-black-depending-on-background-color
+@function color-yiq($color) {
+    $r: red($color);
+    $g: green($color);
+    $b: blue($color);
+
+    $yiq: (($r * 299) + ($g * 587) + ($b * 114)) / 1000;
+
+    @if ($yiq >= 186) {
+        @return $black;
+    } @else {
+        @return $white;
+    }
+}
+
+// Added option to specify shade (100..900) when retreiving color from $colors map
+@function color($key: "blue", $shade: null) {
+    //@return map-get($colors, $key);
+    $color: map-get($colors, $key);
+
+    @if ($shade != null) {
+        $lightness: map-get($shades, $shade);
+        $color: hsl(hue($color), saturation($color), $lightness);
+    }
+
+    @return $color;
+}
+
+// Added option to specify shade (100..900) when retreiving color from $theme-colors map
+@function theme-color($key: "primary", $shade: null) {
+    //@return map-get($theme-colors, $key);
+    $color: map-get($theme-colors, $key);
+
+    @if ($shade != null) {
+        $lightness: map-get($shades, $shade);
+        $color: hsl(hue($color), saturation($color), $lightness);
+    }
+
+    @return $color;
+}
+
+// Changed function to internally use our color shades instead of the bootstrap color levels
+@function theme-color-level($color-name: "primary", $level: 0) {
+    //$color: theme-color($color-name);
+    //$color-base: if($level > 0, #000, #fff);
+    //$level: abs($level);
+    //@return mix($color-base, $color, $level * $theme-color-interval);
+    $shade: map-get($levelshades, max(-12, min(12, $level)));
+    @return theme-color($color-name, $shade);
+}
+
+// Mapping from bootstrap color level to weavy shade
+$levelshades: ( -12: 100, -11: 100, -10: 200, -9: 200, -8: 200, -7: 300, -6: 300, -5: 300, -4: 400, -3: 400, -2: 400, -1: 500, 0: 500, 1: 500, 2: 600, 3: 600, 4: 600, 5: 700, 6: 700, 7: 700, 8: 800, 9: 800, 10: 800, 11: 900, 12: 900 );
+
+/// Replace `$search` with `$replace` in `$string`
+/// @author Hugo Giraudel
+/// @param {String} $string - Initial string
+/// @param {String} $search - Substring to replace
+/// @param {String} $replace ('') - New value
+/// @return {String} - Updated string
+@function str-replace($string, $search, $replace: '') {
+    $index: str-index($string, $search);
+
+    @if $index {
+        @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+    }
+
+    @return $string;
+}

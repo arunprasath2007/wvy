@@ -1,0 +1,25 @@
+﻿@model Post
+@{ 
+    bool detailsView = ViewData["detailsView"] as bool? ?? false;
+}
+<div class="dropdown">
+    <button type="button" class="btn btn-icon dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="Toggle Dropdown">
+        @Html.SvgIcon("dots-vertical")
+    </button>
+    <div class="dropdown-menu dropdown-menu-right">
+        <a class="dropdown-item" href="@Model.Url()">@Html.SvgIcon("information") Details</a>
+        @if (Model.HasPermission(Permission.Follow)) {
+            if (Model.IsFollowed) {
+                <a class="dropdown-item" href="~/api/posts/@Model.Id/follow" data-method="delete" data-action="follow">@Html.SvgIcon("bell-off") Turn off notifications</a>
+            } else {
+                <a class="dropdown-item" href="~/api/posts/@Model.Id/follow" data-method="post" data-action="follow">@Html.SvgIcon("bell") Turn on notifications</a>
+            }
+        }
+        @if (Model.HasPermission(Permission.Edit)) {
+            <button class="dropdown-item" type="button" data-toggle="modal" data-target="#edit-post-modal" data-path="@(Url.Action<PostController>(c => c.Edit(Model.Id)))" title="Edit post">@Html.SvgIcon("pencil") Edit</button>            
+        }
+        @if (Model.HasPermission(Permission.Delete)) {            
+            <button type="button" class="dropdown-item" data-trash="post" data-id="@Model.Id">@Html.SvgIcon("delete") Trash</button>
+        }
+    </div>
+</div>

@@ -1,0 +1,12 @@
+﻿@model Entity
+<tr data-href="@Model.Url()">
+    <td class="table-icon">
+    @if ((Model.Type == EntityType.Space || Model.Type == EntityType.User) && Model.Value is IHasAvatar entity) {
+        @entity.AvatarImg(size:32)
+    } else {
+        @Html.SvgIcon(Model.IconName(), Model.IconColor())
+    }
+    </td>
+    <td><a href="@Model.Url()">@Model.Title</a></td>
+    <td class="table-icon">@Html.StarToggle(Model)</td>
+</tr>

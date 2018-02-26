@@ -1,0 +1,17 @@
+﻿@model Item
+
+<tr data-id="@Model.Id" data-item-guid="@Model.ItemGuid" data-allowed-parents="@Model.AllowedParentsString()" data-href="@Model.Url()">
+    <td class="table-icon">@Html.SvgIcon(Model.IconName(), color: Model.IconColor())</td>
+    <td>
+        <a href="@Model.Url()">@Model.Title</a>  
+        @if (Model.IsDraft || Model.LockedById == User.Id) {
+            <span class="badge badge-success">Draft</span>
+        } else if (Model.IsLocked) {
+            <span class="badge badge-info">Locked</span>
+        }
+    </td>
+    <td>@Html.Time(Model.ModifiedAt, format: "g")</td>
+    <td>@Model.Kind</td>
+    <td>--</td>
+    <td class="table-icon">@{ Html.RenderPartial("_ItemMenu", Model);}</td>
+</tr>

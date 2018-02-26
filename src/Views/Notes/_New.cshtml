@@ -1,0 +1,16 @@
+﻿@model StickyNote
+<form class="modal-content note-@Model.NoteType.GetDisplayName().ToLower()" action="@(Url.Action<NotesController>(x => x.Insert(Model.SpaceId ?? SpaceService.GlobalId, null)))" method="post">
+    <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title">Post sticky note</h5>
+        <button type="button" class="btn btn-icon" data-dismiss="modal">@Html.SvgIcon("close")</button>
+    </div>
+    <div class="modal-body">
+        @Html.EditorFor(x => x.Title, new { FormLabel = false })
+        
+        <textarea id="text" class="form-control" name="text" data-editor-location="note">@Model.Text</textarea>
+    </div>
+    <div class="modal-footer border-0">
+        @Html.EditorFor(x => x.NoteType)
+        <button type="submit" class="btn btn-primary">Post</button>
+    </div>
+</form>

@@ -1,0 +1,47 @@
+﻿@model Item
+@{
+    Title = "Content";
+}
+
+<nav class="navbar navbar-content">
+    @Model.Breadcrumb()
+    <div class="navbar-icons ml-auto">
+        @Html.StarToggle(Model)
+        @{ Html.RenderPartial("_ItemMenu", Model); }
+    </div>
+</nav>
+
+<div class="container-fluid my-3">
+    <article class="item" data-item-id="@Model.Id">
+        <section class="properties">
+            @Html.DisplayGroups()
+        </section>
+
+        <section class="item-comments">
+            <div class="list-group comments" data-container="comments">
+                @Html.Partial("_Comments", Model.Comments)
+            </div>
+            @Html.Partial("_CommentForm", Model, new ViewDataDictionary() { { "container", ".comments" } })
+        </section>
+
+        <footer>
+            @if (Model.IsDraft || Model.LockedById == User.Id) {
+                <span class="badge badge-warning">Draft</span>
+            } else if (Model.IsLocked) {
+                <span class="badge badge-info">Locked</span>
+            }
+            @Model.MetaData().CreateVerb.PastTense() by @Model.CreatedBy.Link() @Html.Time(Model.CreatedAt)
+            @if (Model is ITaggable && !Model.Tags.IsNullOrEmpty()) {
+                @Html.SvgIcon("tag-multiple") @Html.Raw(Model.Tags.Join(", ", x => @"<a href=""" + Model.App.Url() + "?q=" + Url.Encode("#" + x) + @""">#" + x + "</a>"))
+            }
+        </footer>
+    </article>
+
+</div>
+@section footer {
+    @{
+        Html.RenderPartial("_FeedbackModal");
+        Html.RenderPartial("_ShareModal");
+        Html.RenderPartial("_EditCommentModal");
+    }
+}

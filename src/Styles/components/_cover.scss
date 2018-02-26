@@ -1,0 +1,18 @@
+/// <reference path="../_core.scss" />
+.cover {
+    background-color: rgba($theme, 0.8);
+    word-wrap: break-word;
+
+    &, .btn-icon {
+        color: color-yiq($theme);
+    }
+
+    border-radius: 0;
+    position: relative;
+
+    > .dropdown, > .btn-icon {
+        position: absolute;
+        top: .5rem;
+        right: .5rem;
+    }
+}

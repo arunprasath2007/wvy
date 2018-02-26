@@ -1,0 +1,35 @@
+﻿@using Weavy.Web.Areas.Manage.Controllers
+@model Group
+
+<div class="dropdown">
+    <button type="button" class="btn btn-icon dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="Toggle Dropdown">
+        @Html.SvgIcon("dots-vertical")
+    </button>
+    <div class="dropdown-menu dropdown-menu-right">
+
+        @if (Model.HasPermission(Permission.Edit)) {
+            if (ControllerName == typeof(GroupController).ControllerName() && ActionName == nameof(GroupController.Edit)) {
+                // no need to include edit link on this page
+            } else {
+                <a class="dropdown-item" href="@(Url.Action<GroupController>(c => c.Edit(Model.Id)))">@Html.SvgIcon("pencil") Edit</a>
+            }
+        }
+
+        @if (Model.HasPermission(Permission.Delete)) {
+            if (Model.IsTrashed) {
+                <form action="@(Url.Action<GroupController>(c => c.Restore(Model.Id)))" method="post" data-turboform>
+                    <button class="dropdown-item" type="submit">@Html.SvgIcon("backup-restore") Restore</button>
+                </form>
+            } else {
+                <form action="@(Url.Action<GroupController>(c => c.Trash(Model.Id)))" method="post" data-turboform>
+                    @Html.AntiForgeryToken()
+                    @Html.HttpMethodOverride(HttpVerbs.Delete)
+                    <button class="dropdown-item" type="submit">@Html.SvgIcon("delete") Trash</button>
+                </form>
+            }
+        }
+
+
+    </div>
+</div>
+

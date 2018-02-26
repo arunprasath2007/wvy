@@ -1,0 +1,22 @@
+﻿@model IContent
+@{ 
+    var isSpace = (bool?)ViewBag.IsSpace ?? false;
+}
+<a class="list-group-item list-group-item-action" href="@Model.Url()">
+    <div class="media">
+        @Html.SvgIcon(Model.IconName(), Model.IconColor(), size: 48)
+        <div class="media-body">
+            <h6 class="media-title">@Model.Title</h6>
+            
+            @if (Model is Item item) {
+                if (isSpace) {
+                    <small class="text-muted">@(item.MetaData().ModifyVerb)d @Html.Time(item.ModifiedAt) by @item.ModifiedBy.Title</small>
+                } else {
+                    <small class="text-muted">@Html.Time(item.ModifiedAt) in @item.Space.Name by @item.ModifiedBy.Title </small>
+                }
+
+            }
+
+        </div>
+    </div>
+</a>

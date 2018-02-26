@@ -1,0 +1,79 @@
+﻿@model IList<string>
+@{
+    var prop = ViewData.ModelMetadata.ContainerType.GetProperty(ViewData.ModelMetadata.PropertyName);
+    var meta = ViewData.ModelMetadata;
+    var state = ViewData.ModelState[ViewData.ModelMetadata.PropertyName];
+    var feedback = state?.Errors?.FirstOrDefault()?.ErrorMessage;
+    bool group = ViewData["FormGroup"] as bool? ?? !meta.HideSurroundingHtml;
+    bool label = ViewData["FormLabel"] as bool? ?? !meta.HideSurroundingHtml;
+    bool text = (ViewData["FormText"] as bool? ?? true) && meta.Description != null;
+    var attrs = new Dictionary<string, object>();
+    attrs["id"] = ViewData.TemplateInfo.GetFullHtmlFieldId("");
+    attrs["name"] = ViewData.TemplateInfo.GetFullHtmlFieldName("");
+    attrs["class"] = "form-control";
+    attrs["data-role"] = "tagsinput";
+    attrs["multiple"] = null;
+
+    if (feedback != null) {
+        attrs.Append("class", "is-invalid");
+    }
+
+    if (prop.IsRequired()) {
+        attrs["required"] = null;
+    }
+
+    string attributes = "";
+    foreach (var attr in attrs) {
+        attributes += " ";
+        if (attr.Value == null) {
+            attributes += attr.Key;
+        } else {
+            attributes += string.Concat(attr.Key, "=", @"""" + Html.AttributeEncode(attr.Value) + @"""");
+        }
+    }
+}
+
+@*@{
+        var htmlAttributes = ViewData["htmlAttributes"] != null ? HtmlHelper.AnonymousObjectToHtmlAttributes(ViewData["htmlAttributes"]) : new RouteValueDictionary();
+
+        htmlAttributes.Add("class", "form-control");
+        htmlAttributes.Add("data-role", "tagsinput");
+        //htmlAttributes.Add("placeholder", ViewData.ModelMetadata.Watermark);
+
+    }
+    <div class="form-group@(Html.ValidationStateFor(m => m))">
+        @Html.LabelFor(m => m, new { @class = "form-control-label" })
+        <select class="form-control" id="@ViewData.TemplateInfo.GetFullHtmlFieldId("")" name="@ViewData.TemplateInfo.GetFullHtmlFieldName("")" data-role="tagsinput" multiple>
+            @foreach (var tag in Model) {
+                <option value="@tag">@tag</option>
+            }
+        </select>
+        @Html.FormControlFeedbackFor(m => m)
+        @Html.FormTextFor(m => m)
+    </div>*@
+
+@if (group) {
+    WriteLiteral(@"<div class=""form-group"">");
+}
+@if (label) {
+    @Html.LabelFor(m => m)
+}
+
+<select @Html.Raw(attributes.Trim())>
+    @if (Model != null) {
+        foreach (var tag in Model) {
+            <option value="@tag">@tag</option>
+        }
+    }
+</select>
+
+@if (feedback != null) {
+    <div class="invalid-feedback">@feedback</div>
+} else if (text) {
+    <div class="form-text">@meta.Description</div>
+}
+@if (group) {
+    WriteLiteral(@"</div>");
+}
+
+

@@ -1,0 +1,16 @@
+.modal-content {
+    .spinner {
+        display:block;
+        margin: 1rem auto;
+    }
+}
+
+.modal-header {
+    .btn-icon{
+        margin-right: -.5rem;
+    }
+}
+
+.modal-title {
+    @include text-truncate();
+}

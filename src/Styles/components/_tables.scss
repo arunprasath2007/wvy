@@ -1,0 +1,83 @@
+/// <reference path="../_core.scss" />
+
+.table {
+
+    th.table-icon, td.table-icon {
+        // cell with .img-32 or .btn-icon
+        line-height: 0;
+        padding: .5rem;
+        width: 40px;
+        color: $icon-color;
+
+        &:first-child {
+            padding-right: 0;
+        }
+
+        &:last-child {
+            padding-left: 0;
+        }
+
+        > .i {
+            margin: .25rem;
+            vertical-align: middle;
+        }
+    }
+
+    thead th {
+        border-top-color: transparent;
+        border-bottom-width: $table-border-width;
+        font-size: $font-size-xs;
+        text-transform: uppercase;
+    }
+}
+
+.table-sm {
+    th.table-icon, td.table-icon {
+        // cell with .img-32 or .btn-icon
+        padding: 0;
+        width: 34px;
+
+        > .i {
+            margin: .3125rem;
+        }
+    }
+}
+
+.table-fixed {
+    table-layout: fixed;
+}
+
+.table-archived, .table-disabled, .table-suspended {
+    > th, > td:not(.table-icon) {
+        color: $text-muted;
+
+        a {
+            color: $text-muted;
+        }
+
+        img, .i {
+            opacity: .5;
+        }
+    }
+}
+
+.table-trashed {
+    @extend .table-suspended;
+
+    &, > th, > td {
+        text-decoration: line-through;
+
+        a {
+            text-decoration: line-through;
+        }
+    }
+}
+
+
+tr[data-href] {
+    cursor: pointer;
+}
+
+.table-hover tbody tr:hover {
+    transition: background-color linear 400ms;
+}

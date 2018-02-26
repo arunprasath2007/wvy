@@ -1,0 +1,30 @@
+﻿@model IEnumerable<RouteModel>
+@{
+    Title = "Routes";
+}
+
+
+<div class="container-fluid my-3">
+    <table class="table table-hover table-fixed">
+        <thead>
+            <tr>
+                <th style="width:100px;">Methods</th>
+                <th>Url</th>
+                <th style="width:200px;">Controller</th>
+                <th style="width:200px;">Action</th>
+                <th style="width:100px;">Area</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var route in Model) {
+                <tr>
+                    <td>@route.Methods</td>
+                    <td>@route.Url</td>
+                    <td>@route.Controller</td>
+                    <td>@route.Action</td>
+                    <td>@route.Area</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

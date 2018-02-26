@@ -1,0 +1,376 @@
+// Custom variables and colors
+@import 'theme';
+
+// Bootstrap functions, variables and mixins
+@import "vendor/bootstrap/functions";
+@import "functions"; // override some of the default bootstrap functions
+@import "vendor/bootstrap/variables";
+@import "vendor/bootstrap/mixins";
+
+// Additional mixins
+@import 'mixins/animation';
+@import 'mixins/dot';
+
+// Widget variables
+$widget-rem: 16px;
+$widget-strip-width: 375px;
+$widget-shadow: 0 (.125*$widget-rem) (.125*$widget-rem) 0 rgba($black, $md-shadow-penumbra-opacity), 0 (.1875*$widget-rem) (.0625*$widget-rem) (-.125*$widget-rem) rgba($black, $md-shadow-umbra-opacity), 0 (.0625*$widget-rem) (.3125*$widget-rem) 0 rgba($black, $md-shadow-ambient-opacity);
+$widget-zindex: 2147483647; // max possible z-index
+$widget-border-radius: $widget-rem * .125;
+
+// Widget styles (wrap all styles in .weavy-widget)
+.weavy-widget {
+
+    &.weavy-default {
+        z-index: $widget-zindex;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        overflow: hidden;
+        pointer-events: none;
+        transform: translateX($widget-rem);
+        transition: transform $md-animation-duration $md-animation-curve-default;
+
+        .weavy-avatar {
+            width: $widget-rem * 2;
+            height: $widget-rem * 2;
+            border-radius: 50%;
+            user-select: none;
+        }
+
+        .weavy-button {
+            display: inline-flex;
+            align-items: center;
+            flex-direction: column;
+            box-shadow: $widget-shadow;
+            border-radius: $widget-rem * 1.5;
+            background-color: $white;
+            cursor: pointer;
+            width: $widget-rem * 3;
+            min-height: $widget-rem * 3;
+            margin: $widget-rem / 2;
+            pointer-events: all;
+            justify-content: center;
+            transition: transform $md-animation-duration $md-animation-curve-default, border-radius $md-animation-duration $md-animation-curve-default;
+
+            &.weavy-open {
+                transform: translateX((-$widget-rem / 2));
+                border-radius: 0 ($widget-rem * 1.5) ($widget-rem * 1.5) 0;
+                align-self: flex-end;
+            }
+        }
+
+        .weavy-buttons {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: $widget-rem * 4;
+            pointer-events: none;
+        }
+
+        .weavy-conversations {
+            margin: (-$widget-rem / 2) 0 ($widget-rem / 2) 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            &:empty {
+                display: none;
+            }
+
+            .weavy-avatar {
+                display: block;
+                width: $widget-rem * 1.5;
+                height: $widget-rem * 1.5;
+                margin: $widget-rem / 4;
+            }
+        }
+
+        .weavy-dot {
+            position: relative;
+
+            &::after {
+                content: '';
+                position: absolute;
+                top: $widget-rem / 2;
+                right: $widget-rem / 2;
+                width: $widget-rem / 2;
+                height: $widget-rem / 2;
+                background-color: $deep-orange;
+                border-radius: 50%;
+            }
+
+            &.weavy-pulse::after {
+                animation: weavy-pulse ($md-animation-duration * 2) $md-animation-curve-default;
+            }
+        }
+
+        .weavy-draggable {
+            pointer-events: none;
+            position: absolute;
+            top: $widget-rem * 2.5;
+            user-select: none;
+        }
+
+        .weavy-icon {
+            color: $icon-color;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: $widget-rem / 4;
+
+            svg {
+                fill: currentColor;
+                width: $widget-rem * 1.5;
+                height: $widget-rem * 1.5;
+            }
+        }
+
+        .weavy-messenger {
+            .weavy-icon {
+                margin: $widget-rem / 2;
+
+                &:first-child {
+                    color: $theme;
+                }
+
+                &:last-child {
+                    margin: (-$widget-rem / 4) 0 (-$widget-rem / 2) 0;
+                }
+            }
+        }
+
+        .weavy-notifications {
+            z-index: $widget-zindex;
+            opacity: 1;
+            position: absolute;
+            bottom: $widget-rem;
+            right: $widget-rem * 4;
+        }
+
+        .weavy-notification-frame {
+            pointer-events: all;
+            width: 320px;
+            height: 0;
+            border: 0;
+            box-shadow: $widget-shadow;
+        }
+
+        .weavy-strips {
+            position: absolute;
+            top: 0;
+            right: $widget-rem * 4;
+            bottom: 0;
+            width: 0;
+            pointer-events: none;
+        }
+
+        .weavy-strip {
+            position: absolute;
+            top: $widget-rem;
+            right: 0;
+            bottom: $widget-rem;
+            left: 0;
+            opacity: 0;
+            z-index: $widget-zindex;
+            box-shadow: $widget-shadow;
+            pointer-events: none;
+            transform: translateX($widget-rem);
+
+            .weavy-controls {
+                position: absolute;
+                top: $widget-rem * 4.5;
+                left: -$widget-rem * 2;
+                width: $widget-rem * 2;
+                background: $white;
+                border-radius: $widget-border-radius 0 0 $widget-border-radius;
+                box-shadow: $widget-shadow;
+                display: none;
+
+                .weavy-collapse {
+                    display: none;
+                }
+            }
+
+            &.weavy-open {
+                pointer-events: all;
+                opacity: 1;
+                transform: translateX(0);
+                transition: opacity $md-animation-duration $md-animation-curve-default, transform $md-animation-duration $md-animation-curve-default;
+
+                &.weavy-loading::after {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    // spinner.svg encoded with https://codepen.io/jakob-e/pen/doMoML
+                    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' width='24' height='24' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3Cstyle type='text/css'%3Esvg%7Banimation:rotate 2s linear infinite;transform-origin:center center%7Dcircle%7Bstroke-dasharray:1,100;stroke-dashoffset:0;animation:dash 1.5s ease-in-out infinite,color 6s ease-in-out infinite%7D@keyframes rotate%7B100%25%7Btransform:rotate(360deg)%7D%7D@keyframes dash%7B0%25%7Bstroke-dasharray:1,100;stroke-dashoffset:0%7D50%25%7Bstroke-dasharray:44.5,100;stroke-dashoffset:-17.5px%7D100%25%7Bstroke-dasharray:44.5,100;stroke-dashoffset:-62px%7D%7D@keyframes color%7B0%25,100%25%7Bstroke:%234A69CF%7D40%25%7Bstroke:%23C96C4F%7D66%25%7Bstroke:%23D2D246%7D80%25,90%25%7Bstroke:%235DBB78%7D%7D%3C/style%3E%3Ccircle fill='none' cx='12' cy='12' r='10' stroke-linecap='round' stroke-miterlimit='5' stroke-width='2' /%3E%3C/svg%3E");
+                    background-repeat: no-repeat;
+                    background-position: 50%;
+                    background-size: $widget-rem * 3;
+                }
+
+                .weavy-controls {
+                    display: flex;
+                    flex-direction: column;
+                }
+            }
+        }
+
+        .weavy-strip-frame {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            border: 0;
+            border-radius: $widget-border-radius;
+            background: $white;
+        }
+
+        &.weavy-open {
+            transform: translateX(0);
+
+            .weavy-strips {
+                width: $widget-strip-width;
+            }
+        }
+
+        &.weavy-bottom {
+            .weavy-draggable {
+                top: auto;
+                bottom: 0;
+            }
+        }
+
+        &.weavy-wide {
+
+            &.weavy-open {
+                background-color: $backdrop-bg;
+            }
+
+
+            .weavy-strips {
+                width: auto;
+                left: $widget-rem * 2.5;
+            }
+
+            .weavy-controls {
+
+                .weavy-collapse {
+                    display: inline-flex;
+                }
+
+                .weavy-expand {
+                    display: none;
+                }
+            }
+        }
+
+        &.weavy-left {
+            transform: translateX(-$widget-rem);
+
+            .weavy-buttons {
+                right: auto;
+                left: 0;
+            }
+
+            .weavy-strips {
+                right: auto;
+                left: $widget-rem*4;
+            }
+
+            .weavy-controls {
+                left: auto;
+                right: -$widget-rem * 2;
+            }
+
+            .weavy-button {
+                &.weavy-open {
+                    transform: translateX($widget-rem / 2);
+                    border-radius: ($widget-rem * 1.5) 0 0 ($widget-rem * 1.5);
+                }
+            }
+
+            .weavy-notifications {
+                right: $widget-rem;
+            }
+
+            .weavy-strip {
+                transform: translateX(-$widget-rem);
+
+                &.weavy-open {
+                    transform: translateX(0);
+                }
+
+                .weavy-controls {
+                    left: auto;
+                    right: -$widget-rem * 2;
+                    border-radius: 0 $widget-border-radius $widget-border-radius 0;
+                }
+            }
+
+            &.weavy-wide {
+
+                .weavy-strips {
+                    right: $widget-rem*2.5;
+                }
+            }
+        }
+
+        &.weavy-drag {
+            pointer-events: all;
+            transform: translateX(0);
+
+            &.weavy-open {
+                &.weavy-wide {
+                    background-color: transparent;
+                }
+
+                .weavy-strip {
+                    &.weavy-open {
+                        pointer-events: none;
+                        opacity: 0;
+                    }
+                }
+            }
+
+            .weavy-draggable {
+                opacity: 0;
+                transform: scale(0);
+                transition: opacity $md-animation-duration $md-animation-curve-default, transform $md-animation-duration $md-animation-curve-default;
+            }
+        }
+    }
+    //&.weavy-custom {
+    //   z-index: $widget-zindex;
+    //    height: 100%;
+    //
+    //    .weavy-strip {
+    //        z-index: $widget-zindex;
+    //        height: 100%
+    //    }
+    //    .weavy-strip-frame {
+    //        height: 100%;
+    //        width: 100%;
+    //        border: 0;
+    //    }
+    //}
+    @media print {
+        display: none;
+    }
+}
+
+@keyframes weavy-pulse {
+    50% {
+        transform: scale(3);
+    }
+}

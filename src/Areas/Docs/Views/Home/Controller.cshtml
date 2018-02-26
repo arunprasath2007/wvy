@@ -1,0 +1,29 @@
+@model ControllerDoc
+
+@using Weavy.Web.Areas.Docs.Controllers
+@using Weavy.Web.Areas.Docs.Models
+@using Weavy.Web.Extensions
+
+@{
+    Title = Model.ControllerName;
+}
+
+@section navbar {
+    <div class="navbar-icons"><a href="@(Url.Action<HomeController>(c => c.Index()))" class="btn btn-icon">@Html.SvgIcon("arrow-left")</a></div>
+    <div class="navbar-title">@Title</div>
+}
+
+<div class="container-fluid">
+    <header>
+        <h1 class="display-1">@Title</h1>
+        <p>@Html.Raw(Model.Summary)</p>
+    </header>
+
+    <article>
+        <header>
+            <h2 class="display-2">Methods</h2>
+            <p>The API exposes the following methods.</p>
+        </header>
+        @Html.DisplayFor(m => m)
+    </article>
+</div>

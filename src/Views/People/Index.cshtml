@@ -1,0 +1,54 @@
+﻿@model SearchResult<User, UserQuery>
+@{
+    Title = "People";
+}
+
+
+@section navbar_secondary {
+    <nav class="nav nav-tabs">
+        @if (ViewContext.RouteData.Values["tab"] == null) {
+            @(Html.ActionLink<PeopleController>(c => c.Index(null, "all", null), text: "All", htmlAttributes: new { @class = "nav-link active" }))
+        } else {
+            @(Html.ActionLink<PeopleController>(c => c.Index(null, "all", null), text: "All", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Path))
+        }
+        @(Html.ActionLink<PeopleController>(c => c.Index(null, "following", null), text: "Following", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Path))
+    </nav>
+    
+    @if (User.SystemPermissions.Contains(Permission.ManageUsers)) {
+        <div class="fab dropdown">
+            <button class="btn btn-round btn-primary dropdown-toggle waves-effect" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#" title="Add or invite user">@Html.SvgIcon("plus")</button>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="@(Url.Action<PeopleController>(c => c.New()))">@Html.SvgIcon("account") Add user</a>
+                <a class="dropdown-item" href="@(Url.Action<PeopleController>(c => c.Invite()))">@Html.SvgIcon("email") Invite people</a>
+            </div>
+        </div>
+
+    } else if (User.SystemPermissions.Contains(Permission.Invite)) {
+        <div class="fab">
+            <a class="btn btn-round btn-primary waves-effect" href="@(Url.Action<PeopleController>(c => c.Invite()))" title="Invite people">@Html.SvgIcon("plus")</a>
+        </div>
+    }
+}
+
+<div class="container-fluid mt-3">
+    @(Html.SearchForm<PeopleController>(c => c.Index(null, ViewContext.RouteData.Values["tab"] as string, null), Model.Query))
+
+    @if (Model.HasItems()) {
+        <table class="table table-hover table-people">
+            <thead>
+                <tr>
+                    <th class="table-icon"></th>
+                    <th><a href="@Url.OrderBy("name")">Name</a></th>
+                    <th class="table-icon"></th>
+                </tr>
+            </thead>
+            <tbody id="infinite-scroll-target">
+                @{ Html.RenderPartial("_PeopleTable", Model); }
+            </tbody>
+        </table>
+        @Html.ScrollMore(Model)
+
+    } else if (!Model.Query.Text.IsNullOrWhiteSpace()) {
+        <p class="mt-3">@Html.SearchResultText(Model)</p>
+    }
+</div>

@@ -1,0 +1,89 @@
+/// <reference path="../_core.scss" />
+
+.card-notification {
+    border: 0;
+    background-color: initial;
+
+    .card-header {
+        border: 0;
+        padding: $spacer;
+        background-color: initial;
+
+        .close {
+            margin-top: -$spacer/2;
+            position: absolute;
+            right: $spacer/2;
+        }
+
+        .media-body {
+            margin-right: $spacer*2;
+
+            a {
+                color: $body-color;
+            }
+
+            .actor, .subject, .context {
+                font-weight: 500;
+            }
+        }
+    }
+
+    .card-comments {
+        display: block;
+        padding: $spacer;
+        background: $card-cap-bg;
+        
+        form {
+            padding: 0;
+        }
+
+        .uploads {
+            padding: 0;
+        }
+    }
+
+    .list-group-item {
+        display: flex;
+        align-items: center;
+        border-left-width: 0;
+        border-right-width: 0;
+        background-color: #fff;
+
+        &:hover, &:focus {
+            background-color: $white;
+        }
+
+        svg {
+            margin-right: $spacer;
+        }
+    }
+
+    .weavy-editor {
+        box-shadow: none;
+
+        .emojionearea-editor {
+            min-height: 2em;
+            max-height: 8em;
+        }
+
+        .uploads {
+            .media-list {
+                margin-bottom: 0;
+            }
+        }
+    }
+}
+
+.controller-notification.action-preview {
+    padding-top: 0;
+    background-color: #fff;
+    overflow-y: hidden;
+
+    .container-fluid {
+        padding: 0;
+    }
+}
+
+.overflow-y-hide {
+    overflow-y: hidden;
+}

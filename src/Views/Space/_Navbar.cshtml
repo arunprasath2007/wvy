@@ -1,0 +1,13 @@
+﻿@model Space
+
+@if (Model.HasPermission(Permission.Edit)) {
+    <nav class="nav nav-tabs">
+        @(Html.ActionLink<SpaceController>(c => c.Edit(Model.Id), text: "Details", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Path))
+        @(Html.ActionLink<SpaceController>(c => c.Settings(Model.Id), text: "Settings", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Path))
+        @(Html.ActionLink<SpaceController>(c => c.Strip(Model.Id), text: "Strip", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Path))
+    </nav>
+}
+
+@if (ActionName == nameof(SpaceController.Members) && Model.HasPermission(Permission.AddMembers)) {
+    <button type="button" class="btn btn-round btn-success waves-effect" data-toggle="modal" data-target="#add-dialog" data-keyboard="true" title="Add members">@Html.SvgIcon("account-plus")</button>
+}

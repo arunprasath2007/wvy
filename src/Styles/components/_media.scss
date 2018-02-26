@@ -1,0 +1,18 @@
+/// <reference path="../_core.scss" />
+
+.media {
+    > img, > .i {
+        margin-left: 0 !important;
+        margin-right: $list-group-item-padding-x !important;
+    }
+}
+
+.media-body {
+    word-break: break-word;
+    line-height: 1.25;
+}
+
+
+.media-title {
+    font-weight: normal;
+}

@@ -1,0 +1,83 @@
+﻿@model Weavy.Core.Models.File
+@{
+    Title = Model.Name;
+    var size = 128;
+
+    var attrs = new Dictionary<string, object>();
+    attrs["id"] = Model.Id;
+    attrs["type"] = "file";
+    attrs["class"] = "custom-file-input";
+    //if (feedback != null) {
+    //    attrs.Append("class", "is-invalid");
+    //}
+    //if (prop.Extensions() != null) {
+    //    attrs["accept"] = string.Join(", ", prop.Extensions().Split('|').Select(x => "." + x));
+    //}
+
+    attrs["data-drop-zone"] = "#dz-" + Model.Id;
+
+    //if (prop.MaxSize() != null) {
+    //    attrs["data-max-size"] = prop.MaxSize();
+    //}
+
+    attrs["data-single-file-uploads"] = false;
+    attrs["data-url"] = WeavyRequestContext.Current.ApplicationPath + "api/files";
+
+    //if (prop.IsRequired()) {
+    //    attrs["required"] = null;
+    //}
+
+    string attributes = "";
+    foreach (var attr in attrs) {
+        attributes += " ";
+        if (attr.Value == null) {
+            attributes += attr.Key;
+        } else {
+            attributes += string.Concat(attr.Key, "=", @"""" + Html.AttributeEncode(attr.Value) + @"""");
+        }
+    }
+}
+
+
+@section navbar_secondary {
+    <nav class="nav nav-tabs">
+        <a class="nav-link active" href="#">Properties</a>
+    </nav>
+}
+
+
+<div class="container-fluid mt-3">
+
+    @using (Html.BeginForm(nameof(FileController.Update), null, FormMethod.Post, new { id="form-edit", enctype = "multipart/form-data" })) {
+        @Html.HttpMethodOverride(HttpVerbs.Put)
+
+        @Html.EditorFor(x => x.Name)
+        @Html.EditorFor(x => x.Description)
+        
+
+        <div class="form-group">
+            <label class="control-label">Replace file</label>
+            <div class="file-upload" id="dz-@Model.Id">
+                <input type="hidden" name="replacement" value="" />
+                <label class="custom-file custom-image">
+                    <img class="img-@size" src="@(Model.ThumbUrl(size, size, retina: true, fit: FitMode.Crop, scale: ScaleMode.Both))" data-thumb="" alt="" width="@size" height="@size" />
+                    <span class="custom-file-label">Select file</span>
+                    <input @Html.Raw(attributes.Trim()) />
+                    <span class="progress invisible"><span class="progress-bar" role="progressbar"></span></span>
+                </label>
+
+                <div class="form-text">Click on the thumbnail if you want replace the file.</div>
+            </div>
+              
+        </div>
+
+        <div class="form-buttons">
+            <button type="submit" class="btn btn-outline-primary">Save</button>
+            <a href="@Model.Url()" class="btn btn-link">Cancel</a>
+        </div>
+
+
+    }
+
+</div>
+

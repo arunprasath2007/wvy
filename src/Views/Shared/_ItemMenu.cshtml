@@ -1,0 +1,19 @@
+﻿@model Item
+
+<div class="dropdown">
+    <button type="button" class="btn btn-icon dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="Toggle Dropdown">
+        @Html.SvgIcon("dots-vertical")
+    </button>
+    <div class="dropdown-menu dropdown-menu-right">
+        <button type="button" class="dropdown-item"  data-toggle="modal" data-target="#share-modal" data-share-type="@Model.Type" data-share-id="@Model.Id" data-share-title="Share @Model.MetaData().Name.ToLower()">@Html.SvgIcon("share-variant") Share</button>
+
+        @if (Model.HasPermission(Permission.Edit)) {
+            <a class="dropdown-item" href="@Model.Url()/edit">@Html.SvgIcon("pencil") Edit</a>
+        }
+        @if (Model.HasPermission(Permission.Delete)) {
+            <form action="@(Url.Action(nameof(ItemController.Trash), typeof(ItemController).ControllerName(), new { id = Model.Id }))" method="post" data-turboform>
+                <button type="submit" class="dropdown-item">@Html.SvgIcon("delete") Trash</button>
+            </form>
+        }
+    </div>
+</div>

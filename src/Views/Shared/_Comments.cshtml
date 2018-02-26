@@ -1,0 +1,34 @@
+﻿@model IEnumerable<Comment>
+
+@foreach (var comment in Model) {
+    var images = comment.Attachments.Where(x => FileHelper.IsWebImage(x.Name));
+    var files = comment.Attachments.Where(x => !FileHelper.IsWebImage(x.Name));
+
+    <div id="comment-@comment.Id" class="list-group-item comment" data-comment-id="@comment.Id" data-parent-id="@comment.AttachedTo.Id" data-parent-entity="@comment.AttachedTo.Type.ToString().ToLower()">
+        <div class="media">
+            @comment.CreatedBy.AvatarLink(32, htmlAttributes: new { @class = "mr-2" })
+            <div class="media-body">
+                <p class="mb-1">@comment.CreatedBy.Link() @Html.Raw(comment.Html)</p>
+
+                @if (images.Any()) {
+                    Html.RenderPartial("_ImageGrid", images);
+                }
+
+                @if (files.Any()) {
+                    Html.RenderPartial("_FileList", files);
+                }
+
+                <div class="text-muted">
+                    @Html.Time(comment.CreatedAt)
+                    @if (comment.ModifiedAt != comment.CreatedAt) {<text>&middot;</text> @Html.Time(comment.ModifiedAt, @"e\di\te\d")}
+                    <span class="comment-feedback">
+                        @{ Html.RenderPartial("_CommentFeedback", comment); }
+                    </span>
+                </div>
+
+            </div>
+            @{ Html.RenderPartial("_CommentMenu", comment); }
+        </div>
+
+    </div>
+}

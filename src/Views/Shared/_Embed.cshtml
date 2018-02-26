@@ -1,0 +1,79 @@
+﻿@model Embed
+@{
+    var image = Model.Image;
+    string provider = Model.ProviderName;
+
+    var entity = Model.Entity;
+    if (entity != null) {
+        provider = WeavyContext.Current.Theme.GetName();
+        if (entity is IHasAvatar && image == null) {
+            image = ((IHasAvatar)entity).Avatar?.Value;
+        }
+    }
+
+    var file = entity as Weavy.Core.Models.File;
+    if (image == null && file != null && FileHelper.IsWebImage(file.Name)) {
+        image = file;
+    }
+
+    var evt = entity as Weavy.Core.Models.Event;
+
+    var ratio = image.Ratio();
+
+    bool editMode = ViewBag.EditMode ?? false;
+
+    // do not display caption over html embeds or wide images
+    bool caption = Model.Html == null && (ratio <= 21 / 9d);
+}
+
+<div class="embed embed-@Model.EmbedType.ToString().ToLower()">
+    @if (editMode && PermissionService.HasPermission(Model, Permission.Delete)) {
+        <button type="button" class="btn btn-icon close-embed" data-url="@Model.OriginalUrl">@Html.SvgIcon("close")</button>
+    }
+
+    @if (Model.EmbedType == EmbedType.Photo && Model.ProviderName.Equals("Giphy", StringComparison.OrdinalIgnoreCase)) {
+        caption = false;
+        <a href="@Model.OriginalUrl" target="_blank">
+            <img class="giphy@(Model?.Width < 250 ? " giphy-sm" : "")" src="@Model.Url" width="@Model.Width" height="@Model.Height" alt="" />
+        </a>
+    } else if (Model.EmbedType == EmbedType.Video) {
+        <div class="embed-responsive embed-responsive-16by9">
+            @Html.Raw(Model.Html)
+        </div>
+    } else if (image != null) {
+        <a class="embed-image" href="@Model.OriginalUrl" @(entity != null ? "" : @"target=""_blank""") style="padding-bottom: @((100 / ratio).ToString("0.00000",System.Globalization.CultureInfo.InvariantCulture))%">
+            <img src="@image.ThumbUrl(512, 512)" alt="">
+            @if (provider != null) {
+                <div class="embed-provider">@provider</div>
+            }
+        </a>
+    }
+
+    @if (caption) {
+        <a class="embed-caption" href="@Model.OriginalUrl" @(entity != null ? "" : @"target=""_blank""")>
+            <h6 class="embed-title"> @Model.Title</h6>
+            <p class="embed-description">
+                @if (file != null) {
+                    @FileHelper.FileSizeAsString(file.Size)
+                    if (image != null) {
+                        <text>/ @(image.Width)x@(image.Height)</text>
+                    }
+                } else if (evt != null) {
+                    @evt.StartsAt.Value.ToLocal().ToString("g")
+                } else if (entity?.Description != null) {
+                    @entity.Description.Ellipsis(150)
+                } else {
+                    @Model.Description.Ellipsis(150)
+                }
+            </p>
+            @if (entity == null) {
+                <p class="embed-domain">@Model.Domain()</p>
+            }
+        </a>
+    }
+
+    @if (editMode) {
+        <input type="hidden" name="embedid" value="@Model.Id" />
+    }
+</div>
+

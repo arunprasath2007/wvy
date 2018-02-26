@@ -1,0 +1,23 @@
+﻿@model Space
+@{
+    Title = "Add space";
+}
+
+@section navbar_secondary {
+    <nav class="nav nav-tabs">
+        <a class="nav-link active" href="javascript:;"><span>Details</span></a>
+        <a class="nav-link disabled" href="javascript:;"><span>Settings</span></a>
+        <a class="nav-link disabled" href="javascript:;"><span>Strip</span></a>
+    </nav>
+}
+
+<div class="container-fluid mt-3">
+    @using (Html.BeginForm(nameof(SpaceController.Insert), typeof(SpaceController).ControllerName(), FormMethod.Post, new { autocomplete = "off", data_turboform = "", novalidate = "" })) {
+        @Html.AntiForgeryToken()
+        @Html.EditorsForModel()
+        <div class="form-buttons">
+            <button type="submit" class="btn btn-primary btn-load waves-effect">Save</button>
+            <a href="@Url.Action(nameof(SpaceController.Index))" class="btn btn-outline-secondary waves-effect">Cancel</a>
+        </div>
+    }
+</div>

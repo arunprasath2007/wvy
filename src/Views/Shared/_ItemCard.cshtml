@@ -1,0 +1,30 @@
+﻿@model Item
+
+<p>
+    <a href="@Model.Url()">@Model.Title (item card)</a>
+</p>
+
+@*<article class="card-item item-thumbnail content-card @Model.CssClass()" data-id="@Model.Id" data-item-guid="@Model.ItemGuid" data-allowed-parents="@Model.AllowedParentsString()">
+        <div class="card-body">
+            <div class="card-header actions">
+                @Html.StarLink(Model, false)
+                <div class="dropdown">@{ Html.RenderPartial("_ItemMenu", Model);}</div>
+            </div>
+            <a href="@Model.Url()" class="nocontext">
+                <div class="card-thumbnail">
+                    <div class="thumbnail-image">
+                        <img class="img-responsive img-padded" src="@Model.ThumbUrl(298, 0, align: System.Drawing.ContentAlignment.TopCenter)" />
+                    </div>
+                    @if (Model.IsDraft || Model.LockedById == User.Id) {
+                        <div class="corner-ribbon ribbon-warning ribbon-shadow">Draft</div>
+                    } else if (Model.IsLocked) {
+                        <div class="corner-ribbon ribbon-info ribbon-shadow">Locked</div>
+                    }
+                </div>
+                <div class="caption">
+                    <h4 class="content-title" title="@Model.Title"><i class="handle fa-color @Model.MetaData().Icon"></i> @Model.Title</h4>
+                    <p class="meta">@Html.Time(Model.ModifiedAt) by @Model.CreatedBy.Title</p>
+                </div>
+            </a>
+        </div>
+    </article>*@

@@ -1,0 +1,26 @@
+﻿@model Space
+@{
+    Title = "Edit";
+}
+
+@section navbar_left {
+    <div class="navbar-icons">
+        <a class="btn btn-icon" href="@Model.Url()">@Html.SvgIcon("arrow-left")</a>
+    </div>
+}
+
+@section navbar_secondary {
+    @Html.Partial("_Navbar", Model)
+}
+
+<div class="container-fluid mt-3">
+    @using (Html.BeginForm(nameof(SpaceController.Update), typeof(SpaceController).ControllerName(), new { id = Model.Id }, FormMethod.Post, new { autocomplete = "off", data_turboform = "", novalidate = "" })) {
+        @Html.HttpMethodOverride(HttpVerbs.Put)
+        @Html.EditorsForModel()
+
+        <div class="form-buttons">
+            <button type="submit" name="button" value="@(nameof(SpaceController.Update))" class="btn btn-primary btn-load waves-effect">Save</button>
+            <a href="@(Url.Action<SpaceController>(c=>c.Get(Model.Id)))" class="btn btn-outline-secondary mr-auto waves-effect">Cancel</a>
+        </div>
+    }
+</div>

@@ -1,0 +1,25 @@
+﻿@model Group
+@{
+    Title = "Groups";
+}
+
+@section navbar_left {
+    <a href="@(Url.Action<GroupController>(c => c.Index(null)))" class="btn btn-icon">@Html.SvgIcon("arrow-left")</a>
+}
+
+@section navbar_secondary {
+    <nav class="nav nav-tabs">
+        <a class="nav-link active" href="#"><span>Properties</span></a>
+        <a class="nav-link disabled" href="#"><span>Members</span></a>
+    </nav>
+}
+
+<div class="container-fluid mt-3">
+@using (Html.BeginForm(nameof(GroupController.Insert), null, FormMethod.Post, new { autocomplete = "off", data_turboform = "", novalidate = "" })) {
+    @Html.EditorsForModel()
+    <div class="form-buttons">
+        <button type="submit" class="btn btn-primary btn-load waves-effect">Save</button>
+        <a href="@(Url.Action<GroupController>(c => c.Index(null)))" class="btn btn-outline-secondary waves-effect" data-shortcut="Esc">Cancel</a>
+    </div>
+}
+</div>

@@ -1,0 +1,38 @@
+﻿@model UserSettings
+@{
+    Title = "People";
+}
+
+@section navbar_left {
+    <div class="navbar-icons">
+        <a class="btn btn-icon" href="@User.Url()">@Html.SvgIcon("arrow-left")</a>
+    </div>
+}
+
+@section navbar_secondary {
+    @Html.Partial("_Navbar", User)
+}
+
+<div class="container-fluid mt-3">
+    @using (Html.BeginForm(nameof(AccountController.UpdateSettings), typeof(AccountController).ControllerName(), FormMethod.Post, new { id = "update-settings-form", autocomplete = "off", data_turboform = "", novalidate = "" })) {
+        @Html.HttpMethodOverride(HttpVerbs.Put)
+        @Html.AntiForgeryToken()
+        
+        <h5 class="mb-3">Date and time</h5>
+        @Html.EditorsForModel(Model, group: "settings")
+        <h5 class="mb-3">Notification settings</h5>
+        @Html.EditorsForModel(Model, group: "notifications")
+        <h5 class="mb-3">Notification delivery</h5>
+        <div class="notification-alerts">
+            <div class="alert alert-warning notification-required">We <a href="#" class="alert-link notification-required">need your permission</a> to enable desktop notifications in this browser.</div>
+            <div class="alert alert-danger notification-denied">Desktop notifications have been disabled in this browser.</div>
+            <div class="alert alert-info notification-missing">This browser does not support desktop notifications.</div>
+        </div>
+        @Html.EditorFor(model => model.DesktopNotifications)
+        @Html.EditorsForModel(Model, group: "channel", exclude: new[] { "DesktopNotifications" })
+        <div class="form-buttons">
+            <button type="submit" class="btn btn-primary btn-load waves-effect" title="Save">Save</button>
+            <a href="@User.Url()" class="btn btn-outline-secondary mr-auto waves-effect">Cancel</a>
+        </div>
+    }
+</div>

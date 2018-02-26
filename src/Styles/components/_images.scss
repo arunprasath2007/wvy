@@ -1,0 +1,56 @@
+// image sizes for avatars etc.
+@mixin img-size($size) {
+    width: $size;
+    height: $size;
+}
+
+@mixin img-padded {
+    position: absolute;
+    width: 100%;
+}
+
+.avatar {
+    @extend .rounded-circle;
+}
+
+.img-16 {
+    @include img-size(16px);
+}
+
+.img-24 {
+    @include img-size(24px);
+}
+
+.img-32 {
+    @include img-size(32px);
+}
+
+.img-48 {
+    @include img-size(48px);
+}
+
+.img-64 {
+    @include img-size(64px);
+}
+
+.img-96 {
+    @include img-size(96px);
+}
+
+.img-128 {
+    @include img-size(128px);
+}
+
+.img-256 {
+    @include img-size(256px);
+}
+
+.img-512 {
+    @include img-size(512);
+}
+
+.img-padded {
+    @include img-padded;
+}
+
+

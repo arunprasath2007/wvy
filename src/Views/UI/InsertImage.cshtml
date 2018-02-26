@@ -1,0 +1,118 @@
+﻿@model PagedList<Weavy.Core.Models.File>
+@using Weavy.Core.Helpers;
+@{
+    var currentFile = ViewBag.CurrentFile as Weavy.Core.Models.File;
+    bool IsImage = ((bool)ViewBag.IsImage);
+    Title = IsImage ? "Insert/edit image" : "Insert/edit file";
+    Layout = "_Layout.cshtml";
+    var isMarkdown = Request.QueryString["editortype"] == "markdown";
+}
+
+@section scripts {
+<script>
+    var editorType = "@ViewBag.EditorType";
+</script>
+}
+
+<div class="container-fluid insert-image">
+
+    <header class="page-header">
+        @if (isMarkdown) {
+            <button type="button" class="btn btn-transparent pull-right" data-close title="Close">✕</button>
+            <div class="page-title">Insert image</div>
+        }
+        <nav class="nav nav-tabs" role="tablist">
+            <a class="nav-item nav-link active" href="#nav-properties" id="nav-properties-tab" aria-controls="nav-properties" aria-selected="false">Properties</a>
+            <a class="nav-item nav-link" id="nav-attachments-tab" data-toggle="tab" href="#nav-attachments" aria-controls="nav-attachments" aria-selected="true">Attachments  (<span id="filecount">@(IsImage ? Model.Count(x => FileHelper.IsWebImage(x.Name)) : Model.Count)</span>)</a>
+            <a class="nav-item nav-link" href="#nav-upload" data-toggle="tab">Upload</a>
+        </nav>
+                
+    </header>
+
+    <div class="tab-content mt-3">
+        <div class="tab-pane active" id="nav-properties">
+            <form method="get" class="properties">
+
+                <div class="form-group">
+                    <label class="control-label" for="url">Url</label>
+                    @Html.TextBox("url", Request.QueryString["src"] ?? Request.QueryString["href"], new { @class = "form-control", placeholder = IsImage ? "Paste or type a link to an image..." : "Paste or type a link to a file..." })
+                </div>
+
+                @if (IsImage) {
+                    <div class="form-group">
+                        <label class="control-label" for="alt">Description</label>
+                        @Html.TextBox("alt", "", new { @class = "form-control" })
+                    </div>
+                                        
+                    <div class="form-group" id="size">
+                        <label class="control-label">Size</label><br />
+                        <div class="btn-group" data-toggle="buttons">
+                            <button type="button" name="size" id="small" class="btn btn-secondary">Small</button>
+                            <button type="button" name="size" id="medium" class="btn btn-secondary">Medium</button>
+                            <button type="button" name="size" id="large" class="btn btn-secondary">Large</button>
+                            <button type="button" name="size" id="original" class="btn btn-secondary">Original</button>                                                        
+                        </div>
+                    </div>
+                }
+
+                @if (currentFile != null) {
+                    <input type="hidden" name="filename" value="@currentFile.Name" />
+                    <input type="hidden" name="content_url" value="@currentFile.ContentUrl()" />
+                    <input type="hidden" name="thumb_url" value="@currentFile.ThumbPlaceholderUrl().LeftBefore("?")" />
+                    <input type="hidden" name="width" value="@(currentFile.Width ?? 0)" />
+                    <input type="hidden" name="height" value="@(currentFile.Height ?? 0)" />
+                } else {
+                    <input type="hidden" name="filename" />
+                    <input type="hidden" name="content_url" />
+                    <input type="hidden" name="thumb_url" />
+                    <input type="hidden" name="width" />
+                    <input type="hidden" name="height" />
+                }
+
+                <div class="buttons">
+                    <button type="submit" class="btn btn-primary" id="insert">Insert</button>
+                    <button type="button" class="btn btn-secondary" data-shortcut="Esc">Cancel</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="tab-pane" id="nav-attachments">
+            <div class="result row p-3">
+                @if (!Model.IsNullOrEmpty()) {
+                    foreach (var file in Model) {
+                        if (!IsImage || (IsImage && FileHelper.IsWebImage(file.Name))) {
+                            <div class="card mr-1" style="width: 96px;">
+                                <a href="javascript:;" data-filename="@file.Name" data-content-url="@file.ContentUrl()" data-thumb-url="@file.ThumbPlaceholderUrl().LeftBefore("?")" data-width="@file.Width" data-height="@file.Height" title="@file.Description">
+                                    <img alt="" src="@file.ThumbUrl(48, 48, fit: FitMode.Crop, scale: ScaleMode.Both)" />
+                                    <div class="card-block p-1">
+                                        <small>@file.Name.Ellipsis(10)</small>
+                                        
+                                        <div class="meta"><small>@FileHelper.FileSizeAsString(file.Size)</small></div>
+                                        @if (!file.IsAttached) {
+                                            @Html.Hidden("attachments", file.Id)
+                                        }
+                                    </div>
+                                </a>
+                            </div>                           
+                        } else if (!file.IsAttached) {
+                            @Html.Hidden("attachments", file.Id)
+                        }
+                    }
+                } else {
+                    <div class="col-xs-12 remove">
+                        <p>There are no files here. Why don't you upload some?</p>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="tab-pane" id="nav-upload">
+            <div class="form-group">
+                <input type="file" name="files" data-url="@Url.Content("~/api/files")" data-single-file-uploads="true" />
+                <div class="help-block"></div>
+            </div>
+        </div>
+        <div class="progress progress-fixed"></div>
+    </div>
+</div>
+
