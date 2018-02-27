@@ -1837,39 +1837,8 @@ weavy.emoji = (function () {
         { unicode: '1f1e6', shortname: ':regional_indicator_a:', category: 'regional', order: 12345 }
     ];
 
-    var iconsByCategory = function () {
-        return _.chain(icons).sortBy(function (i) {
-            return i.category_order;
-        }).groupBy("category").value();
-    }
-
-    var init = function () {
-        if ($.emojiarea.icons.length) {
-            return;
-        }
-
-        $.emojiarea.icons = incentiveEmoji.iconsByCategory();
-        $.emojiarea.categories = incentiveEmoji.categories;
-    }
-
-    var bind = function (element, button, inSidebar) {
-        if (incentive.context.mobile) {
-            return false;
-        }
-        
-        init();
-
-        $(element).emojiarea({
-            button: button,
-            sidebar: inSidebar
-        });
-    }
-
     return {
-        init: init,
-        bind: bind,
         icons: icons,
         categories: categories,
-        iconsByCategory: iconsByCategory
     }
 })();

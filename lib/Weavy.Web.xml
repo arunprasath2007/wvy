@@ -6446,21 +6446,6 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="T:Weavy.Web.Controllers.OfficeController">
-            <summary>
-            Controller for the Office AddIn.
-            </summary>
-        </member>
-        <member name="M:Weavy.Web.Controllers.OfficeController.Index">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:Weavy.Web.Controllers.OfficeController.Taskpane(System.String)">
-            <summary>
-            Display taskpane for the specified file.
-            </summary>
-        </member>
         <member name="T:Weavy.Web.Controllers.PeopleController">
             <summary>
             Controller for People.

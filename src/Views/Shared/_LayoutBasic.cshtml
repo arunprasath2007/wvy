@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, maximum-scale=1, user-scalable=no"> @* Viewport must contain width=device-width, minimum-scale=1.0 to trigger GPU Rasterization https://www.chromium.org/developers/design-documents/chromium-graphics/how-to-get-gpu-rasterization *@
     <meta name="turbolinks-cache-control" content="no-preview">
-    <title>@Title</title>
+    <title>@Html.Title(Title)</title>
     @Html.ThemeHead()
     @Html.ThemeStyle("~/styles/weavy.scss", htmlAttributes: new { data_turbolinks_track = "reload" })
     @RenderSection("styles", required: false)

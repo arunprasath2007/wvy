@@ -10,7 +10,7 @@
 }
 
 <div class="container-fluid mt-3">
-    @using (Html.BeginForm(nameof(ItemController.Update), typeof(ItemController).ControllerName(), new { id = Model.Id }, FormMethod.Post, new { autocomplete = "off", data_turboform = "", novalidate = "" })) {
+    @using (Html.BeginForm(nameof(ItemController.Update), typeof(ItemController).ControllerName(), new { id = Model.Id }, FormMethod.Post, new { @class = (Model is IVersionable ? "autosave" : ""), autocomplete = "off", data_turboform = "", novalidate = "", data_is_draft = Model.IsDraft.ToString().ToLower(), data_status = "#autosave-status" })) {
         @Html.HttpMethodOverride(HttpVerbs.Put)
         @Html.EditorsForModel()
 
@@ -23,6 +23,7 @@
                 }
             }
             <button type="submit" class="btn btn-link" name="operation" value="cancel">Cancel</button>
+            <div class="text-muted ml-auto" id="autosave-status"></div>
         </div>
         <input type="hidden" id="ItemId" name="ItemId" value="@Model.Id" />
         <div id="attachments"></div>

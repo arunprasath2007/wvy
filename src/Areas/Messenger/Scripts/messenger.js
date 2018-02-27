@@ -1567,7 +1567,7 @@ weavy.messenger = (function($) {
                         });
                     },
                     index: 1,
-                    template: function(item) {
+                    template: function(item) {                        
                         return Handlebars.templates["suggest-template"](item);
                     },
                     replace: function(item) {

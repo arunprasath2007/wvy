@@ -3,8 +3,8 @@
     // perform some things on init
     editor.on("init", function () {
 
-        //// start autosave
-        //incentiveAutosave.registerEditor();
+        // start autosave
+        weavy.autosave.registerEditor();
         
         // register "global" shortcuts
         var regex = new RegExp("ctrl", "gi");

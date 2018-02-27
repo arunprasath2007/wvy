@@ -138,6 +138,25 @@ img.emojione {
     }
 }
 
-.messenger-textcomplete.dropdown-menu{
+.messenger-textcomplete.dropdown-menu {
     opacity: 1 !important;
+    max-width: 16rem;
+
+    li a {
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+
+        > .i {
+            vertical-align: middle;
+            margin-right: .5rem;
+        }
+
+        span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            flex: 1 1 0%;
+        }
+    }
 }

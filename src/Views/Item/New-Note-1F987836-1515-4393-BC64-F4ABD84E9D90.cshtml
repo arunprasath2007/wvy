@@ -13,7 +13,7 @@
 }
 
 <div class="container-fluid mt-3">
-    @using (Html.BeginForm(nameof(AppController.Insert), typeof(AppController).ControllerName(), new { id = Model.AppId, guid = Model.ItemGuid }, FormMethod.Post, new { @class = "edit-note", autocomplete = "off", data_turboform = "", novalidate = "" })) {
+    @using (Html.BeginForm(nameof(AppController.Insert), typeof(AppController).ControllerName(), new { id = Model.AppId, guid = Model.ItemGuid }, FormMethod.Post, new { @class = "edit-note" + (Model is IVersionable ? " autosave" : ""), autocomplete = "off", data_turboform = "", novalidate = "" })) {
         @Html.HiddenFor(x => Model.AppId);
         @Html.HiddenFor(x => Model.ParentId);
         <div id="attachments">

@@ -58,21 +58,14 @@ this["Handlebars"]["templates"]["suggest-template"] = Handlebars.template({"1":f
     var helper;
 
   return container.escapeExpression(((helper = (helper = helpers.title || (depth0 != null ? depth0.title : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : (container.nullContext || {}),{"name":"title","hash":{},"data":data}) : helper)));
-},"5":function(container,depth0,helpers,partials,data) {
-    var stack1;
-
-  return "<ol class=\"breadcrumb\">\r\n"
-    + ((stack1 = helpers.each.call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? depth0.breadcrumb : depth0),{"name":"each","hash":{},"fn":container.program(6, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "</ol>\r\n";
-},"6":function(container,depth0,helpers,partials,data) {
-    return "  <li>"
-    + container.escapeExpression((helpers.ellipsis || (depth0 && depth0.ellipsis) || helpers.helperMissing).call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? depth0.title : depth0),32,{"name":"ellipsis","hash":{},"data":data}))
-    + "</li>\r\n";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    var stack1, alias1=depth0 != null ? depth0 : (container.nullContext || {});
+    var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
-  return "<span>"
+  return "<svg class=\"i text-"
+    + alias4(((helper = (helper = helpers.color || (depth0 != null ? depth0.color : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"color","hash":{},"data":data}) : helper)))
+    + "\"><use xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:href=\"#"
+    + alias4(((helper = (helper = helpers.icon || (depth0 != null ? depth0.icon : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"icon","hash":{},"data":data}) : helper)))
+    + "\"></use></svg>\r\n    <span>"
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.title_highlight : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(3, data, 0),"data":data})) != null ? stack1 : "")
-    + "</span>\r\n"
-    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.breadcrumb : depth0),{"name":"if","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "");
+    + "</span>\r\n";
 },"useData":true});

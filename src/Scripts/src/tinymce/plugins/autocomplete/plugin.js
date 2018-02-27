@@ -1,9 +1,10 @@
 ﻿tinymce.PluginManager.add("weavy_autocomplete", function (editor, url) {
+    
     // TinyMce adapter for jquery.textcomplete.js
-    function TinyMceAdapter(element, completer, option) {
-        this.initialize(element, completer, option);
-    }
-    $.extend(TinyMceAdapter.prototype, $.fn.textcomplete.Adapter.prototype, {
+    function TinyMceAdapter(element, completer, option) {        
+        this.initialize(element, completer, option);    }
+
+    var extension = {
         // update the content when an dropdown item is selected
         select: function (value, strategy, e) {
             var $body = $(editor.getBody());
@@ -12,7 +13,7 @@
             var sel = editor.selection;
             var range = sel.getRng(true);
             var selection = range.cloneRange();
-            
+
             selection.selectNodeContents(range.startContainer);
             var content = selection.toString();
             var post = content.substring(range.startOffset);
@@ -29,7 +30,7 @@
 
                 range.selectNodeContents(range.startContainer);
                 range.deleteContents();
-            
+
                 var frag = rootDocument.createDocumentFragment();
                 var prenode = rootDocument.createTextNode(pre);
                 frag.appendChild(prenode);
@@ -40,7 +41,7 @@
                 var postnode = rootDocument.createTextNode(post);
                 frag.appendChild(postnode);
                 range.insertNode(frag);
-                
+
                 // set cursor position
                 range.setStartBefore(postnode);
                 range.collapse(true);
@@ -50,7 +51,7 @@
             }
         },
 
-        getCaretPosition: function () {
+        getCaretPosition: function () {            
             // start with position of timymce
             var caretpos = $(editor.getContentAreaContainer()).offset();
             // then find relative caret position 
@@ -73,7 +74,7 @@
         // Completer will be triggered with the result for start autocompleting.
         // For example, suppose the html is '<b>hello</b> wor|ld' and | is the caret.
         // getTextFromHeadToCaret() should return ' wor'  // not '<b>hello</b> wor'
-        getTextFromHeadToCaret: function () {
+        getTextFromHeadToCaret: function () {            
             var range = editor.selection.getRng(true);
             var selection = range.cloneRange();
             selection.selectNodeContents(range.startContainer);
@@ -81,8 +82,18 @@
             text = text.substring(0, range.startOffset);
             return text;
         }
-    });
+    }
+    
+
+    var backupAdapter = $.fn.textcomplete.ContentEditable;
+
+    $.extend(TinyMceAdapter.prototype, $.fn.textcomplete.Adapter.prototype, extension);
+
     $.fn.textcomplete.ContentEditable = TinyMceAdapter;
+    
+    editor.on("remove", function () {    
+        $.fn.textcomplete.ContentEditable = backupAdapter;
+    })
 
     // attach textcomplete to tinymce body element
     editor.on("init", function () {
@@ -177,7 +188,7 @@
     });
 
     // prevent tinymce from inserting new line on enter when textcomplete dropdown is open
-    editor.on('keydown', function (e) {
+    editor.on('keydown', function (e) {        
         if (e.keyCode == 13) {
             var body = this.getBody();
             var autocompleting = $(body).data("autocompleting");
@@ -187,5 +198,5 @@
             }
         }
     });
-
+    
 });

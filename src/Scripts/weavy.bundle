@@ -48,6 +48,7 @@
 ~/scripts/src/fab.js
 ~/scripts/src/share.js
 ~/scripts/src/userspicker.js
+~/scripts/src/autosave.js
 ~/scripts/_fileupload.bundle
 ~/scripts/_button.bundle
 ~/scripts/_preview.bundle
