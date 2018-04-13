@@ -47,14 +47,13 @@ weavy.notifications = (function ($) {
         // finally close drawer
         weavy.drawer.close();
     });
-
+    
     // callbacks for realtime events
     weavy.realtime.on("notification", function (event, data) {
         $("#notifications .empty").remove();
-
+                
         get(data.id).then(function (html) {            
-            $(html).prependTo("#notifications .list-group");
-            weavy.audio.play("#notification-sound");
+            $(html).prependTo("#notifications .list-group");            
         });        
     });
 
@@ -70,7 +69,7 @@ weavy.notifications = (function ($) {
         $("a.notification[data-entity='notification']").addClass("read").find("[data-toggle=notification]").attr("title", "Mark as unread");
     });
 
-    weavy.realtime.on("badge", function (event, data) {        
+    weavy.realtime.on("badge", function (event, data) {                
         if (data.notifications > 0) {
             $(".badge[data-badge='notification']").text(data.notifications).removeClass("d-none");
         } else {

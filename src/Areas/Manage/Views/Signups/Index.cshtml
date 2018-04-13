@@ -1,8 +1,9 @@
 ﻿@using Weavy.Web.Areas.Manage.Controllers
 @model SearchResult<Invite, InviteQuery>
 @{
-    var u = new User();
     Title = "Sign-ups";
+    Back = Url.Action<HomeController>(c => c.Index());
+    var u = new User();
 }
 
 

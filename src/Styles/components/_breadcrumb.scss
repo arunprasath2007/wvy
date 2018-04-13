@@ -1,28 +1,36 @@
 /// <reference path="../_core.scss" />
 .breadcrumb {
 
+    .breadcrumb-item {
+        // move separator from ::before to ::after for better linebreaks
+        + .breadcrumb-item::before {
+            content: "";
+            display: none;
+        }
+
+        &:not(:last-child)::after {
+            display: inline-block;
+            padding-right: $breadcrumb-item-padding;
+            padding-left: $breadcrumb-item-padding;
+            color: $breadcrumb-divider-color;
+            content: "#{$breadcrumb-divider}";
+        }
+    }
+    .navbar-theme & {
+        .breadcrumb-item {
+            a, &::after {
+                color: color-yiq($theme);
+            }
+        }
+    }
     .navbar-content & {
         padding-top: .25rem;
         padding-bottom: .25rem;
 
         .breadcrumb-item {
-            // make room for star and overlow menu icons
+            // make room for star and overflow menu icons
             @include text-truncate();
-            max-width: calc(100vw - 104px);
-
-            // move separator from ::before to ::after for better linebreaks
-            + .breadcrumb-item::before {
-                content: "";
-                display: none;
-            }
-
-            &:not(:last-child)::after {
-                display: inline-block;
-                padding-right: $breadcrumb-item-padding;
-                padding-left: $breadcrumb-item-padding;
-                color: $breadcrumb-divider-color;
-                content: "#{$breadcrumb-divider}";
-            }
+            max-width: calc(100vw - 6.5rem);
         }
     }
 }

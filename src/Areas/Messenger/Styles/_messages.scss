@@ -138,19 +138,19 @@
         }
 
         img.eo, img.emojione {
-            font-size: 32px;
-            margin: 0 4px 0 0;
+            font-size: 2rem;
+            margin: 0 .25rem 0 0;
         }
 
         object.emojione {
-            width: 42px;
-            height: 42px;
-            margin: 0 4px 0 0;
+            width: 2.625rem; // 42px;
+            height: 2.625rem; // 42px;
+            margin: 0 .25rem 0 0;
         }
 
         &.me {
             img.eo, img.emojione, object.emojione {
-                margin: 0 0 0 4px;
+                margin: 0 0 0 .25rem;
             }
         }
     }
@@ -196,7 +196,7 @@
     text-align: center;
     margin: 1rem 0;
     position: sticky;
-    top: 0px;
+    top: 0;
     z-index: 2;
     pointer-events: none;
 

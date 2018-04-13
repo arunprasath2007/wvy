@@ -5,7 +5,8 @@ weavy.connection = (function ($, w) {
     var reconnecting = false;
     var hubProxies = { rtm: connection.createHubProxy('rtm'), widget: connection.createHubProxy('widget') };        
     var wins = []; // all windows when in embedded mode
-    var _disconnectTimeout, _reconnectTimeout = null;
+    var _reconnectTimeout = null;
+    var reconnectRetries = 0;
 
     //----------------------------------------------------------
     // Init the connection
@@ -34,6 +35,8 @@ weavy.connection = (function ($, w) {
     function connect(url) {        
         if (connection.state === $.signalR.connectionState.disconnected) {
             return connection.start();
+        } else {
+            return Promise.resolve();
         }
     }
 
@@ -47,24 +50,38 @@ weavy.connection = (function ($, w) {
     function status() {
         return connection.state;
     }
+        
+    function on(event, handler, proxy) {                
+        $(document).on(event + ".connection.weavy", null, null, handler);
+    }
     
     // configure logging and connection lifetime events
     connection.logging = false;
 
     connection.stateChanged(function (state) {
+        
         if (state.newState === $.signalR.connectionState.connected) {
             console.debug("connected: " + connection.id + " (" + connection.transport.name + ")");
 
             // clear timeouts
-            window.clearTimeout(_disconnectTimeout);            
             window.clearTimeout(_reconnectTimeout);            
+
+            // reset retries
+            reconnectRetries = 0;
 
             if (weavy.alert) {
                 weavy.alert.close("connection-state");
             } else {
                 triggerPostMessage("alert", "close", "connection-state");
-            }
+            }            
         }
+
+        // trigger event
+        triggerEvent("statechanged.connection.weavy", JSON.stringify({ state: state }));        
+    });
+
+    connection.reconnected(function () {
+        reconnecting = false;
     });
 
     connection.reconnecting(function () {
@@ -82,36 +99,27 @@ weavy.connection = (function ($, w) {
             } else {
                 triggerPostMessage("alert", "show", { type: "warning", title: "Reconnecting...", id: "connection-state" });
             }
-        }, 2000);
-        
+        }, 2000);        
     });
-
-    connection.reconnected(function () {
-        reconnecting = false;
-    });
-
+    
     connection.disconnected(function () {
-        
-        if (reconnecting) {
-            // connection dropped, try to connect again after 5s
-            setTimeout(function () {        
-                connection.start();
-            }, 5000);
-        } else {            
-            console.warn("Disconnected.");
+        console.info("disconnected...");
 
-            // wait 5 seconds before showing message
-            if (_disconnectTimeout != null) {
-                window.clearTimeout(_disconnectTimeout );
-            }
-            _disconnectTimeout = setTimeout(function () {
-                if (weavy.alert) {
-                    weavy.alert.alert("danger", "Connection was lost. <a class='alert-link' href='javascript:weavy.connection.reload(true);'>Reload</a>.", null, "connection-state");
-                } else {
-                    triggerPostMessage("alert", "show", { type: "danger", title: "Connection was lost. <a class='alert-link' href='javascript:weavy.connection.reload(false)'>Reload</a>.", id: "connection-state" });
-                }
-            }, 5000);            
+        reconnectRetries++;
+        
+        if (reconnecting) {            
+            connection.start();
+            reconnecting = false;
+        } else {            
+            // connection dropped, try to connect again after 5s
+            setTimeout(function () {
+                connection.start();                
+            }, 5000);        
         }
+
+        // trigger event
+        triggerEvent("disconnected.connection.weavy", JSON.stringify({ retries: reconnectRetries }));        
+        
     });
 
     function triggerEvent(name) {
@@ -164,11 +172,17 @@ weavy.connection = (function ($, w) {
         var name = "conversationReceived.rtmwidget.weavy";
         triggerEvent(name, args);
     });
-
+        
     function addWindow(win) {        
         // add window to array if not already added
         if (wins.indexOf(win) === -1)
             wins.push(win)        
+    }
+
+    function removeWindow(win) {        
+        wins = _.filter(wins, function (existingWindow) {            
+            return existingWindow != win;
+        });        
     }
     
     return {
@@ -178,8 +192,10 @@ weavy.connection = (function ($, w) {
         proxies: hubProxies,
         connection: connection,
         addWindow: addWindow,
+        removeWindow: removeWindow,
         reload: reload,
-        status : status
+        status: status,
+        on: on
     };
 
 })($, window);

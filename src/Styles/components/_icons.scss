@@ -7,6 +7,7 @@
 // See https://google.github.io/material-design-icons/#styling-icons-in-material-design
 .i {
     fill: currentColor;
+    flex: 0 0 auto;
     width: 1.5rem; // 24px
     height: 1.5rem; // 24px
 
@@ -41,4 +42,14 @@
     &.i-light {
         color: $white;
     }
+
+    &.rotate-90 {
+        transform: rotate(90deg);
+    }
+}
+
+// fix for click event being swallowed by svg <use> in Edge
+// see: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/10583086/
+button > svg, a > svg {
+    pointer-events: none;
 }

@@ -8,19 +8,25 @@ body.controller-space.action-discuss {
 }
 
 
-body.controller-post.action-index,
 body.controller-post.action-get,
-body.controller-space.action-discuss {
-    main > .container {
-        max-width: map-get($grid-breakpoints, sm);
+body.controller-space.action-get {
+    main, .cover {
+        > .container {
+            max-width: map-get($grid-breakpoints, sm);
+        }
     }
 }
 
 .post-form {
     margin-bottom: 1rem;
+
     &.focused {
-        border-color:transparent;
+        border-color: transparent;
         box-shadow: $md-shadow-4dp;
+    }
+
+    .emojionearea.form-control {
+        background: $white;
     }
 }
 
@@ -142,7 +148,7 @@ body.controller-space.action-discuss {
             background-repeat: no-repeat;
             background-position: 50%;
             background-size: 48px;
-            background-color:#fff;
+            background-color: #fff;
             opacity: 0.15;
         }
 

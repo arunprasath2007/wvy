@@ -1,6 +1,7 @@
 ﻿@model SearchResult<TrashedEntity, TrashQuery>
 @{
     Title = "Recycle bin";
+    Back = Url.Action<Weavy.Web.Areas.Manage.Controllers.HomeController>(c => c.Index());
 }
 
 @section navbar_secondary {

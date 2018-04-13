@@ -1,0 +1,64 @@
+﻿@model AccountModel
+@using Microsoft.Owin.Security
+@{
+    Layout = "_PersonalLayout.cshtml";
+    Title = "Edit profile";
+    Back = Url.Back<WidgetController>(c => c.Notifications());
+    var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
+}
+
+
+@section navbar_secondary {
+    @Html.Partial("_ProfileNavbar", User)
+}
+
+<div class="container my-3">
+
+    @using (Html.BeginForm(nameof(WidgetController.UpdateAccount), typeof(WidgetController).ControllerName(), FormMethod.Post, new { id = "update-account-form", autocomplete = "off", data_turboform = "", novalidate = "" })) {
+        @Html.HttpMethodOverride(HttpVerbs.Put)
+        @Html.AntiForgeryToken()
+        @Html.EditorsForModel(Model)
+        <div class="form-buttons">
+            <button type="submit" class="btn btn-primary btn-load waves-effect" title="Save">Save</button>
+            <a href="@Back" class="btn btn-outline-secondary mr-auto waves-effect">Cancel</a>
+        </div>
+    }
+
+    @if (User.Logins.Any()) {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Account</th>
+                    <th>Provider</th>
+                    <th class="text-right">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Login login in User.Logins) {
+                    <tr>
+                        <td>@(login.Email ?? login.ProviderId)</td>
+                        <td>@login.Provider</td>
+
+                        <td class="table-icon text-right">
+                            @using (Html.BeginForm(nameof(AccountController.RemoveLogin), typeof(AccountController).ControllerName(), FormMethod.Post, new { data_turboform = true, novalidate = "" })) {
+                                @Html.Hidden("Provider", login.Provider)
+                                @Html.Hidden("ProviderId", login.ProviderId)
+                                <button type="submit" class="btn btn-icon" title="Remove">@Html.SvgIcon("close")</button>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    @if (loginProviders.Any()) {
+        using (Html.BeginForm(nameof(AccountController.AddLogin), typeof(AccountController).ControllerName(), FormMethod.Post)) {
+            <div class="form-buttons">
+                @foreach (AuthenticationDescription p in loginProviders) {
+                    <button type="submit" class="btn btn-load btn-@p.AuthenticationType.Slugify() waves-effect" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType">@Html.SvgIcon(p.AuthenticationType.Slugify()) Sign in with @p.Caption</button>
+                }
+            </div>
+        }
+    }
+</div>

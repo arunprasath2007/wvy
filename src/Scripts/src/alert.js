@@ -42,7 +42,6 @@ weavy.alert = (function ($) {
         var $alerts = $(".alerts");
         var $alert = $('<div class="alert alert-dismissible fade" role="alert"><button type="button" class="btn btn-icon close" data-dismiss="alert" aria-label="Close"><svg class="i"><use xlink:href="#close" /></svg></button></div>');
         $alert.addClass("alert-" + type);
-
         
         if (typeof id !== "undefined") {
             $alert.attr("id", id);
@@ -51,7 +50,7 @@ weavy.alert = (function ($) {
             $alerts.find("#" + id).remove();
         }
 
-        $alert.append(message).prependTo($alerts).addClass("show");
+        $alert.append(message).appendTo($alerts).addClass("show");
 
         // close after specified time?
         if (Number(duration) > 0) {

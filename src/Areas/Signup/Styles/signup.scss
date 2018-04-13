@@ -153,6 +153,25 @@ input::-webkit-input-placeholder {
     color: theme-color("danger", 400);
 }
 
+.back {
+    position: absolute;
+    top: $spacer;
+    left: $spacer;
+    text-transform: uppercase;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .i {
+        fill: currentColor;
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 auto;
+        flex: 0 0 auto;
+        width: 1rem;
+        height: 1rem;
+    }
+}
+
 
 @include media-breakpoint-up(sm) {
     .buttons {

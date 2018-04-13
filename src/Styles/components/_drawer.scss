@@ -1,7 +1,7 @@
 /// <reference path="../_core.scss" />
 
-$drawer-left-width: 256px !default;
-$drawer-right-width: 320px !default;
+$drawer-left-width: 16rem !default; // 256px;
+$drawer-right-width: 20rem !default; // 320px;
 $zindex-drawer: $zindex-modal;
 $zindex-drawer-backdrop: $zindex-modal-backdrop;
 
@@ -11,20 +11,16 @@ $zindex-drawer-backdrop: $zindex-modal-backdrop;
     [data-toggle="tab"][href="#notifications"]:not(.active) ~ [data-read="notifications"] {
         display: none;
     }
+}
 
-    .sign-out {
-        position:absolute;
-        top: .5rem;
-        left: .5rem;
-        color: rgba(255,255,255, .3);
-
-        @include hover-focus {
-            color: color-yiq($theme-800);
-        }
+#drawer-spaces {
+    .nav{
+        padding: .25rem 0;
     }
 }
 
 .drawer {
+    @include overscroll-behavior-contain;
     position: fixed;
     top: 0;
     bottom: 0;
@@ -35,11 +31,10 @@ $zindex-drawer-backdrop: $zindex-modal-backdrop;
     overflow: hidden;
     background-color: $body-bg;
     box-shadow: $md-shadow-8dp;
-
     // transform offscreen
     transition: transform;
     will-change: transform;
-    transform-style: preserve-3d;    
+    transform-style: preserve-3d;
     @include material-animation-default();
 }
 
@@ -48,23 +43,28 @@ $zindex-drawer-backdrop: $zindex-modal-backdrop;
     left: 0;
     width: $drawer-left-width;
     max-width: 80%;
-    transform: translateX(-$drawer-left-width - 10px);
+    transform: translateX(-$drawer-left-width - .75rem);
+    // show drawer by moving it on screen
+    &.drawer-in {
+        transform: translateX(0);
+    }
 }
 
 .drawer-right {
-    right: 0;
+    left: 100%; // Instead of right: 0 to be able to ignore scrollbars
     width: $drawer-right-width;
     max-width: 80%; // maybe we should allow this drawer to open full width and have a close button?
-    transform: translateX($drawer-right-width + 10px);
+    transform: translateX(.75rem);
+    // show drawer by moving it on screen
+    &.drawer-in {
+        transform: translateX(-$drawer-right-width);
+    }
 }
 
-// show drawer by moving it on screen
-.drawer-in {
-    transform: translateX(0);
-}
+
 
 .drawer-header {
-    background-color: $theme-800;
+    background-color: rgba($theme-800, .95);
     padding: .5rem;
     flex: none;
     display: flex;
@@ -73,6 +73,21 @@ $zindex-drawer-backdrop: $zindex-modal-backdrop;
 
     &, a, .btn-icon {
         color: color-yiq($theme-800) !important;
+    }
+
+    > .dropdown, > .btn-icon {
+        position: absolute;
+        top: .5rem;
+        right: .5rem;
+
+        .drawer-right & {
+            left: auto;
+            right: .5rem;
+        }
+    }
+
+    .dropdown-menu a {
+        color: $dropdown-link-color !important;
     }
 }
 
@@ -84,6 +99,7 @@ $zindex-drawer-backdrop: $zindex-modal-backdrop;
 
 // backdrop (when drawer is open)
 .drawer-backdrop {
+    @include overscroll-behavior-contain;
     position: fixed;
     top: 0;
     left: 0;

@@ -44,7 +44,7 @@
     .mobile.touch {
 
         .nav-menu {
-            
+
             &::before {
                 // backdrop
                 backface-visibility: hidden;
@@ -84,7 +84,7 @@
             }
 
             .dropdown-item {
-                border-bottom: 1px solid $dropdown-divider-bg;
+                border-bottom: $border-width solid $dropdown-divider-bg;
             }
         }
     }

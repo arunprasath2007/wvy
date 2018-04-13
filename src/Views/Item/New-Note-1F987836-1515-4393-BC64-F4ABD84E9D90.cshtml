@@ -13,7 +13,7 @@
 }
 
 <div class="container-fluid mt-3">
-    @using (Html.BeginForm(nameof(AppController.Insert), typeof(AppController).ControllerName(), new { id = Model.AppId, guid = Model.ItemGuid }, FormMethod.Post, new { @class = "edit-note" + (Model is IVersionable ? " autosave" : ""), autocomplete = "off", data_turboform = "", novalidate = "" })) {
+    @using (Html.BeginForm(nameof(AppController.Insert), typeof(AppController).ControllerName(), new { id = Model.AppId, guid = Model.ItemGuid }, FormMethod.Post, new { @class = "edit-note" + (Model is IDraftable ? " autosave" : ""), autocomplete = "off", data_turboform = "", novalidate = "" })) {
         @Html.HiddenFor(x => Model.AppId);
         @Html.HiddenFor(x => Model.ParentId);
         <div id="attachments">
@@ -25,11 +25,11 @@
         </div>
         @Html.EditorsForModel()
         <div class="form-buttons">
-            <button type="submit" class="btn btn-outline-primary">@Model.MetaData().CreateVerb</button>
-            @if (Model is IVersionable) {
-                <button type="submit" class="btn btn-link" name="operation" value="save">Save draft</button>
+            <button type="submit" class="btn btn-primary">@Model.MetaData().CreateVerb</button>
+            @if (Model is IDraftable) {
+                <button type="submit" class="btn btn-outline-secondary" name="operation" value="save">Save draft</button>
             }
-            <button type="submit" class="btn btn-link" name="operation" value="cancel">Cancel</button>
+            <button type="submit" class="btn btn-outline-secondary" name="operation" value="cancel">Cancel</button>
         </div>
     }
 </div>

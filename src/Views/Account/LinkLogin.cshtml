@@ -10,7 +10,7 @@
                 @Html.IconImg(48)
             </div>
             <h1 class="display-3">Link login</h1>
-            <p>Looks like we already have account for <strong>@Model.Email</strong> on @WeavyContext.Current.Theme.GetName(). Enter your password to avoid duplicate accounts.</p>
+            <p>Looks like we already have account for <strong>@Model.Email</strong> on @Theme.Name. Enter your password to avoid duplicate accounts.</p>
 
             @using (Html.BeginForm(nameof(AccountController.LinkLogin), typeof(AccountController).ControllerName(), FormMethod.Post, new { data_turboform = true, novalidate = "" })) {
                 @Html.AntiForgeryToken()

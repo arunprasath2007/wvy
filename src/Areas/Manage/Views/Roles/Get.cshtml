@@ -1,0 +1,27 @@
+﻿@model RoleModel
+@{
+    Title = Model.Role.Name;
+    Back = Url.Action<RolesController>(c => c.Index(null));
+}
+
+
+<div class="container-fluid my-3">
+
+    @if (Model.Members.HasItems()) {
+        <table class="table table-hover table-members">
+            <thead>
+                <tr>
+                    <th class="table-icon"></th>
+                    <th><a href="@Url.OrderBy("name")">Members</a></th>
+                    <th class="table-icon"><button type="button" class="btn btn-icon" title="Add members">@Html.SvgIcon("plus")</button></th>
+                </tr>
+            </thead>
+            <tbody id="infinite-scroll-target">
+                @{ Html.RenderPartial("_MemberTable", Model.Members); }
+            </tbody>
+        </table>
+        @Html.ScrollMore(Model.Members)
+    } else {
+        <p class="text-muted text-center empty">This role has no members.</p>
+    }
+</div>

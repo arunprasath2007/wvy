@@ -42,8 +42,13 @@
 
 .navbar-secondary {
     background: $gray-100;
-    border-bottom: 1px solid $messenger-border-color;
+    border-bottom: $border-width solid $messenger-border-color;
     color: $body-color;
+
+    .navbar-middle {
+        flex: 1 1 100%;
+        padding-left: 2rem;
+    }
 
     .btn-icon {
         color: $icon-color;

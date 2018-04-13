@@ -1,9 +1,9 @@
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <Import Project="..\packages\JavaScriptEngineSwitcher.V8.Native.win-x64.2.4.2\build\JavaScriptEngineSwitcher.V8.Native.win-x64.props" Condition="Exists('..\packages\JavaScriptEngineSwitcher.V8.Native.win-x64.2.4.2\build\JavaScriptEngineSwitcher.V8.Native.win-x64.props')" />
-  <Import Project="..\packages\JavaScriptEngineSwitcher.V8.Native.win-x86.2.4.2\build\JavaScriptEngineSwitcher.V8.Native.win-x86.props" Condition="Exists('..\packages\JavaScriptEngineSwitcher.V8.Native.win-x86.2.4.2\build\JavaScriptEngineSwitcher.V8.Native.win-x86.props')" />
+  <Import Project="..\packages\JavaScriptEngineSwitcher.V8.Native.win-x64.2.4.13\build\JavaScriptEngineSwitcher.V8.Native.win-x64.props" Condition="Exists('..\packages\JavaScriptEngineSwitcher.V8.Native.win-x64.2.4.13\build\JavaScriptEngineSwitcher.V8.Native.win-x64.props')" />
+  <Import Project="..\packages\JavaScriptEngineSwitcher.V8.Native.win-x86.2.4.13\build\JavaScriptEngineSwitcher.V8.Native.win-x86.props" Condition="Exists('..\packages\JavaScriptEngineSwitcher.V8.Native.win-x86.2.4.13\build\JavaScriptEngineSwitcher.V8.Native.win-x86.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
-  <Import Project="..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="..\packages\Microsoft.Net.Compilers.2.7.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.7.0\build\Microsoft.Net.Compilers.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -62,8 +62,8 @@
     <Reference Include="Autofac, Version=4.6.2.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.4.6.2\lib\net45\Autofac.dll</HintPath>
     </Reference>
-    <Reference Include="ClearScript, Version=5.4.9.0, Culture=neutral, PublicKeyToken=935d0c957da47c73, processorArchitecture=MSIL">
-      <HintPath>..\packages\JavaScriptEngineSwitcher.V8.2.4.10\lib\net45\ClearScript.dll</HintPath>
+    <Reference Include="ClearScript, Version=5.4.10.0, Culture=neutral, PublicKeyToken=935d0c957da47c73, processorArchitecture=MSIL">
+      <HintPath>..\packages\JavaScriptEngineSwitcher.V8.2.4.13\lib\net45\ClearScript.dll</HintPath>
     </Reference>
     <Reference Include="CommonMark, Version=0.1.0.0, Culture=neutral, PublicKeyToken=001ef8810438905d, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonMark.NET.0.15.1\lib\net45\CommonMark.dll</HintPath>
@@ -97,8 +97,8 @@
     <Reference Include="JavaScriptEngineSwitcher.Core, Version=2.4.10.0, Culture=neutral, PublicKeyToken=c608b2a8cc9e4472, processorArchitecture=MSIL">
       <HintPath>..\packages\JavaScriptEngineSwitcher.Core.2.4.10\lib\net45\JavaScriptEngineSwitcher.Core.dll</HintPath>
     </Reference>
-    <Reference Include="JavaScriptEngineSwitcher.V8, Version=2.4.10.0, Culture=neutral, PublicKeyToken=c608b2a8cc9e4472, processorArchitecture=MSIL">
-      <HintPath>..\packages\JavaScriptEngineSwitcher.V8.2.4.10\lib\net45\JavaScriptEngineSwitcher.V8.dll</HintPath>
+    <Reference Include="JavaScriptEngineSwitcher.V8, Version=2.4.13.0, Culture=neutral, PublicKeyToken=c608b2a8cc9e4472, processorArchitecture=MSIL">
+      <HintPath>..\packages\JavaScriptEngineSwitcher.V8.2.4.13\lib\net45\JavaScriptEngineSwitcher.V8.dll</HintPath>
     </Reference>
     <Reference Include="LibSass.NET, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\libsassnet.3.3.7\lib\net40\LibSass.NET.dll</HintPath>
@@ -158,11 +158,11 @@
       <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.2.2\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.2.3\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=2.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.SignalR.SystemWeb.2.2.2\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=2.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.SystemWeb.2.2.3\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Azure.NotificationHubs, Version=2.16.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Azure.NotificationHubs.1.0.9\lib\net45-full\Microsoft.Azure.NotificationHubs.dll</HintPath>
@@ -174,23 +174,23 @@
     <Reference Include="Microsoft.IdentityModel.Protocol.Extensions, Version=1.0.40306.1554, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.IdentityModel.Protocol.Extensions.1.0.4.403061554\lib\net45\Microsoft.IdentityModel.Protocol.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Owin, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.3.1.0\lib\net45\Microsoft.Owin.dll</HintPath>
+    <Reference Include="Microsoft.Owin, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.4.0.0\lib\net451\Microsoft.Owin.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Owin.Cors, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.Cors.3.1.0\lib\net45\Microsoft.Owin.Cors.dll</HintPath>
+    <Reference Include="Microsoft.Owin.Cors, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Cors.4.0.0\lib\net451\Microsoft.Owin.Cors.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.1.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.4.0.0\lib\net451\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Owin.Security, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.Security.3.1.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    <Reference Include="Microsoft.Owin.Security, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.4.0.0\lib\net451\Microsoft.Owin.Security.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Owin.Security.Cookies, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.3.1.0\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    <Reference Include="Microsoft.Owin.Security.Cookies, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.4.0.0\lib\net451\Microsoft.Owin.Security.Cookies.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Owin.Security.OAuth, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.3.1.0\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.4.0.0\lib\net451\Microsoft.Owin.Security.OAuth.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Owin.Security.OpenIdConnect, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.Security.OpenIdConnect.3.1.0\lib\net45\Microsoft.Owin.Security.OpenIdConnect.dll</HintPath>
@@ -203,14 +203,14 @@
       <HintPath>..\packages\Microsoft.WindowsAzure.ConfigurationManager.3.2.3\lib\net40\Microsoft.WindowsAzure.Configuration.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.4.12\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.5.1\lib\net45\NLog.dll</HintPath>
     </Reference>
-    <Reference Include="NUglify, Version=1.5.9.0, Culture=neutral, PublicKeyToken=15bc7810aec21b5e, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUglify.1.5.9\lib\net40\NUglify.dll</HintPath>
+    <Reference Include="NUglify, Version=1.5.10.0, Culture=neutral, PublicKeyToken=15bc7810aec21b5e, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUglify.1.5.10\lib\net40\NUglify.dll</HintPath>
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
@@ -250,9 +250,8 @@
     <Reference Include="System.Net.Http">
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.4\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Numerics" />
@@ -266,62 +265,53 @@
     <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.3\lib\net45\System.Web.Cors.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="System.Web.Cors, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.4\lib\net45\System.Web.Cors.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.4\lib\net45\System.Web.Helpers.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="System.Web.Http, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.4\lib\net45\System.Web.Http.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Http.Owin, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Owin.5.2.3\lib\net45\System.Web.Http.Owin.dll</HintPath>
+    <Reference Include="System.Web.Http.Owin, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Owin.5.2.4\lib\net45\System.Web.Http.Owin.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.4\lib\net45\System.Web.Http.WebHost.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="System.Web.Mvc, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.4\lib\net45\System.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.4\lib\net45\System.Web.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.4\lib\net45\System.Web.WebPages.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.4\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.4\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="Weavy, Version=1.0.0.83, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="Weavy, Version=1.0.0.99, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\lib\Weavy.exe</HintPath>
     </Reference>
     <Reference Include="Weavy.Bundler, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\lib\Weavy.Bundler.dll</HintPath>
     </Reference>
-    <Reference Include="Weavy.Core, Version=1.0.0.83, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="Weavy.Core, Version=1.0.0.99, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\lib\Weavy.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Weavy.Web, Version=1.0.0.83, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="Weavy.Web, Version=1.0.0.99, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\lib\Weavy.Web.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
@@ -347,7 +337,6 @@
     <Content Include="Areas\Docs\Views\Home\DisplayTemplates\Parameters.cshtml" />
     <Content Include="Areas\Docs\Views\Home\DisplayTemplates\Samples.cshtml" />
     <Content Include="Areas\Docs\Views\Home\DisplayTemplates\TextSample.cshtml" />
-    <Content Include="Areas\Docs\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Manage\Views\Web.config" />
     <Content Include="Areas\Manage\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Manage\Views\Content\Get.cshtml" />
@@ -359,11 +348,17 @@
     <Content Include="Areas\Manage\Views\Home\License.cshtml" />
     <Content Include="Areas\Manage\Views\Home\Routes.cshtml" />
     <Content Include="Areas\Manage\Views\Home\Statistics.cshtml" />
+    <Content Include="Areas\Manage\Views\Home\Theme.cshtml" />
     <Content Include="Areas\Manage\Views\Hooks\Get.cshtml" />
     <Content Include="Areas\Manage\Views\Hooks\Index.cshtml" />
     <Content Include="Areas\Manage\Views\Logs\Index.cshtml" />
+    <Content Include="Areas\Manage\Views\Roles\Edit.cshtml" />
+    <Content Include="Areas\Manage\Views\Roles\Get.cshtml" />
+    <Content Include="Areas\Manage\Views\Roles\Index.cshtml" />
+    <Content Include="Areas\Manage\Views\Roles\New.cshtml" />
+    <Content Include="Areas\Manage\Views\Roles\_MemberTable.cshtml" />
+    <Content Include="Areas\Manage\Views\Roles\_RoleTable.cshtml" />
     <Content Include="Areas\Manage\Views\Settings\Get.cshtml" />
-    <Content Include="Areas\Manage\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Manage\Views\Signups\Index.cshtml" />
     <Content Include="Areas\Manage\Views\Tools\Get.cshtml" />
     <Content Include="Areas\Manage\Views\Tools\Index.cshtml" />
@@ -388,6 +383,7 @@
     <Content Include="Areas\Messenger\Styles\_table.scss" />
     <Content Include="Areas\Messenger\Views\Web.config" />
     <Content Include="Areas\Messenger\Views\Messenger\Index.cshtml" />
+    <Content Include="Areas\Messenger\Views\Messenger\_Attachments.cshtml" />
     <Content Include="Areas\Messenger\Views\Messenger\_Conversation.cshtml" />
     <Content Include="Areas\Messenger\Views\Messenger\_ConversationMenu.cshtml" />
     <Content Include="Areas\Messenger\Views\Messenger\_Conversations.cshtml" />
@@ -398,7 +394,6 @@
     <Content Include="Areas\Messenger\Views\Messenger\_DrawerSettingsBody.cshtml" />
     <Content Include="Areas\Messenger\Views\Messenger\_DrawerUser.cshtml" />
     <Content Include="Areas\Messenger\Views\Messenger\_DrawerUserBody.cshtml" />
-    <Content Include="Areas\Messenger\Views\Messenger\_FileList.cshtml" />
     <Content Include="Areas\Messenger\Views\Messenger\_HeaderAndMessages.cshtml" />
     <Content Include="Areas\Messenger\Views\Messenger\_Main.cshtml" />
     <Content Include="Areas\Messenger\Views\Messenger\_Message.cshtml" />
@@ -2276,6 +2271,7 @@
     <Content Include="media\ringing.mp3" />
     <Content Include="Scripts\msofba.bundle" />
     <Content Include="Scripts\notification.bundle" />
+    <Content Include="Scripts\office.bundle" />
     <Content Include="Scripts\pickers.bundle" />
     <Content Include="Scripts\weavy.bundle" />
     <Content Include="Scripts\widget.bundle" />
@@ -2292,24 +2288,26 @@
     <Content Include="Scripts\src\audio.js" />
     <Content Include="Scripts\src\autosave.js" />
     <Content Include="Scripts\src\browser.js" />
+    <Content Include="Scripts\src\bubbles.js" />
     <Content Include="Scripts\src\button.js" />
     <Content Include="Scripts\src\codesample.js" />
     <Content Include="Scripts\src\comments.js" />
     <Content Include="Scripts\src\connection.js" />
+    <Content Include="Scripts\src\content.js" />
     <Content Include="Scripts\src\context.js" />
     <Content Include="Scripts\src\desktop-notifications.js" />
     <Content Include="Scripts\src\discuss.js" />
-    <Content Include="Scripts\src\document.js" />
     <Content Include="Scripts\src\drawer.js" />
+    <Content Include="Scripts\src\dropdown.js" />
     <Content Include="Scripts\src\editor.js" />
     <Content Include="Scripts\src\emoji.js" />
     <Content Include="Scripts\src\extensions.js" />
     <Content Include="Scripts\src\fab.js" />
     <Content Include="Scripts\src\fileupload.js" />
     <Content Include="Scripts\src\guid.js" />
-    <Content Include="Scripts\src\icons.js" />
-    <Content Include="Scripts\src\icons.template.js" />
     <Content Include="Scripts\src\infinitescroll.js" />
+    <Content Include="Scripts\src\item.js" />
+    <Content Include="Scripts\src\modal.js" />
     <Content Include="Scripts\src\modernizr-custom.js" />
     <Content Include="Scripts\src\notes.js" />
     <Content Include="Scripts\src\notifications.js" />
@@ -2322,19 +2320,22 @@
     <Content Include="Scripts\src\preview.js" />
     <Content Include="Scripts\src\realtime.js" />
     <Content Include="Scripts\src\rowlink.js" />
+    <Content Include="Scripts\src\scroll.js" />
     <Content Include="Scripts\src\share.js" />
     <Content Include="Scripts\src\space.js" />
+    <Content Include="Scripts\src\spacepicker.js" />
     <Content Include="Scripts\src\star.js" />
+    <Content Include="Scripts\src\subscribe.js" />
     <Content Include="Scripts\src\tab.js" />
     <Content Include="Scripts\src\tagsinput.js" />
-    <Content Include="Scripts\src\turboform.js" />
+    <Content Include="Scripts\src\turbolinks.js" />
     <Content Include="Scripts\src\url.js" />
     <Content Include="Scripts\src\user.js" />
     <Content Include="Scripts\src\userspicker.js" />
-    <Content Include="Scripts\src\widget-context.js" />
     <Content Include="Scripts\src\widget-notifications.js" />
     <Content Include="Scripts\src\widget-personal.js" />
     <Content Include="Scripts\src\widget.js" />
+    <Content Include="Scripts\src\bootstrap\modal.js" />
     <Content Include="Scripts\src\tinymce\tiny.js" />
     <Content Include="Scripts\src\tinymce\plugins\autocomplete\plugin.js" />
     <Content Include="Scripts\src\tinymce\plugins\image\plugin.js" />
@@ -2627,12 +2628,13 @@
     <Content Include="Styles\components\_preview.scss" />
     <Content Include="Styles\components\_prism.scss" />
     <Content Include="Styles\components\_progress.scss" />
+    <Content Include="Styles\components\_scrollbar.scss" />
     <Content Include="Styles\components\_search.scss" />
     <Content Include="Styles\components\_spinner.scss" />
-    <Content Include="Styles\components\_star.scss" />
     <Content Include="Styles\components\_swatches.scss" />
     <Content Include="Styles\components\_tables.scss" />
     <Content Include="Styles\components\_tags.scss" />
+    <Content Include="Styles\components\_togglers.scss" />
     <Content Include="Styles\components\_turbolinks.scss" />
     <Content Include="Styles\components\_waves.scss" />
     <Content Include="Styles\components\tinymce\skins\lightgray\AbsoluteLayout.scss" />
@@ -2717,7 +2719,9 @@
     <Content Include="Styles\content\_poll.scss" />
     <Content Include="Styles\content\_post.scss" />
     <Content Include="Styles\content\_tables.scss" />
+    <Content Include="Styles\content\_widget.scss" />
     <Content Include="Styles\mixins\_animation.scss" />
+    <Content Include="Styles\mixins\_divider.scss" />
     <Content Include="Styles\mixins\_dot.scss" />
     <Content Include="Styles\utilities\_color.scss" />
     <Content Include="Styles\utilities\_flex.scss" />
@@ -2947,11 +2951,7 @@
     <Content Include="Views\App\Edit.cshtml" />
     <Content Include="Views\App\Get.cshtml" />
     <Content Include="Views\App\New.cshtml" />
-    <Content Include="Views\App\_Card.cshtml" />
-    <Content Include="Views\App\_Full.cshtml" />
     <Content Include="Views\App\_Modals.cshtml" />
-    <Content Include="Views\App\_Summary.cshtml" />
-    <Content Include="Views\App\_Table.cshtml" />
     <Content Include="Views\Comment\_Edit.cshtml" />
     <Content Include="Views\Email\Conversation.cshtml" />
     <Content Include="Views\Email\DailyDigest.cshtml" />
@@ -2971,49 +2971,54 @@
     <Content Include="Views\Error\NotFound.cshtml" />
     <Content Include="Views\Error\Unauthorized.cshtml" />
     <Content Include="Views\Error\Version.cshtml" />
-    <Content Include="Views\Error\_Layout.cshtml" />
     <Content Include="Views\File\Edit.cshtml" />
     <Content Include="Views\File\Get.cshtml" />
-    <Content Include="Views\Group\Edit.cshtml" />
-    <Content Include="Views\Group\Get.cshtml" />
-    <Content Include="Views\Group\Index.cshtml" />
-    <Content Include="Views\Group\New.cshtml" />
+    <Content Include="Views\File\Revisions.cshtml" />
+    <Content Include="Views\Home\HQ.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\Search.cshtml" />
     <Content Include="Views\Item\Edit-Note-1F987836-1515-4393-BC64-F4ABD84E9D90.cshtml" />
     <Content Include="Views\Item\Edit.cshtml" />
     <Content Include="Views\Item\Get.cshtml" />
     <Content Include="Views\Item\New-Note-1F987836-1515-4393-BC64-F4ABD84E9D90.cshtml" />
     <Content Include="Views\Item\New.cshtml" />
+    <Content Include="Views\Item\Revisions.cshtml" />
+    <Content Include="Views\Item\_Attachments.cshtml" />
     <Content Include="Views\Item\_Draft.cshtml" />
     <Content Include="Views\Item\_Drafts.cshtml" />
+    <Content Include="Views\Item\_Subscribers.cshtml" />
     <Content Include="Views\Notes\_Edit.cshtml" />
     <Content Include="Views\Notes\_New.cshtml" />
     <Content Include="Views\Notification\Preview.cshtml" />
     <Content Include="Views\Notification\_Index.cshtml" />
     <Content Include="Views\Notification\_Notification.cshtml" />
+    <Content Include="Views\Office\Taskpane.cshtml" />
     <Content Include="Views\People\EditAccount.cshtml" />
     <Content Include="Views\People\EditProfile.cshtml" />
     <Content Include="Views\People\EditSettings.cshtml" />
-    <Content Include="Views\People\Followers.cshtml" />
-    <Content Include="Views\People\Following.cshtml" />
     <Content Include="Views\People\Get.cshtml" />
     <Content Include="Views\People\Index.cshtml" />
     <Content Include="Views\People\Invite.cshtml" />
     <Content Include="Views\People\New.cshtml" />
+    <Content Include="Views\People\_Get.cshtml" />
     <Content Include="Views\People\_Navbar.cshtml" />
     <Content Include="Views\Post\Get.cshtml" />
-    <Content Include="Views\Post\Index.cshtml" />
     <Content Include="Views\Post\_Edit.cshtml" />
-    <Content Include="Views\Search\Index.cshtml" />
+    <Content Include="Views\Post\_MoveModalContent.cshtml" />
     <Content Include="Views\Shared\_AppCard.cshtml" />
     <Content Include="Views\Shared\_AppFull.cshtml" />
+    <Content Include="Views\Shared\_AppList.cshtml" />
     <Content Include="Views\Shared\_AppMenu.cshtml" />
-    <Content Include="Views\Shared\_AppSummary.cshtml" />
     <Content Include="Views\Shared\_AppTable.cshtml" />
+    <Content Include="Views\Shared\_BreadcrumbMenu.cshtml" />
     <Content Include="Views\Shared\_CommentFeedback.cshtml" />
     <Content Include="Views\Shared\_CommentForm.cshtml" />
     <Content Include="Views\Shared\_CommentMenu.cshtml" />
     <Content Include="Views\Shared\_Comments.cshtml" />
+    <Content Include="Views\Shared\_ContentCard.cshtml" />
+    <Content Include="Views\Shared\_ContentFull.cshtml" />
+    <Content Include="Views\Shared\_ContentList.cshtml" />
+    <Content Include="Views\Shared\_ContentTable.cshtml" />
     <Content Include="Views\Shared\_DrawerSpaces.cshtml" />
     <Content Include="Views\Shared\_DrawerUser.cshtml" />
     <Content Include="Views\Shared\_EditCommentModal.cshtml" />
@@ -3025,21 +3030,18 @@
     <Content Include="Views\Shared\_FileFull.cshtml" />
     <Content Include="Views\Shared\_FileList.cshtml" />
     <Content Include="Views\Shared\_FileMenu.cshtml" />
-    <Content Include="Views\Shared\_FileSummary.cshtml" />
     <Content Include="Views\Shared\_FileTable.cshtml" />
-    <Content Include="Views\Shared\_GroupMenu.cshtml" />
-    <Content Include="Views\Shared\_GroupTable.cshtml" />
     <Content Include="Views\Shared\_ImageGrid.cshtml" />
     <Content Include="Views\Shared\_ItemCard.cshtml" />
     <Content Include="Views\Shared\_ItemFull.cshtml" />
+    <Content Include="Views\Shared\_ItemList.cshtml" />
     <Content Include="Views\Shared\_ItemMenu.cshtml" />
-    <Content Include="Views\Shared\_ItemSummary.cshtml" />
     <Content Include="Views\Shared\_ItemTable.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\_LayoutBasic.cshtml" />
-    <Content Include="Views\Shared\_Likes.cshtml" />
-    <Content Include="Views\Shared\_ListItemContent.cshtml" />
-    <Content Include="Views\Shared\_ListItemFile.cshtml" />
+    <Content Include="Views\Shared\_MoveModal.cshtml" />
+    <Content Include="Views\Shared\_MoveModalContent.cshtml" />
+    <Content Include="Views\Shared\_MovePostModal.cshtml" />
     <Content Include="Views\Shared\_Note.cshtml" />
     <Content Include="Views\Shared\_NoteModal.cshtml" />
     <Content Include="Views\Shared\_PeopleTable.cshtml" />
@@ -3051,12 +3053,16 @@
     <Content Include="Views\Shared\_PostMenu.cshtml" />
     <Content Include="Views\Shared\_Posts.cshtml" />
     <Content Include="Views\Shared\_Preview.cshtml" />
+    <Content Include="Views\Shared\_ProfileModal.cshtml" />
+    <Content Include="Views\Shared\_SearchResult.cshtml" />
     <Content Include="Views\Shared\_ShareModal.cshtml" />
     <Content Include="Views\Shared\_SpaceMenu.cshtml" />
     <Content Include="Views\Shared\_SpaceSwitcher.cshtml" />
     <Content Include="Views\Shared\_SpaceTable.cshtml" />
+    <Content Include="Views\Shared\_SpaceTabs.cshtml" />
+    <Content Include="Views\Shared\_UserList.cshtml" />
     <Content Include="Views\Shared\_UserMenu.cshtml" />
-    <Content Include="Views\Shared\_Votes.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\EmailAddress.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\MultilineText.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Tags.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Boolean.cshtml" />
@@ -3072,17 +3078,21 @@
     <Content Include="Views\Shared\EditorTemplates\Int32.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Int64.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\LocalDomainEmailAddress.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\MoveContentPicker.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\MultilineText.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\NoteType.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Password.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Pincode.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Privacy.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\SpacePicker.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\SpaceType.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\String.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Tags.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Time.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\TimeZone.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Url.cshtml" />
-    <Content Include="Views\Space\Discuss.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Username.cshtml" />
+    <Content Include="Views\Space\Activity.cshtml" />
     <Content Include="Views\Space\Edit.cshtml" />
     <Content Include="Views\Space\Get.cshtml" />
     <Content Include="Views\Space\Index.cshtml" />
@@ -3090,16 +3100,15 @@
     <Content Include="Views\Space\New.cshtml" />
     <Content Include="Views\Space\Search.cshtml" />
     <Content Include="Views\Space\Settings.cshtml" />
-    <Content Include="Views\Space\Strip.cshtml" />
+    <Content Include="Views\Space\Widget.cshtml" />
     <Content Include="Views\Space\_MemberMenu.cshtml" />
     <Content Include="Views\Space\_Navbar.cshtml" />
-    <Content Include="Views\Space\_Title.cshtml" />
     <Content Include="Views\Star\_Index.cshtml" />
     <Content Include="Views\Star\_Star.cshtml" />
     <Content Include="Views\Test\Email.cshtml" />
     <Content Include="Views\Test\Embed.cshtml" />
     <Content Include="Views\Test\Index.cshtml" />
-    <Content Include="Views\Test\Navbar.cshtml" />
+    <Content Include="Views\Test\Pickers.cshtml" />
     <Content Include="Views\Test\Redirect.cshtml" />
     <Content Include="Views\Test\Redirected.cshtml" />
     <Content Include="Views\Test\_Components.cshtml" />
@@ -3108,8 +3117,22 @@
     <Content Include="Views\UI\InsertLink.cshtml" />
     <Content Include="Views\UI\_Layout.cshtml" />
     <Content Include="Views\UI\_SearchResult.cshtml" />
-    <Content Include="Views\Widget\Connect.cshtml" />
-    <Content Include="Views\Widget\Connected.cshtml" />
+    <Content Include="Views\Widget\Drafts.cshtml" />
+    <Content Include="Views\Widget\EditAccount.cshtml" />
+    <Content Include="Views\Widget\EditPassword.cshtml" />
+    <Content Include="Views\Widget\EditProfile.cshtml" />
+    <Content Include="Views\Widget\EditSettings.cshtml" />
+    <Content Include="Views\Widget\Index.cshtml" />
+    <Content Include="Views\Widget\Messenger.cshtml" />
+    <Content Include="Views\Widget\NewSpace.cshtml" />
+    <Content Include="Views\Widget\Notifications.cshtml" />
+    <Content Include="Views\Widget\Search.cshtml" />
+    <Content Include="Views\Widget\Spaces.cshtml" />
+    <Content Include="Views\Widget\Stars.cshtml" />
+    <Content Include="Views\Widget\_DrawerProfile.cshtml" />
+    <Content Include="Views\Widget\_PersonalLayout.cshtml" />
+    <Content Include="Views\Widget\_ProfileNavbar.cshtml" />
+    <Content Include="Views\Widget\_WidgetLayout.cshtml" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -3146,11 +3169,11 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\JavaScriptEngineSwitcher.V8.Native.win-x64.2.4.2\build\JavaScriptEngineSwitcher.V8.Native.win-x64.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\JavaScriptEngineSwitcher.V8.Native.win-x64.2.4.2\build\JavaScriptEngineSwitcher.V8.Native.win-x64.props'))" />
-    <Error Condition="!Exists('..\packages\JavaScriptEngineSwitcher.V8.Native.win-x86.2.4.2\build\JavaScriptEngineSwitcher.V8.Native.win-x86.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\JavaScriptEngineSwitcher.V8.Native.win-x86.2.4.2\build\JavaScriptEngineSwitcher.V8.Native.win-x86.props'))" />
+    <Error Condition="!Exists('..\packages\JavaScriptEngineSwitcher.V8.Native.win-x64.2.4.13\build\JavaScriptEngineSwitcher.V8.Native.win-x64.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\JavaScriptEngineSwitcher.V8.Native.win-x64.2.4.13\build\JavaScriptEngineSwitcher.V8.Native.win-x64.props'))" />
+    <Error Condition="!Exists('..\packages\JavaScriptEngineSwitcher.V8.Native.win-x86.2.4.13\build\JavaScriptEngineSwitcher.V8.Native.win-x86.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\JavaScriptEngineSwitcher.V8.Native.win-x86.2.4.13\build\JavaScriptEngineSwitcher.V8.Native.win-x86.props'))" />
     <Error Condition="!Exists('..\packages\libsassnet.3.3.7\build\libsassnet.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\libsassnet.3.3.7\build\libsassnet.targets'))" />
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.7.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.7.0\build\Microsoft.Net.Compilers.props'))" />
     <Error Condition="!Exists('..\packages\NETStandard.Library.2.0.1\build\netstandard2.0\NETStandard.Library.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NETStandard.Library.2.0.1\build\netstandard2.0\NETStandard.Library.targets'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -4,16 +4,16 @@
     Layout = null;
 }
 <!DOCTYPE html>
-<html class="@HtmlClasses()" lang="@System.Threading.Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName">
+<html class="messenger @HtmlClasses()" lang="@System.Threading.Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>Messenger | @WeavyContext.Current.Theme.GetName()</title>
+    <title>Messenger | @Theme.Name</title>
     @Html.ThemeHead(AreaName)
     @Html.ThemeStyle("~/areas/messenger/styles/messenger.scss")
 </head>
 <body class="@BodyClasses()" @BodyAttributes>
-    @Html.SvgSprite(inline: true)
+    @Html.SvgSprite()
     <div class="alerts"></div>
 
     <div class="app @(ActionName == nameof(MessengerController.Index) || ActionName == nameof(MessengerController.Archived) ? "one" : "two")">
@@ -25,13 +25,8 @@
                 </div>
                 <div class="navbar-middle conversation-title">@(Model.Conversation?.Title ?? "Messenger")</div>
                 <div class="navbar-icons">
-                    <div class="dropdown">
-                        <button type="button" class="btn btn-icon dropdown-toggle" data-toggle="dropdown">@Html.SvgIcon("message-text")</button>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <button type="button" class="dropdown-item" data-toggle="drawer-message">New message</button>
-                            <button type="button" class="dropdown-item" data-toggle="drawer-room-name">New room</button>
-                        </div>
-                    </div>
+                    <button type="button" class="btn btn-icon d-embedded visibility-h">@Html.SvgIcon("expand-window")</button>
+                    <button type="button" class="btn btn-icon d-embedded visibility-h">@Html.SvgIcon("close")</button>
                 </div>
             </div>
         </header>
@@ -45,23 +40,27 @@
                     </div>
                     <div class="navbar-middle">&nbsp;</div>
                     <div class="navbar-icons">
-                        <div class="dropdown">
-                            <button type="button" class="btn btn-icon dropdown-toggle" data-toggle="dropdown">@Html.SvgIcon("message-text")</button>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <button type="button" class="dropdown-item" data-toggle="drawer-message">New message</button>
-                                <button type="button" class="dropdown-item" data-toggle="drawer-room-name">New room</button>
-                            </div>
-                        </div>
+                        <button type="button" class="btn btn-icon d-embedded visibility-h">@Html.SvgIcon("expand-window")</button>
+                        <button type="button" class="btn btn-icon d-embedded visibility-h">@Html.SvgIcon("close")</button>
                     </div>
                 </div>
             </header>
 
             <div id="pane-side" class="pane-body scroll-y">
-                <div class="form-group search search-conversations">
-                    <input type="text" name="q" class="form-control" placeholder="Find conversations..." />
-                    <button type="button" class="btn btn-icon btn-search">@Html.SvgIcon("magnify")</button>
-                    <button type="button" class="btn btn-icon btn-reset d-none">@Html.SvgIcon("close")</button>
-                    <input type="hidden" name="archive" value="@Model.Archive.ToString().ToLower()" />
+                <div class="navbar navbar-secondary">
+                    <div class="form-group search search-conversations">
+                        <input type="text" name="q" class="form-control" placeholder="Find conversations..." />
+                        <button type="button" class="btn btn-icon btn-search">@Html.SvgIcon("magnify")</button>
+                        <button type="button" class="btn btn-icon btn-reset d-none">@Html.SvgIcon("close")</button>
+                        <input type="hidden" name="archive" value="@Model.Archive.ToString().ToLower()" />
+                    </div>
+                    <div class="dropdown ml-1">
+                        <button type="button" class="btn btn-icon dropdown-toggle" data-toggle="dropdown">@Html.SvgIcon("message-plus")</button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <button type="button" class="dropdown-item" data-toggle="drawer-message">New message</button>
+                            <button type="button" class="dropdown-item" data-toggle="drawer-room-name">New room</button>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="list-group search-result-list"></div>

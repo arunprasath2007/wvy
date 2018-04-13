@@ -2,15 +2,10 @@
 
 @{
     Title = "POST /api/oauth/token";
+    Back = Url.Action<HomeController>(c => c.GetOAuthDocumentation());
 }
 
-@section navbar {
-    <div class="navbar-icons"><a href="@(Url.Action<HomeController>(c => c.GetOAuthDocumentation()))" class="btn btn-icon">@Html.SvgIcon("arrow-left")</a></div>
-    <div class="navbar-title">@Title</div>
-}
-
-
-<div class="container-fluid">
+<div class="container my-3">
     <article>
         <header>
             <h1 class="display-1">@Title</h1>

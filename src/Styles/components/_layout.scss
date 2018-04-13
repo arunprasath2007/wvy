@@ -3,10 +3,6 @@ html {
     // TODO: vi behöver dölja overflow-x pga drawers etc., kolla att det inte ställer till det med photoswipe och pdfjs
     overflow-x: hidden;
 
-    &.windows {
-        @include scrollbar;
-        -ms-overflow-style: scrollbar;
-    }
     // show/hide stuff depending on if we are running embedded or standalone
     &.embedded {
         .d-standalone {
@@ -33,7 +29,7 @@ body {
         padding-top: $navbar-height * 2;
     }
 
-    &.manage-sidebar-left-open {
+    &.manage-sidebar-left-open, .manage-sidebar-left-open & {
         @include media-breakpoint-up(xl) {
             .navbar-secondary {
                 margin-left: $sidebar-left-width;
@@ -190,4 +186,8 @@ body.controller-error {
             margin-right: .25rem;
         }
     }
+}
+
+.visibility-h{
+    visibility: hidden !important;
 }

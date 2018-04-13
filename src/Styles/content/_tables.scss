@@ -18,19 +18,19 @@
     }
     // modified
     td:nth-child(3), th:nth-child(3) {
-        width: 180px; // needs to be this wide to fit MM/DD/YYYY HH:mm AM/PM
+        width: 11.25rem; // 180px; // needs to be this wide to fit MM/DD/YYYY HH:mm AM/PM
         display: none;
     }
     // type
     td:nth-child(4), th:nth-child(4) {
         display: none;
-        width: 120px;
+        width: 7.5rem; // 120px;
     }
     // size
     td:nth-child(5), th:nth-child(5) {
         display: none;
         text-align: right;
-        width: 100px;
+        width: 6.25rem; // 100px;
     }
     // show columns on larger devices
     @include media-breakpoint-up(sm) {
@@ -94,7 +94,7 @@
 }
 
 
-.table-groups {
+.table-roles {
     @extend .table-fixed;
 
     thead {
@@ -106,12 +106,18 @@
     }
     // name
     td:nth-child(2), th:nth-child(2) {
-        width: 100%;
+        width: 100%; // 160px
         @include text-truncate;
     }
-    // members
+    // description
     td:nth-child(3), th:nth-child(3) {
-        width: 85px;
+        width: 10rem;
+        @include text-truncate;
+        display: none;
+    }
+    // members
+    td:nth-child(4), th:nth-child(4) {
+        width: 5.5rem; // 85px;
         @include text-truncate;
         display: none;
     }
@@ -123,13 +129,20 @@
     }
 
     @include media-breakpoint-up(md) {
-        td:nth-child(3), th:nth-child(3) {
-            display: table-cell;
+        td:nth-child(2), th:nth-child(2) {
+            width: 10rem; // 160px
         }
 
+        td:nth-child(3), th:nth-child(3) {
+            display: table-cell;
+            width: 100%;
+        }
+
+        td:nth-child(4), th:nth-child(4) {
+            display: table-cell;
+        }
     }
 }
-
 
 .table-spaces {
     @extend .table-fixed;
@@ -138,6 +151,10 @@
         display: none;
     }
 
+    .table-archived .badge-info {
+        color: $white;
+    }
+
     tr:first-child td {
         border-top-color: transparent;
     }
@@ -146,15 +163,9 @@
         width: 100%;
         @include text-truncate;
     }
-    // apps
-    td:nth-child(3), th:nth-child(3) {
-        width: 55px;
-        @include text-truncate;
-        display: none;
-    }
     // members
-    td:nth-child(4), th:nth-child(4) {
-        width: 85px;
+    td:nth-child(3), th:nth-child(3) {
+        width: 5.5rem; // 85px;
         @include text-truncate;
         display: none;
     }
@@ -163,14 +174,8 @@
         thead {
             display: table-header-group;
         }
-    }
 
-    @include media-breakpoint-up(md) {
         td:nth-child(3), th:nth-child(3) {
-            display: table-cell;
-        }
-
-        td:nth-child(4), th:nth-child(4) {
             display: table-cell;
         }
     }
@@ -203,7 +208,7 @@
         }
 
         td:nth-child(2), th:nth-child(2) {
-            width: 200px;
+            width: 12.5rem; // 200px;
         }
 
         td:nth-child(3), th:nth-child(3) {
@@ -231,17 +236,17 @@
     }
     // last
     td:nth-child(3), th:nth-child(3) {
-        width: 160px;
+        width: 10rem; // 160px;
         display: none;
     }
     // next
     td:nth-child(4), th:nth-child(4) {
-        width: 160px;
+        width: 10rem; // 160px;
         display: none;
     }
     // schedule
     td:nth-child(5), th:nth-child(5) {
-        width: 160px;
+        width: 10rem; // 160px;
         display: none;
     }
     // show columns on larger devices
@@ -249,6 +254,7 @@
         thead {
             display: table-header-group;
         }
+
         td:nth-child(5), th:nth-child(5) {
             display: table-cell;
         }
@@ -281,24 +287,21 @@
         width: 100%;
         @include text-truncate;
     }
-
     // modified
     td:nth-child(3), th:nth-child(3) {
-        width: 180px; // needs to be this wide to fit MM/DD/YYYY HH:mm AM/PM
+        width: 11.25rem; // 180px; // needs to be this wide to fit MM/DD/YYYY HH:mm AM/PM
         display: none;
     }
     // size
     td:nth-child(4), th:nth-child(4) {
         display: none;
         text-align: right;
-        width: 100px;
+        width: 6.25rem; // 100px;
     }
-
     // icons
     td:nth-child(5), th:nth-child(5) {
-        width: 80px;
+        width: 5rem; // 80px;
     }
-
     // show columns on larger devices
     @include media-breakpoint-up(sm) {
         thead {
@@ -333,19 +336,16 @@
         width: 100%;
         @include text-truncate;
     }
-
     // status
     td:nth-child(3), th:nth-child(3) {
-        width: 105px;
+        width: 6.75rem; // 105px;
         display: none;
     }
-
     // icons
     td:nth-child(4), th:nth-child(4) {
-        width: 80px;
+        width: 5rem; // 80px;
         text-align: right;
     }
-
     // show columns on larger devices
     @include media-breakpoint-up(sm) {
         thead {
@@ -356,12 +356,11 @@
             display: table-cell;
         }
     }
-
 }
 
 
 // tables with icon + name
-.table-stars, .table-drafts, .table-likes, .table-votes {
+.table-stars, .table-drafts, .table-userlist {
     @extend .table-fixed;
 
     tr:first-child td {
@@ -374,15 +373,16 @@
     }
 }
 
-.table-likes, .table-votes {
+.table-userlist {
     margin-bottom: 0;
+
     tr td {
         border: none;
     }
 
     td:nth-child(1), th:nth-child(1) {
         padding-left: 0;
-        width: 32px;
+        width: 2rem;
     }
 }
 
@@ -404,17 +404,17 @@
     }
     // trashed
     td:nth-child(2), th:nth-child(2) {
-        width: 180px; // needs to be this wide to fit MM/DD/YYYY HH:mm AM/PM
+        width: 11.25rem; // 180px; // needs to be this wide to fit MM/DD/YYYY HH:mm AM/PM
         display: none;
     }
     // type
     td:nth-child(3), th:nth-child(3) {
         display: none;
-        width: 120px;
+        width: 7.5rem; // 120px;
     }
     // actions
     td:nth-child(4), th:nth-child(4) {
-        width: 80px;
+        width: 5rem; // 80px;
     }
     // show columns on larger devices
     @include media-breakpoint-up(sm) {

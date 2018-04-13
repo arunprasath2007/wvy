@@ -1,6 +1,5 @@
 ﻿@model TestViewModel
 
-
 <section id="alerts">
 
     <h1 id="alerts" class="display-3 mt-4">Alerts</h1>
@@ -9,7 +8,21 @@
         This is a success alert with an undo link. <a href="#" class="alert-link">Undo</a>.
     </div>
     <div class="alert alert-danger fade show d-flex" role="alert">
-        This is a danger alert with a button. <button class="btn btn-outline-danger waves-effect ml-auto">Button</button>
+        This is a danger alert with a dropdown for testing errors.
+
+        <div class="dropdown d-inline-block  ml-auto">
+            <button type="button" class="btn btn-icon dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="Toggle Dropdown">
+                @Html.SvgIcon("dots-vertical")
+            </button>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="@(Url.Action<TestController>(c => c.Error(null)))">Get => Error</a>
+                <form action="@(Url.Action<TestController>(c => c.Error(null)))" method="post" data-turboform>
+                    <button type="submit" class="dropdown-item">Post => Error</button>
+                </form>
+                <a class="dropdown-item" href="@(Url.Action<TestController>(c => c.Error(404)))">404</a>
+                <a class="dropdown-item" href="@(Url.Action<ErrorController>(c => c.Index()))">Error without exception</a>
+            </div>
+        </div>
     </div>
     <div class="alert alert-warning alert-dismissible fade show" role="alert">
         <button type="button" class="btn btn-icon close" data-dismiss="alert" aria-label="Close">
@@ -24,7 +37,7 @@
         This is a dismissible info alert.
     </div>
     <a class="alert alert-info fade show d-flex" role="alert" href="#">
-        @Html.SvgIcon("information-outline", size: 36, htmlAttributes: new { @class = "align-self-start flex-noscale mt-1 mr-2 hidden-xs-down" })
+        @Html.SvgIcon("information-outline", size: 36, htmlAttributes: new { @class = "align-self-start flex-noscale mt-1 mr-2 d-none d-sm-block" })
         <span>Alls of this alert is <span class="alert-link">a link</span>.</span>
         <span class="btn btn-outline-info waves-effect ml-auto hidden-sm-down">Button</span>
     </a>
@@ -35,40 +48,42 @@
 <div class="form-group">
     <button type="button" class="btn btn-primary">Primary</button>
     <button type="button" class="btn btn-secondary">Secondary</button>
-    <button type="button" class="btn btn-success">Success</button>
-    <button type="button" class="btn btn-info">Info</button>
-    <button type="button" class="btn btn-warning">Warning</button>
-    <button type="button" class="btn btn-danger">Danger</button>
+    <button type="button" class="btn btn-success" data-alert="success">Success</button>
+    <button type="button" class="btn btn-info" data-alert="info">Info</button>
+    <button type="button" class="btn btn-warning" data-alert="warning">Warning</button>
+    <button type="button" class="btn btn-danger" data-alert="danger">Danger</button>
     <button type="button" class="btn btn-light" data-body-bg="light">Light</button>
     <button type="button" class="btn btn-dark" data-body-bg="dark">Dark</button>
+    <button type="button" class="btn btn-link">Link</button>
 </div>
 <div class="form-group">
     <a href="javascript:;" class="btn btn-primary">Primary</a>
     <a href="javascript:;" class="btn btn-secondary">Secondary</a>
-    <a href="javascript:;" class="btn btn-success">Success</a>
-    <a href="javascript:;" class="btn btn-info">Info</a>
-    <a href="javascript:;" class="btn btn-warning">Warning</a>
-    <a href="javascript:;" class="btn btn-danger">Danger</a>
+    <a href="javascript:;" class="btn btn-success" data-alert="success">Success</a>
+    <a href="javascript:;" class="btn btn-info" data-alert="info">Info</a>
+    <a href="javascript:;" class="btn btn-warning" data-alert="warning">Warning</a>
+    <a href="javascript:;" class="btn btn-danger" data-alert="danger">Danger</a>
     <a href="javascript:;" class="btn btn-light" data-body-bg="light">Light</a>
     <a href="javascript:;" class="btn btn-dark" data-body-bg="dark">Dark</a>
+    <a href="@User.Url()" class="btn btn-link">Link</a>
 </div>
 <div class="form-group">
     <button type="button" class="btn btn-outline-primary">Primary</button>
     <button type="button" class="btn btn-outline-secondary">Secondary</button>
-    <button type="button" class="btn btn-outline-success">Success</button>
-    <button type="button" class="btn btn-outline-info">Info</button>
-    <button type="button" class="btn btn-outline-warning">Warning</button>
-    <button type="button" class="btn btn-outline-danger">Danger</button>
+    <button type="button" class="btn btn-outline-success" data-alert="success">Success</button>
+    <button type="button" class="btn btn-outline-info" data-alert="info">Info</button>
+    <button type="button" class="btn btn-outline-warning" data-alert="warning">Warning</button>
+    <button type="button" class="btn btn-outline-danger" data-alert="danger">Danger</button>
     <button type="button" class="btn btn-outline-light" data-body-bg="light">Light</button>
     <button type="button" class="btn btn-outline-dark" data-body-bg="dark">Dark</button>
 </div>
 <div class="form-group">
     <a href="javascript:;" class="btn btn-outline-primary">Primary</a>
     <a href="javascript:;" class="btn btn-outline-secondary">Secondary</a>
-    <a href="javascript:;" class="btn btn-outline-success">Success</a>
-    <a href="javascript:;" class="btn btn-outline-info">Info</a>
-    <a href="javascript:;" class="btn btn-outline-warning">Warning</a>
-    <a href="javascript:;" class="btn btn-outline-danger">Danger</a>
+    <a href="javascript:;" class="btn btn-outline-success" data-alert="success">Success</a>
+    <a href="javascript:;" class="btn btn-outline-info" data-alert="info">Info</a>
+    <a href="javascript:;" class="btn btn-outline-warning" data-alert="warning">Warning</a>
+    <a href="javascript:;" class="btn btn-outline-danger" data-alert="danger">Danger</a>
     <a href="javascript:;" class="btn btn-outline-light" data-body-bg="light">Light</a>
     <a href="javascript:;" class="btn btn-outline-dark" data-body-bg="dark">Dark</a>
 </div>
@@ -78,14 +93,8 @@
     <button class="btn btn-success btn-load waves-effect" data-style="zoom-in" type="button">Waves + Disable</button>
     <button type="button" class="btn btn-info">@Html.SvgIcon("thumb-up") Icon</button>
     <button class="btn btn-outline-warning waves-effect" type="button">Waves outline</button>
-    <button type="button" class="btn btn-link">Link</button>
-    <button type="button" class="btn btn-icon">@Html.SvgIcon("bell")</button>
-    <button type="button" class="btn btn-icon btn-badge">@User.AvatarImg(24) <span class="badge badge-danger">3</span></button>
-</div>
-
-<div class="form-group">
     <div class="btn-group dropdown">
-        <button type="button" class="btn btn-primary">Split</button>
+        <button type="button" class="btn btn-primary">Split button</button>
         <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="Toggle Dropdown">
             @Html.SvgIcon("menu-down")
         </button>
@@ -99,48 +108,32 @@
             <a class="dropdown-item" href="#">Separated link</a>
         </div>
     </div>
+</div>
 
-    <div class="btn-group dropup">
-        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropup</button>
-        <div class="dropdown-menu dropdown-menu-right">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Separated link</a>
-        </div>
-    </div>
-
-    <button type="button" class="btn btn-outline-warning btn-icon-collapse" title="Archive">@Html.SvgIcon("archive") Collapse</button>
-
-    <div class="btn-group dropdown">
-        <button type="button" class="btn btn-outline-danger btn-icon-collapse" title="Trash">@Html.SvgIcon("delete") Split collapse</button>
-        <button type="button" class="btn btn-outline-danger dropdown-toggle dropdown-toggle-split hidden-xs-down" data-toggle="dropdown">@Html.SvgIcon("menu-down")</button>
-        <div class="dropdown-menu dropdown-menu-right">
-            <button type="button" class="dropdown-item">Permanently delete</button>
-        </div>
-    </div>
-
+<div class="form-group">
+    <button type="button" class="btn btn-icon no-waves">@Html.SvgIcon("arrow-left")<span>Back</span></button>
+    <button type="button" class="btn btn-icon btn-badge">@Html.SvgIcon("bell") <span class="badge badge-danger">3</span></button>
+    <button type="button" class="btn btn-icon btn-badge">@User.AvatarImg(24) <span class="badge badge-danger">3</span></button>
+    <button type="button" class="btn btn-icon">@Html.SvgIcon("comment")</button>
     <div class="dropdown d-inline-block">
-        <button type="button" class="btn btn-icon btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="Toggle Dropdown">
+        <button type="button" class="btn btn-icon dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="Toggle Dropdown">
             @Html.SvgIcon("dots-vertical")
         </button>
         <div class="dropdown-menu dropdown-menu-right">
-            <form action="" method="get" data-turboform>
+            <a class="dropdown-item" href="#">@Html.SvgIcon("pencil") Link action</a>
+            <form action="#" method="get" data-turboform>
                 <input type="hidden" name="q" value="form" />
-                <button type="submit" class="dropdown-item">@Html.SvgIcon("weavy") Form action</button>
+                <button type="submit" class="dropdown-item">@Html.SvgIcon("upload") Form action</button>
             </form>
-            <a class="dropdown-item" href="#">@Html.SvgIcon("weavy") Link action</a>
-            <a class="dropdown-item" href="#">@Html.SvgIcon("weavy") Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#" target="_blank">Separated link</a>
-        </div>
-    </div>
 
-    <button type="button" class="btn btn-sm btn-round btn-success waves-effect">@Html.SvgIcon("plus")</button>
-    <button type="button" class="btn btn-round btn-success waves-effect">@Html.SvgIcon("plus")</button>
-    <button type="button" class="btn btn-lg btn-round btn-success waves-effect">@Html.SvgIcon("plus")</button>
+            <a class="dropdown-item" href="#">@Html.SvgIcon("pin") Button action</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#" target="_blank">@Html.SvgIcon("check") Separated action</a>
+        </div>
+        <button type="button" class="btn btn-sm btn-round btn-success waves-effect">@Html.SvgIcon("plus")</button>
+        <button type="button" class="btn btn-round btn-success waves-effect">@Html.SvgIcon("plus")</button>
+        <button type="button" class="btn btn-lg btn-round btn-success waves-effect">@Html.SvgIcon("plus")</button>
+    </div>
 </div>
 
 
@@ -152,17 +145,6 @@
     var shades = new int[] { 50, 100, 200, 300, 400, 500, 600, 700, 800, 900 };
     var theme = new Dictionary<string, string> { { "theme-500", "primary" }, { "teal-500", "success" }, { "light-blue-500", "info" }, { "amber-500", "warning" }, { "red-500", "danger" }, { "gray-400", "secondary" } };
 }
-
-@*<table class="table table-color">
-        @foreach (var color in colors) {
-            <tr>
-                <td class="swatch-@color">@color.Replace("-", " ").ToTitleCase()</td>
-                @foreach (var shade in shades.Reverse()) {
-                    <td class="swatch-@color-@shade">@shade</td>
-                }
-            </tr>
-        }
-    </table>*@
 
 <div class="row ">
     @foreach (var color in colors) {
@@ -230,7 +212,7 @@
             @Html.EditorFor(x => Model.CheckStatus)
         </div>
         <div class="col-sm-3">
-            @Html.EditorFor(x => Model.Features)
+
         </div>
         <div class="col">
             @Html.EditorFor(x => Model.Privacy)
@@ -290,7 +272,7 @@
         <li class="breadcrumb-item active" aria-current="page">Title of Item That Could Be Long</li>
     </ol>
     <div class="navbar-icons ml-auto">
-        @Html.StarToggle(new Item())
+        @Html.StarToggle(new Item(), true)
         @{ Html.RenderPartial("_ItemMenu", new Item()); }
     </div>
 </nav>
@@ -460,10 +442,6 @@
 <div class="row mt-4">
     <div class="col">
         <p>A normal paragraph of text <a href="#">with a link</a>. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh ultricies vehicula.</p>
-
-        <pre><code class="language-csharp">public static void Main(string[] args) {
-    Console.WriteLine("Hello world");
-}</code></pre>
         <p class="lead">
             Make a paragraph stand out by adding .lead. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Duis mollis, est non commodo luctus.
         </p>
@@ -471,6 +449,9 @@
             <p class="mb-0">For quoting blocks of content from another source within your document use blockquote.</p>
             <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
         </blockquote>
+        <pre><code class="language-csharp">public static void Main(string[] args) {
+    Console.WriteLine("Hello world");
+}</code></pre>
     </div>
 </div>
 

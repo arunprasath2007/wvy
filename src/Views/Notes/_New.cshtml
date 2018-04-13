@@ -1,5 +1,5 @@
 ﻿@model StickyNote
-<form class="modal-content note-@Model.NoteType.GetDisplayName().ToLower()" action="@(Url.Action<NotesController>(x => x.Insert(Model.SpaceId ?? SpaceService.GlobalId, null)))" method="post">
+<form class="modal-content note-@Model.NoteType.GetDisplayName().ToLower()" action="@(Url.Action<NotesController>(x => x.Insert(Model.SpaceId ?? SpaceService.SystemId, null)))" method="post">
     <div class="modal-header border-0 pb-0">
         <h5 class="modal-title">Post sticky note</h5>
         <button type="button" class="btn btn-icon" data-dismiss="modal">@Html.SvgIcon("close")</button>

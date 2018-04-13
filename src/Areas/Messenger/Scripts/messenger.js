@@ -268,6 +268,7 @@ weavy.messenger = (function($) {
                 var mhtml = a1[0];
                 // append message to conversation if it is loaded
                 if (_conversation === message.attached_to.id) {
+
                     var $msg = $(".message[data-message=" + message.id + "]");
                     if ($msg.length) {
                         // replace existing message with new markup
@@ -335,7 +336,7 @@ weavy.messenger = (function($) {
 
                 var $cnv = $(".conversation[data-conversation=" + message.attached_to.id + "]");
                 var isRoom = $html.data("room");
-                var listContainer = isRoom ? $("#conversations-rooms") : $("#conversations-direct");
+                var listContainer = isRoom ? $("#rooms") : $("#direct");
                 if (!listContainer.length) {
                     listContainer = $(".list-group-conversations");
                 }
@@ -749,7 +750,7 @@ weavy.messenger = (function($) {
 
         // update room name
         $(document).on("change", ".edit-room-form input", function (evt) {
-            $(".room-form").submit();
+            $(".edit-room-form").submit();
         });
 
         // toggle panes
@@ -801,10 +802,16 @@ weavy.messenger = (function($) {
             $(drawer).toggleClass("drawer-visible");
         });
 
+        $(document).on("keypress", ".room-form input", function (evt) {
+            if (evt.which === 13) {
+                $("[data-toggle=drawer-select-people]").first().trigger("click");
+                return false;
+            }
+        });
+
         $(document).on("click", "[data-toggle=drawer-select-people]", function(evt) {
             evt.preventDefault();
             var $drawer = $("." + $(this).data("toggle"));
-
 
             var $room = $(".drawer-room-name");
             if ($room.hasClass("drawer-visible")) {

@@ -8,6 +8,9 @@
     }
 }
 
+// default icon color
+@include text-emphasis-variant(".text-icon", $icon-color);
+
 // todo: loop over $shades instead?
 @include text-emphasis-variant(".text-theme-100", $theme-100);
 @include text-emphasis-variant(".text-theme-200", $theme-200);

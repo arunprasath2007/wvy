@@ -5,12 +5,12 @@ weavy.drawer = (function ($) {
         // close other drawers
         $(".drawer:not(" + drawer + ")").removeClass("drawer-in");
 
-        $("body").addClass("drawer-open");
+        $("html").addClass("drawer-open");
         $(drawer).addClass("drawer-in");
     }
 
     function close() {
-        $("body").removeClass("drawer-open");
+        $("html").removeClass("drawer-open");
         $(".drawer").removeClass("drawer-in");
     }
 
@@ -33,6 +33,7 @@ weavy.drawer = (function ($) {
 
     $(document).on("click", "[data-toggle=drawer][data-target]", function () {
         var target = $(this).data("target");
+        console.debug(target);
         toggle(target);
     });
 
@@ -45,6 +46,11 @@ weavy.drawer = (function ($) {
     // close drawer on turbolinks:beforecache
     document.addEventListener("turbolinks:before-cache", function () {
         close();
+    });
+
+    // close drawer when toggling starred/followed
+    $(document).on("click", "#drawer-space [data-toggle!=dropdown]", function () {
+        window.setTimeout("weavy.drawer.close();", 500);
     });
 
     //// close drawer on ESC

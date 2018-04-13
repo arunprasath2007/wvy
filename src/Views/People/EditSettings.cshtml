@@ -1,21 +1,15 @@
 ﻿@model UserSettings
 @{    
     User user = ViewBag.User as User;
-    Title = "People";
+    Title = "Edit user";
+    Back = Url.Back(user.Url());
 }
-
-@section navbar_left {
-    <div class="navbar-icons">
-        <a class="btn btn-icon" href="@user.Url()">@Html.SvgIcon("arrow-left")</a>
-    </div>
-}
-
 
 @section navbar_secondary {
     @Html.Partial("_Navbar", user)
 }
 
-<div class="container-fluid mt-3">
+<div class="container my-3">
     @using (Html.BeginForm(nameof(PeopleController.UpdateSettings), typeof(PeopleController).ControllerName(), new { id = user.Id }, FormMethod.Post, new { id = "update-settings-form", autocomplete = "off", data_turboform = "", novalidate = "" })) {
         @Html.HttpMethodOverride(HttpVerbs.Put)
         @Html.AntiForgeryToken()
@@ -34,7 +28,7 @@
         @Html.EditorsForModel(Model, group: "channel", exclude: new[] { "DesktopNotifications" })
         <div class="form-buttons">
             <button type="submit" class="btn btn-primary btn-load waves-effect" title="Save">Save</button>
-            <a href="@user.Url()" class="btn btn-outline-secondary mr-auto waves-effect">Cancel</a>
+            <a href="@Back" class="btn btn-outline-secondary mr-auto waves-effect" data-link>Cancel</a>
         </div>
     }
 </div>

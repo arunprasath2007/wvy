@@ -61,18 +61,18 @@ weavy.posts = (function ($) {
 
         // insert temporary post
         var $container = $(".posts");
-        $("<div class='card post fake-post'>" + 
+        $("<div class='card post fake-post'>" +
             "<div class='card-header media'>" +
-                "<div class='fake-user'></div>" +
-                "<div class='media-title'><div class='fake-text fake-text-50'></div>" + 
-                "<div class='fake-text fake-text-25'></div></div>" + 
-            "</div>" + 
+            "<div class='fake-user'></div>" +
+            "<div class='media-title'><div class='fake-text fake-text-50'></div>" +
+            "<div class='fake-text fake-text-25'></div></div>" +
+            "</div>" +
             "<div class='card-body'>" +
-                "<div class='fake-text'></div>" + 
-                "<div class='fake-text fake-text-50'></div>" + 
-                "<div class='fake-text fake-text-75'></div>" + 
-            "</div>" + 
-"</div> ").prependTo($container);
+            "<div class='fake-text'></div>" +
+            "<div class='fake-text fake-text-50'></div>" +
+            "<div class='fake-text fake-text-75'></div>" +
+            "</div>" +
+            "</div> ").prependTo($container);
 
         // reset form
         $editor.weavyEditor('reset');
@@ -98,7 +98,7 @@ weavy.posts = (function ($) {
     }
 
     // update post feedback partial view
-    function updateFeedback (id) {
+    function updateFeedback(id) {
         var $post = $("[data-post-id='" + id + "']");
         if (!$post.length) return;
 
@@ -118,7 +118,7 @@ weavy.posts = (function ($) {
         }
     });
 
-    weavy.comments.on("get", function (e, data) {        
+    weavy.comments.on("get", function (e, data) {
         if (data.entityType === "post") {
             updateFeedback(data.entityId);
         }
@@ -141,27 +141,6 @@ weavy.posts = (function ($) {
         var attachmentId = $(this).data("remove-attachment");
         $("#removedAttachments").append("<input type='hidden' name='removedAttachments' value='" + attachmentId + "'/>");
         $(this).parent().parent().remove();
-    });
-
-    // turn on/off notifications
-    $(document).on("click", "a[data-action=follow]", function (e) {
-        e.preventDefault();
-        var action = $(this);
-        var method = action.attr("data-method");
-
-        // REVIEW: move this to weavy.api.follow/unfollow?
-        $.ajax({
-            url: weavy.url.resolve(action.attr("href")),
-            type: method
-        }).then(function (response) {
-            if (method == "post") {
-                action.attr("data-method", "delete");
-                action.html("<svg class='i'><use xlink:href='#bell-off'/></svg> Turn off notifications")
-            } else {
-                action.attr("data-method", "post");
-                action.html("<svg class='i'><use xlink:href='#bell'/></svg> Turn on notifications")
-            }
-        });
     });
 
     // like post
@@ -195,7 +174,7 @@ weavy.posts = (function ($) {
         e.preventDefault();
         var id = this.dataset.id;
         weavy.api.trashPost(id).then(function () {
-            $("[data-type=post][data-id="+id+"]").slideUp("fast");
+            $("[data-type=post][data-id=" + id + "]").slideUp("fast");
             weavy.alert.alert("success", "Post was trashed. <button type='button' class='btn btn-link alert-link' data-restore='post' data-id='" + id + "'>Undo</button>.", 5000, "alert-trash-post-" + id);
         });
     });
@@ -239,40 +218,51 @@ weavy.posts = (function ($) {
     });
 
     // rtm post
-    weavy.realtime.on("post", function (e, post) {        
-        var postId = post.id;
-        var createdBy = post.created_by.id;
+    weavy.realtime.on("post", function (e, post) {
+
+        
+        var uid = post.created_by.id;
+
+        // do nothing of we are displaying another space
+        if (weavy.context.space !== post.space_id) {
+            return;
+        }
+
+        // do nothing if no posts on page
+        var $posts = $(".posts");
+        if (!$posts.length) {
+            return;
+        }
 
         // do nothing if already exists
-        if ($("div[data-post-id='" + postId + "']").length !== 0) return;
-
-        // only add post if we are on the post's stream
-        if ((weavy.context.app === null && weavy.context.space === null && weavy.context.item === null && weavy.context.file === null) || (post.attached_to.type === "space" && weavy.context.space == post.attached_to.id)) {
-            
-            $.ajax({
-                contentType: "application/json; charset=utf-8",
-                type: "GET",
-                url: weavy.url.resolve("/posts/" + postId)
-            }).then(function (post) {
-                var $container = $(".posts");
-
-                // remove fake post if rtm post created by current user
-                if (weavy.context.user === createdBy) {
-                    $(".fake-post:last", $container).remove()
-                }
-                
-                $(post).prependTo($container);
-            });
+        var $post = $("div[data-type=post][data-id='" + post.id + "']", $posts);
+        if ($post.length) {
+            return;
         }
+
+        // fetch and display partial post 
+        $.ajax({
+            contentType: "application/json; charset=utf-8",
+            type: "GET",
+            url: weavy.url.resolve("/posts/" + post.id)
+        }).then(function (post) {
+            // remove fake post if rtm post created by current user
+            if (weavy.context.user === uid) {
+                $(".fake-post:last", $posts).remove()
+            }
+
+            $(post).prependTo($posts);
+        });
+
     });
 
     // rtm like post
-    weavy.realtime.on("likepost", function (e, post, user) {        
+    weavy.realtime.on("likepost", function (e, post, user) {
         updateFeedback(post.id)
     });
 
     // rtm unlike post
-    weavy.realtime.on("unlikepost", function (e, post, user) {        
+    weavy.realtime.on("unlikepost", function (e, post, user) {
         updateFeedback(post.id)
     });
 
@@ -288,7 +278,7 @@ weavy.posts = (function ($) {
         var $modal = $(this);
         var $title = $(".modal-title", $modal).text(title);
         var $spinner = $(".spinner", $modal).addClass("spin").show();
-        var $body = $(".modal-body", $modal).empty();       
+        var $body = $(".modal-body", $modal).empty();
 
         $.ajax({
             url: weavy.url.resolve("/" + path),
@@ -305,9 +295,9 @@ weavy.posts = (function ($) {
     $(document).on("show.bs.modal", "#edit-post-modal", function (e) {
 
         var target = $(e.relatedTarget);
-        var path = target.data("path");        
+        var path = target.data("path");
         var title = target.attr("title");
-        
+
         // clear show and start spinner
         var $modal = $(this);
         var $form = $("form.modal-content", $modal).addClass("d-none");
@@ -320,11 +310,11 @@ weavy.posts = (function ($) {
         $.ajax({
             url: path,
             type: "GET"
-        }).then(function (html) {            
+        }).then(function (html) {
             $form.replaceWith(html);
 
-            var $editor = $("[data-editor-location='post-edit']").weavyEditor({       
-                collapsed: true,               
+            var $editor = $("[data-editor-location='post-edit']").weavyEditor({
+                collapsed: true,
                 pickerCss: 'collapsed-static',
                 submitButton: $form.find("button[type=submit]"),
                 onSubmit: function (e, d) {
@@ -339,6 +329,37 @@ weavy.posts = (function ($) {
             $spinner.removeClass("spin");
         });
     });
+
+
+    // load move form
+    $(document).on("show.bs.modal", "#move-post-modal", function (e) {
+
+        var target = $(e.relatedTarget);
+        var path = target.data("path");
+        var title = target.attr("title");
+
+        // clear show and start spinner
+        var $modal = $(this);
+        var $form = $("form.modal-content", $modal).addClass("d-none");
+        var $div = $("div.modal-content", $modal);
+        var $title = $(".modal-title", $div).text(title);
+        var $spinner = $(".spinner", $div).addClass("spin");
+        $div.removeClass("d-none");
+
+        // fetch modal content from server
+        $.ajax({
+            url: path,
+            type: "GET"
+        }).then(function (html) {
+            $form.replaceWith(html);
+
+            $div.addClass("d-none");
+        }).always(function () {
+            // stop spinner
+            $spinner.removeClass("spin");
+        });
+    });
+
 
 
     return {

@@ -1,16 +1,15 @@
 ﻿@model AboutModel
 @{
     Title = "About Weavy";
-    BackUrl = Url.Action<HomeController>(c => c.Index());
+    Back = Url.Action<HomeController>(c => c.Index());
 }
 
-<div class="cover py-4">
-    <div class="container">
-        @Html.IconImg(128, htmlAttributes: new { @class = "mx-auto d-block" })
-        <div class="text-center py-2">Weavy v@(Model.Version) was put together by a team of talented developers in Malmö, Sweden &ndash; with help from the following awesome open source projects.</div>
+<div class="cover">
+    <div class="container text-center py-4">
+        @Html.IconImg(128)
+        <div class="text-center pt-3">Weavy v@(Model.Version) was put together by a team of talented developers in Malmö, Sweden &ndash; with help from the following awesome open source projects.</div>
     </div>
 </div>
-
 
 <div class="container my-3">
     <table class="table table-hover">
@@ -31,3 +30,8 @@
     </table>
 </div>
 
+@section footer {
+    <footer class="text-muted text-center my-3">
+        © Incentive, Inc. 2017–@DateTime.Now.Year. All rights reserved.
+    </footer>
+}

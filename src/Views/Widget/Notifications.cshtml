@@ -1,0 +1,12 @@
+﻿@{
+    Layout = "_PersonalLayout.cshtml";
+}
+
+<header class="d-flex my-2 ml-3 mr-2">
+    <h6 class="my-2 mr-auto">Notifications</h6>
+    <button type="button" class="btn btn-icon btn-primary" data-read="notifications" title="Mark all as read">@Html.SvgIcon("check-all")</button>
+</header>
+<div id="notifications">
+    @{ Html.RenderPartial("~/Views/Notification/_Index.cshtml"); }
+</div>
+

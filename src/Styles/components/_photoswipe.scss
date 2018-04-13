@@ -8,3 +8,8 @@ $pswp__error-text-color: $danger; // "Image not loaded" text color
 
 @import "../vendor/photoswipe/main";
 @import "../vendor/photoswipe/default-skin/default-skin";
+
+.pswp {
+    overscroll-behavior: contain;
+    -ms-scroll-chaining: none;
+}

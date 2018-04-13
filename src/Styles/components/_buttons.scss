@@ -17,6 +17,19 @@
             margin-right: .25rem;
         }
     }
+
+    &.btn-sm {
+        > .i {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+    }
+    &.btn-lg {
+        > .i {
+            width: 2rem;
+            height: 2rem;
+        }
+    }
 }
 
 .btn-icon {
@@ -27,10 +40,14 @@
     color: $icon-color;
     line-height: 1;
     padding: .25rem;
+    align-items: center;
+    text-transform: none;
 
     @include hover-focus {
         outline: none;
+        color: darken($icon-color, 10%);
     }
+
     // color variants
     @each $color, $value in $theme-colors {
         &.btn-#{$color} {
@@ -50,10 +67,11 @@
         }
     }
 
+
     span {
-        margin: 0 .5rem;
-        text-transform: none;
+        margin-left: .25rem;
     }
+
 
     &.btn-badge {
         position: relative;
@@ -71,13 +89,18 @@
             align-items: center;
             justify-content: center;
             background: $deep-orange;
+
+            &.badge-left {
+                left: 1rem;
+                right: unset;
+            }
         }
     }
 }
 
-a.btn-icon {
+/*a.btn-icon {
     color: inherit;
-}
+}*/
 
 .btn-text {
     border: none;
@@ -86,11 +109,10 @@ a.btn-icon {
     outline: none;
     vertical-align: baseline;
     padding: 0;
-    
+
     &:active {
-        box-shadow:none !important;
+        box-shadow: none !important;
     }
-    
 }
 
 .btn-round {
@@ -117,9 +139,6 @@ a.btn-icon {
     }
 }
 
-.btn-waves {
-    display: inline-flex;
-}
 
 .btn-azure {
     @include button-variant(#2771ed, darken(#2771ed, 5%));
@@ -148,19 +167,5 @@ a.btn-icon {
 
     &:focus {
         outline: none;
-    }
-}
-
-
-// Icon collapsing buttons
-@include media-breakpoint-down(xs) {
-    .btn-icon-collapse {
-        background: none !important;
-        border-color: transparent !important;
-        box-shadow: none !important;
-
-        span {
-            display: none;
-        }
     }
 }

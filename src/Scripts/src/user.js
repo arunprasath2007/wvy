@@ -1,6 +1,12 @@
 ﻿var weavy = weavy || {};
 weavy.user = (function ($) {
 
+    // url to user profile that should be displayed in modal
+    var _href = null;
+
+    // regex for matching link to user profile
+    var _re = new RegExp("^\/people\/\\d+$")
+
     // trash user
     $(document).on("click", "[data-trash=user][data-id]", function (e) {
         e.preventDefault();
@@ -60,6 +66,56 @@ weavy.user = (function ($) {
         }
     });
 
+    // intercept links to user profile and open modal instead
+    $(document).on("click", "a[href^='/people/']:not([data-link]), tr[data-href^='/people/'][data-modal]", function (e) {
+        var $target = $(e.target);
+        if ($target.hasClass("dropdown-item") || $target.parents(".dropdown").length) {
+            console.debug("dropdown item should not open modal");
+            return;
+        }
+
+        // verify that href matches /people/{id}
+        _href = $(this).attr("href") || $(this).data("href");
+        if (!_re.test(_href)) {
+            console.debug(_href + " is not a profile link");
+            _href = null;
+            return;
+        }
+
+        // if clicked from a feedback modal, close that modal first
+        if ($target.parents("#feedback-modal").length) {
+            $("#feedback-modal").modal("hide");
+        }
+
+        // finally open modal with profile info
+        e.preventDefault();
+        $('#profile-modal').modal();
+    });
+
+    $(document).on("show.bs.modal", "#profile-modal", function (e) {
+        if (_href == null) {
+            return;
+        }
+        
+        // clear modal content and show spinner
+        var $modal = $(this);        
+        var $content = $(".modal-content:not(.loading)", $modal).addClass("d-none");
+        var $loading = $(".modal-content.loading", $modal).removeClass("d-none");
+        var $spinner = $(".spinner", $loading).addClass("spin").show();
+        
+        // get modal content from server
+        $.ajax({
+            url: weavy.url.resolve(_href),
+            type: "GET"
+        }).then(function (html) {            
+            $loading.addClass("d-none");
+            $content.html(html).removeClass("d-none");
+        }).always(function () {
+            // stop and hide spinner
+            $spinner.removeClass("spin").hide();
+        });
+    });
+
     function updateStatus(id, following) {
         if (following) {
             // toggle button class
@@ -72,16 +128,16 @@ weavy.user = (function ($) {
         }
     }
 
-    // follow specified user
+    // follow user
     function follow(id) {
         // call api to follow user
-        return weavy.api.follow(id);
+        return weavy.api.follow("user", id);
     }
 
-    // unstar specified entity
+    // unfollow user
     function unfollow(id) {
         // call api to unfollow user
-        return weavy.api.unfollow(id);
+        return weavy.api.unfollow("user", id);
     }
 
     return {

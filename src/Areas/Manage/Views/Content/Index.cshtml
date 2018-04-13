@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<IPlugin>
 @{
     Title = "Content types";
+    Back = Url.Action<HomeController>(c => c.Index());
 }
 
 <div class="container-fluid my-3">

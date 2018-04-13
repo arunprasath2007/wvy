@@ -1,17 +1,10 @@
 ﻿@model App
 @{
-
     Title = "New " + Model.MetaData().Name;
+    Back = Folder.Url();
 }
 
-
-@section navbar_secondary {
-    <nav class="nav nav-tabs">
-        <a class="nav-link active" href="#">Properties</a>
-    </nav>
-}
-
-<div class="container-fluid mt-3">
+<div class="container my-3">
     @using (Html.BeginForm(nameof(AppController.Insert), typeof(AppController).ControllerName(), FormMethod.Post, htmlAttributes: new { id="form-new", data_turboform = "", novalidate="" })) {
         @Html.HiddenFor(x => x.AppGuid)
         @Html.EditorFor(x => x.Name)
@@ -19,8 +12,8 @@
         @*@Html.EditorsForModel()*@
 
         <div class="buttons">
-            <button type="submit" class="btn btn-outline-primary">Save</button>
-            <a href="@Folder.Url()" class="btn btn-link">Cancel</a>
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a href="@Back" class="btn btn-outline-secondary">Cancel</a>
         </div>
     }
 </div>

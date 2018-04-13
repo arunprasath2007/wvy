@@ -1,57 +1,16 @@
 ﻿@using System.Linq;
 @{
     Title = "Embed Test";
-    var strips = SpaceService.Search(new SpaceQuery()).Where(s => s.StripUrl != null);
-    var strip = strips.FirstOrDefault(s => s.StripUrl.Contains(WeavyContext.Current.ApplicationUrl.RemoveTrailing("/"), StringComparison.OrdinalIgnoreCase));
-    var css = HtmlHelperExtensions.GetThemedCss("~/styles/widget.scss");
+    Back = Url.Action<TestController>(c => c.Index());
+
 }
 
-<div class="container my-5">
-    <div class="row justify-content-center">
+<pre class="m-0"><code class="language-css">@HtmlHelperExtensions.GetThemedCss("~/styles/widget.scss")</code></pre>
 
-        <div class="col-md-6">
-
-            <div class="form-group">
-                <label for="id" class="control-label">Strip Id </label>
-                <input type="text" class="form-control" id="id" value="@(strip?.Id)">
-            </div>
-
-            <div class="form-group">
-                <label for="folder" class="control-label">Folder (/x/y/z)</label>
-                <input type="text" class="form-control" id="folder">
-            </div>
-
-            <div class="form-group text-center">
-                <button class="btn btn-success" data-open-strip="personal">Open personal</button>
-                <button class="btn btn-success" data-toggle-strip="personal">Toggle personal</button>
-            </div>
-            <div class="form-group text-center">
-                <button class="btn btn-info" data-open-strip="messenger">Open messenger</button>
-                <button class="btn btn-info" data-toggle-strip="messenger">Toggle messenger</button>
-            </div>
-            <div class="form-group text-center">
-                <button class="btn btn-warning" data-open-strip="context">Open context</button>
-
-                <button class="btn btn-warning" data-toggle-strip="context">Toggle context</button>
-            </div>
-            <div class="form-group text-center">
-                <button class="btn btn-secondary" data-close-strip>Close</button>
-                <button class="btn btn-secondary" data-resize-strip>Expand/Collapse</button>
-                <button class="btn btn-secondary" data-reload-strip>Reload</button>
-            </div>
-
-        </div>
-    </div>
-</div>
-
-<div class="container my-5">
-        <pre><code class="language-css">@css</code></pre>
-</div>
 
 @section scripts{
-    <script>
+    <script id="weavy-loader">
         var weavy_options = {
-            id: @(strip?.Id),
             url: '@WeavyContext.Current.ApplicationUrl',
             always_available: false
         };

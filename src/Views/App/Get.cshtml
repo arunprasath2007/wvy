@@ -2,19 +2,24 @@
 @{
     IEntity current = Model.App.Parent == null ? (IEntity)Space : Model.App;
     IEntity parent = Model.App.Parent ?? (IEntity)Space;
-    Title = "Content";
 }
 
+@if (parent.Type == EntityType.Space) {
+    Title = "Files";
+    @section navbar_middle {
+        <div class="navbar-middle">@Html.StarToggle(Space)<span class="navbar-text">@Space.Name</span></div>
+    }
+    @section navbar_secondary {
+        @{ Html.RenderPartial("_SpaceTabs"); }
+    }
+} else {
+    @section navbar_middle {
+        @{ Html.RenderPartial("_BreadcrumbMenu", Model.App); }
+    }
+    Back = Url.Back(parent.Url());
+}
 
-<nav class="navbar navbar-content">
-    @Model.App.Breadcrumb()
-    <div class="navbar-icons ml-auto">
-        @Html.StarToggle(Model.App)
-        @{ Html.RenderPartial("_AppMenu", Folder); }
-    </div>
-</nav>
-
-<div class="mt-3">
+<div class="my-3">
     @if (Model.View == ContentView.Table) {
         <table class="table table-hover table-content">
             <thead>
@@ -32,9 +37,9 @@
                 <tfoot>
                     <tr>
                         <td class="empty text-center text-muted py-4" colspan="6">
-                            Nothing in this folder yet. 
+                            Nothing in this folder yet.
                             @if (Model.App.HasPermission(Permission.Create)) {
-                                <text>You should go ahead and add some content.</text>
+                                <text>Go ahead and add some files!</text>
                             }
                         </td>
                     </tr>
@@ -42,16 +47,31 @@
             }
 
             <tbody id="infinite-scroll-target">
-                @{ Html.RenderPartial("_" + Model.View.ToString(), Model.Content); }
+                @if (parent is App p) {
+                    <tr data-href="@p.Url()">
+                        <td class="table-icon">@Html.SvgIcon("subdirectory-arrow-left", htmlAttributes: new { @class = "rotate-90" })</td>
+                        <td><a href="@p.Url()">..</a></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="table-icon">@{ Html.RenderPartial("_AppMenu", Model.App);}</td>
+                    </tr>
+                }
+                @{ Html.RenderPartial("_Content" + Model.View.ToString(), Model.Content); }
             </tbody>
         </table>
+    } else if (Model.View == ContentView.List) {
+        <div class="list-group" id="infinite-scroll-target">
+            @{ Html.RenderPartial("_Content" + Model.View.ToString(), Model.Content); }
+        </div>
     } else {
         <div id="infinite-scroll-target">
-            @{ Html.RenderPartial("_" + Model.View.ToString(), Model.Content); }
+            @{ Html.RenderPartial("_Content" + Model.View.ToString(), Model.Content); }
         </div>
     }
     @Html.ScrollMore(Model.Content)
 </div>
+
 
 @section fab {
     @Model.App.FAB()

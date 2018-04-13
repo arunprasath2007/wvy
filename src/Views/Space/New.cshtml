@@ -1,23 +1,32 @@
 ﻿@model Space
 @{
     Title = "Add space";
+    Back = Url.Action<SpaceController>(c => c.Index(null, null, null));
 }
 
 @section navbar_secondary {
     <nav class="nav nav-tabs">
-        <a class="nav-link active" href="javascript:;"><span>Details</span></a>
-        <a class="nav-link disabled" href="javascript:;"><span>Settings</span></a>
-        <a class="nav-link disabled" href="javascript:;"><span>Strip</span></a>
+        <a class="nav-link active" href="javascript:;">Details</a>
+        <a class="nav-link disabled" href="javascript:;">Settings</a>
+        <a class="nav-link disabled" href="javascript:;">Widget</a>
     </nav>
 }
 
-<div class="container-fluid mt-3">
-    @using (Html.BeginForm(nameof(SpaceController.Insert), typeof(SpaceController).ControllerName(), FormMethod.Post, new { autocomplete = "off", data_turboform = "", novalidate = "" })) {
+    <div class="container my-3">
+        @using (Html.BeginForm(nameof(SpaceController.Insert), typeof(SpaceController).ControllerName(), FormMethod.Post, new { autocomplete = "off", data_turboform = "", novalidate = "" })) {
         @Html.AntiForgeryToken()
-        @Html.EditorsForModel()
-        <div class="form-buttons">
-            <button type="submit" class="btn btn-primary btn-load waves-effect">Save</button>
-            <a href="@Url.Action(nameof(SpaceController.Index))" class="btn btn-outline-secondary waves-effect">Cancel</a>
+
+
+        <div class="text-center">
+            @Html.EditorsForModel(include: new string[] { nameof(Model.Avatar) }, formLabels: false)
         </div>
-    }
-</div>
+
+        @Html.EditorsForModel(exclude: new string[] { nameof(Model.Avatar) })
+
+        <div class="form-buttons">
+            <button type="submit" class="btn btn-primary btn-load waves-effect" title="Save">Save</button>
+            <a href="@Back" class="btn btn-outline-secondary mr-auto waves-effect">Cancel</a>
+        </div>
+
+}
+    </div>

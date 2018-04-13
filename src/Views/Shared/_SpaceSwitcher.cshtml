@@ -1,23 +1,34 @@
-﻿<div class="space-switcher btn-group dropdown">
-    <a class="btn btn-transparent dropdown-toggle align-items-center" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        @(Space.AvatarImg(24, htmlAttributes: new { @class = "i mr-1" }))
-        <span>@Space.Name</span>
-        @Html.SvgIcon("menu-down")
-    </a>
-    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-        <form>
-            <div class="form-group">
-                <input id="space-switcher" type="search" class="form-control" placeholder="Find Space" />
-            </div>
-        </form>
-        
-        <div class="dropdown-item"><img class="avatar-36" src="@Weavy.Core.Helpers.UrlHelper.IconUrl(size:24)" alt="Home" /><label>The Pulse</label></div>
-        <div class="dropdown-item">@(new Space().AvatarImg(24, retina:true))<label>Development</label></div>
-        <div class="dropdown-item">@(new Space().AvatarImg(24, retina: true))<label>Team Alpha</label></div>
-        <div class="actions flex">
-            <a class="btn btn-transparent">ALL SPACES</a>
-            <button type="button" class="btn btn-transparent ml-auto"><svg class="i"><use xlink:href="#plus" /></svg></button>
+﻿@{
+    var spaces = Spaces.Take(5).ToList();
+    if (WeavyContext.Current.HQ != null) {
+        spaces.Insert(0, WeavyContext.Current.HQ);
+    }
+    Title = Space?.Name ?? "Home";
+}
+<div class="navbar-middle d-embedded">
+    @Html.StarToggle(Space, true)   
+    <span class="navbar-text">@Title</span>
+</div>
+<div class="navbar-middle d-standalone">    
+    @Html.StarToggle(Space, true)
+    <div class="dropdown">
+        <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+            <span class="navbar-text">@Title</span>
+            @Html.SvgIcon("menu-down")
+        </button>
+        <div class="dropdown-menu">
+            <a class="dropdown-item @(Space == null ? " active" : "")" href="@(Url.Action<HomeController>(c => c.Index()))">
+                @Html.IconImg(24)<span class="ml-2">Home</span>
+            </a>
+            <div class="dropdown-divider"></div>
+            
+            @foreach (var space in spaces.Take(5)) {
+                <a class="dropdown-item@(space.Id == Space?.Id ? " active" : "")" href="@space.Url()">
+                    @space.AvatarImg(24)<span class="ml-2">@space.Name</span>
+                    @Html.StarToggle(space, true)
+                </a>
+            }
+            <a class="dropdown-item justify-content-center" href="@(Url.Action<SpaceController>(c => c.Index(null, null, null)))">All spaces</a>
         </div>
-        
     </div>
 </div>

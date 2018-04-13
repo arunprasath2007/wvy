@@ -2,13 +2,16 @@
 
     // open photoswipe on click
     $(document).on("click", "[data-photoswipe]", function (e) {
-        var $target = $(e.target);
-        if ($target.hasClass("dropdown") || $target.parents(".dropdown").length) {
-            return;
-        }
+        // open widget preview
+        weavy.postal.post({ name: "open-preview" });        
 
+        var $target = $(e.target);
         e.preventDefault();
-        photoswipe($(this));
+
+        var $that = $(this);
+
+        // let widget apply styles before photoswipe init
+        setTimeout(function() { photoswipe($that);}, 0);
     });
 
     // cleanup before cache (needed when clicking back in the browser)
@@ -66,6 +69,18 @@
             useLargeImages = false,
             firstResize = true,
             imageSrcWillChange;
+
+        document.documentElement.classList.add("pswp-open");
+
+        pswp.listen('destroy', function () {
+            document.documentElement.classList.remove("pswp-open");
+        });
+
+        // Gallery unbinds events (triggers before closing animation)
+        pswp.listen('unbindEvents', function () {
+            // close widget preview
+            weavy.postal.post({ name: "close-preview" });
+        });
 
         // beforeResize event fires each time size of gallery viewport updates
         pswp.listen('beforeResize', function () {
@@ -132,7 +147,7 @@
 
         // inject custom header
         pswp.listen('beforeChange', function () {
-            
+
             $(".pswp .navbar-preview").remove();
             var header = $("<nav class='navbar fixed-top navbar-preview' />");
 
@@ -145,18 +160,18 @@
 
                     var star = $("<button type='button' class='btn btn-icon' data-toggle='star' data-entity='file' data-id='" + pswp.currItem.id + "' />");
                     if (pswp.currItem.starred) {
-                        star.addClass("active");
+                        star.addClass("on");
                     }
                     star.html('<svg class="i d-block"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#star-outline"></use></svg><svg class="i d-none"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#star"></use></svg>');
                     star.on("click", function () {
-                        if (star.hasClass("active")) {
+                        if (star.hasClass("on")) {
                             // unstar
                             pswp.currItem.starred = false;
-                            $("[data-id='" + pswp.currItem.id + "'][data-entity='file']").removeAttr("data-starred");
+                            $("[data-photoswipe][data-id='" + pswp.currItem.id + "'][data-entity='file']").removeAttr("data-starred");
                         } else {
                             //star
                             pswp.currItem.starred = true;
-                            $("[data-id='" + pswp.currItem.id + "'][data-entity='file']").attr("data-starred", "");
+                            $("[data-photoswipe][data-id='" + pswp.currItem.id + "'][data-entity='file']").attr("data-starred", "");
                         }
                     });
                     left.append(star);
@@ -168,20 +183,25 @@
             var right = $('<div class="navbar-icons" />');
 
             if (weavy.context.area !== "messenger") {
-                right.append('<a class="btn btn-icon" href="' + pswp.currItem.details + '#comments" title="' + pswp.currItem.comments + (pswp.currItem.comments !== 1 ? ' comments' : ' comment') + '"><svg class="i"><use xlink:href="' + (pswp.currItem.comments > 0 ? '#comment' : '#comment-outline') + '" /></svg></a>');
+                var comments = $('<a class="btn btn-icon" href="' + pswp.currItem.details + '#comments" title="' + pswp.currItem.comments + (pswp.currItem.comments !== 1 ? ' comments' : ' comment') + '"><svg class="i"><use xlink:href="' + (pswp.currItem.comments > 0 ? '#comment' : '#comment-outline') + '" /></svg></a>');
+                comments.on("click", function () {
+                    pswp.close();
+                });
+                right.append(comments);
             }
 
             if (pswp.currItem.download) {
                 right.append('<a href="' + pswp.currItem.download + '" class="btn btn-icon" title="Download"><svg class="i"><use xlink:href="#download" /></svg></a>');
             }
 
-            var close = $('<button type="button" class="btn btn-icon" title="Close" />');
+            var close = $('<button type="button" class="btn btn-icon" title="Close preview" />');
             close.html('<svg class="i"><use xlink:href="#close" /></svg>');
             close.on("click", function () {
                 pswp.close();
             });
 
             right.append(close);
+
             right.appendTo(header);
             header.appendTo(".pswp");
         });
@@ -222,7 +242,7 @@
                 starred: typeof $item.attr("data-starred") === 'undefined' ? false : true,
                 comments: $item.attr("data-comments"),
                 name: $item.data("name"),
-                msrc: thumb,                
+                msrc: thumb,
                 thumb: $item.find("> img")[0] || $('<img src="' + thumb + '" />').css({ position: "absolute", top: 0, left: 0, zIndex: -1000, opacity: 0, display: "none" }).appendTo(item)[0]
             };
             slides.push(slide);

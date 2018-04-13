@@ -1,129 +1,72 @@
-﻿@model SpaceStartModel
+﻿@model PostsModel
 @{
-    Title = "Home";
+    Title = "Posts";
 }
 
-<div class="cover py-4">
-    <div class="container text-center">
+@section navbar_middle {
+    <div class="navbar-middle">
+        @Html.StarToggle(Space)<span class="navbar-text">
+            @Space.Name
+            @if (Space.Teamname != null) {
+                <small>@@@Space.Teamname</small>
+            }
+        </span>
+    </div>
+}
+
+@if (Space.HasPermission(Permission.List)) {
+    @section navbar_secondary {
+        @{ Html.RenderPartial("_SpaceTabs"); }
+    }
+}
+
+<div class="cover cover-bg cover-under-navbar">
+
+    <div class="text-center my-4" style="padding-bottom:2.5rem;">
         @if (Space.Avatar?.Value is Weavy.Core.Models.File avatar && avatar != null) {
-            <a href="@avatar.Url()" @Html.Raw(Html.PreviewAttributes(avatar, href: avatar.Url()).AsHtmlAttributes())>
-                @avatar.AvatarImg(128, background: ColorExtensions.UseDarkText(Theme.ThemeColor()) ? Theme.NeutralColor(Shade.NineHundred) : Theme.NeutralColor(Shade.OneHundred))
-            </a>
+            <a href="@avatar.Url()" @Html.Raw(Html.PreviewAttributes(avatar, href: avatar.Url()).AsHtmlAttributes())>@avatar.AvatarImg(128)</a>
         } else {
-            @Space.AvatarImg(128, background: ColorExtensions.UseDarkText(Theme.ThemeColor()) ? Theme.NeutralColor(Shade.NineHundred) : Theme.NeutralColor(Shade.OneHundred))
+            @Space.AvatarImg(128)
         }
-        <div class="py-2">@Space.Description @Html.Badge(Space.Privacy)</div>
-        <form action="@Url.Action(nameof(SpaceController.Search), typeof(SpaceController).ControllerName())" method="get" class="pt-2" data-turboform>
-            <input class="form-control" type="text" role="search" name="q" value="" placeholder="Search @Space.Name..." />
-        </form>
+    </div>
+    <div class="facepile">
+        @foreach (var member in Model.Members) {
+            @member.AvatarLink(size: 32, presence: true)
+        }
     </div>
 
-    @{ Html.RenderPartial("_SpaceMenu", Space);}
+    <div class="top-right">@{ Html.RenderPartial("_SpaceMenu", Space); }</div>
 </div>
 
+<div class="container my-4">
+    @if (!Space.Description.IsNullOrEmpty()) {
+        <p class="lead text-center text-muted mb-2">@Space.Description</p>
+    }
+    <p class="small text-center text-muted">
+        <a href="@(Url.Action<SpaceController>(c=>c.Members(Space.Id, null, null)))">@Model.Members.TotalCount.SingularizeOrPluralize("member", "members")</a>@(" · " + Space.Privacy.GetDisplayName())
+    </p>
 
-<div class="container my-3">
-
-    <div class="facepile text-center my-3">
-        @foreach (var user in Model.People.Take(16)) {
-            @user.AvatarLink(size: 32, presence: true)
-        }
-        <a href="@(Url.Action<SpaceController>(c=>c.Members(Space.Id, null)))" class="btn btn-sm btn-round btn-light" title="More members">
-            @Html.SvgIcon("dots-horizontal", htmlAttributes: new { @class = "text-gray" })
-        </a>
-    </div>
-
-    @if (Space.IsPending) {
-        <div class="alert alert-warning text-center">
-            Your membership request is pending approval.
-            <form class="d-inline" method="post" action="@(Url.Action<SpaceController>(c => c.Leave(Space.Id, null)))" data-turboform>
-                @Html.HttpMethodOverride(HttpVerbs.Delete)
-                <button type="submit" class="btn btn-link alert-link">Undo.</button>
-            </form>
+    @if(!Space.IsMember && SpaceService.HasPendingMembershipRequest(Space.Id)) {
+        <div class="alert alert-info d-flex">
+            @Html.SvgIcon("information", size: 36, htmlAttributes: new { @class= "align-self-start flex-noscale mt-1 mr-2" })
+            <span>Your membership request is waiting for approval.</span>
         </div>
-    } else if (Space.HasPermission(Permission.Join) && !Space.IsMember) {
-        <div class="alert alert-warning text-center">
-            You are not a member of this space. 
-            <form class="d-inline" method="post" action="@(Url.Action<SpaceController>(c => c.Join(Space.Id)))" data-turboform>
-                @if (Space.Approval == MembershipApproval.None) {
-                    <button type="submit" class="btn btn-link alert-link">Join now.</button>
-                } else {
-                    <button type="submit" class="btn btn-link alert-link">Ask to join.</button>
-                }
-            </form>
-       </div>
     }
 
-
     @if (Space.HasPermission(Permission.List)) {
-
-        <div class="row">
-            <div class="col-sm-6">
-                <h6 class="col-title">Posts</h6>
-                @Html.Partial("_PostForm", Space)
-                <div class="posts">
-                    @if (Model.Posts.Any()) {
-                        foreach (var post in Model.Posts) {
-                            Html.RenderPartial("_Post", post);
-                        }
-                        if (Model.Posts.HasNextPage) {
-                            <a href="@(Url.Action<SpaceController>(c => c.Discuss(Space.Id, null)))" class="text-center d-block mb-3">More posts...</a>
-                        }
-                    }
-                </div>
-            </div>
-
-            <div class="col-sm-6">
-
-                @if (Model.Notes.Any() || Space.HasPermission(Permission.Edit)) {
-
-                    if (Space.HasPermission(Permission.Edit)) {
-                        <h6 class="col-title d-flex">Notes <button class="btn btn-icon" type="button" data-toggle="modal" data-target="#note-modal" data-path="@(Url.Action<NotesController>(c => c.New(Space.Id)))" title="Post sticky note">@Html.SvgIcon("plus")</button></h6>
-                    } else {
-                        <h6 class="col-title">Notes</h6>
-                    }
-
-                    <div class="notes">
-                        @if (Model.Notes.Any()) {
-
-                            foreach (var note in Model.Notes) {
-                                Html.RenderPartial("_Note", note);
-                            }
-                        } else {
-                            <p class="text-center text-muted">You're a space admin and can post sticky notes here.</p>
-                        }
-                    </div>
-                }
-
-                @if (Model.Content.Any()) {
-                    var data = new ViewDataDictionary() { { "IsSpace", true } };
-                    <h6 class="col-title">Recently updated</h6>
-                    <div class="card">
-                        <div class="list-group list-group-flush">
-                            @foreach (var content in Model.Content) {
-                                if (content is Weavy.Core.Models.File file) {
-                                    @Html.Partial("_ListItemFile", file, data)
-                                } else {
-                                    @Html.Partial("_ListItemContent", content, data)
-                                }
-                            }
-                        </div>
-                    </div>
-                }
-
-            </div>
-
+        @Html.Partial("_PostForm", Space)
+        <div id="infinite-scroll-target" class="posts">
+            @Html.Partial("_Posts", Model.Posts)
         </div>
-
-
+        @Html.ScrollMore(Model.Posts)
     }
 </div>
 
 @section footer {
     @{
         Html.RenderPartial("_FeedbackModal");
-        Html.RenderPartial("_NoteModal");
         Html.RenderPartial("_EditPostModal");
+        Html.RenderPartial("_MovePostModal");
         Html.RenderPartial("_EditCommentModal");
     }
 }

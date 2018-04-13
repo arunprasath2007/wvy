@@ -13,7 +13,7 @@ weavy.browser = {
 (function () {
     if (document.documentElement.classList.contains("embedded")) {
         weavy.browser.embedded = true;
-    } else {
+    } else if (window.name !== "weavy-standalone") {
         try {
             weavy.browser.embedded = window.self !== window.top;
         } catch (e) {
@@ -44,17 +44,6 @@ weavy.browser = {
 
     window.addEventListener("message", function (e) {        
         switch (e.data.name) {
-            case "frame":
-                if (e.data.frameName === "context") {         
-                    weavy.browser.context = true;
-                    document.documentElement.classList.add("strip-context");
-                }
-
-                if (e.data.frameName === "personal") {                    
-                    weavy.browser.personal= true;
-                    document.documentElement.classList.add("strip-personal");
-                }                    
-                break;
             case "ping":
                 e.source.postMessage({ "name": "pong" }, e.origin);
                 break;

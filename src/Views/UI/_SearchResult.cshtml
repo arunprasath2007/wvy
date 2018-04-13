@@ -13,7 +13,7 @@
                 <p class="mb-1">@if (item.DescriptionHighlight != null) { @Html.Raw(item.DescriptionHighlight) } else { @item.Description.Ellipsis(256) }</p>
             }
 
-            @if (item.Type != EntityType.User && item.Type != EntityType.Group && item.CreatedBy != null) {
+            @if (item.Type != EntityType.User && item.CreatedBy != null) {
                 <small>by @item.CreatedBy.Title &middot; @Html.Time(item.CreatedAt)</small>
             }
 
@@ -21,6 +21,5 @@
                 <span class="tags">&middot; @Html.Raw(item.Tags.Join(", ", x => @"#" + x))</span>
             }
         </a>
-
     }
 </div>

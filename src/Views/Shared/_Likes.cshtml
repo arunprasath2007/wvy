@@ -1,8 +1,0 @@
-﻿<table class="table table-likes">
-@foreach (User user in Model.LikedBy) {
-    <tr data-href="@user.Url()">
-        <td class="table-icon">@user.AvatarImg(size:32)</td>
-        <td><a href="@user.Url()">@user.Title</a> <small>@@@user.Username</small></td>
-    </tr>
-}
-</table>

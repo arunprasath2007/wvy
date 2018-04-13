@@ -2,7 +2,6 @@
 
 article.item {
     overflow-wrap: break-word;
-
     // user supplied content
     .display-group[data-type=html] {
         blockquote {
@@ -27,24 +26,59 @@ article.item {
             @extend .table;
         }
     }
+}
+
+.item-header {
+    display: flex;
+    margin-bottom: 1rem;
+    align-items: center;
+}
+
+.item-comments {
+    h4 {
+        @include divider();
+    }
 
     .comments {
+        background: $gray-100;
+        padding: .75rem .25rem .75rem .75rem;
+        border-radius: $border-radius;
 
         .file-list, .image-grid {
             max-width: map-get($grid-breakpoints, sm);
         }
     }
 
-    footer {
-        margin-top: 1rem;
-        padding: 1rem .5rem;
-        border-top: 1px solid$border-color;
+    form {
+        background: $gray-100;
+        padding: 0 .75rem .75rem .75rem;
     }
 }
+
+.item-attachments {
+    h4 {
+        @include divider();
+    }
+}
+
+//
+.subscribers {
+    h4 {
+        @include divider();
+    }
+
+    [data-toggle=subscribe] .i {
+        display: none !important;
+    }
+}
+
 
 // insert/edit note
 form.edit-note {
     .html-editor {
-        height: calc(100vh - 276px);
+        height: calc(100vh - 17.25rem); // calc(100vh - 276px)
+        @include media-breakpoint-down(sm) {
+            height: calc(100vh - 19.5rem); // calc(100vh - 312px) // toolbar spans two rows
+        }
     }
 }

@@ -1,7 +1,7 @@
 ﻿var weavy = weavy || {};
 weavy.audio = (function ($) {
 
-    function play(sound) {
+    function play(sound) {        
         try {
             $(sound)[0].play();
         } catch (e) {

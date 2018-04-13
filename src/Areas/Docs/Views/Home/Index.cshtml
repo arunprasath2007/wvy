@@ -5,17 +5,15 @@
 
 @{
     Title = "Weavy API";
+    Back = Url.Action<Weavy.Web.Controllers.HomeController>(c => c.Index());
 }
 
-@section navbar {
-    <div class="navbar-title">@Title</div>
-}
 
-<div class="container">
+<div class="container my-3">
     <header>
         <h1 class="display-1">@Title</h1>
         <p>The Weavy API lets you integrate with, and build tools and applications on top of Weavy.</p>
-        <p><span class="label label-danger">Disclaimer</span> While the API is used extensively by the Weavy user interface it should still be considered experimental since the API endpoints, as well as their request and response might change between versions of Weavy.</p>
+        <p><span class="badge badge-danger">Disclaimer</span> While the API is used extensively by the Weavy user interface it should still be considered experimental since the API endpoints, as well as their request and response might change between versions of Weavy.</p>
         <h2 class="display-2">Guiding principles</h2>
         <p>The API is a JSON API with the following guiding principles:</p>
         <ul>

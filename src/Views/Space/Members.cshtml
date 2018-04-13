@@ -1,13 +1,22 @@
 ﻿@using Weavy.Web.Controllers
-@model MembersListModel
+@model MembersModel
 
 @{
     Title = "Members";
+    Back = Space.Url();
+    var u = new User();
+    string tab = ViewContext.RouteData.Values["tab"] as string;
 }
 
 @section navbar_secondary {
     <nav class="nav nav-tabs">
-        @(Html.ActionLink<SpaceController>(c => c.Members(Space.Id, null), text: "All", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Path))
+        @if (tab == null) {
+            @(Html.ActionLink<SpaceController>(c => c.Members(Space.Id, "all", null), text: "All", htmlAttributes: new { @class = "nav-link active" }))
+        } else {
+            @(Html.ActionLink<SpaceController>(c => c.Members(Space.Id, "all", null), text: "All", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Path))
+        }
+        @(Html.ActionLink<SpaceController>(c => c.Members(Space.Id, "internal", null), text: "Internal", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Path))
+        @(Html.ActionLink<SpaceController>(c => c.Members(Space.Id, "external", null), text: "External", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Path))
     </nav>
     @if (Space.HasPermission(Permission.AddMembers)) {
         <div class="fab">
@@ -16,26 +25,14 @@
     }
 }
 
-
 <div class="container-fluid mt-3">
 
-    @if (Space.IsPending) {
+    @if (Model.IsPending) {
         <div class="alert alert-warning text-center">
             Your membership request is pending approval.
-            <form class="d-inline" method="post" action="@(Url.Action<SpaceController>(c => c.Leave(Space.Id, null)))" data-turboform>
+            <form class="d-inline" method="post" action="@(Url.Action<SpaceController>(c => c.Leave(Space.Id)))" data-turboform>
                 @Html.HttpMethodOverride(HttpVerbs.Delete)
                 <button type="submit" class="btn btn-link alert-link">Undo.</button>
-            </form>
-        </div>
-    } else if (Space.HasPermission(Permission.Join) && !Space.IsMember) {
-        <div class="alert alert-warning text-center">
-            You are not a member of this space.
-            <form class="d-inline" method="post" action="@(Url.Action<SpaceController>(c => c.Join(Space.Id)))" data-turboform>
-                @if (Space.Approval == MembershipApproval.None) {
-                    <button type="submit" class="btn btn-link alert-link">Join now.</button>
-                } else {
-                    <button type="submit" class="btn btn-link alert-link">Ask to join.</button>
-                }
             </form>
         </div>
     }
@@ -52,7 +49,7 @@
             <tbody>
                 @foreach (var invite in Model.Invites) {
                     <tr class="table-warning">
-                        <td class="table-icon"><img alt="" class="img-32 avatar" src="~/img/user-64x64.svg"></td>
+                        <td class="table-icon">@u.AvatarImg(32)</td>
                         <td>@invite.Email @Html.Badge(invite)</td>
                         <td class="table-icon">
                             @if (Space.IsMember && Space.HasPermission(Permission.Admin)) {
@@ -73,33 +70,18 @@
                 }
 
                 @foreach (var member in Model.Members) {
-                    if (member.Value == null) {
-                        // external users cannot see groups...
-                        continue;
-                    }
-
-                    <tr data-href="@(member.Type == EntityType.User ? Url.Action<PeopleController>(c => c.Get(member.Id, null, null)) : Url.Action<GroupController>(c => c.Get(member.Id, null)))" @if (member.IsPending) { <text> class="table-warning" </text> }>
-                        <td class="table-icon">@((member.Value as IHasAvatar).AvatarImg(32, presence: true))</td>
+                    <tr data-href="@member.Url()" data-modal class="@(member.IsPending ? "table-warning" : "") @(member.IsSuspended ? "table-suspended": "")">
+                        <td class="table-icon">@(member.AvatarImg(32, presence: true))</td>
                         <td>
-                            @if (member.Type == EntityType.User) {
-                                var user = member.Value as User;
-                                if (user.Username == user.Title) {
-                                    <a href="@(Url.Action<PeopleController>(c => c.Get(user.Id, null, null)))"><small>@@@user.Username</small></a>
-                                } else {
-                                    <a href="@(Url.Action<PeopleController>(c => c.Get(user.Id, null, null)))">@user.Title</a> <small>@@@user.Username</small>
-                                }
+                            @if (member.Username == member.Title) {
+                                <a href="@(Url.Action<PeopleController>(c => c.Get(member.Id)))"><small>@@@member.Username</small></a>
                             } else {
-                                var group = member.Value as Group;
-                                if (group.Groupname == group.Title) {
-                                    <a href="@(Url.Action<GroupController>(c => c.Get(group.Id, null)))"><small>@@@group.Groupname</small></a>
-                                } else {
-                                    <a href="@(Url.Action<GroupController>(c => c.Get(group.Id, null)))">@group.Title</a> <small>@@@group.Groupname</small>
-                                }
+                                <a href="@(Url.Action<PeopleController>(c => c.Get(member.Id)))">@member.Title</a> <small>@@@member.Username</small>
                             }
                             @Html.Badge(member)
                         </td>
                         <td class="table-icon">
-                            @{ Html.RenderPartial("_MemberMenu", member);}
+                            @{ Html.RenderPartial("_MemberMenu", member, new ViewDataDictionary { { nameof(Model.HasAdmin), Model.HasAdmin } });}
                         </td>
                     </tr>
                 }
@@ -107,24 +89,26 @@
         </table>
     }
 
-    @if (Model.Members.IsNullOrEmpty()) {
-        <form class="text-center text-muted" action="@(Url.Action<SpaceController>(c => c.Join(Space.Id)))" method="post" data-turboform>
-            <p>
-                No members in this space.
-                @if (Space.HasPermission(Permission.Join)) {
-                    <text>You can <button type="submit" class="btn btn-link btn-text">join</button> and be the first one here.</text>
+    @if (!(tab?.Equals("external", StringComparison.OrdinalIgnoreCase) ?? false)) {
+        if (Model.Members.IsNullOrEmpty()) {
+            <form class="text-center text-muted" action="@(Url.Action<SpaceController>(c => c.Join(Space.Id)))" method="post" data-turboform>
+                <p>
+                    No members in this space.
+                    @if (Space.HasPermission(Permission.Join)) {
+                        <text>You can <button type="submit" class="btn btn-link btn-text">join</button> and be the first one here.</text>
+                    }
+                </p>
+            </form>
+        }
+
+        if (Space.IsMember && Model.Members.Count == 1) {
+            <p class="text-center text-muted">
+                No other members in this space.
+                @if (Space.HasPermission(Permission.AddMembers)) {
+                    <text><a href="javascript:;" data-toggle="modal" data-target="#add-dialog">Add some people</a> to start collaborating.</text>
                 }
             </p>
-        </form>
-    }
-
-    @if (Space.IsMember && Model.Members.Count == 1) {
-        <p class="text-center text-muted">
-            No other members in this space.
-            @if (Space.HasPermission(Permission.AddMembers)) {
-                <text><a href="javascript:;" data-toggle="modal" data-target="#add-dialog">Add some people</a> to start collaborating.</text>
-            }
-        </p>
+        }
     }
 </div>
 
@@ -134,12 +118,9 @@
             <div class="modal-content">
                 @using (Html.BeginForm(nameof(SpaceController.InsertMembers), null, new { id = Space.Id }, FormMethod.Post, new { autocomplete = "off", data_turboform = "" })) {
                     @Html.AntiForgeryToken()
-
                     <div class="modal-header">
                         <h5 class="modal-title">Add or invite members</h5>
-                        <button type="button" class="btn btn-icon" data-dismiss="modal" aria-label="Close">
-                            @Html.SvgIcon("close")
-                        </button>
+                        <button type="button" class="btn btn-icon" data-dismiss="modal" aria-label="Close">@Html.SvgIcon("close")</button>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">

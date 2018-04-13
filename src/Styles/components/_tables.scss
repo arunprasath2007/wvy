@@ -6,7 +6,7 @@
         // cell with .img-32 or .btn-icon
         line-height: 0;
         padding: .5rem;
-        width: 40px;
+        width: 2.5rem; // 40px;
         color: $icon-color;
 
         &:first-child {
@@ -35,7 +35,7 @@
     th.table-icon, td.table-icon {
         // cell with .img-32 or .btn-icon
         padding: 0;
-        width: 34px;
+        width: 2.125rem; //34px;
 
         > .i {
             margin: .3125rem;
@@ -51,7 +51,7 @@
     > th, > td:not(.table-icon) {
         color: $text-muted;
 
-        a {
+        a:not(.badge) {
             color: $text-muted;
         }
 

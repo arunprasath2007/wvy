@@ -1,0 +1,15 @@
+/// <reference path="../_core.scss" />
+
+[data-toggle=star], [data-toggle=subscribe] {
+
+    &.on {
+
+        .d-block {
+            display: none !important;
+        }
+
+        .d-none {
+            display: block !important;
+        }
+    }
+}

@@ -10,7 +10,7 @@
     <tbody>
         @if (Model.Any()) {
             foreach (var item in Model) {
-                Html.RenderPartial("_Draft", item);
+                Html.RenderPartial("~/Views/Item/_Draft.cshtml", item);
             }
         }
     </tbody>

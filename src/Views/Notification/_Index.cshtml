@@ -8,9 +8,9 @@
 
 <div class="list-group">
     @foreach (var notification in Model.UnreadNotifications) {
-        Html.RenderPartial("_Notification", notification);
+        Html.RenderPartial("~/Views/Notification/_Notification.cshtml", notification);
     }
     @foreach (var notification in Model.ReadNotifications) {
-        Html.RenderPartial("_Notification", notification);
+        Html.RenderPartial("~/Views/Notification/_Notification.cshtml", notification);
     }
 </div>

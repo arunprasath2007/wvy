@@ -23,9 +23,9 @@ weavy.comments = (function ($) {
     });
 
     // init comment editor
-    function initCommentEditor($el) {        
+    function initCommentEditor($el) {
         if ($el.length === 0) return;
-        
+
         $el.weavyEditor({
             collapsed: true,
             embeds: false,
@@ -51,6 +51,8 @@ weavy.comments = (function ($) {
         var $commentsContainer = $form.parent().find($form.data("comments-container"));
 
         var data = $form.serializeObject();
+        data["text"] = d.text;
+
         var method = "POST";
         var url = weavy.url.resolve($form.attr("action"));
 
@@ -97,8 +99,9 @@ weavy.comments = (function ($) {
             $.ajax({
                 url: weavy.url.resolve("/" + entityType + "s/" + entityId + "/comments"),
                 method: "GET",
+                cache: false,
                 contentType: "application/json"
-            }).then(function (html) {                
+            }).then(function (html) {
                 triggerEvent("insert", { entityType: entityType, entityId: entityId });
             });            
         }).fail(function () {
@@ -118,6 +121,7 @@ weavy.comments = (function ($) {
         $.ajax({
             url: weavy.url.resolve("/comments/" + id + "/feedback"),
             method: "GET",
+            cache: false,
             contentType: "application/json"
         }).then(function (html) {            
             $comment.find(".comment-feedback").html(html);
@@ -126,7 +130,7 @@ weavy.comments = (function ($) {
 
     // get comments for a post
     function getComments(id, type, expand) {
-        
+
         // check if the comments parent entity is present on the page
         var $entity = $("[data-" + type + "-id='" + id + "']")
         if ($entity.length === 0) {
@@ -153,14 +157,14 @@ weavy.comments = (function ($) {
         $.ajax({
             url: weavy.url.resolve("/" + type + "s/" + id + "/comments"),
             method: "GET",
-            contentType: "application/json"
+            contentType: "application/json",
+            cache: false
         }).then(function (html) {
             // remove spinner
             $spinner.remove();
 
             // replace comments
             $(".comments", $div).html(html);
-
             triggerEvent("get", { entityType: type, entityId: id });
         });
                 
@@ -263,7 +267,7 @@ weavy.comments = (function ($) {
 
     // rtm comment
     weavy.realtime.on("comment", function (e, comment) {
-        
+
         // do nothing if already exists
         if ($("div[data-comment-id='" + comment.id + "']").length !== 0) return;
 
@@ -299,7 +303,8 @@ weavy.comments = (function ($) {
         // fetch modal content from server
         $.ajax({
             url: path,
-            type: "GET"
+            type: "GET",
+            cache: false
         }).then(function (html) {
             
             $form.replaceWith(html);

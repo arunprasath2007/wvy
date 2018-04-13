@@ -46,6 +46,7 @@ weavy.autosave = (function () {
 
             // clear dirty flag when submitting form via buttons
             $form.find("button[type=submit], input[type=submit]").on("click", function () {
+                _cancel = true;
                 $form.removeClass("dirty");
             });
 
@@ -60,10 +61,6 @@ weavy.autosave = (function () {
 
             $form.find(":input").on("change", function () {
                 change();
-            });
-
-            $form.on("submit", function () {
-                _cancel = true;
             });
 
             _started = isInt(_id);
@@ -82,8 +79,8 @@ weavy.autosave = (function () {
     // called when content changes
     function change() {
         $form.addClass("dirty");
-
         if (_started) {
+            _cancel = false;
             if (_typing) {
                 clearTimeout(_timer);
                 _timer = setTimeout(function () { save() }, 2000);
@@ -113,7 +110,7 @@ weavy.autosave = (function () {
         delete properties.item_id;
         delete properties.x_http_method_override;
 
-        var url = "/api/items/" + _id + "/autosave?draft=true&force=" + _force;
+        var url = "/api/items/" + _id + "/autosave?force=" + _force;
 
         if (!_cancel) {
             $.ajax({
@@ -144,6 +141,9 @@ weavy.autosave = (function () {
                     $form.removeClass("dirty");
                 }
             });
+        } else {
+            // autosave was cancelled 
+            $status.html('');
         }
     }
 

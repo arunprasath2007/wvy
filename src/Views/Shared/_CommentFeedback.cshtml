@@ -1,6 +1,6 @@
 ﻿@model Comment
-@if (Model.IsLiked) {
-    <a class="btn btn-primary btn-icon" href="#" title="Like" data-comment-unlike="@Model.Id">@Html.SvgIcon("thumb-up", size: 18)</a>
+@if (Model.IsLiked()) {
+    <a class="btn btn-primary btn-icon" href="#" title="Unlike" data-comment-unlike="@Model.Id">@Html.SvgIcon("thumb-up", size: 18)</a>
 } else {
     <a class="btn btn-primary btn-icon" href="#" title="Like" data-comment-like="@Model.Id">@Html.SvgIcon("thumb-up-outline", size: 18)</a>
 }

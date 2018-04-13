@@ -16,9 +16,9 @@
     }
 }
 
-@if (Model.Settings.GroupConversations) {
+@if (Model.Settings.GroupConversations && !Model.Conversations.IsNullOrEmpty()) {
     <h3 class="list-group-separator">Rooms</h3>
-    <div class="rooms">
+    <div class="rooms" id="rooms">
         @foreach (var conversation in rooms) {
             Html.RenderPartial("_Conversation", conversation, new ViewDataDictionary { { "Active", Model.Conversation?.Id == conversation.Id } });
         }
@@ -28,7 +28,7 @@
     </div>
 
     <h3 class="list-group-separator">Direct messages</h3>
-    <div class="direct-messages">
+    <div class="direct-messages" id="direct">
         @foreach (var conversation in direct) {
             Html.RenderPartial("_Conversation", conversation, new ViewDataDictionary { { "Active", Model.Conversation?.Id == conversation.Id } });
         }

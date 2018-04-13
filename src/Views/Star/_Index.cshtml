@@ -9,7 +9,7 @@
 <table class="table table-hover table-stars">
     <tbody>
         @foreach (var entity in Model) {
-            Html.RenderPartial("_Star", entity);
+            Html.RenderPartial("~/Views/Star/_Star.cshtml", entity);
         }
     </tbody>
 </table>

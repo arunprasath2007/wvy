@@ -1,11 +1,13 @@
 ﻿@model TestViewModel
 @{
-    Title = "Test";
+    Title = "This is a test page with a really long title that should get truncated in smaller viewports";
 }
 
 @section scripts {
-    @* NOTE: adding inline scripts like this seems to work fine, but we should review it just to make sure they are not evaluated every time the page is rendered *@
+    @* NOTE: adding inline scripts to a single page works just fine *@
     <script>
+        console.info("head script on test page");
+
         $(document).on("click", "[data-body-bg]", function (e) {
             console.log("Going " + this.dataset.bodyBg);
             if (this.dataset.bodyBg === "light") {
@@ -16,8 +18,14 @@
             }
         });
 
-        $(document).on("click", ".btn-round", function (e) {
+        $(document).on("click", ".fab .btn-round", function (e) {
             $(this).toggleClass("show");
+        });
+
+        $(document).on("click", ".btn[data-alert]", function (e) {
+            var type = this.dataset.alert;
+            var text = $(this).text();
+            weavy.alert.alert(type, text, 3000);
         });
 
 
@@ -33,11 +41,10 @@
     </script>
 }
 
-
 @section navbar_secondary {
     <nav class="nav nav-tabs">
         <a class="nav-link active" href="@Url.Action(nameof(TestController.Index))">Components</a>
-        <a class="nav-link" href="@Url.Action(nameof(TestController.Get), new { view = "redirect"})">Redirect</a>
+        <a class="nav-link" href="@(Url.Action<TestController>(c => c.Get("redirect")))">Redirect</a>
     </nav>
     <div class="navbar-icons">
         <div class="dropdown">
@@ -52,7 +59,7 @@
                 <a class="dropdown-item" href="#icons">Icons</a>
                 <a class="dropdown-item" href="#navs">Navs</a>
                 <a class="dropdown-item" href="#spinners">Spinners</a>
-                <a class="dropdown-item" href="#tables">Tables</a>                
+                <a class="dropdown-item" href="#tables">Tables</a>
                 <a class="dropdown-item" href="#text">Text</a>
                 <a class="dropdown-item" href="#pagination">Pagination</a>
             </div>

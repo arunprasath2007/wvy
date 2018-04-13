@@ -4,8 +4,8 @@
         Layout = "~/Areas/Setup/Views/Setup/_Layout.cshtml";
     }
     Title = "License";
+    Back = Url.Action<HomeController>(c => c.Index());
     var feedback = string.Join(" ", ViewData.ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
-
     var subscriptionModel = ViewBag.Subscription as SubscriptionModel;
 }
 
@@ -35,7 +35,7 @@
                 @Html.Hidden("Email", subscriptionModel.Email)
                 @Html.Hidden("UserCount", subscriptionModel.UserCount)
             </form>
-            <div class="loading">
+            <div class="loading py-5">
                 @Html.SvgSpinner(spin: true)
             </div>
             <iframe id="subscription" name="subscription" class="invisible"></iframe>

@@ -1,7 +1,7 @@
 ﻿@model Weavy.Web.Models.WelcomeModel
 @{
     Layout = "~/Views/Shared/_LayoutBasic.cshtml";
-    Title = "Welcome to " + Theme.GetName();   
+    Title = "Welcome to " + Theme.Name;   
 }
 <div class="container">
     <div class="row justify-content-sm-center">
@@ -20,17 +20,17 @@
                 //TODO: what to show?
                 <ul>
                     @foreach (var strip in Model.Strips) {
-                        if (strip.StripUrls.Count > 1) {
+                        if (strip.EmbedUrls.Count > 1) {
                             <li>
                                 @strip.Name
                                 <ul>
-                                    @foreach (var url in strip.StripUrls) {
+                                    @foreach (var url in strip.EmbedUrls) {
                                         <li><a href="@url">@url</a></li>
                                     }
                                 </ul>
                             </li>
                         } else {
-                            <li><a href="@strip.StripUrl">@strip.Name</a></li>
+                            <li><a href="@strip.EmbedHost">@strip.Name</a></li>
                         }
                     }
                 </ul>
@@ -42,7 +42,7 @@
                         <a href="@Url.Action(nameof(AccountController.SignIn), new { path = Url.Action(nameof(AccountController.Welcome)) })" class="btn btn-primary btn-load waves-effect">Sign in</a>
                     </div>
 
-                    <p>New to @Theme.GetName()? Sign up.</p>
+                    <p>New to @Theme.Name? Sign up.</p>
                     <div class="form-buttons">
                         <a href="@Url.Action(nameof(AccountController.SignUp))" class="btn btn-secondary btn-load waves-effect">Sign up</a>
                     </div>
@@ -58,5 +58,5 @@
 </div>
 
 @if (Model.OnboardingSpace != null) {
-    @Html.Raw(Model.OnboardingSpace.StripScript(true))
+    @Html.Raw(Model.OnboardingSpace.WidgetScript(true))
 }

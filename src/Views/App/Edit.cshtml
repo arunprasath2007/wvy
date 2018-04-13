@@ -1,28 +1,19 @@
 ﻿@model App
 @{
-    if (Folder.ParentId == null) {
-        Title = Space.Name;
-    } else {
-        Title = Folder.Title;
-    }
+    Title = "Edit " + Model.MetaData().Name;
+    Back = Url.Back(Model.Url());
 }
 
 
-@section navbar_secondary {
-    <nav class="nav nav-tabs">
-        <a class="nav-link active" href="#">Properties</a>
-    </nav>
-}
-
-<div class="container-fluid mt-3">
-    @using (Html.BeginForm(nameof(AppController.Update), typeof(AppController).ControllerName(), FormMethod.Post, htmlAttributes: new { id="form-edit", data_turboform = "", novalidate="" })) {
+<div class="container my-3">
+    @using (Html.BeginForm(nameof(AppController.Update), typeof(AppController).ControllerName(), FormMethod.Post, htmlAttributes: new { id = "form-edit", data_turboform = "", novalidate = "" })) {
         @Html.HttpMethodOverride(HttpVerbs.Put)
         @Html.HiddenFor(x => x.AppGuid)
         @Html.EditorFor(x => x.Name)
         @*@Html.EditorsForModel()*@
         <div class="buttons">
             <button type="submit" class="btn btn-outline-primary">Save</button>
-            <a href="@Model.Url()" class="btn btn-link">Cancel</a>
+            <a href="@Back" class="btn btn-link">Cancel</a>
         </div>
     }
 </div>

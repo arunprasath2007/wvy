@@ -1,0 +1,26 @@
+﻿@model SearchResult<IContent, ContentQuery>
+@{
+    Title = "Activity";
+}
+
+@section navbar_middle {
+    <div class="navbar-middle">@Html.StarToggle(Space)<span class="navbar-text">@Space.Name</span></div>
+}
+
+@section navbar_secondary {
+    @{ Html.RenderPartial("_SpaceTabs"); }
+}
+
+<div class="container-fluid my-3">
+    @if (Model.Any()) {
+        <div class="list-group mb-4" id="infinite-scroll-target">
+            @{ Html.RenderPartial("_ContentList", Model); }
+        </div>
+        @Html.ScrollMore(Model)
+    } else {
+        <p class="empty text-center text-muted py-4">
+            Nothing’s happened yet! But as soon as you get the ball rolling, everything will be summarized for you right here.
+        </p>
+    }
+
+</div>

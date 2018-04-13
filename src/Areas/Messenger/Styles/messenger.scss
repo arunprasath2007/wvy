@@ -54,6 +54,7 @@
 @import '../../../styles/vendor/node-waves/waves';
 
 // Custom components
+@import '../../../styles/components/layout';
 @import '../../../styles/components/alert';
 @import '../../../styles/components/buttons';
 @import '../../../styles/components/custom_form';
@@ -69,8 +70,9 @@
 @import '../../../styles/components/photoswipe';
 @import '../../../styles/components/presence';
 @import '../../../styles/components/preview';
+@import '../../../styles/components/scrollbar';
 @import '../../../styles/components/spinner';
-@import '../../../styles/components/star';
+@import '../../../styles/components/togglers';
 @import '../../../styles/components/tables';
 @import '../../../styles/components/waves';
 
@@ -87,7 +89,7 @@ $body-color-base64: str-replace(inspect($body-color), "#", "%23");
 @import 'table';
 @import 'emojionearea';
 
-img.emojione {
+img.emojione, object.emojione {
     @extend .eo;
 }
 

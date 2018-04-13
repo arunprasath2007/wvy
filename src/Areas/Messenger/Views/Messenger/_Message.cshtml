@@ -32,7 +32,7 @@
 
                 @if (files.Any()) {
                     <div class="card-files">
-                        @{ Html.RenderPartial("_FileList", files); }
+                        @{ Html.RenderPartial("_Attachments", files); }
                     </div>
                 }
 
@@ -51,14 +51,14 @@
                 if (members.Any(x => x.ReadAt >= Model.CreatedAt && x.ReadAt < next.CreatedAt)) {
                     <div class="status status-read">
                         @foreach (var member in members.Where(x => x.ReadAt >= Model.CreatedAt && x.ReadAt < next.CreatedAt)) {
-                            @member.AvatarImg(16, retina: true, htmlAttributes: new { title = $"Seen by {member.Title}", data_user = member.Id })
+                            @member.AvatarImg(18, retina: true, htmlAttributes: new { title = $"Seen by {member.Title}", data_user = member.Id })
                         }
                     </div>
                 }
             } else if (members.Any(x => x.ReadAt >= Model.CreatedAt)) {
                 <div class="status status-read">
                     @foreach (var member in members.Where(x => x.ReadAt >= Model.CreatedAt)) {
-                        @member.AvatarImg(16, retina: true, htmlAttributes: new { title = $"Seen by {member.Title}", data_user = member.Id })
+                        @member.AvatarImg(18, retina: true, htmlAttributes: new { title = $"Seen by {member.Title}", data_user = member.Id })
                     }
                 </div>
             } else if (members.Any(x => x.DeliveredAt >= Model.CreatedAt)) {
@@ -94,7 +94,7 @@
 
             @if (files.Any()) {
                 <div class="card-files">
-                    @{ Html.RenderPartial("_FileList", files); }
+                    @{ Html.RenderPartial("_Attachments", files); }
                 </div>
             }
 

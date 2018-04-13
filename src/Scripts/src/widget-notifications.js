@@ -22,9 +22,14 @@
         close();
     });
 
-    // open notification
+    // open notification in a bubble
     $(document).on("click", "a[data-entity=notification]", function (e) {
-        window.top.postMessage({ "name": "personal", url: $(this).attr("href") }, "*");
+        e.preventDefault();
+        var spaceid = $(this).data("spaceid");
+
+        if (spaceid) {
+            weavy.bubbles.open(spaceid, "personal", "", $(this).attr("href"));
+        }
     });
 
     // like

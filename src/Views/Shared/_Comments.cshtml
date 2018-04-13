@@ -15,7 +15,11 @@
                 }
 
                 @if (files.Any()) {
-                    Html.RenderPartial("_FileList", files);
+                    <div class="list-group file-list">
+                        @foreach (var file in files) {
+                            Html.RenderPartialContent(ContentView.List, file, viewData: new ViewDataDictionary { { "byline", false } });
+                        }
+                    </div>                
                 }
 
                 <div class="text-muted">

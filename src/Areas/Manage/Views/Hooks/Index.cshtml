@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<IHook>
 @{
     Title = "Hooks";
+    Back = Url.Action<HomeController>(c => c.Index());
 }
 
 <div class="container-fluid mt-3">

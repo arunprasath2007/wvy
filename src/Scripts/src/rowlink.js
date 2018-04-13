@@ -1,8 +1,8 @@
 ﻿// makes en entire row clickable like <a href=""></a>
 $(function () {
-    $(document).on("click", "tr[data-href]:not([data-photoswipe], [data-preview])", function (evt) {
+    $(document).on("click", "tr[data-href]:not([data-photoswipe], [data-preview], [data-modal])", function (evt) {
         var $target = $(evt.target);
-        if ($target.is("a, :button, :submit") ||  $target.parents("a, :button, :submit").length) {
+        if ($target.is("a, :button, :submit") || $target.parents("a, :button, :submit").length) {
             return;
         }
 

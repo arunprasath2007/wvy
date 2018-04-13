@@ -11,15 +11,52 @@
 @import 'mixins/animation';
 @import 'mixins/dot';
 
+// Set --weavy-rem: 16px; in :root or on the shadow-root-element to change widget rem
+
+$widget-default-rem: 16px;
+
+@function rem($value) {
+    // Edge does unfortunately not fully support calc() in box-shadow and transform, otherwise --variables work
+    @return calc(var(--weavy-rem, #{$widget-default-rem}) * #{$value}); // Defaults to 16px
+    //@return $widget-default-rem * $value;
+}
+
 // Widget variables
-$widget-rem: 16px;
-$widget-strip-width: 375px;
-$widget-shadow: 0 (.125*$widget-rem) (.125*$widget-rem) 0 rgba($black, $md-shadow-penumbra-opacity), 0 (.1875*$widget-rem) (.0625*$widget-rem) (-.125*$widget-rem) rgba($black, $md-shadow-umbra-opacity), 0 (.0625*$widget-rem) (.3125*$widget-rem) 0 rgba($black, $md-shadow-ambient-opacity);
+$widget-strip-width: rem(24); // 384px, previously 375px;
 $widget-zindex: 2147483647; // max possible z-index
-$widget-border-radius: $widget-rem * .125;
+$widget-border-radius: rem(.25);
 
 // Widget styles (wrap all styles in .weavy-widget)
 .weavy-widget {
+    // These variables also change when you set --weavy-rem
+    // They are needed because Edge does not fully support calc() in box-shadow and transform (but support calc() in CSS variables)
+    --weavy-1rem: rem(1);
+    --weavy--1rem: rem(-1);
+    --weavy-1-25rem: rem(1.25);
+    --weavy--1-25rem: rem(-1.25);
+    --md-shadow-4dp: 0 rem(.25) rem(.3125) 0 rgba($md-black, $md-shadow-penumbra-opacity), 0 rem(.0625) rem(.625) 0 rgba($md-black, $md-shadow-ambient-opacity), 0 rem(.125) rem(.25) rem(-.0625) rgba($md-black, $md-shadow-umbra-opacity); //$md-shadow-4dp;
+    --md-shadow-8dp: 0 rem(.5) rem(.625) rem(.0625) rgba($md-black, $md-shadow-penumbra-opacity), 0 rem(.1875) rem(1.25) rem(.125) rgba($md-black, $md-shadow-ambient-opacity), 0 rem(.3125) rem(.3125) rem(-.1875) rgba($md-black, $md-shadow-umbra-opacity); //$md-shadow-8dp;
+    // Edge cases ;-)
+    @supports (-ms-ime-align: auto) {
+        --weavy-1rem: $widget-default-rem; //rem(1);
+        --weavy--1rem: -$widget-default-rem; //rem(-1);
+        --weavy-1-25rem: 1.25 * $widget-default-rem; //rem(1.25);
+        --weavy--1-25rem: -1.25 * $widget-default-rem; //rem(-1.25);
+        --md-shadow-4dp: $md-shadow-4dp;
+        --md-shadow-8dp: $md-shadow-8dp;
+    }
+
+    .weavy-alert-message {
+        padding: rem(.25) rem(.5);
+        background-color: #d4edda;
+        text-align: center;
+        width: $widget-strip-width;
+        color: #155724;
+        border-radius: rem(.1875);
+        margin: 0 auto;
+        margin-top: rem(1);
+        font-family: $font-family-base;
+    }
 
     &.weavy-default {
         z-index: $widget-zindex;
@@ -30,35 +67,193 @@ $widget-border-radius: $widget-rem * .125;
         left: 0;
         overflow: hidden;
         pointer-events: none;
-        transform: translateX($widget-rem);
         transition: transform $md-animation-duration $md-animation-curve-default;
+        font-size: rem(1);
+        line-height: rem(1.5);
 
         .weavy-avatar {
-            width: $widget-rem * 2;
-            height: $widget-rem * 2;
+            width: rem(3);
+            height: rem(3);
             border-radius: 50%;
             user-select: none;
         }
 
+        .weavy-bubble-item {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            flex-direction: row;
+            min-height: rem(3);
+            pointer-events: auto;
+
+            &:hover, &:active {
+                .weavy-bubble-tooltip {
+                    display: flex;
+                }
+            }
+        }
+
+        .weavy-bubble-action {
+            position: absolute;
+            right: 0;
+            display: flex;
+            padding: rem(.375);
+            cursor: pointer;
+            pointer-events: none;
+            transition: transform $md-animation-duration $md-animation-curve-default;
+            transform: translateY(0);
+
+            svg {
+                fill: $text-muted;
+                height: rem(1.25);
+                width: rem(1.25);
+            }
+
+            &:hover, &:active {
+                svg {
+                    fill: $link-color;
+                }
+            }
+        }
+
+        .weavy-bubble-tooltip {
+            font-family: $font-family-base;
+            white-space: nowrap;
+            position: absolute;
+            right: rem(3.75);
+            height: rem(1.75);
+            z-index: 1234567890;
+            background: $gray-100;
+            padding: 0 rem(.5);
+            border-radius: $border-radius;
+            pointer-events: all;
+            transition: opacity linear 0.1s;
+            box-shadow: var(--md-shadow-4dp);
+            display: none;
+            color: $body-color;
+
+            .weavy-bubble-tooltip-text {
+                font-family: $font-family-base;
+                color: $gray-700;
+                font-size: rem(1);
+                margin: 0;
+                padding: rem(.125) 0;
+            }
+
+            a {
+                padding: rem(.1875);
+                pointer-events: all;
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+
+                svg {
+                    fill: $icon-color;
+                    height: rem(1.25);
+                    width: rem(1.25);
+                }
+
+                &:hover, &:active {
+                    svg {
+                        fill: $link-color;
+                    }
+                }
+            }
+        }
+
         .weavy-button {
+            position: relative;
             display: inline-flex;
             align-items: center;
             flex-direction: column;
-            box-shadow: $widget-shadow;
-            border-radius: $widget-rem * 1.5;
+            box-shadow: 0 0 0 rem(.125) rgba($link-color, 0);
+            border-radius: rem(1.5);
             background-color: $white;
             cursor: pointer;
-            width: $widget-rem * 3;
-            min-height: $widget-rem * 3;
-            margin: $widget-rem / 2;
+            width: rem(3);
+            min-height: rem(3);
+            margin: rem(0.5);
             pointer-events: all;
             justify-content: center;
-            transition: transform $md-animation-duration $md-animation-curve-default, border-radius $md-animation-duration $md-animation-curve-default;
+            transition: transform $md-animation-duration $md-animation-curve-default;
+            z-index: 2;
+
+            &.weavy-add {
+                background-color: transparent;
+                box-shadow: none;
+            }
+
+            &.weavy-personal {
+                background-color: transparent;
+                box-shadow: none;
+
+                svg {
+                    width: rem(2);
+                    height: rem(2);
+                    fill: $theme;
+                }
+
+                img {
+                    width: rem(1.5);
+                    height: rem(1.5);
+                    border-radius: 0;
+                }
+            }
+
+            &:hover, &:active {
+                box-shadow: 0 0 0 rem(.125) rgba($link-color, 0.2);
+                color: $link-color;
+
+                svg {
+                    fill: $link-color;
+                }
+            }
 
             &.weavy-open {
-                transform: translateX((-$widget-rem / 2));
-                border-radius: 0 ($widget-rem * 1.5) ($widget-rem * 1.5) 0;
+                background-color: $white;
+                transform: translateX(var(--weavy--1-25rem)); // -1.25rem
+                box-shadow: var(--md-shadow-4dp);
                 align-self: flex-end;
+
+                ~ .weavy-bubble-tooltip {
+                    display: none;
+                }
+
+                ~ .weavy-bubble-action {
+                    pointer-events: auto;
+                }
+
+                ~ .weavy-bubble-connect {
+                    &:not(:last-of-type) {
+                        transform: translateY(var(--weavy-1rem));
+                        padding-top: rem(.1);
+                    }
+
+                    & + .weavy-bubble-action {
+                        transform: translateY(var(--weavy--1rem));
+                        padding-bottom: rem(.1);
+                    }
+                }
+
+                &, &:not(.weavy-personal) img {
+                    border-radius: 0 rem(1.5) rem(1.5) 0;
+                }
+            }
+
+            &:active {
+                ~ .weavy-bubble-tooltip {
+                    display: none;
+                }
+            }
+        }
+
+        .weavy-personal-container {
+            hr {
+                border: 0;
+                height: rem(.0625);
+                background: $gray-400;
+                margin: rem(.5) rem(.25);
+                background-image: linear-gradient(to right, $gray-300, $gray-400, $gray-300);
             }
         }
 
@@ -67,12 +262,14 @@ $widget-border-radius: $widget-rem * .125;
             top: 0;
             right: 0;
             bottom: 0;
-            width: $widget-rem * 4;
+            width: rem(5);
             pointer-events: none;
+            display: flex;
+            flex-direction: column;
         }
 
         .weavy-conversations {
-            margin: (-$widget-rem / 2) 0 ($widget-rem / 2) 0;
+            margin: rem(-.5) 0 rem(.5) 0;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -83,9 +280,9 @@ $widget-border-radius: $widget-rem * .125;
 
             .weavy-avatar {
                 display: block;
-                width: $widget-rem * 1.5;
-                height: $widget-rem * 1.5;
-                margin: $widget-rem / 4;
+                width: rem(1.5);
+                height: rem(1.5);
+                margin: rem(.25);
             }
         }
 
@@ -95,10 +292,10 @@ $widget-border-radius: $widget-rem * .125;
             &::after {
                 content: '';
                 position: absolute;
-                top: $widget-rem / 2;
-                right: $widget-rem / 2;
-                width: $widget-rem / 2;
-                height: $widget-rem / 2;
+                top: rem(.5);
+                right: rem(.5);
+                width: rem(.5);
+                height: rem(.5);
                 background-color: $deep-orange;
                 border-radius: 50%;
             }
@@ -108,11 +305,24 @@ $widget-border-radius: $widget-rem * .125;
             }
         }
 
+        .weavy-dragimage {
+            pointer-events: none;
+            position: absolute;
+            opacity: 0;
+            width: rem(2);
+            height: rem(2);
+        }
+
         .weavy-draggable {
             pointer-events: none;
             position: absolute;
-            top: $widget-rem * 2.5;
+            top: rem(2.5);
             user-select: none;
+            background: hsla(0, 0%, 92%, 0.9);
+            border-radius: rem(2);
+            box-shadow: var(--md-shadow-4dp);
+            margin: calc(var(--weavy-rem, 16px) * 0.5);
+            //transition: transform 0.05s ease-out;
         }
 
         .weavy-icon {
@@ -121,25 +331,25 @@ $widget-border-radius: $widget-rem * .125;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: $widget-rem / 4;
+            padding: rem(.25);
 
             svg {
                 fill: currentColor;
-                width: $widget-rem * 1.5;
-                height: $widget-rem * 1.5;
+                width: rem(1.5);
+                height: rem(1.5);
             }
         }
 
         .weavy-messenger {
             .weavy-icon {
-                margin: $widget-rem / 2;
+                margin: rem(.5);
 
                 &:first-child {
                     color: $theme;
                 }
 
                 &:last-child {
-                    margin: (-$widget-rem / 4) 0 (-$widget-rem / 2) 0;
+                    margin: rem(-.25) 0 rem(-.5) 0;
                 }
             }
         }
@@ -148,51 +358,56 @@ $widget-border-radius: $widget-rem * .125;
             z-index: $widget-zindex;
             opacity: 1;
             position: absolute;
-            bottom: $widget-rem;
-            right: $widget-rem * 4;
+            bottom: rem(1);
+            right: rem(4);
         }
 
         .weavy-notification-frame {
             pointer-events: all;
-            width: 320px;
+            width: rem(20); //320px;
             height: 0;
             border: 0;
-            box-shadow: $widget-shadow;
+            box-shadow: var(--md-shadow-4dp);
         }
 
         .weavy-strips {
             position: absolute;
             top: 0;
-            right: $widget-rem * 4;
+            right: rem(5.25);
             bottom: 0;
             width: 0;
             pointer-events: none;
+            z-index: 10;
         }
 
         .weavy-strip {
             position: absolute;
-            top: $widget-rem;
+            top: rem(1);
             right: 0;
-            bottom: $widget-rem;
+            bottom: rem(1);
             left: 0;
             opacity: 0;
             z-index: $widget-zindex;
-            box-shadow: $widget-shadow;
+            box-shadow: var(--md-shadow-8dp);
             pointer-events: none;
-            transform: translateX($widget-rem);
+            transform: translateX(var(--weavy-1rem)); // 1rem
+            border-radius: $widget-border-radius;
+            overflow: hidden;
 
             .weavy-controls {
                 position: absolute;
-                top: $widget-rem * 4.5;
-                left: -$widget-rem * 2;
-                width: $widget-rem * 2;
-                background: $white;
-                border-radius: $widget-border-radius 0 0 $widget-border-radius;
-                box-shadow: $widget-shadow;
+                top: rem(.5);
+                right: rem(2.5);
+                width: rem(2);
                 display: none;
+                z-index: 10000;
 
                 .weavy-collapse {
                     display: none;
+                }
+
+                .weavy-icon {
+                    color: $white;
                 }
             }
 
@@ -213,12 +428,11 @@ $widget-border-radius: $widget-rem * .125;
                     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' width='24' height='24' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3Cstyle type='text/css'%3Esvg%7Banimation:rotate 2s linear infinite;transform-origin:center center%7Dcircle%7Bstroke-dasharray:1,100;stroke-dashoffset:0;animation:dash 1.5s ease-in-out infinite,color 6s ease-in-out infinite%7D@keyframes rotate%7B100%25%7Btransform:rotate(360deg)%7D%7D@keyframes dash%7B0%25%7Bstroke-dasharray:1,100;stroke-dashoffset:0%7D50%25%7Bstroke-dasharray:44.5,100;stroke-dashoffset:-17.5px%7D100%25%7Bstroke-dasharray:44.5,100;stroke-dashoffset:-62px%7D%7D@keyframes color%7B0%25,100%25%7Bstroke:%234A69CF%7D40%25%7Bstroke:%23C96C4F%7D66%25%7Bstroke:%23D2D246%7D80%25,90%25%7Bstroke:%235DBB78%7D%7D%3C/style%3E%3Ccircle fill='none' cx='12' cy='12' r='10' stroke-linecap='round' stroke-miterlimit='5' stroke-width='2' /%3E%3C/svg%3E");
                     background-repeat: no-repeat;
                     background-position: 50%;
-                    background-size: $widget-rem * 3;
+                    background-size: rem(3);
                 }
 
                 .weavy-controls {
                     display: flex;
-                    flex-direction: column;
                 }
             }
         }
@@ -232,7 +446,6 @@ $widget-border-radius: $widget-rem * .125;
             height: 100%;
             width: 100%;
             border: 0;
-            border-radius: $widget-border-radius;
             background: $white;
         }
 
@@ -260,7 +473,7 @@ $widget-border-radius: $widget-rem * .125;
 
             .weavy-strips {
                 width: auto;
-                left: $widget-rem * 2.5;
+                left: rem(2.5);
             }
 
             .weavy-controls {
@@ -275,8 +488,27 @@ $widget-border-radius: $widget-rem * .125;
             }
         }
 
+        &.weavy-preview, &.weavy-left.weavy-preview {
+            .weavy-strips {
+                width: auto;
+                left: 0;
+                top: 0;
+                right: 0;
+                bottom: 0;
+
+                .weavy-controls {
+                    display: none;
+                }
+
+                .weavy-strip {
+                    border-radius: initial;
+                    top: 0;
+                    bottom: 0;
+                }
+            }
+        }
+
         &.weavy-left {
-            transform: translateX(-$widget-rem);
 
             .weavy-buttons {
                 right: auto;
@@ -285,50 +517,68 @@ $widget-border-radius: $widget-rem * .125;
 
             .weavy-strips {
                 right: auto;
-                left: $widget-rem*4;
+                left: rem(5.25);
             }
 
             .weavy-controls {
                 left: auto;
-                right: -$widget-rem * 2;
+                right: rem(-.5);
+            }
+
+            .weavy-bubble-action {
+                left: 0;
+                right: auto;
+            }
+
+            .weavy-bubble-tooltip {
+                right: auto;
+                left: rem(3.75);
             }
 
             .weavy-button {
                 &.weavy-open {
-                    transform: translateX($widget-rem / 2);
-                    border-radius: ($widget-rem * 1.5) 0 0 ($widget-rem * 1.5);
+                    transform: translateX(var(--weavy-1-25rem)); // 1.25rem
+                    &, &:not(.weavy-personal) img {
+                        border-radius: rem(1.5) 0 0 rem(1.5);
+                    }
                 }
             }
 
             .weavy-notifications {
-                right: $widget-rem;
+                right: rem(1);
             }
 
             .weavy-strip {
-                transform: translateX(-$widget-rem);
-
+                transform: translateX(var(--weavy--1rem)); // -1rem
                 &.weavy-open {
                     transform: translateX(0);
                 }
 
                 .weavy-controls {
                     left: auto;
-                    right: -$widget-rem * 2;
-                    border-radius: 0 $widget-border-radius $widget-border-radius 0;
+                    right: rem(2.5);
                 }
             }
 
             &.weavy-wide {
 
                 .weavy-strips {
-                    right: $widget-rem*2.5;
+                    right: rem(5);
                 }
+            }
+        }
+
+        &.weavy-middle:not(.weavy-drag) {
+            .weavy-draggable {
+                position: static;
+                margin-top: auto;
+                margin-bottom: auto;
             }
         }
 
         &.weavy-drag {
             pointer-events: all;
-            transform: translateX(0);
+            cursor: move;
 
             &.weavy-open {
                 &.weavy-wide {
@@ -343,10 +593,31 @@ $widget-border-radius: $widget-rem * .125;
                 }
             }
 
+            &, &.weavy-left {
+                .weavy-button {
+                    pointer-events: none;
+                    box-shadow: none;
+                    cursor: move;
+                    transform: none;
+
+                    &, &:not(.weavy-personal) img {
+                        border-radius: rem(1.5);
+                    }
+                }
+            }
+
+            .weavy-bubble-tooltip {
+                display: none !important;
+            }
+
             .weavy-draggable {
-                opacity: 0;
-                transform: scale(0);
-                transition: opacity $md-animation-duration $md-animation-curve-default, transform $md-animation-duration $md-animation-curve-default;
+                pointer-events: none !important;
+                box-shadow: var(--md-shadow-8dp);
+                transition: transform 25ms ease-out;
+
+                &.weavy-snap {
+                    transition: transform 150ms cubic-bezier(0.3, 1.5, 0.5, 0.96); //out-back ease-out;
+                }
             }
         }
     }

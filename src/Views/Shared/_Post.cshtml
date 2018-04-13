@@ -4,17 +4,6 @@
     bool details = ViewData["details"] as bool? ?? false;
     var images = Model.Attachments.Where(x => FileHelper.IsWebImage(x.Name));
     var files = Model.Attachments.Where(x => !FileHelper.IsWebImage(x.Name));
-
-    var context = "";
-
-    if(Model.SpaceId != SpaceService.GlobalId) {
-        if (Model.AttachedTo.Type == EntityType.User && Model.AttachedTo.Id != User.Id) {
-            context = $"to {Model.AttachedTo.Link()}";
-        } else if (Model.SpaceId != Space?.Id) {
-            context = $"in {Model.Space.Link()}";
-        }
-    }
-
 }
 <div class="card post" data-type="post" data-id="@Model.Id" data-post-id="@Model.Id">
     
@@ -23,10 +12,8 @@
         <div class="media-body">
             <h6 class="media-title">@Model.CreatedBy.Link() <small>@@@Model.CreatedBy.Username</small></h6>
             <small class="text-muted">
-                @Html.Time(Model.CreatedAt)
+                @Html.Time(Model.CreatedAt) @if (details) {<text>in</text> @Model.Space.Link() } 
                 @if (Model.ModifiedAt != Model.CreatedAt) {<text>&middot;</text> @Html.Time(Model.ModifiedAt, @"e\di\te\d")}
-
-                @Html.Raw(context)
             </small>
         </div>
         @{ Html.RenderPartial("_PostMenu", Model, new ViewDataDictionary() { { "details", details } }); }
@@ -55,7 +42,11 @@
 
     @if (files.Any()) {
         <div class="card-files">
-            @{ Html.RenderPartial("_FileList", files); }
+            <div class="list-group file-list">
+                @foreach (var file in files) {
+                    Html.RenderPartialContent(ContentView.List, file, viewData: new ViewDataDictionary { { "byline", false }, { "preview", true } });
+                }
+            </div>
         </div>
     }
 

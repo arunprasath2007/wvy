@@ -10,7 +10,7 @@
                 @Html.IconImg(48)
             </div>
             <h1 class="display-3">Do you have an account?</h1>
-            <p>Hi, we can't find an account for <strong>@Model.SamAccountName</strong>. Have you used @WeavyContext.Current.Theme.GetName() before?</p>
+            <p>Hi, we can't find an account for <strong>@Model.SamAccountName</strong>. Have you used @Theme.Name before?</p>
 
             @using (Html.BeginForm(nameof(AccountController.RegisterWindows), typeof(AccountController).ControllerName(), FormMethod.Post, new { data_turboform = true, novalidate = "" })) {
                 @Html.AntiForgeryToken()

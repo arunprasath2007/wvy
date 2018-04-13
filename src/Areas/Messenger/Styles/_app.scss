@@ -6,15 +6,27 @@ html, body {
     padding: 0;
     margin: 0;
     //overflow: hidden; // NOTE: setting overflow:hidden on html prevents document previews from working properly
+   
+}
+
+html {
+    // show/hide stuff depending on if we are running embedded or standalone
+    &.embedded {
+        .d-standalone {
+            display: none !important;
+        }
+    }
+
+    &:not(.embedded) {
+        .d-embedded {
+            display: none !important;
+        }
+    }
 }
 
 body {
     background: $body-bg;
     overflow: hidden;
-
-    html.preview-open & {
-        overflow: auto;
-    }
 }
 
 .app {
@@ -71,8 +83,7 @@ body {
 .pane-two {
     .navbar-secondary {
         .navbar-icons {
-            // hide details dropdown
-            display: none;
+            display: flex !important;
         }
     }
 
@@ -106,7 +117,7 @@ body {
 
         .pane-two {
             .pane-header, .pane-body, .pane-footer {
-                border-left: 1px solid $messenger-border-color;
+                border-left: $border-width solid $messenger-border-color;
             }
         }
     }
@@ -124,7 +135,7 @@ body {
         .pane-three {
 
             .pane-header, .drawer-header, .pane-body, .drawer-body {
-                border-left: 1px solid $messenger-border-color;
+                border-left: $border-width solid $messenger-border-color;
             }
         }
     }
@@ -200,7 +211,7 @@ body {
     .three {
         .pane-two {
             .pane-header, .pane-body, .pane-footer {
-                border-left: 1px solid $messenger-border-color;
+                border-left: $border-width solid $messenger-border-color;
             }
         }
     }
@@ -235,25 +246,25 @@ body {
 @media (min-width: 1301px) {
     .one, .two {
         .pane-one {
-            width: 455px;
+            width: 28.4375rem; // 455px;
         }
 
         .pane-two {
-            width: calc(100% - 455px);
+            width: calc(100% - 28.4375rem);
         }
     }
 
     .three {
         .pane-one {
-            width: 360px;
+            width: 22.5rem; // 360px;
         }
 
         .pane-two {
-            width: calc(100% - 360px - 455px);
+            width: calc(100% - 22.5rem - 28.4375rem);
         }
 
         .pane-three {
-            width: 455px;
+            width: 28.4375rem;
         }
     }
 }
@@ -306,7 +317,7 @@ body {
 // message form goes here
 footer {
     background-color: #fff;
-    border-top: 1px solid $messenger-border-color;
+    border-top: $border-width solid $messenger-border-color;
 }
 
 
@@ -392,4 +403,8 @@ footer {
             padding-left: $messenger-icon-width;
         }
     }
+}
+
+.visibility-h {
+    visibility: hidden !important;
 }

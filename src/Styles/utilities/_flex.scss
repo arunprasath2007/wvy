@@ -2,3 +2,16 @@
     flex-grow: 0;
     flex-shrink: 0;
 }
+
+.flex-scale {
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+
+.flex-order-first {
+    order: -1;
+}
+
+.flex-order-last {
+    order: 99999;
+}

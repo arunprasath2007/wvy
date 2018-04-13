@@ -1,23 +1,17 @@
 ﻿@model EditAccountModel
 @using Microsoft.Owin.Security
 @{
-    User user = Model.User;
-    Title = "People";
-    var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
+    Title = "Edit user";
+    var user = Model.User; 
+    Back = Url.Back(user.Url());
 }
 
-
-@section navbar_left {
-    <div class="navbar-icons">
-        <a class="btn btn-icon" href="@user.Url()">@Html.SvgIcon("arrow-left")</a>
-    </div>
-}
 
 @section navbar_secondary {
     @{Html.RenderPartial("_Navbar", user); }
 }
 
-<div class="container-fluid mt-3">
+<div class="container my-3">
 
     @using (Html.BeginForm(nameof(PeopleController.UpdateAccount), typeof(PeopleController).ControllerName(), FormMethod.Post, new { id = "update-account-form", autocomplete = "off", data_turboform = "", novalidate = "" })) {
         @Html.HttpMethodOverride(HttpVerbs.Put)
@@ -33,7 +27,7 @@
         </div>
         <div class="form-buttons">
             <button type="submit" class="btn btn-primary btn-load waves-effect" title="Save">Save</button>
-            <a href="@Model.User.Url()" class="btn btn-outline-secondary mr-auto waves-effect">Cancel</a>
+            <a href="@Back" class="btn btn-outline-secondary mr-auto waves-effect" data-link>Cancel</a>
         </div>
     }
 

@@ -1,9 +1,7 @@
-﻿@model IEntity
+﻿@model Space
 
 @if (Model.HasPermission(Permission.Post)) {
-    <form class="card post-form" action="@Url.Action(nameof(PostController.Insert), typeof(PostController).ControllerName())" method="post">
-        @Html.Hidden("EntityId", Model.Id)
-        @Html.Hidden("EntityType", Model.Type)
+    <form class="card post-form" action="@(Url.Action<PostController>(c => c.Insert(Model.Id, null)))" method="post">
         <textarea id="text" class="form-control" name="text" data-editor-location="discuss"></textarea>
         <div class="post-backdrop"></div>
     </form>

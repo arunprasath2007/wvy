@@ -1,12 +1,13 @@
 /// <reference path="../_core.scss" />
 
 .navbar-theme {
-    color: color-yiq($theme);
-    background-color: rgba($theme, 0.8);
-    background-size: cover;
+    background-color: rgba($theme-700, .95);
+    color: color-yiq($theme-700);
+    //box-shadow: $md-shadow-2dp;
+    backface-visibility: hidden;
 
     .btn-icon {
-        color: color-yiq($theme);
+        color: color-yiq($theme-700);
     }
 
     .navbar-secondary {
@@ -29,38 +30,12 @@
     flex-wrap: nowrap;
     justify-content: flex-start;
     min-height: $navbar-height;
-    background-color: rgba($theme, .8);
-    box-shadow: $md-shadow-2dp;
-
-    html.mobile & {
-        background-color: $theme;
-    }
-
-    #space-home {
-        display: none;
-
-        html.strip-context & {
-            display: inline-flex;
-        }
-    }
-
-    #space-menu {
-
-        html.embedded & {
-            display: none;
-        }
-
-        html.strip-personal & {
-            display: inline-flex;
-        }
-    }
 }
 
 .navbar-secondary {
     z-index: 2;
     flex-wrap: nowrap;
     min-height: $navbar-height;
-
     // fix for .dropdown-menu-right in navbar, see https://github.com/twbs/bootstrap/issues/23308
     .dropdown-menu-right {
         left: auto;
@@ -76,7 +51,7 @@
 
 .navbar-icons {
     display: flex;
-    flex: 0 0 auto;
+    flex: 1 0 2rem;
 
     .btn-icon {
         display: inline-flex;
@@ -88,81 +63,60 @@
         left: auto;
         right: 0;
     }
+
+    &:not(:first-child):last-child {
+        justify-content: flex-end;
+    }
 }
 
 .navbar-middle {
-    text-align: center;
-    margin: 0 auto;
-    @include text-truncate();
+    display: flex;
+    flex: 0 1 auto;
+    align-items:center;
+    justify-content:center;
+    margin: 0 .5rem;
+    min-width: 0;
 
-    .title {
+    .navbar-text {
+        padding: 0;
+        display: inline-block;
         @include text-truncate();
-        line-height: 1.3;
-        margin-top: -.1875rem;
     }
 
-    .subtitle {
-        @include text-truncate();
-        line-height: 1.3;
-        font-size: $font-size-sm;
-        margin-top: -.1875rem;
-    }
-
-    &.dropdown {
+    .dropdown {
         position: static;
+        line-height: 1;
+        display: flex;
+        min-width: 0;
 
         .dropdown-toggle {
             background: transparent;
             border: 0;
-            color: color-yiq($theme);
+            color: color-yiq($theme-700);
             padding: 0;
-            flex-direction: column;
-            align-items: center;
+            flex: 0 1 auto;
+            min-width: 0;
 
             &:active, &:focus {
                 box-shadow: none;
                 outline: none;
             }
+
+            .badge {
+                top: .25rem;
+                margin-left: .25rem;
+            }
+
+            .i {
+                margin: 0 !important;
+            }
         }
 
         .dropdown-menu {
             top: $navbar-height;
-            left: calc(50vw - #{$dropdown-min-width} / 2);
-            width: $dropdown-min-width;
-            background-color: $theme;
-            box-shadow: $md-shadow-2dp;
-            border: 0;
-
-            .dropdown-item {
-                &, .i {
-                    color: color-yiq($theme);
-                }
-
-                @include hover-focus {
-                    color: color-yiq($theme);
-                    @include gradient-bg(darken($theme, 3%));
-                }
-            }
-        }
-        // add angle down to indicate that this is a dropdown
-        .title {
-            padding-left: .9375rem;
-            position: relative;
-
-            &::after {
-                content: "";
-                border: solid color-yiq($theme);
-                border-width: 0 .125rem .125rem 0;
-                display: inline-block;
-                padding: .1875rem;
-                margin: 0 .125rem .125rem .375rem;
-                transform: rotate(45deg);
-            }
+            left: calc(50vw - #{$dropdown-min-width * .75});
+            width: $dropdown-min-width * 1.5;
         }
     }
 
-    html.strip-context & {
-        // required to center the dropdown since we don't have an icon to the right
-        padding-right: 2rem;
-    }
 }

@@ -1,22 +1,59 @@
 ﻿@model Weavy.Core.Models.File
 @{
-    Title = "Content";
+    Title = Model.Name;
+    var parent = Model.AttachedTo;
+    Back = Url.Back(parent.Url());
+    long? timestamp = ViewBag.Revision as long?;
+    var fmt = FileHelper.GetPreviewFormat(Model);
 }
 
+@if (parent.Type == EntityType.App || parent.Type == EntityType.Item) {
+    @section navbar_middle {
+        @{ Html.RenderPartial("_BreadcrumbMenu", Model); }
+    }
+}
 
-<nav class="navbar navbar-content">
-    @Model.Breadcrumb()
-    <div class="navbar-icons ml-auto">
-        @Html.StarToggle(Model)
-        @{ Html.RenderPartial("_FileMenu", Model); }
-    </div>
-</nav>
-
-<div class="container mt-3 mb-5">
+<div class="container my-3">
 
     <article class="file" data-file-id="@Model.Id">
 
-        @if (ViewBag.Format == PreviewFormat.Text) {
+        <header class="file-header">
+            <a class="btn btn-icon mr-1" href="@Model.CreatedBy.Url()">@Model.CreatedBy.AvatarImg(24)</a>
+            @if (Model.CreatedById != Model.ModifiedById) {
+                <a class="btn btn-icon mr-1" href="@Model.ModifiedBy.Url()">@Model.ModifiedBy.AvatarImg(24)</a>
+            }
+
+            <a href="@(Url.Action<FileController>(c => c.Revisions(Model.Id)))" class="mr-1">@Html.Time(Model.ModifiedAt)</a>
+
+            @if (timestamp != null) {
+                <span class="badge badge-warning">revision</span>
+            }
+
+            @if (Model is ITaggable && !Model.Tags.IsNullOrEmpty()) {
+                <text>·</text> @Html.Raw(Model.Tags.Join(" ", tag => @"<span class=""badge badge-info"">" + tag + "</span>"))
+            }
+
+            <div class="navbar-icons ml-auto">
+                @if (timestamp != null) {
+                    <form action="@Url.Action(nameof(FileController.Revert), null, new { id = Model.Id })" method="post">
+                        @Html.HttpMethodOverride(HttpVerbs.Put)
+                        @Html.Hidden(nameof(Model.Timestamp), timestamp)
+                        <button type="submit" class="btn btn-icon" title="Revert">@Html.SvgIcon("undo", "icon")</button>
+                    </form>
+                } else {
+                    if (Model.HasPermission(Permission.Edit)) {
+                        if (FileHelper.IsOfficeDocument(Model.Name)) {
+                            <a class="btn btn-icon" href="@Model.OfficeUrl()" title="Open in @OfficeHelper.GetProductName(Model.Name)">@Html.SvgIcon(Model.IconName(), "icon")</a>
+                        } else {
+                            <a class="btn btn-icon" href="@Model.Url()/edit">@Html.SvgIcon("pencil", "icon")</a>
+                        }
+                    }
+                    Html.RenderPartial("_FileMenu", Model);
+                }
+            </div>
+        </header>
+
+        @if (fmt == PreviewFormat.Text) {
             var lang = FileHelper.SyntaxHighlight(Model.Name);
 
             if (lang != null) {
@@ -25,7 +62,7 @@
                 <pre class="document">@System.IO.File.ReadAllText(FileService.GetData(Model).FullName)</pre>
             }
 
-        } else if (ViewBag.Format == PreviewFormat.Image || ViewBag.Format == PreviewFormat.Document) {
+        } else if (fmt == PreviewFormat.Image || fmt == PreviewFormat.Document) {
             var attrs = Html.PreviewAttributes(Model, href: Model.Url());
 
             <div class="text-center">
@@ -39,12 +76,14 @@
             <h1 class="text-center mb-3"><a href="@Model.ContentUrl(download:true)">@Model.Name</a></h1>
         }
 
-        <section class="file-comments" id="comments">
-            <div class="list-group comments" data-container="comments">
-                @Html.Partial("_Comments", Model.Comments)
-            </div>
-            @Html.Partial("_CommentForm", Model, new ViewDataDictionary() { { "container", ".comments" } })
-        </section>
+        @if (timestamp == null) {
+            <section class="file-comments" id="comments">
+                <div class="list-group comments" data-container="comments">
+                    @Html.Partial("_Comments", Model.Comments)
+                </div>
+                @Html.Partial("_CommentForm", Model, new ViewDataDictionary() { { "container", ".comments" } })
+            </section>
+        }
     </article>
 </div>
 
@@ -52,6 +91,7 @@
     @{
         Html.RenderPartial("_FeedbackModal");
         Html.RenderPartial("_ShareModal");
+        Html.RenderPartial("_MoveModal");
         Html.RenderPartial("_EditCommentModal");
     }
 }

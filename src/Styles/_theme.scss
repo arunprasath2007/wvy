@@ -3,7 +3,7 @@ $font-size-xs: .75rem;
 $font-size-xxs: .6667rem;
 
 $font-weight-thin: 200;
-$font-weight-light: 300; // incorrectly displayed as 200 on chrome/win
+$font-weight-light: 400; // 300 is incorrectly displayed as 200 on chrome/win
 $font-weight-medium: 500;
 $font-weight-strong: $font-weight-medium;
 $font-weight-black: 800;
@@ -28,6 +28,9 @@ $theme-600: #1C8FC4 !default;
 $theme-700: #156B93 !default;
 $theme-800: #0E4862 !default;
 $theme-900: #082736 !default;
+
+$cover-gradient-start: mix($theme-500, #134595, 40%) !default; // blue-700
+$cover-gradient-end: mix($theme-500, #1EBFC2, 40%) !default; // cyan-600
 
 $navbar-height: 3rem;
 $sidebar-left-width: 16rem;
@@ -83,7 +86,14 @@ $green: #53C657 !default;
 $teal: #45D391 !default;
 $cyan: #38DDE0 !default;
 
-$colors: ( "light-blue": $light-blue, "deep-purple": $deep-purple, "deep-orange": $deep-orange, "amber": $amber, "light-green": $light-green, "lime": $lime );
+$colors: ( 
+    "light-blue": $light-blue, 
+    "deep-purple": $deep-purple, 
+    "deep-orange": $deep-orange, 
+    "amber": $amber, 
+    "light-green": $light-green, 
+    "lime": $lime 
+);
 
 $primary: $theme-500; // $blue
 $secondary: $gray-400; // $gray-600
@@ -91,7 +101,10 @@ $success: $teal; // $green
 $info: $light-blue; // $cyan
 $warning: $amber; // $yellow
 
-$theme-colors: ( "theme": $theme );
+$theme-colors: ( 
+    "theme": $theme,
+    "transparent": transparent
+);
 
 $enable-caret: false;
 $enable-shadows: true;
@@ -103,9 +116,28 @@ $link-color: $theme-600; // theme-color("primary")
 $link-hover-color: darken($link-color, 15%); // darken($link-color, 15%)
 $link-hover-decoration: none; // underline
 
-$border-radius: .125rem; // .25rem
-$border-radius-lg: .125rem; // .3rem
-$border-radius-sm: .125rem; // .2rem
+
+// We don't really know if we can or should use rem for the grid column widths
+/*
+$container-max-widths: ( 
+    sm: 32rem, // 512px, 
+    md: 45rem, // 720px, 
+    lg: 60rem, // 960px, 
+    xl: 72rem // 1152px 
+);
+// sm: 540px, md: 720px, lg: 960px, xl: 1140px
+*/
+
+$grid-gutter-width: 2rem; //30px;
+
+$line-height-lg: 1.6; // Makes font-size 20 (1.25rem) -> 32px
+$line-height-sm: 1/0.7; // Makes font-size 14 (0.875rem) -> 20px
+
+// Border-width is 1 pixel to always be hairline sharp
+$border-width: 1px; // .0625rem; // 1px;
+$border-radius: .1875rem; // .25rem
+$border-radius-lg: .1875rem; // .3rem
+$border-radius-sm: .1875rem; // .2rem
 
 $headings-line-height: 1.25; // 1.1
 
@@ -119,11 +151,15 @@ $display2-weight: $font-weight-thin; // 300
 $display3-weight: $font-weight-thin; // 300
 $display4-weight: $font-weight-light; // 300
 
+$lead-font-size: 1.125rem; // ($font-size-base * 1.25)
+$lead-font-weight: $font-weight-light; // 300
+
 $small-font-size: 87.5% !default; // 80%
 
 $text-muted: $gray-500 !default; // $gray-600
 
 $blockquote-small-color: $text-muted; // $gray-600
+$blockquote-font-size: 1.125rem; // ($font-size-base * 1.25)
 
 $hr-border-color: rgba($black,.1); // rgba($black,.1)
 
@@ -133,10 +169,13 @@ $input-border-color: $theme-300; // $gray-400
 
 $input-placeholder-color: $gray-300; // $gray-600
 
-$dropdown-padding-y: 0; // .5rem
+$dropdown-padding-y: .25rem; // .5rem
 $dropdown-spacer: .25rem; // .125rem;
 $dropdown-border-width: 0; // $border-width;
 $dropdown-box-shadow: $md-shadow-2dp;  // 0 .5rem 1rem rgba($black,.175)
+
+$dropdown-link-active-color: $gray-900; // $component-active-color;
+$dropdown-link-active-bg: $gray-100; // $component-active-bg;
 
 $dropdown-item-padding-y: .75rem; // .25rem
 $dropdown-item-padding-x: .75rem; //  1.5rem
@@ -173,11 +212,14 @@ $card-columns-count: 2; // 3
 
 $badge-font-weight: $font-weight-strong; // $font-weight-bold
 
+$modal-inner-padding: 1rem; //15px;
+$modal-dialog-margin: 3rem .5rem; //10px;
+$modal-dialog-margin-y-sm-up: 2rem; //30px;
 $modal-content-border-width: 0; // $border-width
 $modal-content-box-shadow-xs: $md-shadow-24dp; //  0 3px 9px rgba($black,.5)
 $modal-content-box-shadow-sm-up: $md-shadow-24dp; //  0 5px 15px rgba($black,.5)
 
-$modal-header-padding: .75rem 15px 0 15px; // 15px
+$modal-header-padding: .75rem 1rem 0 1rem; // 15px
 
 $alert-padding-x: 1rem; // 1.25rem
 $alert-link-font-weight: $font-weight-strong; // $font-weight-bold

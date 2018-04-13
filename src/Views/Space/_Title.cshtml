@@ -1,8 +1,0 @@
-﻿@model Space
-<div class="navbar-icons">
-    <a href="@(Url.Action<SpaceController>(c => c.Get(Model.Id)))" class="btn btn-icon">@Html.SvgIcon("arrow-left")</a>
-</div>
-<div class="navbar-title">
-    <span class="btn btn-icon">@Model.AvatarImg(24)</span>
-    <a href="@(Url.Action<SpaceController>(c => c.Get(Model.Id)))" class="nav-link">@Title</a>
-</div>

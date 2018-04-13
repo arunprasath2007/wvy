@@ -1,27 +1,105 @@
 /// <reference path="../_core.scss" />
+$scrollbar-size: .8750rem !default;
+
 @mixin scrollbar {
-    ::-webkit-scrollbar {
-        height: .5rem;
-        width: .5rem;
-    }
+    &:not(.scroll-check), :not(.scroll-check) {
+        &::-webkit-scrollbar {
+            height: $scrollbar-size;
+            width: $scrollbar-size;
+            background: $gray-100;
+            border-left: $border-width solid $gray-200;
+        }
 
-    ::-webkit-scrollbar-button {
-        background: transparent;
-        display: none;
-    }
+        &::-webkit-scrollbar-button {
+            background: transparent;
+            display: none;
+        }
 
-    ::-webkit-scrollbar-track {
-        background: $gray-100;
-    }
+        &::-webkit-scrollbar-track {
+            background: transparent;
+            border-radius: $scrollbar-size / 2;
+            border: .1875rem solid transparent;
+            background-clip: content-box;
+        }
 
-    ::-webkit-scrollbar-thumb {
-        background: $gray-300;
+        &::-webkit-scrollbar-thumb {
+            background-color: $gray-300;
+            border-radius: $scrollbar-size / 2;
+            border: .1875rem solid transparent;
+            background-clip: padding-box;
+        }
+
+        &:hover ::-webkit-scrollbar-thumb {
+            background-color: $gray-400;
+
+            &:hover {
+                background-color: $gray-500;
+            }
+        }
+
+        &::-webkit-scrollbar-thumb:window-inactive {
+            background-color: $gray-200;
+        }
+
+        &::-webkit-scrollbar-corner {
+            background: transparent;
+        }
     }
 }
 
+@mixin scrollbar-overlay {
+    &:not(.scroll-check), :not(.scroll-check) {
+        &::-webkit-scrollbar {
+            background: transparent;
+            border-left-color: transparent;
+        }
+
+        &::-webkit-scrollbar-track {
+            background-color: rgba($gray-500, 0);
+
+            &:hover {
+                background-color: rgba($gray-500, .2);
+            }
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: rgba($gray-600, .3);
+        }
+
+        &:hover ::-webkit-scrollbar-thumb {
+            background-color: rgba($gray-600, .5);
+
+            &:hover {
+                background-color: rgba($gray-600, .6);
+            }
+        }
+
+        &::-webkit-scrollbar-thumb:window-inactive {
+            background-color: rgba($gray-600, .2);
+        }
+    }
+}
+
+@mixin scrollbar-overlay-content {
+    //min-width: calc(100% + #{$scrollbar-size});
+    min-width: 100vw;
+}
+
+@mixin overscroll-behavior-contain {
+    // overscroll-behavior unfortunately does not support blocking iframe scrollchaning
+    // so we have scroll.js to take care of that and polyfill for other browsers
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    -ms-scroll-chaining: none;
+}
+
 @mixin scroll {
-    backface-visibility: hidden;
-    -webkit-overflow-scrolling: touch; // ios momentum scrolling, cannot be used on the <body> element!
+    @include overscroll-behavior-contain;
+
+    &:not(body) {
+        -webkit-overflow-scrolling: touch; // ios momentum scrolling, cannot be used on the <body> element!
+    }
+
     max-height: 100%;
     max-width: 100%;
     overflow-x: auto;
@@ -38,6 +116,10 @@
     @include scroll;
     overflow-x: hidden;
     max-width: none;
+}
+
+.overscroll-behavior-contain {
+    @include overscroll-behavior-contain;
 }
 
 .scroll {

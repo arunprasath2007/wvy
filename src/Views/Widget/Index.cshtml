@@ -1,0 +1,55 @@
+﻿@model ConnectSpaceModel
+@{
+    Layout = "_WidgetLayout.cshtml";
+    Title = "";
+}
+
+<div class="cover">
+    <div class="container text-center">
+        @Html.IconImg(128, htmlAttributes: new { @class = "my-4" })
+        @using (Html.BeginForm(nameof(WidgetController.Search), typeof(WidgetController).ControllerName(), FormMethod.Get, new { @class = "main-search", data_turboform = "" })) {
+            <div class="form-group" role="search">
+                <input id="weavy-main-search" class="form-control" type="text" role="search" name="q" value="" placeholder="Search..." autofocus />
+                <button type="submit" class="btn btn-icon">@Html.SvgIcon("magnify")</button>
+            </div>
+
+        }
+    </div>
+</div>
+
+<div class="container my-4">
+    <h6 class="col-title">Spaces</h6>
+    <div class="space-list">
+        @foreach (var space in Model.Spaces) {
+            <a href="@space.Url()" title="@space.Name">
+                <div class="star">@Html.StarToggle(space, true)</div>
+                @space.AvatarImg(48, htmlAttributes: new { @class = "mt-2" })
+                <p class="mt-1"><small>@space.Name.Ellipsis(11)</small></p>
+            </a>
+        }
+        <a href="@Url.Action(nameof(WidgetController.NewSpace))" class="add">
+            @Html.SvgIcon("plus", color: "theme-500", size: 48)
+            <p><small>Add space</small></p>
+        </a>
+    </div>
+
+    <div class="all-spaces">
+        @Html.ActionLink("All spaces", nameof(WidgetController.Spaces))
+
+    </div>
+
+    @if (Model.Content.Any()) {
+        <h6 class="col-title">Recent</h6>
+        <div class="list-group">
+            @foreach (var content in Model.Content) {
+                if (content is Weavy.Core.Models.File file) {
+                    @Html.Partial("_FileList", file);
+                } else {
+                    @Html.Partial("_ItemList", content)
+                }
+            }
+        </div>
+    }
+
+</div>
+

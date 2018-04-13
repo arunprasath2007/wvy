@@ -33,7 +33,7 @@
 @import "vendor/bootstrap/media";
 @import "vendor/bootstrap/list-group";
 @import "vendor/bootstrap/close";
-@import "vendor/bootstrap/modal";
+//@import "components/modal"; // Reworked and overridden
 @import "vendor/bootstrap/tooltip";
 //@import "vendor/bootstrap/popover";
 //@import "vendor/bootstrap/carousel";
@@ -41,6 +41,7 @@
 
 // Additional mixins
 @import 'mixins/animation';
+@import 'mixins/divider';
 @import 'mixins/dot';
 
 // Additional utilities

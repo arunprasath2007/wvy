@@ -14,7 +14,7 @@
             <div class="media-title">@Model.Title</div>
             <div class="media-text">
                 <span class="typing-hide">
-                    @(Model.LastMessageById != null ? (Model.LastMessageById == User.Id ? "You: " : Model.IsRoom ? Model.LastMessageBy.Title + ": " : "") : "") @(Model.Description.IsNullOrEmpty() ? Html.SvgIcon("attachment", htmlAttributes: new { @class="i-inline"}) : Html.Raw(Emojione.ShortnameToImage(Html.Encode(Model.Description.Ellipsis(48))))) 
+                    @(Model.LastMessageById != null ? (Model.LastMessageById == User.Id ? "You: " : Model.IsRoom ? Model.LastMessageBy.Title + ": " : "") : "") @(Model.Description.IsNullOrEmpty() ? (Model.Description == null ? MvcHtmlString.Empty : Html.SvgIcon("attachment", htmlAttributes: new { @class="i-inline"})) : Html.Raw(Emojione.ShortnameToImage(Html.Encode(Model.Description.Ellipsis(48))))) 
                 </span>
                 <span class="typing-show"></span>
             </div>

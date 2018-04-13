@@ -1,18 +1,24 @@
-﻿@model IEnumerable<Weavy.Core.Models.File>
+﻿@model Weavy.Core.Models.File
+@{
+    bool preview = ViewData["preview"] as bool? ?? false;
+    var attrs = preview ? Html.PreviewAttributes(Model, href: Model.Url()) : null;
+    bool byline = ViewData["byline"] as bool? ?? true;
+}
 
-<div class="list-group file-list">
-    @foreach (var file in Model) {
-        var attrs = Html.PreviewAttributes(file, href: file.Url());
-
-        <a class="list-group-item list-group-item-action" href="@file.ContentUrl()" @Html.Raw(attrs.AsHtmlAttributes())>
-            <div class="media">
-                @Html.SvgIcon(file.IconName(), file.IconColor(), size: 48)
-                <div class="media-body">
-                    <h6 class="media-title">@file.Name</h6>
-                    <small class="text-muted">@FileHelper.FileSizeAsString(file.Size)</small>
-                </div>
-            </div>
-        </a>
-    }
-</div>
-
+<a class="list-group-item list-group-item-action" href="@(preview ? Model.ContentUrl() : Model.Url())" @Html.Raw(attrs.AsHtmlAttributes())>
+    <div class="media">
+        @Html.SvgIcon(Model.IconName(), Model.IconColor(), size: 48)
+        <div class="media-body">
+            <h6 class="media-title">@Model.Name</h6>
+            <small class="text-muted">
+                @if (byline) {
+                    <text>Uploaded @Html.Time(Model.ModifiedAt) by @Model.ModifiedBy.Title –</text>
+                }
+                @if (FileHelper.IsImage(Model.Name)) {
+                    <text>@(Model.Width)x@(Model.Height) ·</text>
+                }
+                @FileHelper.FileSizeAsString(Model.Size)
+            </small>
+        </div>
+    </div>
+</a>

@@ -5,7 +5,7 @@
 
     var entity = Model.Entity;
     if (entity != null) {
-        provider = WeavyContext.Current.Theme.GetName();
+        provider = Theme.Name;
         if (entity is IHasAvatar && image == null) {
             image = ((IHasAvatar)entity).Avatar?.Value;
         }

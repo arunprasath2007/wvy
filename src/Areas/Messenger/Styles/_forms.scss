@@ -13,10 +13,9 @@ legend {
 }
 
 .search {
-    background-color: $gray-100;
     margin-bottom: 0;
     padding: .5rem;
-    flex: none;
+    flex: 1 1 auto;
     position: relative;
 
     .form-control {
@@ -43,6 +42,10 @@ legend {
     .btn-reset-search {
         display: none;
         z-index: 2;
+    }
+
+    &.search-user{
+        flex: none;
     }
 }
 
@@ -100,8 +103,8 @@ legend {
 
 
         .emojionearea-button {
-            width: 24px;
-            height: 24px;
+            width: 1.5rem;
+            height: 1.5rem;
             opacity: .6;
             cursor: pointer;
             transition: opacity 200ms ease-in-out;
@@ -113,10 +116,12 @@ legend {
 
         .emojionearea-button > div {
             display: block;
-            width: 24px;
-            height: 24px;
+            width: 1.5rem;
+            height: 1.5rem;
             position: absolute;
-            transition: all 200ms ease-in-out;
+            transition: transform 200ms ease-in-out, opacity 200ms ease-in-out;
+            background-size: 1.5rem 1.5rem;
+            background-repeat: no-repeat;
         }
 
         .emojionearea-button > div.emojionearea-button-open {
@@ -158,7 +163,7 @@ legend {
             margin: 0;
             opacity: 0;
             -ms-filter: 'alpha(opacity=0)';
-            font-size: 130px;
+            font-size: 8.125rem; // 130px;
             direction: ltr;
             cursor: pointer;
         }
@@ -184,7 +189,7 @@ legend {
 
 .messenger-textcomplete {
     @media (max-width: 648px) {
-        left: 10px !important;
+        left: .625rem !important; // 10px !important;
     }
 
     .textcomplete-item {

@@ -7,8 +7,9 @@
             <button type="button" class="btn btn-icon" data-toggle="pane-one" title="Back">@Html.SvgIcon("arrow-left")<span class="badge badge-danger">@Model.UnreadConversations</span></button>
         </div>
         <div class="navbar-middle conversation-title">@(Model.Conversation?.Title)</div>
-        <div class="navbar-icons">
-            @{ Html.RenderPartial("_ConversationMenu", Model.Conversation); }
+        <div class="navbar-icons">            
+            <button type="button" class="btn btn-icon d-embedded visibility-h">@Html.SvgIcon("expand-window")</button>
+            <button type="button" class="btn btn-icon d-embedded visibility-h">@Html.SvgIcon("close")</button>
         </div>
     </div>
     <div class="navbar navbar-secondary">

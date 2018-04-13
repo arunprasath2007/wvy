@@ -18,9 +18,9 @@
                                             <br />
                                             <br />
                                             @if (Model.Invite.IsExternal) {
-                                                <text>I invite you to join <strong>@Model.Invite.Space.Name</strong> on @Model.Theme.GetName().</text>
+                                                <text>I invite you to join <strong>@Model.Invite.Space.Name</strong> on @Model.Theme.Name.</text>
                                             } else {
-                                                <text>I want you to join @Model.Theme.GetName().</text>
+                                                <text>I want you to join @Model.Theme.Name.</text>
                                             }
                                             @if (Model.Invite.ApprovedById != null) {
                                                 <text>To sign up for an account, just click the button below:</text>

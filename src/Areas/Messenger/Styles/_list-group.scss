@@ -59,6 +59,7 @@
     }
 
     .list-group-item.active {
+        z-index: unset;
 
         @media (max-width: 648px) {
             background-color: $list-group-bg;
@@ -127,11 +128,15 @@
 }
 
 
-.list-group-conversations, .list-grou.list-group-users {
+.list-group-conversations, .list-group.list-group-users {
     .list-group-item {
         border-left: none;
         border-right: none;
     }
+}
+
+.list-group-users {
+    flex: 100%;
 }
 
 // toggle more rooms

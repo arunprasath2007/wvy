@@ -1,0 +1,31 @@
+﻿@model IndexResult
+@{
+    Layout = "_WidgetLayout.cshtml";
+    Title = "Search";
+    Back = Url.Action(nameof(WidgetController.Index));
+}
+
+<div class="container py-4">
+
+    @using (Html.BeginForm(nameof(WidgetController.Search), typeof(WidgetController).ControllerName(), FormMethod.Get, new { @class="pb-2", data_turboform = "" })) {
+        <div class="form-group input-group">
+            <input class="form-control" type="text" role="search" name="q" value="@Model.Query.Text" placeholder="Search..." autofocus />
+            <span class="input-group-btn">
+                <button type="submit" class="btn btn-icon">@Html.SvgIcon("magnify", "primary")</button>
+            </span>
+        </div>
+    }
+
+    @if (Model.TotalCount == 0 && !string.IsNullOrEmpty(Model.Query.Text)) {
+        <p>Your search - <strong>@Model.Query.Text</strong> - did not match anything.</p>
+        <p>Suggestions:</p>
+        <ul>
+            <li>Make sure that all words are spelled correctly.</li>
+            <li>Try different keywords.</li>
+            <li>Try more general keywords.</li>
+            <li>Try fewer keywords.</li>
+        </ul>
+    }
+
+    @{ Html.RenderPartial("_SearchResult"); }
+</div>

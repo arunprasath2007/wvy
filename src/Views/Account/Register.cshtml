@@ -11,9 +11,9 @@
             </div>
             <h1 class="display-3">@Title</h1>
             @if (Model.Space != null) {
-                <p>Welcome to @WeavyContext.Current.Theme.GetName(), you have been invited to join <strong>@Model.Space.Title</strong>. Select a username and password below!</p>
+                <p>Welcome to @Theme.Name, you have been invited to join <strong>@Model.Space.Title</strong>. Select a username and password below!</p>
             } else {
-                <p>Welcome to @WeavyContext.Current.Theme.GetName(), select a username and password below!</p>
+                <p>Welcome to @Theme.Name, select a username and password below!</p>
             }
 
             @using (Html.BeginForm(nameof(AccountController.Register), typeof(AccountController).ControllerName(), FormMethod.Post, new { data_turboform = true, novalidate = "" })) {

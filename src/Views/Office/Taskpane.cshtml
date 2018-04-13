@@ -1,0 +1,152 @@
+﻿@using Weavy.web.Controllers
+@model Weavy.Core.Models.File
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html class="@HtmlClasses()" lang="@System.Threading.Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, maximum-scale=1, user-scalable=no"> @* Viewport must contain width=device-width, minimum-scale=1.0 to trigger GPU Rasterization https://www.chromium.org/developers/design-documents/chromium-graphics/how-to-get-gpu-rasterization *@
+    <meta name="turbolinks-cache-control" content="no-preview">
+    <title>@Html.Title(Title)</title>
+    @Html.ThemeHead()
+    @Html.ThemeStyle("~/styles/weavy.scss")
+    @Bundler.Scripts("~/scripts/office.bundle")
+</head>
+<body class="@BodyClasses("has-navbar", "has-navbar-secondary")" @BodyAttributes>
+    @Html.SvgSprite()
+
+    <nav class="navbar-theme fixed-top">
+        <div class="navbar navbar-primary">
+            <div class="navbar-middle">
+                <span class="navbar-text">@Model.Name</span>
+            </div>
+        </div>
+        <div class="navbar navbar-secondary">
+            <nav class="nav nav-tabs" role="tablist">
+                <a class="nav-link active" href="#comments-tab" data-toggle="tab" role="tab" title="Comments">Comments</a>
+                <a class="nav-link" href="#details-tab" data-toggle="tab" role="tab" title="Details">Details</a>
+            </nav>
+        </div>
+    </nav>
+
+    <div class="alerts">@Html.AlertMessages()</div>
+
+    <main role="main" data-file-id="@Model.Id">
+        <div class="container-fluid my-3">
+            <div class="tab-content">
+
+                <div class="tab-pane active" id="comments-tab" role="tabpanel">
+                    <section class="file-comments" id="comments">
+                        <div class="list-group comments" data-container="comments">
+                            @Html.Partial("_Comments", Model.Comments)
+                        </div>
+                        @Html.Partial("_CommentForm", Model, new ViewDataDictionary() { { "container", ".comments" } })
+                    </section>
+                </div>
+
+                <div class="tab-pane" id="details-tab" role="tabpanel">
+                    @if (WeavyRequestContext.Current.Space != null) {
+                        <div class="form-group">
+                            <label>Space</label>
+                            <p class="form-control-static"><a href="@WeavyRequestContext.Current.Space.Url(absolute: true)" target="_blank">@WeavyRequestContext.Current.Space.Name</a></p>
+                        </div>
+                    }
+
+                    @if (WeavyRequestContext.Current.App != null && WeavyRequestContext.Current.App is IFolder) {
+                        <div class="form-group">
+                            <label>Folder</label>
+                            <p class="form-control-static"><a href="@WeavyRequestContext.Current.App.Url(absolute: true)" target="_blank">@WeavyRequestContext.Current.App.Name</a></p>
+                        </div>
+                    }
+
+                    @if (Model.Description != null) {
+                        <div class="form-group">
+                            <label>Description</label>
+                            <p class="form-control-static">@Model.Description</p>
+                        </div>
+                    }
+
+                    <div class="form-group">
+                        <label>Size</label>
+                        <p class="form-control-static">@FileHelper.FileSizeAsString(Model.Size)</p>
+                    </div>
+
+                    @if (Model.Tags.Any()) {
+                        <div class="form-group">
+                            <label>Tags</label>
+                            <p class="form-control-static">@Model.Tags.JoinTags()</p>
+                        </div>
+                    }
+
+                    <div class="form-group">
+                        <label>Created</label>
+                        <p class="form-control-static">@Model.CreatedAt.ToLongDateString() @Model.CreatedAt.ToShortTimeString()</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Modified</label>
+                        <p class="form-control-static">@Model.ModifiedAt.ToLongDateString() @Model.ModifiedAt.ToShortTimeString()</p>
+                    </div>
+
+                    @if (Request.IsLocal) {
+                        <div class="form-group">
+                            <label>Log</label>
+                            <textarea id="log" class="form-control" rows="5"></textarea>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    @{
+        Html.RenderPartial("_PhotoSwipe");
+        Html.RenderPartial("_Preview");
+        Html.RenderPartial("_EditCommentModal");
+    }
+
+    <script>
+
+        $(function () {
+            $("textarea.comments-form:visible").weavyEditor({
+                collapsed: true,
+                embeds: false,
+                polls: false,
+                placeholder: 'Your comment...',
+                onSubmit: function (e, d) {
+                    insertComment(e, d, this);
+                }
+            });
+        });
+
+        // subscribe to message from other windows, i.e. the office add-in window
+        window.addEventListener("message", receiveMessage, false);
+        function receiveMessage(event) {
+            logga(event.data);
+            if (event.data.from && event.data.message) {
+                logga(event.data.message, event.data.from);
+                if (event.data.from === "office" && event.data.message === "weavy?") {
+                    event.source.postMessage({ from: "weavy", message: "yes!" }, event.origin);
+                    return;
+                }
+            }
+        }
+
+        // log message to textarea
+        function logga(message, from) {
+            console.log(message);
+            if (typeof message === "string") {
+                if (from) {
+                    var msg = from + ": " + message
+                }
+                var $log = $("#log");
+                $log.val($log.val() + msg + "\n");
+            }
+        }
+    </script>
+
+</body>
+</html>

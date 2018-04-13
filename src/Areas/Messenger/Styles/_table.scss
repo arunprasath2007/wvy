@@ -13,7 +13,7 @@
     // avatar
     td:nth-child(1) {
         padding: $spacer/2 0;
-        width: 32px;
+        width: 2rem;
     }
     // name
     td:nth-child(2), th:nth-child(2) {
@@ -23,7 +23,7 @@
     // dropdown
     td:nth-child(3) {
         padding: $spacer/2 0;
-        width: 32px;
+        width: 2rem;
     }
 }
 
@@ -40,7 +40,7 @@
     td:nth-child(1) {
         padding-left: .75rem;
         padding-right: 0;
-        width: 36px;
+        width: 2.25rem;
     }
     // name
     td:nth-child(2), th:nth-child(2) {
@@ -50,11 +50,11 @@
     // close icon
     td:nth-child(3) {
         padding: .25rem .75rem .25rem .25rem;
-        width: 48px;
+        width: 3rem;
     }
 
     tr:last-child td {
-        border-bottom: 1px solid $messenger-border-color;
+        border-bottom: $border-width solid $messenger-border-color;
     }
 }
 
@@ -71,7 +71,7 @@
     td:nth-child(1) {
         padding-left: 0;
         padding-right: 0;
-        width: 24px;
+        width: 1.5rem;
     }
     // name
     td:nth-child(2), th:nth-child(2) {

@@ -14,7 +14,7 @@
             width: auto;
             max-width: 100%;
             padding: .25rem;
-            border: 1px solid $border-color;
+            border: $border-width solid $border-color;
             border-radius: $border-radius;
         }
     }
@@ -59,7 +59,7 @@
         right: 0;
 
         .embeds & {
-            display:none;
+            display: none;
         }
     }
 
@@ -98,6 +98,7 @@
         // image captions
         background-color: $backdrop-bg;
         border: none;
+        border-radius: 0;
         color: $white;
         position: absolute;
         bottom: 0;
@@ -120,27 +121,6 @@
             position: absolute;
             top: 50%;
             left: 50%;
-
-            .fa {
-                position: absolute;
-                font-size: 4em;
-                left: -24px;
-                top: -28px;
-
-                &:first-child {
-                    color: rgba(0,0,0,.5);
-                }
-
-                &:last-child {
-                    color: #fff;
-                    opacity: .9;
-                    text-shadow: 0 0 4px rgba(0,0,0,.9);
-                }
-            }
-        }
-
-        &:hover .play .fa:last-child {
-            opacity: 1;
         }
     }
 }

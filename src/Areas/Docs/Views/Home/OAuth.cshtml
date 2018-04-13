@@ -2,15 +2,10 @@
 
 @{
     Title = "Authentication";
+    Back = Url.Action<HomeController>(c => c.Index());
 }
 
-@section navbar {
-    <div class="navbar-icons"><a href="@(Url.Action<HomeController>(c => c.Index()))" class="btn btn-icon">@Html.SvgIcon("arrow-left")</a></div>
-    <div class="navbar-title">@Title</div>
-}
-
-
-<div class="container-fluid">
+<div class="container my-3">
     <header>
         <h1 class="display-1">@Title</h1>
         <p>

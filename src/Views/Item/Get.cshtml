@@ -1,46 +1,78 @@
 ﻿@model Item
 @{
-    Title = "Content";
+    Title = Model.Title ?? "Untitled";
+    Back = Url.Back(Folder.Url());
+    long? timestamp = ViewBag.Revision as long?;
 }
 
-<nav class="navbar navbar-content">
-    @Model.Breadcrumb()
-    <div class="navbar-icons ml-auto">
-        @Html.StarToggle(Model)
-        @{ Html.RenderPartial("_ItemMenu", Model); }
-    </div>
-</nav>
+@section navbar_middle {
+    @{ Html.RenderPartial("_BreadcrumbMenu", Model); }
+}
 
-<div class="container-fluid my-3">
-    <article class="item" data-item-id="@Model.Id">
+<div class="container my-3">
+    <article class="item" data-entity="item" data-id="@Model.Id" data-item-id="@Model.Id">
+        <header class="item-header">
+            @if (Model.CreatedById == Model.ModifiedById) {
+                <a class="btn btn-icon mr-1" href="@Model.CreatedBy.Url()">@Model.CreatedBy.AvatarImg(24)</a>
+            } else {
+                <a class="btn btn-icon mr-1" href="@Model.CreatedBy.Url()">@Model.CreatedBy.AvatarImg(24)</a>
+                <a class="btn btn-icon mr-1" href="@Model.ModifiedBy.Url()">@Model.ModifiedBy.AvatarImg(24)</a>
+            }
+
+            <a href="@(Url.Action<ItemController>(c => c.Revisions(Model.Id)))" class="mr-1">@Html.Time(Model.ModifiedAt)</a>
+            @if (timestamp != null) {
+                <span class="badge badge-warning">revision</span>
+            } else {
+                @Html.ItemBadge(Model)
+            }
+
+            @if (Model is ITaggable && !Model.Tags.IsNullOrEmpty()) {
+                <text>·</text> @Html.Raw(Model.Tags.Join(" ", tag => @"<span class=""badge badge-info"">" + tag + "</span>"))
+            }
+
+            <div class="navbar-icons ml-auto">
+                @if (timestamp != null) {
+                    <form action="@Url.Action(nameof(ItemController.Revert), null, new { id = Model.Id })" method="post">
+                        @Html.HttpMethodOverride(HttpVerbs.Put)
+                        @Html.Hidden(nameof(Model.Timestamp), timestamp)
+                        <button type="submit" class="btn btn-icon" title="Revert">@Html.SvgIcon("undo", "icon")</button>
+                    </form>
+                } else {
+                    if (Model.HasPermission(Permission.Edit)) {
+                        <a class="btn btn-icon" href="@Model.Url()/edit">@Html.SvgIcon("pencil", "icon")</a>
+                    }
+                    Html.RenderPartial("_ItemMenu", Model);
+                }
+            </div>
+        </header>
+
         <section class="properties">
             @Html.DisplayGroups()
         </section>
 
-        <section class="item-comments">
-            <div class="list-group comments" data-container="comments">
-                @Html.Partial("_Comments", Model.Comments)
-            </div>
-            @Html.Partial("_CommentForm", Model, new ViewDataDictionary() { { "container", ".comments" } })
-        </section>
+        @if (timestamp == null) {
 
-        <footer>
-            @if (Model.IsDraft || Model.LockedById == User.Id) {
-                <span class="badge badge-warning">Draft</span>
-            } else if (Model.IsLocked) {
-                <span class="badge badge-info">Locked</span>
-            }
-            @Model.MetaData().CreateVerb.PastTense() by @Model.CreatedBy.Link() @Html.Time(Model.CreatedAt)
-            @if (Model is ITaggable && !Model.Tags.IsNullOrEmpty()) {
-                @Html.SvgIcon("tag-multiple") @Html.Raw(Model.Tags.Join(", ", x => @"<a href=""" + Model.App.Url() + "?q=" + Url.Encode("#" + x) + @""">#" + x + "</a>"))
-            }
-        </footer>
+            Html.RenderPartial("_Attachments");
+
+            <section class="item-comments my-3">
+                <h4 class="display-4"><span>Comments</span></h4>
+                <div class="list-group comments" data-container="comments">
+                    @Html.Partial("_Comments", Model.Comments)
+                </div>
+                @Html.Partial("_CommentForm", Model, new ViewDataDictionary() { { "container", ".comments" } })
+            </section>
+
+            Html.RenderPartial("_Subscribers");
+
+            <footer class="item-footer"></footer>
+        }
     </article>
-
 </div>
+
 @section footer {
     @{
         Html.RenderPartial("_FeedbackModal");
+        Html.RenderPartial("_MoveModal");
         Html.RenderPartial("_ShareModal");
         Html.RenderPartial("_EditCommentModal");
     }

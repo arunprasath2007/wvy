@@ -6,7 +6,7 @@
 ~/scripts/vendor/emojionearea/emojionearea.min.js
 ~/scripts/vendor/twitter-text/twitter-text.js
 ~/scripts/src/extensions.js
-~/scripts/src/document.js 
+~/scripts/src/turbolinks.js 
 ~/scripts/src/browser.js
 ~/scripts/src/context.js
 ~/scripts/src/url.js
@@ -17,6 +17,7 @@
 ~/scripts/src/emoji.js
 ~/scripts/src/alert.js
 ~/scripts/src/postal.js
+~/scripts/src/bubbles.js
 ~/scripts/src/widget-notifications.js
 ~/scripts/src/widget-personal.js
 ~/scripts/_fileupload.bundle

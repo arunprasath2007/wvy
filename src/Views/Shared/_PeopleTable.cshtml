@@ -2,13 +2,20 @@
 
 @if (Model.Any()) {
     foreach (var user in Model) {
-        <tr @(Html.Raw(user.IsTrashed ? @"class=""table-trashed""" : user.IsSuspended ? @"class=""table-suspended""" : "")) data-href="@user.Url()" data-type="user" data-id="@user.Id">
+        <tr class="@($"{(user.IsTrashed() ? "table-trashed" : "")} {(user.IsSuspended ? "table-suspended": "")}")" @Html.Raw(user.IsTrashed() ? "" : $@"data-href=""{ user.Url()}""") data-type="user" data-id="@user.Id" data-modal>
             <td class="table-icon">@user.AvatarImg(32, presence: true)</td>
             <td>
-                @if (user.Username == user.Title) {
-                    <a href="@user.Url()"><small>@@@user.Username</small></a>
+                @if (user.IsTrashed()) {
+                    if (user.Username != user.Title) {
+                        <text>@user.Title</text>
+                    }
+                    <small>@@@user.Username</small>
                 } else {
-                    <a href="@user.Url()">@user.Title</a> <small>@@@user.Username</small>
+                    if (user.Username == user.Title) {
+                        <a href="@user.Url()"><small>@@@user.Username</small></a>
+                    } else {
+                        <a href="@user.Url()">@user.Title</a> <small>@@@user.Username</small>
+                    }
                 }
                 @Html.Badge(user)
             </td>

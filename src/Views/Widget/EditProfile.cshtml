@@ -1,0 +1,28 @@
+﻿@model User
+@{
+    Layout = "_PersonalLayout.cshtml";
+    Title = "Edit profile";
+    Back = Url.Back<WidgetController>(c => c.Notifications());
+}
+
+@section navbar_secondary {
+    @Html.Partial("_ProfileNavbar", User)
+}
+
+<div class="container my-3">
+    @using (Html.BeginForm(nameof(WidgetController.UpdateProfile), typeof(WidgetController).ControllerName(), FormMethod.Post, new { id = "update-profile-form", autocomplete = "off", data_turboform = "", novalidate = "" })) {
+        @Html.HttpMethodOverride(HttpVerbs.Put)
+        @Html.AntiForgeryToken()
+
+        <div class="text-center">
+            @Html.EditorsForModel(Model.Profile, include: new string[] { nameof(Model.Profile.Avatar) }, formLabels: false)
+        </div>
+
+        @Html.EditorsForModel(Model.Profile, exclude: new string[] { nameof(Model.Profile.Avatar) })
+        <div class="form-buttons">
+            <button type="submit" class="btn btn-primary btn-load waves-effect" title="Save">Save</button>
+            <a href="@Back" class="btn btn-outline-secondary mr-auto waves-effect">Cancel</a>
+        </div>
+
+    }
+</div>

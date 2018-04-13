@@ -105,19 +105,19 @@ weavy.api = (function ($) {
         });
     }
 
-    // follow the specified user
-    function follow(userId) {
+    // follow the specified entity
+    function follow(entityType, entityId) {
         return $.ajax({
-            url: weavy.url.resolve("/api/users/" + userId + "/follow"),
+            url: weavy.url.resolve("/api/" + entityType + "s/" + entityId + "/follow"),
             method: "POST",
             contentType: "application/json"
         });
     }
 
-    // unfollow the specified user
-    function unfollow(userId) {
+    // unfollow the specified entity
+    function unfollow(entityType, entityId) {
         return $.ajax({
-            url: weavy.url.resolve("/api/users/" + userId + "/follow"),
+            url: weavy.url.resolve("/api/" + entityType + "s/" + entityId + "/follow"),
             method: "DELETE",
             contentType: "application/json"
         });
@@ -168,6 +168,24 @@ weavy.api = (function ($) {
         });
     }
 
+    // pin a post
+    function pin(postId) {
+        return $.ajax({
+            url: weavy.url.resolve("/api/posts/" + postId + "/pin"),
+            method: "POST",
+            ContentType: "application/json"
+        });
+    }
+
+    // unpin a post
+    function unpin(postId) {
+        return $.ajax({
+            url: weavy.url.resolve("/api/posts/" + postId + "/pin"),
+            method: "DELETE",
+            ContentType: "application/json"
+        });
+    }
+
     return {
         getFile: getFile,
         trashComment: trashComment,
@@ -190,6 +208,8 @@ weavy.api = (function ($) {
         trash: trash,
         restore: restore,
         unread: unread,
-        readAll: readAll
+        readAll: readAll,
+        pin: pin,
+        unpin: unpin
     };
 })($);

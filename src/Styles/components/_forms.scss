@@ -1,4 +1,10 @@
 /// <reference path="../_core.scss" />
+.form-control {
+    &::placeholder {
+        font-size: $font-size-sm;
+    }
+}
+
 .form-text {
     font-size: .875rem;
     color: $text-muted;
@@ -16,36 +22,12 @@
     }
 }
 
-// search forms in manage etc.
-.search-form.input-group {
-
-    @include media-breakpoint-up(md) {
-        max-width: 20rem - 2rem;
-    }
-
-    .form-control {
-        padding-right: 2.25rem;
-        box-shadow: none;
-
-        &:focus, &.focus {
-            @extend .form-control:focus;
-        }
-    }
-
-    .input-group-btn {
-        position: absolute;
-        top: $spacer/4;
-        right: $spacer/4;
-        z-index: 4;
-    }
-}
-
 .input-group-btn select {
     border-color: $theme-300;
-    margin-top: 0px;
-    margin-bottom: 0px;
-    padding-top: 7px;
-    padding-bottom: 7px;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: .4375rem;
+    padding-bottom: .4375rem;
     border-left: none;
     background: $gray-200;
 

@@ -16,20 +16,18 @@
         display: flex;
         align-items: center;
 
-        .close {
-            order:1;
+        .close, .dropdown {
+            order: 1;
+            margin-right: -.5rem;
+            align-self: flex-start;
         }
     }
 }
 
 .alert-dismissible {
-    position: relative;
     padding-right: 3rem;
 
     .close {
-        position: absolute;
-        top: 0;
-        right: 0;
         margin: .5rem;
         padding: .25rem;
     }
@@ -39,8 +37,9 @@
     &.btn.btn-link {
         padding: 0;
         vertical-align: initial;
+
         &:active, &.active {
-            box-shadow:none;
+            box-shadow: none;
         }
     }
 }

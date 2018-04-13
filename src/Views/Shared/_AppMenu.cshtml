@@ -5,14 +5,20 @@
         @Html.SvgIcon("dots-vertical")
     </button>
     <div class="dropdown-menu dropdown-menu-right">
-        <button type="button" class="dropdown-item"  data-toggle="modal" data-target="#share-modal" data-share-type="@Model.Type" data-share-id="@Model.Id" data-share-title="Share @Model.MetaData().Name.ToLower()">@Html.SvgIcon("share-variant") Share</button>
+        <button type="button" class="dropdown-item" data-toggle="modal" data-target="#share-modal" data-share-type="@Model.Type" data-share-id="@Model.Id" data-share-title="Share @Model.Kind">@Html.SvgIcon("share-variant", "success") Share</button>
 
         @if (Model.HasPermission(Permission.Edit)) {
-            <a class="dropdown-item" href="@Model.Url()/edit">@Html.SvgIcon("pencil") Edit</a>
+            <a class="dropdown-item" href="@Model.Url()/edit">@Html.SvgIcon("pencil", "primary") Edit</a>
+            <button class="dropdown-item" type="button" data-toggle="modal" data-target="#move-content-modal" data-path="@(Url.Action<AppController>(c => c.MoveModal(Model.Id)))" title="Move @Model.Kind">@Html.SvgIcon("undo", "warning") Move</button>
         }
+
+        @Html.StarToggle(Model, false, new { @class = "dropdown-item toggle-dropdown" })
+
+        @Html.SubscribeToggle(Model, new { @class = "dropdown-item toggle-dropdown" })
+
         @if (Model.HasPermission(Permission.Delete)) {
             <form action="@(Url.Action(nameof(AppController.Trash), typeof(AppController).ControllerName(), new { id = Model.Id }))" method="post" data-turboform>
-                <button type="submit" class="dropdown-item">@Html.SvgIcon("delete") Trash</button>
+                <button type="submit" class="dropdown-item">@Html.SvgIcon("delete", "danger") Trash</button>
             </form>
         }
     </div>

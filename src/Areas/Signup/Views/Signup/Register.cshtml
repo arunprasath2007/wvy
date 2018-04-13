@@ -4,7 +4,7 @@
 }
 <main>
     <h1>Email confirmed</h1>
-    <h2>Welcome to @WeavyContext.Current.Theme.GetName()! Select a username and password below.</h2>
+    <h2>Welcome to @Theme.Name! Select a username and password below.</h2>
     @using (Html.BeginForm(nameof(SignupController.Register), null, FormMethod.Post, new { data_turboform = true, novalidate = "" })) {
         @Html.AntiForgeryToken()
         <div class="form-group">

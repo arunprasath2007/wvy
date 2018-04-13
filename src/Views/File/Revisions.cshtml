@@ -1,0 +1,63 @@
+﻿@model Weavy.Web.Models.FileRevisionsModel
+@{
+    Title = "Revisions";
+    Back = Model.File.Url();
+}
+
+<div class="my-3">
+
+    <table class="table table-hover table-content">
+        <thead>
+            <tr>
+                <th class="table-icon"></th>
+                <th>Revisions</th>
+                <th>Modified</th>
+                <th>Type</th>
+                <th>Size</th>
+                <th class="table-icon"></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var rev in Model.Revisions.AsSmartEnumerable()) {
+                var num = Model.Revisions.Count - rev.Index;
+                var file = rev.Value;
+                var href = !file.IsRevision ? file.Url() : Url.Action<FileController>(c => c.GetRevision(file.Id, file.Timestamp));
+
+                if (file.Timestamp == Model.File.Timestamp && !rev.IsLast) {
+                    var tscompare = Model.Revisions[rev.Index + 1].Timestamp;
+                }
+
+                <tr data-href="@href">
+                    <td class="table-icon">@Html.SvgIcon(file.IconName(), color: file.IconColor())</td>
+                    <td class="d-flex"><a href="@href" class="text-truncate">@num. @file.Title</a> @if (!file.IsRevision) {<span class="badge badge-primary align-self-center ml-1">current</span>}</td>
+                    <td>@Html.Time(file.ModifiedAt, format: "g")</td>
+                    <td>@file.Kind</td>
+                    <td>@FileHelper.FileSizeAsString(file.Size)</td>
+                    <td class="table-icon">
+                        <div class="dropdown">
+                            <button type="button" class="btn btn-icon dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="Toggle Dropdown">
+                                @Html.SvgIcon("dots-vertical")
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="@file.ContentUrl(download: true)">@Html.SvgIcon("download") Download</a>
+                                @if (file.IsRevision) {
+                                    <form action="@Url.Action(nameof(FileController.Revert), null, new { id = file.Id })" method="post">
+                                        @Html.HttpMethodOverride(HttpVerbs.Put)
+                                        @Html.Hidden(nameof(file.Timestamp), file.Timestamp)
+                                        <button type="submit" class="dropdown-item">@Html.SvgIcon("undo") Revert</button>
+                                    </form>
+                                    <form action="@Url.Action(nameof(FileController.Delete), null, new { id = file.Id, timestamp = file.Timestamp })" method="post">
+                                        @Html.HttpMethodOverride(HttpVerbs.Delete)
+                                        <button type="submit" class="dropdown-item">@Html.SvgIcon("close") Remove</button>
+                                    </form>
+                                }
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>

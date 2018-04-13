@@ -18,8 +18,9 @@ weavy.desktopNotifications = (function ($) {
     // display desktop notification for specified notification
     function notify(notification) {
 
-        weavy.audio.play("#notification-sound");
-        
+        if (!weavy.browser.embedded) {
+            weavy.audio.play("#notification-sound");
+        }
         // only in standalone mode for now
         if (window.Notification && !weavy.browser.embedded) {
             console.debug("notification permission is " + Notification.permission + " and context.notify is " + weavy.context.notify);

@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="@System.Threading.Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName">
+<html class="@HtmlClasses()" lang="@System.Threading.Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, maximum-scale=1, user-scalable=no"> @* Viewport must contain width=device-width, minimum-scale=1.0 to trigger GPU Rasterization https://www.chromium.org/developers/design-documents/chromium-graphics/how-to-get-gpu-rasterization *@
@@ -12,7 +12,7 @@
     @RenderSection("scripts", required: false)
 </head>
 <body class="@BodyClasses("body-dark")" @BodyAttributes>
-    @Html.SvgSprite(inline: false)
+    @Html.SvgSprite()
     <div class="alerts">@Html.AlertMessages()</div>
     <main role="main">
         @RenderBody()

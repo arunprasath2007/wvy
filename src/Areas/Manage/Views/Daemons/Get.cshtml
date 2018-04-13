@@ -1,7 +1,7 @@
 ﻿@model IDaemon
 @{
     Title = "Scheduled tasks";
-    BackUrl = Url.Action<DaemonsController>(c => c.Index());
+    Back = Url.Action<DaemonsController>(c => c.Index());
 }
 
 
@@ -51,7 +51,7 @@
                 <button type="submit" name="button" value="@nameof(DaemonsController.Update)" class="btn btn-primary btn-load waves-effect" data-shortcut="Ctrl+Shift+S">Save</button>
             }
 
-            <a href="@(Url.Action<DaemonsController>(c => c.Index()))" class="btn btn-outline-secondary mr-auto" data-shortcut="Esc">Cancel</a>
+            <a href="@Back" class="btn btn-outline-secondary mr-auto" data-shortcut="Esc">Cancel</a>
 
             @if (!Model.IsLoaded()) {
                 <button type="submit" name="button" value="@nameof(DaemonsController.Delete)" class="btn btn-danger btn-load waves-effect">Delete</button>

@@ -5,13 +5,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, maximum-scale=1, user-scalable=no"> @* Viewport must contain width=device-width, minimum-scale=1.0 to trigger GPU Rasterization https://www.chromium.org/developers/design-documents/chromium-graphics/how-to-get-gpu-rasterization *@
     <meta name="turbolinks-cache-control" content="no-preview">
-    <title>@(string.IsNullOrWhiteSpace(Title) ? WeavyContext.Current.Theme.GetName() : Title + " | " + WeavyContext.Current.Theme.GetName())</title>
+    <title>@(string.IsNullOrWhiteSpace(Title) ? Theme.Name : Title + " | " + Theme.Name)</title>
     @Html.ThemeHead()
     @Bundler.Styles("~/styles/weavy.scss", htmlAttributes: new { data_turbolinks_track = "reload" })
     @Bundler.Scripts("~/areas/setup/scripts/setup.bundle", htmlAttributes: new { data_turbolinks_track = "reload" })
 </head>
 <body class="@BodyClasses("body-dark no-navbar")" @BodyAttributes>
-    @Html.SvgSprite(inline: false)
+    @Html.SvgSprite()
     <main class="container">
         <div class="row justify-content-md-center">
             <div class="col-lg-6 col-md-8">

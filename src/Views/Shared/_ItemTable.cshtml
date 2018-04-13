@@ -5,9 +5,9 @@
     <td>
         <a href="@Model.Url()">@Model.Title</a>  
         @if (Model.IsDraft || Model.LockedById == User.Id) {
-            <span class="badge badge-success">Draft</span>
-        } else if (Model.IsLocked) {
-            <span class="badge badge-info">Locked</span>
+            <span class="badge badge-warning" title="You are editing this item">editing</span>
+        } else if (Model is ILockable lockable && lockable.IsLocked()) {
+            <span class="badge badge-secondary" title="Locked by @lockable.LockedBy().Title">locked</span>
         }
     </td>
     <td>@Html.Time(Model.ModifiedAt, format: "g")</td>

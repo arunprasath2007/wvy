@@ -4,11 +4,12 @@
     Title = Model.Code + " " + Model.Description;
 }
 
-<div class="container">
+<div class="container mb-4">
     <h1 class="display-1">@Model.Code @Model.Description</h1>
     @if (string.IsNullOrEmpty(Model.Message)) {
         <p>The specified space is not allowed on the current url. Please update the allowed urls on the space's strip settings.</p>
     } else {
         <p>@Model.Message</p>
     }
+    <a class="btn btn-icon no-waves px-0" href="@Url.Back(WeavyRequestContext.Current.ApplicationPath)" data-turbolinks="false">@Html.SvgIcon("arrow-left")<span>Back</span></a>
 </div>

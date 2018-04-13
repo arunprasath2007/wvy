@@ -1,0 +1,44 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Title = User.Title;
+}
+
+@section navbar_left {
+    <div class="navbar-icons">
+        @if (Back != null) {
+            <a class="btn btn-icon" href="@Back">@Html.SvgIcon("arrow-left")</a>
+        } else {
+            <button type="button" class="btn btn-icon" data-toggle="drawer" data-target="#drawer-profile">@User.AvatarImg(24)</button>
+        }
+    </div>
+}
+
+@section navbar_middle {
+    <div class="navbar-middle"><span class="navbar-text">@Title</span></div>
+}
+
+@section navbar_right {
+    <div class="navbar-icons">
+        <button type="button" class="btn btn-icon visibility-h">@Html.SvgIcon("expand-window")</button>
+        <button type="button" class="btn btn-icon visibility-h">@Html.SvgIcon("close")</button>
+    </div>
+}
+
+@section navbar_secondary {
+    @if (IsSectionDefined("navbar_secondary")) {
+        @RenderSection("navbar_secondary", required: false)
+    } else {
+        <nav class="nav nav-tabs" role="tablist">
+            <a class="nav-link nav-icon nav-badge @(Url.IsActive<WidgetController>(c => c.Notifications(), LinkActive.Action) ? "active" : "")" href="@(Url.Action<WidgetController>(c => c.Notifications()))" title="Notifications">@Html.SvgIcon("bell")@Html.NotificationsBadge()</a>
+            @(Html.ActionLink<WidgetController>(c => c.Stars(), icon: "star", htmlAttributes: new { @class = "nav-link nav-icon" }, active: LinkActive.Action))
+            @(Html.ActionLink<WidgetController>(c => c.Drafts(), icon: "file", htmlAttributes: new { @class = "nav-link nav-icon" }, active: LinkActive.Action))
+            @*@(Html.ActionLink<WidgetController>(c => c.Messenger(), icon: "message-text", htmlAttributes: new { @class = "nav-link nav-icon disabled" }, active: LinkActive.Action))*@
+        </nav>
+    }
+}
+
+@RenderBody()
+
+@section footer {
+    @{ Html.RenderPartial("_DrawerProfile"); }
+}

@@ -3,7 +3,7 @@
 }
 
 <div class="text-center">
-    <h1 class="display-3">Welcome to @WeavyContext.Current.Theme.GetName()</h1>
+    <h1 class="display-3">Welcome to @Theme.Name</h1>
     <p>It's great to see that your installation is up and running. Before we start, there are couple of things we need you to configure.</p>
     @(Html.ActionLink<SetupController>(c => c.Register(), text: "Let's go", htmlAttributes: new { @class = "btn btn-primary waves-effect" }))
 </div>

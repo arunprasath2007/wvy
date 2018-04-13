@@ -1,8 +1,5 @@
 ﻿@using Weavy.Web.Controllers
 @model Member
-@{
-    var user = Model.Value as User;
-}
 
 <div class="dropdown d-inline-block">
     <button type="button" class="btn btn-icon dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="Toggle Dropdown">
@@ -10,65 +7,52 @@
     </button>
     <div class="dropdown-menu dropdown-menu-right">
         @if (Model.Id == User.Id) {
-            // menu for current user
-            using (Html.BeginForm(nameof(SpaceController.PutMember), null, new { id = Space.Id }, FormMethod.Post, new { data_turboform = "" })) {
+            // menu items for current user
+            using (Html.BeginForm(nameof(SpaceController.UpdateMember), null, new { id = Space.Id, userid = Model.Id }, FormMethod.Post, new { data_turboform = "" })) {
                 @Html.HttpMethodOverride(HttpVerbs.Put)
-                <input type="hidden" name="entityType" value="@Model.Type" />
-                if (Model.Allow == Access.Admin) {
-                    <input type="hidden" name="deny" value="@Access.None" />
-                    <input type="hidden" name="allow" value="@Access.Write" />
-                    <button type="submit" name="entityId" class="dropdown-item" value="@Model.Id">@Html.SvgIcon("account-key") Remove as admin</button>
-                } else if (User.IsAdmin || !ViewBag.HasAdmin) {
-                    <input type="hidden" name="deny" value="@Access.None" />
-                    <input type="hidden" name="allow" value="@Access.Admin" />
-                    <button type="submit" name="entityId" class="dropdown-item" value="@Model.Id">@Html.SvgIcon("account-key") Make me admin</button>
+                if (Model.Access == Access.Admin) {
+                    <input type="hidden" name="access" value="@Access.Write" />
+                    <button type="submit" class="dropdown-item">@Html.SvgIcon("account-key") Remove as admin</button>
+                } else if (User.IsAdmin || !(bool)ViewBag.HasAdmin) {
+                    <input type="hidden" name="access" value="@Access.Admin" />
+                    <button type="submit" class="dropdown-item">@Html.SvgIcon("account-key") Make me admin</button>
                 }
             }
-            <form action="@(Url.Action<SpaceController>(c => c.Leave(Space.Id, null)))" method="post" data-turboform>
+            <form action="@(Url.Action<SpaceController>(c => c.Leave(Space.Id)))" method="post" data-turboform>
                 @Html.HttpMethodOverride(HttpVerbs.Delete)
-                <button type="submit" class="dropdown-item">@Html.SvgIcon("close") Leave space</button>
+                <button type="submit" class="dropdown-item">@Html.SvgIcon("account-minus") Leave space</button>
             </form>
 
         } else {
-            // menu for all space members
-            if (user != null) {
-                <a class="dropdown-item" href="@(Url.Action<Weavy.Web.Areas.Messenger.Controllers.MessengerController>(c => c.GetConversationWithUser(user.Id)))" data-role="messenger" target="_blank">@Html.SvgIcon("message-text") Message</a>
-
-                if (Model.HasPermission(Permission.Follow)) {
-                    <a class="dropdown-item" href="javascript:;" data-toggle="follow" data-following="@(user.IsFollowed.ToString().ToLower())" data-id="@Model.Id">@Html.SvgIcon("account") <div>@(user.IsFollowed ? "Unfollow" : "Follow")</div></a>
-                }
-            }
+            // menu items for other space members
+            <a class="dropdown-item" href="@(Url.Action<Weavy.Web.Areas.Messenger.Controllers.MessengerController>(c => c.GetConversationWithUser(Model.Id)))" data-role="messenger" target="_blank">@Html.SvgIcon("message-text") Message</a>
 
             if (Model.IsPending && Space.HasPermission(Permission.ApproveMembers)) {
-                using (Html.BeginForm(nameof(SpaceController.ReviewMember), null, new { id = Space.Id }, FormMethod.Post, new { data_turboform = "" })) {
-                    @Html.HttpMethodOverride(HttpVerbs.Put)
-                    <input type="hidden" name="entityType" value="@Model.Type" />
-                    <input type="hidden" name="entityId" value="@Model.Id" />
-                    <button type="submit" name="approved" class="dropdown-item" value="true">@Html.SvgIcon("check") Approve</button>
-                    <button type="submit" name="approved" class="dropdown-item" value="false">@Html.SvgIcon("close") Deny</button>
+                using (Html.BeginForm(nameof(SpaceController.ApproveMember), null, new { id = Space.Id, userid = Model.Id }, FormMethod.Post, new { data_turboform = "" })) {
+                    <button type="submit" class="dropdown-item">@Html.SvgIcon("check") Approve</button>
+                }
+                using (Html.BeginForm(nameof(SpaceController.DenyMember), null, new { id = Space.Id, userid = Model.Id }, FormMethod.Post, new { data_turboform = "" })) {
+                    @Html.HttpMethodOverride(HttpVerbs.Delete)
+                    <button type="submit" class="dropdown-item">@Html.SvgIcon("close") Deny</button>
                 }
             }
 
             if (Space.HasPermission(Permission.Admin)) {
                 // additional menu items for space admins
-                using (Html.BeginForm(nameof(SpaceController.PutMember), null, new { id = Space.Id }, FormMethod.Post, new { data_turboform = "" })) {
+                using (Html.BeginForm(nameof(SpaceController.UpdateMember), null, new { id = Space.Id, userid = Model.Id }, FormMethod.Post, new { data_turboform = "" })) {
                     @Html.HttpMethodOverride(HttpVerbs.Put)
-                    <input type="hidden" name="entityType" value="@Model.Type" />
-                    if (Model.Allow == Access.Admin) {
-                        <input type="hidden" name="deny" value="@Access.None" />
-                        <input type="hidden" name="allow" value="@Access.Write" />
-                        <button type="submit" name="entityId" class="dropdown-item" value="@Model.Id">@Html.SvgIcon("account-key") Remove as admin</button>
+                    if (Model.Access == Access.Admin) {
+                        <input type="hidden" name="access" value="@Access.Write" />
+                        <button type="submit" class="dropdown-item">@Html.SvgIcon("account-minus") Remove as admin</button>
                     } else if (!Model.IsPending && !Model.IsExternal) {
-                        <input type="hidden" name="deny" value="@Access.None" />
-                        <input type="hidden" name="allow" value="@Access.Admin" />
-                        <button type="submit" name="entityId" class="dropdown-item" value="@Model.Id">@Html.SvgIcon("account-key") Make admin</button>
+                        <input type="hidden" name="access" value="@Access.Admin" />
+                        <button type="submit" class="dropdown-item">@Html.SvgIcon("account-key") Make admin</button>
                     }
                 }
 
-                using (Html.BeginForm(nameof(SpaceController.RemoveMember), null, new { id = Space.Id }, FormMethod.Post, new { data_turboform = "" })) {
+                using (Html.BeginForm(nameof(SpaceController.RemoveMember), null, new { id = Space.Id, userid = Model.Id }, FormMethod.Post, new { data_turboform = "" })) {
                     @Html.HttpMethodOverride(HttpVerbs.Delete)
-                    <input type="hidden" name="entityType" value="@Model.Type" />
-                    <button type="submit" name="entityId" class="dropdown-item" value="@Model.Id">@Html.SvgIcon("close") Remove</button>
+                    <button type="submit" class="dropdown-item">@Html.SvgIcon("account-minus") Remove</button>
                 }
             }
         }

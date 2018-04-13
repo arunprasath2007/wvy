@@ -1,7 +1,7 @@
 ﻿@model IPlugin
 @{
     Title = "Content types";
-    BackUrl = Url.Action<ContentController>(c => c.Index());
+    Back = Url.Action<ContentController>(c => c.Index());
 }
 
 
@@ -34,9 +34,7 @@
             </p>
         </div>
 
-
         <div class="form-buttons">
-
             @if (!Model.IsLoaded()) {
                 <button type="submit" name="button" value="@nameof(HooksController.Delete)" class="btn btn-danger btn-load waves-effect">Delete</button>
             } else if (Model.IsEnabled) {
@@ -44,7 +42,7 @@
             } else {
                 <button type="submit" name="button" value="@nameof(HooksController.Enable)" class="btn btn-success btn-load waves-effect">Enable</button>
             }
-            <a href="@(Url.Action<ContentController>(c => c.Index()))" class="btn btn-outline-secondary waves-effect" data-shortcut="Esc">Back</a>
+            <a href="@Back" class="btn btn-outline-secondary waves-effect" data-shortcut="Esc">Back</a>
         </div>
     }
 </div>

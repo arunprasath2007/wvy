@@ -1,11 +1,7 @@
 ﻿@model Weavy.Core.Models.File
-@{ 
-    var href = Model.Url();
-    var attrs = Html.PreviewAttributes(Model, href: href);
-}
-<tr @Html.Raw(attrs.AsHtmlAttributes())>
+<tr data-href="@Model.Url()">
     <td class="table-icon">@Html.SvgIcon(Model.IconName(), color: Model.IconColor())</td>
-    <td><a href="@href">@Model.Title</a></td>
+    <td><a href="@Model.Url()">@Model.Title</a></td>
     <td>@Html.Time(Model.ModifiedAt, format: "g")</td>
     <td>@Model.Kind</td>
     <td>@FileHelper.FileSizeAsString(Model.Size)</td>

@@ -17,7 +17,7 @@ weavy.context = {
 };
 
 (function () {
-    if (weavy.document.turbolinks) {
+    if (weavy.turbolinks.enabled) {
         document.addEventListener("turbolinks:load", init);
     } else {
         document.addEventListener("DOMContentLoaded", init);
@@ -30,7 +30,7 @@ weavy.context = {
         weavy.context.user = Number(document.body.getAttribute("data-user")) || -1;
         weavy.context.guid = document.body.getAttribute("data-guid");
         weavy.context.thumb = document.body.getAttribute("data-thumb");
-        weavy.context.space = document.body.getAttribute("data-space");
+        weavy.context.space = Number(document.body.getAttribute("data-space")) || null;
         weavy.context.app = Number(document.body.getAttribute("data-app")) || null;
         weavy.context.item = Number(document.body.getAttribute("data-item")) || null;
         weavy.context.file = Number(document.body.getAttribute("data-file")) || null;
@@ -43,6 +43,19 @@ weavy.context = {
         // connect to signalr if stand-alone
         if (weavy.connection && !weavy.browser.embedded) {
             weavy.connection.init();
+
+            var disconnected = false;
+
+            weavy.connection.on("disconnected", function () {
+                disconnected = true;
+            });
+
+            weavy.connection.on("statechanged", function (e, data) {                
+                if (disconnected && data.state.newState === 1) {
+                    // todo: reload or show a message that the page should be reloaded?
+                    location.reload();
+                }
+            });
         }
         
     }

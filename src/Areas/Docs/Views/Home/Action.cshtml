@@ -5,14 +5,12 @@
 
 @{
   Title = Model.Method + " " + Model.ApiDescription.RelativePath;
+    Back = Url.Action<HomeController>(c => c.GetControllerDocumentation(Model.ApiDescription.ActionDescriptor.ControllerDescriptor.ControllerName));
 }
 
-@section navbar {
-    <div class="navbar-icons"><a href="@(Url.Action<HomeController>(c => c.GetControllerDocumentation(Model.ApiDescription.ActionDescriptor.ControllerDescriptor.ControllerName)))" class="btn btn-icon">@Html.SvgIcon("arrow-left")</a></div>
-    <div class="navbar-title">@Title</div>
-}
 
-<div class="container-fluid">
+
+<div class="container my-3">
 <article>
   <header>
     <h1 class="display-1">@Model.Method /@Model.ApiDescription.Route.RouteTemplate</h1>
