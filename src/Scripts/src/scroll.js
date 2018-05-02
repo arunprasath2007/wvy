@@ -9,10 +9,11 @@ weavy.scroll = (function ($) {
             return ev.returnValue;
         }
 
-        if (typeof CSS !== 'undefined' && CSS.supports("overscroll-behavior-y", "contain") && $("html:not(.embedded)").length) {
+        // Unfortunately scrollchaining block currently only works when there is scroll on the container
+        /*if (typeof CSS !== 'undefined' && CSS.supports("overscroll-behavior-y", "contain") && $("html:not(.embedded)").length) {
             // Skip if real overscrollBehavior is supported and the page is not embedded 
             return;
-        }
+        }*/
 
         var prevent = function (value) {
             if (value !== false) {
@@ -99,10 +100,22 @@ weavy.scroll = (function ($) {
     }
 
     // Register overscroll-behavior polyfill
-    document.addEventListener("touchstart", function (ev) {
-        currentScroll = ev.touches[0].clientY;
-    });
-    document.addEventListener("touchmove", preventScrollChaining);
+    try {
+        document.addEventListener("touchstart", function (ev) {
+            currentScroll = ev.touches[0].clientY;
+        }, { passive: false });
+    } catch (e){
+        document.addEventListener("touchstart", function (ev) {
+            currentScroll = ev.touches[0].clientY;
+        });
+    }
+
+    try {
+        document.addEventListener("touchmove", preventScrollChaining, { passive: false });
+    } catch (e) {
+        document.addEventListener("touchmove", preventScrollChaining)
+    }
+
     document.addEventListener("wheel", preventScrollChaining);
 
     

@@ -27,7 +27,7 @@
                         if (Space != null) {
                             <a href="@Space.Url()" class="btn btn-icon d-embedded">@Space.AvatarImg(24)</a>
                         } else {
-                            <button class="btn btn-icon d-embedded" type="button">@Html.IconImg(24)</button>
+                            <a href="@(Url.Action<HomeController>(x => x.Index()))" class="btn btn-icon d-embedded">@Html.IconImg(24)</a>                            
                         }
                     }
                 </div>

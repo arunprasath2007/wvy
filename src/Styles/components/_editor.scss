@@ -1,6 +1,12 @@
 /// <reference path="../_core.scss" />
 @import '../vendor/emojionearea/emojionearea';
 
+.card.card-weavy-editor {
+    &::after {
+        mix-blend-mode: normal;
+        z-index: 4;
+    }
+}
 
 .weavy-editor {
     display: flex;
@@ -60,6 +66,9 @@
             font-size: $font-size-base;
             border-bottom: $border-width solid $border-color;
             padding: 0.75rem;
+            
+            // To enable HW acceleration and not cause repaint on scroll
+            backface-visibility: hidden;
         }
 
         .emojionearea .emojionearea-editor:empty:before {

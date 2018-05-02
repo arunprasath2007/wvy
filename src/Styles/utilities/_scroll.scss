@@ -104,6 +104,9 @@ $scrollbar-size: .8750rem !default;
     max-width: 100%;
     overflow-x: auto;
     overflow-y: auto;
+
+    // To enable HW acceleration and not cause repaint on scroll
+    backface-visibility: hidden;
 }
 
 @mixin scroll-x {

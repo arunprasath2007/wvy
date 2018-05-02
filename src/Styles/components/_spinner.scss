@@ -17,9 +17,7 @@ svg.spinner {
     circle {
         stroke-dasharray: 1, 100;
         stroke-dashoffset: 0;
-        
     }
-
     // add class .spin to animate the spinner (otherwise it will not be visible)
     &.spin {
         animation: rotate 2s linear infinite;
@@ -29,6 +27,21 @@ svg.spinner {
         }
     }
 
+    @at-root {
+        // Disable spinner in Android WebView
+        html.android.webview & {
+            display: none !important;
+            animation: none !important;
+
+            circle {
+                animation: none !important;
+            }
+        }
+
+        html.android.webview img[src^="/img/spinner.svg"] {
+            visibility: hidden;
+        }
+    }
 }
 
 @keyframes rotate {

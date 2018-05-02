@@ -160,19 +160,22 @@
             event.stopPropagation();
 
             // remove as personal if existing bubble
-            self.removeBubble(id, 1, event).then(function () {
-                
-                $.ajax({
-                    url: self.options.url + "api/widget/bubbles",
-                    type: "POST",
-                    data: JSON.stringify({ space_id: id, type: 0, url: self.options.origin }),
-                    contentType: "application/json",
-                    xhrFields: {
-                        withCredentials: true
-                    },
-                    crossDomain: true
+            setTimeout(function () {
+                self.removeBubble(id, 1, event).then(function () {
+                    setTimeout(function () {
+                        $.ajax({
+                            url: self.options.url + "api/widget/bubbles",
+                            type: "POST",
+                            data: JSON.stringify({ space_id: id, type: 0, url: self.options.origin }),
+                            contentType: "application/json",
+                            xhrFields: {
+                                withCredentials: true
+                            },
+                            crossDomain: true
+                        });
+                    }, 250);
                 });
-            });
+            }, 250);
         }
 
         // resize the panel
@@ -272,7 +275,7 @@
                 
                 // personal button
                 this.personalButton = document.createElement("div");
-                this.personalButton.className = "weavy-button weavy-personal" + (this.options.notifications_count === 0 ? "" : " weavy-dot");
+                this.personalButton.className = "weavy-button weavy-personal weavy-button-transparent" + (this.options.notifications_count === 0 ? "" : " weavy-dot");
                 this.personalButton.setAttribute("data-count", this.options.notifications_count);
                 this.personalButton.innerHTML = '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12,19.2C9.5,19.2 7.29,17.92 6,16C6.03,14 10,12.9 12,12.9C14,12.9 17.97,14 18,16C16.71,17.92 14.5,19.2 12,19.2M12,5A3,3 0 0,1 15,8A3,3 0 0,1 12,11A3,3 0 0,1 9,8A3,3 0 0,1 12,5M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12C22,6.47 17.5,2 12,2Z"></path></svg>'
                 this.personalButtonContainer.appendChild(this.personalButton);
@@ -315,7 +318,7 @@
 
                 // messenger button
                 this.messengerButton = document.createElement("div");
-                this.messengerButton.className = "weavy-button weavy-messenger" + (this.options.conversations_count === 0 ? "" : " weavy-dot");
+                this.messengerButton.className = "weavy-button weavy-messenger weavy-button-transparent" + (this.options.conversations_count === 0 ? "" : " weavy-dot");
                 this.messengerButton.setAttribute("data-count", this.options.conversations_count);
                 this.messengerButton.innerHTML = '<div class="weavy-icon"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2M6 9h12v2H6m8 3H6v-2h8m4-4H6V6h12"></path></svg></div>';
                 this.messengerButtonContainer.appendChild(this.messengerButton);
@@ -393,7 +396,7 @@
 
                 // add button
                 this.addButton = document.createElement("div");
-                this.addButton.className = "weavy-button weavy-add";
+                this.addButton.className = "weavy-button weavy-add weavy-button-transparent";
                 this.addButton.innerHTML = '<div class="weavy-icon"><svg style="transform: rotate(45deg);" viewBox="0 0 24 24"><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" /></svg></div>';
                 this.addButtonContainer.appendChild(this.addButton);
                 
@@ -556,7 +559,7 @@
 
                     // button container
                     var buttonContainer = document.createElement("div");
-                    buttonContainer.className = "weavy-bubble-item weavy-bubble-" + bubble.id;
+                    buttonContainer.className = "weavy-bubble-item weavy-collapsed weavy-bubble-" + bubble.id;
 
                     // button
                     var button = document.createElement("div");
@@ -600,7 +603,7 @@
                         }
 
                         var close = document.createElement("a");
-                        close.className = "weavy-bubble-action";
+                        close.className = "weavy-bubble-action weavy-bubble-close";
                         close.title = "Close";
                         close.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12,2C17.53,2 22,6.47 22,12C22,17.53 17.53,22 12,22C6.47,22 2,17.53 2,12C2,6.47 6.47,2 12,2M15.59,7L12,10.59L8.41,7L7,8.41L10.59,12L7,15.59L8.41,17L12,13.41L15.59,17L17,15.59L13.41,12L17,8.41L15.59,7Z" /></svg>';
                         close.addEventListener("click", self.removeBubble.bind(self, bubble.id, 1));
@@ -619,9 +622,16 @@
                         self.globalContainer.appendChild(buttonContainer)
                     }
 
+                        setTimeout(function () {
+                            buttonContainer.classList.remove("weavy-collapsed");
+                        }, 0);
+
+
                     // if should the bubble be opened up                
                     if (open) {
+                        setTimeout(function () {
                         self.open("bubble-" + bubble.id, bubble.destination);
+                        }, 100);
                     }
 
                 } 
@@ -1234,9 +1244,29 @@
                 // remove from signalR connections
                 weavy.connection.removeWindow($frame[0].contentWindow)
 
-                // remove dom elements
-                $strip.remove();
-                $button.remove();
+                $button.addClass("weavy-disabled");
+                $strip[0].id = "";
+                
+                if ($strip.hasClass("weavy-open")) {
+                    $strip.removeClass("weavy-open");
+                    $button.find(".weavy-button").removeClass("weavy-open");
+
+                    setTimeout(function () {
+                        $button.addClass("weavy-collapsed");
+                    }, 250);
+                    setTimeout(function () {
+                        // remove dom elements
+                        $strip.remove();
+                        $button.remove();
+                    }, 450);
+                } else {
+                    $button.addClass("weavy-collapsed");
+                    setTimeout(function () {
+                        // remove dom elements
+                        $strip.remove();
+                        $button.remove();
+                    }, 200);
+                }
             }            
         })
 
@@ -1258,9 +1288,30 @@
                 // remove from signalR connections
                 weavy.connection.removeWindow($frame[0].contentWindow)
 
-                // remove dom elements
-                $strip.remove();
-                $button.remove();
+                $button.addClass("weavy-disabled");
+                $strip[0].id = "";
+                
+                if ($strip.hasClass("weavy-open")) {
+                    $strip.removeClass("weavy-open");
+                    $button.find(".weavy-button").removeClass("weavy-open");
+
+                    setTimeout(function () {
+                        $button.addClass("weavy-collapsed");
+                    }, 250);
+                    setTimeout(function () {
+                        // remove dom elements
+                        $strip.remove();
+                        $button.remove();
+                    }, 450);
+                } else {
+                    $button.addClass("weavy-collapsed");
+                    setTimeout(function () {
+                        // remove dom elements
+                        $strip.remove();
+                        $button.remove();
+                    }, 200);
+                }
+
             }
         })
 

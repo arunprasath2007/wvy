@@ -3,15 +3,20 @@
     // open photoswipe on click
     $(document).on("click", "[data-photoswipe]", function (e) {
         // open widget preview
-        weavy.postal.post({ name: "open-preview" });        
+        if (weavy.browser.embedded) {
+            weavy.postal.post({ name: "open-preview" });
+        }
 
         var $target = $(e.target);
-        e.preventDefault();
+        e.preventDefault();        
 
-        var $that = $(this);
-
-        // let widget apply styles before photoswipe init
-        setTimeout(function() { photoswipe($that);}, 0);
+        if (weavy.browser.embedded) {
+            // embedded: let widget apply styles before photoswipe init
+            var $that = $(this);
+            setTimeout(function () { photoswipe($that); }, 0);
+        } else {
+            photoswipe($(this));
+        }
     });
 
     // cleanup before cache (needed when clicking back in the browser)
@@ -79,7 +84,9 @@
         // Gallery unbinds events (triggers before closing animation)
         pswp.listen('unbindEvents', function () {
             // close widget preview
-            weavy.postal.post({ name: "close-preview" });
+            if (weavy.browser.embedded) {
+                weavy.postal.post({ name: "close-preview" });
+            }            
         });
 
         // beforeResize event fires each time size of gallery viewport updates

@@ -302,16 +302,16 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="Weavy, Version=1.0.0.99, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="Weavy, Version=1.0.0.107, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\lib\Weavy.exe</HintPath>
     </Reference>
     <Reference Include="Weavy.Bundler, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\lib\Weavy.Bundler.dll</HintPath>
     </Reference>
-    <Reference Include="Weavy.Core, Version=1.0.0.99, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="Weavy.Core, Version=1.0.0.107, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\lib\Weavy.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Weavy.Web, Version=1.0.0.99, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="Weavy.Web, Version=1.0.0.107, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\lib\Weavy.Web.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
@@ -2636,6 +2636,7 @@
     <Content Include="Styles\components\_tags.scss" />
     <Content Include="Styles\components\_togglers.scss" />
     <Content Include="Styles\components\_turbolinks.scss" />
+    <Content Include="Styles\components\_type.scss" />
     <Content Include="Styles\components\_waves.scss" />
     <Content Include="Styles\components\tinymce\skins\lightgray\AbsoluteLayout.scss" />
     <Content Include="Styles\components\tinymce\skins\lightgray\Animations.scss" />

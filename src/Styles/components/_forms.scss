@@ -2,6 +2,7 @@
 .form-control {
     &::placeholder {
         font-size: $font-size-sm;
+        line-height: $font-size-base * $line-height-base;
     }
 }
 

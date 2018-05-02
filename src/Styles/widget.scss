@@ -32,16 +32,16 @@ $widget-border-radius: rem(.25);
     // They are needed because Edge does not fully support calc() in box-shadow and transform (but support calc() in CSS variables)
     --weavy-1rem: rem(1);
     --weavy--1rem: rem(-1);
-    --weavy-1-25rem: rem(1.25);
-    --weavy--1-25rem: rem(-1.25);
+    --weavy-0-25rem: rem(.25);
+    --weavy--0-25rem: rem(-.25);
     --md-shadow-4dp: 0 rem(.25) rem(.3125) 0 rgba($md-black, $md-shadow-penumbra-opacity), 0 rem(.0625) rem(.625) 0 rgba($md-black, $md-shadow-ambient-opacity), 0 rem(.125) rem(.25) rem(-.0625) rgba($md-black, $md-shadow-umbra-opacity); //$md-shadow-4dp;
     --md-shadow-8dp: 0 rem(.5) rem(.625) rem(.0625) rgba($md-black, $md-shadow-penumbra-opacity), 0 rem(.1875) rem(1.25) rem(.125) rgba($md-black, $md-shadow-ambient-opacity), 0 rem(.3125) rem(.3125) rem(-.1875) rgba($md-black, $md-shadow-umbra-opacity); //$md-shadow-8dp;
     // Edge cases ;-)
     @supports (-ms-ime-align: auto) {
         --weavy-1rem: $widget-default-rem; //rem(1);
         --weavy--1rem: -$widget-default-rem; //rem(-1);
-        --weavy-1-25rem: 1.25 * $widget-default-rem; //rem(1.25);
-        --weavy--1-25rem: -1.25 * $widget-default-rem; //rem(-1.25);
+        --weavy-0-25rem: .25 * $widget-default-rem; //rem(0.25);
+        --weavy--0-25rem: -.25 * $widget-default-rem; //rem(-0.25);
         --md-shadow-4dp: $md-shadow-4dp;
         --md-shadow-8dp: $md-shadow-8dp;
     }
@@ -80,15 +80,46 @@ $widget-border-radius: rem(.25);
 
         .weavy-bubble-item {
             position: relative;
-            display: inline-flex;
+            display: flex;
             align-items: center;
             flex-direction: row;
-            min-height: rem(3);
+            height: rem(4);
             pointer-events: auto;
+            transition: height $md-animation-duration $md-animation-curve-default;
+            max-height: none;
 
-            &:hover, &:active {
-                .weavy-bubble-tooltip {
-                    display: flex;
+            &.weavy-bubble-messenger {
+                height: auto;
+            }
+
+            &:not(.weavy-disabled) {
+                &:hover, &:active {
+                    .weavy-bubble-tooltip {
+                        display: flex;
+                    }
+
+                    .weavy-bubble-close {
+                        opacity: 1;
+                        transform: translate(var(--weavy-0-25rem), var(--weavy--1rem));
+                        pointer-events: auto;
+                    }
+                }
+            }
+
+            &.weavy-collapsed {
+                height: 0;
+                min-height: 0;
+                pointer-events: none;
+                overflow-y: hidden;
+
+                .weavy-button {
+                    transform: scale(0) !important;
+                }
+            }
+
+            &.weavy-disabled {
+                &, & * {
+                    pointer-events: none;
                 }
             }
         }
@@ -97,16 +128,31 @@ $widget-border-radius: rem(.25);
             position: absolute;
             right: 0;
             display: flex;
-            padding: rem(.375);
+            margin-right: rem(.5);
             cursor: pointer;
             pointer-events: none;
-            transition: transform $md-animation-duration $md-animation-curve-default;
+            transition: transform $md-animation-duration $md-animation-curve-default, opacity $md-animation-duration $md-animation-curve-default;
             transform: translateY(0);
+            opacity: 0;
+            z-index: 3;
 
             svg {
                 fill: $text-muted;
                 height: rem(1.25);
                 width: rem(1.25);
+            }
+
+            &.weavy-bubble-close::before {
+                content: "";
+                position: absolute;
+                z-index: -1;
+                padding: rem(.25);
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: hsla(0, 0%, 92%, 0.9);
+                background-clip: content-box;
             }
 
             &:hover, &:active {
@@ -178,9 +224,13 @@ $widget-border-radius: rem(.25);
             transition: transform $md-animation-duration $md-animation-curve-default;
             z-index: 2;
 
-            &.weavy-add {
+            &.weavy-button-transparent {
                 background-color: transparent;
                 box-shadow: none;
+
+                svg {
+                    fill: $theme;
+                }
             }
 
             &.weavy-personal {
@@ -188,8 +238,8 @@ $widget-border-radius: rem(.25);
                 box-shadow: none;
 
                 svg {
-                    width: rem(2);
-                    height: rem(2);
+                    width: rem(1.75);
+                    height: rem(1.75);
                     fill: $theme;
                 }
 
@@ -211,7 +261,7 @@ $widget-border-radius: rem(.25);
 
             &.weavy-open {
                 background-color: $white;
-                transform: translateX(var(--weavy--1-25rem)); // -1.25rem
+                transform: translateX(var(--weavy--1rem)); // -1rem
                 box-shadow: var(--md-shadow-4dp);
                 align-self: flex-end;
 
@@ -221,18 +271,15 @@ $widget-border-radius: rem(.25);
 
                 ~ .weavy-bubble-action {
                     pointer-events: auto;
+                    opacity: 1;
                 }
 
                 ~ .weavy-bubble-connect {
-                    &:not(:last-of-type) {
-                        transform: translateY(var(--weavy-1rem));
-                        padding-top: rem(.1);
-                    }
+                    transform: translate(var(--weavy-0-25rem), var(--weavy-1rem));
+                }
 
-                    & + .weavy-bubble-action {
-                        transform: translateY(var(--weavy--1rem));
-                        padding-bottom: rem(.1);
-                    }
+                ~ .weavy-bubble-close {
+                    transform: translate(var(--weavy-0-25rem),var(--weavy--1rem));
                 }
 
                 &, &:not(.weavy-personal) img {
@@ -254,6 +301,12 @@ $widget-border-radius: rem(.25);
                 background: $gray-400;
                 margin: rem(.5) rem(.25);
                 background-image: linear-gradient(to right, $gray-300, $gray-400, $gray-300);
+                transition: margin $md-animation-duration $md-animation-curve-default;
+
+                &:only-child {
+                    height: 0;
+                    margin: 0 rem(.25);
+                }
             }
         }
 
@@ -373,7 +426,7 @@ $widget-border-radius: rem(.25);
         .weavy-strips {
             position: absolute;
             top: 0;
-            right: rem(5.25);
+            right: rem(5);
             bottom: 0;
             width: 0;
             pointer-events: none;
@@ -517,7 +570,7 @@ $widget-border-radius: rem(.25);
 
             .weavy-strips {
                 right: auto;
-                left: rem(5.25);
+                left: rem(5);
             }
 
             .weavy-controls {
@@ -525,9 +578,19 @@ $widget-border-radius: rem(.25);
                 right: rem(-.5);
             }
 
+            .weavy-bubble-item {
+                &:hover, &:active {
+                    .weavy-bubble-close {
+                        transform: translate(var(--weavy--0-25rem), var(--weavy--1rem));
+                    }
+                }
+            }
+
             .weavy-bubble-action {
                 left: 0;
                 right: auto;
+                margin-left: rem(.5);
+                margin-right: 0;
             }
 
             .weavy-bubble-tooltip {
@@ -537,7 +600,15 @@ $widget-border-radius: rem(.25);
 
             .weavy-button {
                 &.weavy-open {
-                    transform: translateX(var(--weavy-1-25rem)); // 1.25rem
+                    transform: translateX(var(--weavy-1rem)); // 1rem
+                    ~ .weavy-bubble-connect {
+                        transform: translate(var(--weavy--0-25rem), var(--weavy-1rem));
+                    }
+
+                    ~ .weavy-bubble-close {
+                        transform: translate(var(--weavy--0-25rem),var(--weavy--1rem));
+                    }
+
                     &, &:not(.weavy-personal) img {
                         border-radius: rem(1.5) 0 0 rem(1.5);
                     }
@@ -591,6 +662,11 @@ $widget-border-radius: rem(.25);
                         opacity: 0;
                     }
                 }
+            }
+
+            .weavy-bubble-action {
+                opacity: 0 !important;
+                pointer-events: none !important;
             }
 
             &, &.weavy-left {

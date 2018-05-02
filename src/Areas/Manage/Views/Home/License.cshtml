@@ -86,7 +86,7 @@
         document.getElementById("post-login").submit();
 
         window.addEventListener("message", function (e) {
-            if (e.origin !== "https://my.weavy.com" && e.origin !== "https://my.weavy.dev") {
+            if (e.origin !== "https://my.weavy.com") {
                 return;
             }
             if (e.data.name == "resize") {

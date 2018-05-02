@@ -2208,7 +2208,8 @@ weavy.pdf = { pdfjsWebPDFJS: window.pdfjsDistBuildPdf };
                     mainContainer: document.getElementById('preview'),
                     viewerContainer: document.getElementById('pdfViewer'),
                     thumbnailContainer: document.getElementById('pdfThumbs'),
-                    scrollContainer: document.getElementById('pdfScroll') || document.body,
+                    // NOTE: body element is not scrolling so set main container as scrollcontainer also
+                    scrollContainer: document.getElementById('preview') || document.body,
                     toolbar: {
                         container: document.getElementById('pdfToolbar'),
                         zoomOut: document.getElementById('zoomOut'),

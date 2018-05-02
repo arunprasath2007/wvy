@@ -6822,13 +6822,13 @@
             <param name="layout"></param>
             <returns></returns>
         </member>
-        <member name="M:Weavy.Web.Controllers.SpaceController.New">
+        <member name="M:Weavy.Web.Controllers.SpaceController.New(System.Nullable{System.Boolean})">
             <summary>
             Display form for creating a new space.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Weavy.Web.Controllers.SpaceController.Insert(Weavy.Core.Models.Space)">
+        <member name="M:Weavy.Web.Controllers.SpaceController.Insert(Weavy.Core.Models.Space,System.Boolean)">
             <summary>
             Create a new space.
             </summary>

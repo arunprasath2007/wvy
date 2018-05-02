@@ -1,13 +1,14 @@
 ﻿@model Theme
 @{
     Title = "Theme settings";
-    Back = Url.Action<HomeController>(c => c.Index());
+    Back = ViewBag.Back as string ?? Url.Back(Url.Action<HomeController>(c => c.Index()));
 }
 
 <div class="container my-3">
     <form action="@Url.Action(nameof(HomeController.UpdateTheme), typeof(HomeController).ControllerName())" method="post" class="tab-content" enctype="application/x-www-form-urlencoded" autocomplete="off" data-turboform novalidate>
         
         @Html.HttpMethodOverride(HttpVerbs.Put)
+        @Html.Hidden("back", Back)
 
         <div class="text-center">
             @Html.EditorsForModel(include: new string[] { nameof(Model.Icon) }, formLabels: false)

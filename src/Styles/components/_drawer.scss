@@ -53,8 +53,29 @@ $zindex-drawer-backdrop: $zindex-modal-backdrop;
 .drawer-right {
     left: 100%; // Instead of right: 0 to be able to ignore scrollbars
     width: $drawer-right-width;
-    max-width: 80%; // maybe we should allow this drawer to open full width and have a close button?
+    max-width: none; // maybe we should allow this drawer to open full width and have a close button?
     transform: translateX(.75rem);
+    background-color: transparent;
+    box-shadow: none;
+    align-items: flex-end;
+
+    > .drawer-header, > .drawer-body {
+        width: 100%;
+        max-width: calc(100vw - 4.5rem);
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        width: 100%;
+        max-width: calc(100vw - 4.5rem);
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background-color: $body-bg;
+        box-shadow: $md-shadow-8dp;
+        z-index: -1;
+    }
     // show drawer by moving it on screen
     &.drawer-in {
         transform: translateX(-$drawer-right-width);

@@ -1,7 +1,7 @@
 ﻿@model Space
 @{
     Title = "Add space";
-    Back = Url.Action<SpaceController>(c => c.Index(null, null, null));
+    Back = Url.Back(Url.Action<SpaceController>(c => c.Index(null, null, null)));
 }
 
 @section navbar_secondary {
@@ -11,11 +11,18 @@
         <a class="nav-link disabled" href="javascript:;">Widget</a>
     </nav>
 }
+@section scripts {
+    <script>
+        document.addEventListener("turbolinks:load", function () {            
+            $("#new-space #widget").val(weavy.browser.embedded ? true : false);
+        });
+    </script>
+}
 
-    <div class="container my-3">
-        @using (Html.BeginForm(nameof(SpaceController.Insert), typeof(SpaceController).ControllerName(), FormMethod.Post, new { autocomplete = "off", data_turboform = "", novalidate = "" })) {
+<div class="container my-3">
+    @using (Html.BeginForm(nameof(SpaceController.Insert), typeof(SpaceController).ControllerName(), FormMethod.Post, new { autocomplete = "off", data_turboform = "", novalidate = "", id = "new-space" })) {
         @Html.AntiForgeryToken()
-
+        @Html.Hidden("widget", false)
 
         <div class="text-center">
             @Html.EditorsForModel(include: new string[] { nameof(Model.Avatar) }, formLabels: false)
@@ -28,5 +35,5 @@
             <a href="@Back" class="btn btn-outline-secondary mr-auto waves-effect">Cancel</a>
         </div>
 
-}
-    </div>
+    }
+</div>

@@ -3,6 +3,10 @@
 $md-menu-expand-duration: 0.3s;
 $md-menu-fade-duration: 0.2s;
 
+.dropdown-z {
+    z-index: $zindex-dropdown;
+}
+
 .dropdown-menu {
     opacity: 0;
     transition: opacity $md-menu-fade-duration $md-animation-curve-default;
@@ -48,7 +52,7 @@ $md-menu-fade-duration: 0.2s;
     display: flex;
     align-items: center;
     cursor: pointer;
-    padding-right: 1.5rem;
+    padding-right: 1.25rem;
 
     &:active, &.active {
         background-color: $dropdown-link-hover-bg;
@@ -77,8 +81,9 @@ $md-menu-fade-duration: 0.2s;
         line-height: $line-height-base;
     }
 
+    // data-toggle=star
     .btn-icon {
-        margin: -.25rem;
+        margin: -.25rem -.75rem -.25rem -.25rem;
     }
 }
 

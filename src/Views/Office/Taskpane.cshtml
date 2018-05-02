@@ -2,6 +2,7 @@
 @model Weavy.Core.Models.File
 @{
     Layout = null;
+    Title = Model.Name;
 }
 <!DOCTYPE html>
 <html class="@HtmlClasses()" lang="@System.Threading.Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName">
@@ -18,7 +19,7 @@
     @Html.SvgSprite()
 
     <nav class="navbar-theme fixed-top">
-        <div class="navbar navbar-primary">
+        <div class="navbar navbar-primary justify-content-center">
             <div class="navbar-middle">
                 <span class="navbar-text">@Model.Name</span>
             </div>
@@ -40,7 +41,7 @@
                 <div class="tab-pane active" id="comments-tab" role="tabpanel">
                     <section class="file-comments" id="comments">
                         <div class="list-group comments" data-container="comments">
-                            @Html.Partial("_Comments", Model.Comments)
+                            @Html.Partial("_Comments", Model.Comments, new ViewDataDictionary() { { "preview", true } })
                         </div>
                         @Html.Partial("_CommentForm", Model, new ViewDataDictionary() { { "container", ".comments" } })
                     </section>
@@ -89,14 +90,6 @@
                         <label>Modified</label>
                         <p class="form-control-static">@Model.ModifiedAt.ToLongDateString() @Model.ModifiedAt.ToShortTimeString()</p>
                     </div>
-
-                    @if (Request.IsLocal) {
-                        <div class="form-group">
-                            <label>Log</label>
-                            <textarea id="log" class="form-control" rows="5"></textarea>
-                        </div>
-                    }
-
                 </div>
             </div>
         </div>
@@ -106,47 +99,8 @@
         Html.RenderPartial("_PhotoSwipe");
         Html.RenderPartial("_Preview");
         Html.RenderPartial("_EditCommentModal");
+        Html.RenderPartial("_ProfileModal");
     }
-
-    <script>
-
-        $(function () {
-            $("textarea.comments-form:visible").weavyEditor({
-                collapsed: true,
-                embeds: false,
-                polls: false,
-                placeholder: 'Your comment...',
-                onSubmit: function (e, d) {
-                    insertComment(e, d, this);
-                }
-            });
-        });
-
-        // subscribe to message from other windows, i.e. the office add-in window
-        window.addEventListener("message", receiveMessage, false);
-        function receiveMessage(event) {
-            logga(event.data);
-            if (event.data.from && event.data.message) {
-                logga(event.data.message, event.data.from);
-                if (event.data.from === "office" && event.data.message === "weavy?") {
-                    event.source.postMessage({ from: "weavy", message: "yes!" }, event.origin);
-                    return;
-                }
-            }
-        }
-
-        // log message to textarea
-        function logga(message, from) {
-            console.log(message);
-            if (typeof message === "string") {
-                if (from) {
-                    var msg = from + ": " + message
-                }
-                var $log = $("#log");
-                $log.val($log.val() + msg + "\n");
-            }
-        }
-    </script>
 
 </body>
 </html>

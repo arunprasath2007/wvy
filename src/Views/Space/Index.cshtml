@@ -18,21 +18,21 @@
         } else {
             @(Html.ActionLink<SpaceController>(c => c.Index(null, null, null), text: "All", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Path))
         }
-        @(Html.ActionLink<SpaceController>(c => c.Index(null, "projects", null), text: "Projects", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Path))
         @(Html.ActionLink<SpaceController>(c => c.Index(null, "teams", null), text: "Teams", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Path))
+        @(Html.ActionLink<SpaceController>(c => c.Index(null, "projects", null), text: "Projects", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Path))
     </nav>
 
     @if (User.SystemPermissions.Contains(Permission.CreateSpace)) {
         <div class="fab">
-            <a class="btn btn-round btn-primary waves-effect" href="@(Url.Action<SpaceController>(c => c.New()))" title="Add space">@Html.SvgIcon("plus")</a>
+            <a class="btn btn-round btn-primary waves-effect" href="@(Url.Action<SpaceController>(c => c.New(null)))" title="Add space">@Html.SvgIcon("plus")</a>
         </div>
     }
 }
 
-<div class="container-fluid my-3">
-    @(Html.FilterForm<SpaceController>(c => c.Index(null, tab, null), Model.Query))
+        <div class="container-fluid my-3">
+            @(Html.FilterForm<SpaceController>(c => c.Index(null, tab, null), Model.Query))
 
-    @if (Model.HasItems()) {
+            @if (Model.HasItems()) {
         <table class="table table-hover table-spaces">
             <thead>
                 <tr>
@@ -48,17 +48,19 @@
         </table>
         @Html.ScrollMore(Model)
 
-    } else if (!Model.Query.Text.IsNullOrWhiteSpace()) {
+} else if (!Model.Query.Text.IsNullOrWhiteSpace()) {
         <p class="mt-3">@Html.SearchResultText(Model)</p>
-    }
+} else {
+        <p class="text-muted text-center">Nothing to see here. Why don't you <a href="@(Url.Action<SpaceController>(c => c.New(null)))">add a new @(tab?.LeftBeforeLast("s") ?? "space")</a>.</p>
+}
 
-    @if ((Model.Query.Archived ?? false) || (Model.Query.Trashed ?? false)) {
+            @if ((Model.Query.Archived ?? false) || (Model.Query.Trashed ?? false)) {
         <p class="text-muted text-center"><small>Back to <a href="@Url.Rebuild("archived", null, "trashed", null)">active</a> @(tab ?? "spaces").</small></p>
-    } else if ((ViewBag.Archived ?? false) && (ViewBag.Trashed ?? false)) {
+} else if ((ViewBag.Archived ?? false) && (ViewBag.Trashed ?? false)) {
         <p class="text-muted text-center"><small>See <a href="@Url.Rebuild("archived", "true", "trashed", null)">archived</a> and <a href="@Url.Rebuild("archived", null, "trashed", "true")">trashed</a> @(tab ?? "spaces").</small></p>
-    } else if (ViewBag.Archived ?? false) {
+} else if (ViewBag.Archived ?? false) {
         <p class="text-muted text-center"><small>See <a href="@Url.Rebuild("archived", "true", "trashed", null)">archived</a> @(tab ?? "spaces").</small></p>
-    } else if (ViewBag.Trashed ?? false) {
+} else if (ViewBag.Trashed ?? false) {
         <p class="text-muted text-center"><small>See <a href="@Url.Rebuild("archived", null, "trashed", "true")">trashed</a> @(tab ?? "spaces").</small></p>
-    }
-</div>
+}
+        </div>

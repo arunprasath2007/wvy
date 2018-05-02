@@ -73,8 +73,10 @@ weavy.preview = (function ($) {
         // then apply nice header with document title etc.
         applyHeader(href || previewUrl, fileId);
 
-        // maximize widget window
-        weavy.postal.post({ name: "open-preview" });
+        if (weavy.browser.embedded) {
+            // maximize widget window
+            weavy.postal.post({ name: "open-preview" });
+        }
     }
 
     // close file preview
@@ -84,8 +86,10 @@ weavy.preview = (function ($) {
             return;
         }
 
-        // close widget preview
-        weavy.postal.post({ name: "close-preview" });
+        if (weavy.browser.embedded) {
+            // close widget preview
+            weavy.postal.post({ name: "close-preview" });
+        }
 
         // remove event handler for ESC
         $(document).off("keyup", keyup);

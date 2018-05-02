@@ -1,0 +1,9 @@
+/// <reference path="../_core.scss" />
+
+// headings with icons (on home)
+h5.d-flex {
+    .dropdown, .btn-icon {
+        position:relative;
+        top: -.0625rem;
+    }
+}

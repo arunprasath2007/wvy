@@ -1,4 +1,4 @@
-﻿# default bundle used on _Layout.cshtml
+﻿# bundle for office taskbar
 ~/scripts/vendor/jquery/jquery.min.js
 ~/scripts/vendor/underscore/underscore-min.js
 ~/scripts/_bootstrap.bundle
@@ -23,6 +23,7 @@
 ~/scripts/src/presence.js
 ~/scripts/src/api.js
 ~/scripts/src/user.js
+~/scripts/src/star.js
 ~/scripts/src/editor.js
 ~/scripts/src/emoji.js
 ~/scripts/src/comments.js

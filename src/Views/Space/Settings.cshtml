@@ -11,7 +11,7 @@
 <div class="container my-3">
     @using (Html.BeginForm(nameof(SpaceController.UpdateSettings), typeof(SpaceController).ControllerName(), new { id = Model.Id }, FormMethod.Post, new { autocomplete = "off", data_turboform = "", novalidate = "" })) {
         @Html.HttpMethodOverride(HttpVerbs.Put)
-        @Html.EditorsForModel(group: "settings")
+        @Html.EditorsForModel(group: "settings", exclude: Model.IsTeam ? null : new[] { nameof(Space.Teamname) })
 
         if (PermissionService.HasSystemPermission(Permission.ManageSystem)) {
             @Html.EditorFor(x => Model.IsHQ)

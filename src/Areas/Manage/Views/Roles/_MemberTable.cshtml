@@ -1,7 +1,7 @@
-﻿@model PagedList<User>
+﻿@model RoleModel
 
-@if (Model.Any()) {
-    foreach (var user in Model) {
+@if (Model.Members.Any()) {
+    foreach (var user in Model.Members) {
         <tr class="@($"{(user.IsTrashed() ? "table-trashed" : "")} {(user.IsSuspended ? "table-suspended": "")}")">
             <td class="table-icon">@user.AvatarImg(32, presence: true)</td>
             <td>
@@ -12,11 +12,17 @@
                 }
                 @Html.Badge(user)
             </td>
-            <td class="table-icon"><button type="button" class="btn btn-icon" title="Remove member">@Html.SvgIcon("close")</button></td>
+            <td class="table-icon">
+                @using (Html.BeginForm(nameof(RolesController.RemoveMember), null, new { Model.Role.Id })) {
+                    @Html.HttpMethodOverride(HttpVerbs.Delete)
+                    @Html.Hidden("UserId", user.Id)
+                    <button type="submit" class="btn btn-icon" title="Remove member" data-remove-from-role>@Html.SvgIcon("close")</button>
+                }
+            </td>
         </tr>
     }
 
-    <tr class="scroll-next d-none" data-next="@Url.ScrollNext(Model)">
+    <tr class="scroll-next d-none" data-next="@Url.ScrollNext(Model.Members)">
         <td colspan="3"></td>
     </tr>
 }

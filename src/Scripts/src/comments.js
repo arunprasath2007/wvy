@@ -1,8 +1,20 @@
 ﻿var weavy = weavy || {};
 weavy.comments = (function ($) {
 
-    // edit comment editor
-    document.addEventListener("turbolinks:load", function () {
+    if (weavy.turbolinks.enabled) {
+        // edit comment editor
+        document.addEventListener("turbolinks:load", init);
+
+        // destroy editors
+        document.addEventListener("turbolinks:before-cache", function () {
+            $("[data-editor-location='comment-edit']").weavyEditor("destroy");
+            $(".weavy-editor").next("textarea.comments-form").weavyEditor("destroy");
+        });
+    } else {
+        $(document).ready(init);
+    }
+
+    function init() {
         $("[data-editor-location='comment-edit']").weavyEditor({
             polls: false,
             mode: 'fixed',
@@ -14,13 +26,7 @@ weavy.comments = (function ($) {
 
         // any visible comment editors
         initCommentEditor($("textarea.comments-form:visible"));
-    });
-
-    // destroy editors
-    document.addEventListener("turbolinks:before-cache", function () {
-        $("[data-editor-location='comment-edit']").weavyEditor("destroy");                
-        $(".weavy-editor").next("textarea.comments-form").weavyEditor("destroy");
-    });
+    }
 
     // init comment editor
     function initCommentEditor($el) {

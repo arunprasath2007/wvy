@@ -2,6 +2,7 @@
 @mixin img-size($size) {
     width: $size;
     height: $size;
+    flex: 0 0 auto;
 }
 
 @mixin img-padded {
