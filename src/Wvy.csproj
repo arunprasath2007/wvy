@@ -302,16 +302,16 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="Weavy, Version=1.0.0.107, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="Weavy, Version=1.0.1.116, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\lib\Weavy.exe</HintPath>
     </Reference>
     <Reference Include="Weavy.Bundler, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\lib\Weavy.Bundler.dll</HintPath>
     </Reference>
-    <Reference Include="Weavy.Core, Version=1.0.0.107, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="Weavy.Core, Version=1.0.1.116, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\lib\Weavy.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Weavy.Web, Version=1.0.0.107, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="Weavy.Web, Version=1.0.1.116, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\lib\Weavy.Web.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
@@ -2628,7 +2628,6 @@
     <Content Include="Styles\components\_preview.scss" />
     <Content Include="Styles\components\_prism.scss" />
     <Content Include="Styles\components\_progress.scss" />
-    <Content Include="Styles\components\_scrollbar.scss" />
     <Content Include="Styles\components\_search.scss" />
     <Content Include="Styles\components\_spinner.scss" />
     <Content Include="Styles\components\_swatches.scss" />
@@ -3107,11 +3106,11 @@
     <Content Include="Views\Star\_Index.cshtml" />
     <Content Include="Views\Star\_Star.cshtml" />
     <Content Include="Views\Test\Email.cshtml" />
-    <Content Include="Views\Test\Embed.cshtml" />
     <Content Include="Views\Test\Index.cshtml" />
     <Content Include="Views\Test\Pickers.cshtml" />
     <Content Include="Views\Test\Redirect.cshtml" />
     <Content Include="Views\Test\Redirected.cshtml" />
+    <Content Include="Views\Test\Widget.cshtml" />
     <Content Include="Views\Test\_Components.cshtml" />
     <Content Include="Views\Trash\Index.cshtml" />
     <Content Include="Views\UI\InsertImage.cshtml" />

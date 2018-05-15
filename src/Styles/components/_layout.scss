@@ -1,7 +1,7 @@
 /// <reference path="../_core.scss" />
 html {
-    // TODO: vi behöver dölja overflow-x pga drawers etc., kolla att det inte ställer till det med photoswipe och pdfjs
-    overflow-x: hidden;
+    // custom scrollbar (for chrome)
+    @include scrollbar;
 
     // show/hide stuff depending on if we are running embedded or standalone
     &.embedded {
@@ -16,7 +16,6 @@ html {
         }
     }
 }
-
 
 body {
     padding-top: $navbar-height;

@@ -3,6 +3,7 @@ weavy.scroll = (function ($) {
     var currentScroll;
 
     function preventScrollChaining(ev) {
+        //console.log(ev.type);
 
         // If something else is in progress
         if (ev.returnValue === false) {
@@ -17,6 +18,7 @@ weavy.scroll = (function ($) {
 
         var prevent = function (value) {
             if (value !== false) {
+                console.debug("preventing scroll");
                 ev.preventDefault();
             }
             return value;
@@ -24,7 +26,7 @@ weavy.scroll = (function ($) {
 
         var overscrollFilter = function () {
             var current = $(this);
-            return /(contain|none)/.test(current.css("overscroll-behavior-y")) || /(contain|none)/.test(current.css("overscroll-behavior"));
+            return /none/.test(current.css("-ms-scroll-chaining")) || /(contain|none)/.test(current.css("overscroll-behavior")) || /(contain|none)/.test(current.css("overscroll-behavior-y"));
         };
 
         var overflowFilter = function () {
@@ -69,7 +71,7 @@ weavy.scroll = (function ($) {
         }
 
         return prevent(shouldPreventScroll($scrollContainer, ev, up, delta));
-    };
+    }
 
     function shouldPreventScroll($scrollContainer, ev, up, delta) {
         if ($scrollContainer.length) {
@@ -84,13 +86,13 @@ weavy.scroll = (function ($) {
             
             if (!up && -delta > scrollHeight - height - scrollTop) {
                 // Scrolling down, but this will take us past the bottom.
-                if (ev.type == "wheel") {
+                if (ev.type === "wheel") {
                     $scrollContainer.scrollTop(scrollHeight);
                 }
                 return true;
             } else if (up && delta > scrollTop) {
                 // Scrolling up, but this will take us past the top.
-                if (ev.type == "wheel") {
+                if (ev.type === "wheel") {
                     $scrollContainer.scrollTop(0);
                 }
                 return true;
@@ -117,56 +119,5 @@ weavy.scroll = (function ($) {
     }
 
     document.addEventListener("wheel", preventScrollChaining);
-
-    
-    // Scrollbar detection (mainly for MacOS/Chrome)
-    function checkScrollbar(entries) {
-        var hasScrollbar, element, overflowWidth;
-        for (var entry in entries) {
-            element = entries[entry].target;
-            try {
-                overflowWidth = element === document.documentElement ? window.innerWidth : element.clientWidth;
-                hasScrollbar = overflowWidth !== element.offsetWidth
-
-                if (hasScrollbar) {
-                    document.documentElement.classList.add("scrollbar");
-                } else {
-                    document.documentElement.classList.remove("scrollbar");
-                }
-            } catch (e) {
-                console.error("Unable to check for scrollbars", e);
-            }
-        }
-
-    }
-
-    // Register scrollbar detection
-    var roScrollbar; 
-    try {
-        roScrollbar = new ResizeObserver(checkScrollbar)
-        roScrollBar.observe(document.documentElement);
-    } catch (e) {}
-
-    $(function () {
-        var scrollCheck = document.createElement("div");
-        scrollCheck.className = "scroll-check";
-        scrollCheck.id = "scroll-check";
-        scrollCheck.setAttribute("data-turbolinks-permanent", "");
-        document.body.appendChild(scrollCheck);
-
-        try {
-            roScrollbar.observe(scrollCheck);
-        } catch (e) {
-            // Fallback check
-            checkScrollbar([{ target: scrollCheck }]);
-        }
-
-        document.addEventListener("turbolinks:load", function (e) {
-                document.body.appendChild(scrollCheck);
-                checkScrollbar([{ target: scrollCheck }]);
-        });
-
-    });
-
 })($);
 

@@ -16,9 +16,11 @@
 $widget-default-rem: 16px;
 
 @function rem($value) {
+    @return $widget-default-rem * $value;
+    // NOTE: IE/Edge dose not handle --weavy-rem very good (on high dpi display?)
     // Edge does unfortunately not fully support calc() in box-shadow and transform, otherwise --variables work
-    @return calc(var(--weavy-rem, #{$widget-default-rem}) * #{$value}); // Defaults to 16px
-    //@return $widget-default-rem * $value;
+    //@return calc(var(--weavy-rem, #{$widget-default-rem}) * #{$value}); // Defaults to 16px
+    
 }
 
 // Widget variables
@@ -30,21 +32,21 @@ $widget-border-radius: rem(.25);
 .weavy-widget {
     // These variables also change when you set --weavy-rem
     // They are needed because Edge does not fully support calc() in box-shadow and transform (but support calc() in CSS variables)
-    --weavy-1rem: rem(1);
-    --weavy--1rem: rem(-1);
-    --weavy-0-25rem: rem(.25);
-    --weavy--0-25rem: rem(-.25);
-    --md-shadow-4dp: 0 rem(.25) rem(.3125) 0 rgba($md-black, $md-shadow-penumbra-opacity), 0 rem(.0625) rem(.625) 0 rgba($md-black, $md-shadow-ambient-opacity), 0 rem(.125) rem(.25) rem(-.0625) rgba($md-black, $md-shadow-umbra-opacity); //$md-shadow-4dp;
-    --md-shadow-8dp: 0 rem(.5) rem(.625) rem(.0625) rgba($md-black, $md-shadow-penumbra-opacity), 0 rem(.1875) rem(1.25) rem(.125) rgba($md-black, $md-shadow-ambient-opacity), 0 rem(.3125) rem(.3125) rem(-.1875) rgba($md-black, $md-shadow-umbra-opacity); //$md-shadow-8dp;
+    //--weavy-1rem: rem(1);
+    //--weavy--1rem: rem(-1);
+    //--weavy-0-25rem: rem(.25);
+    //--weavy--0-25rem: rem(-.25);
+    //--md-shadow-4dp: 0 rem(.25) rem(.3125) 0 rgba($md-black, $md-shadow-penumbra-opacity), 0 rem(.0625) rem(.625) 0 rgba($md-black, $md-shadow-ambient-opacity), 0 rem(.125) rem(.25) rem(-.0625) rgba($md-black, $md-shadow-umbra-opacity); //$md-shadow-4dp;
+    //--md-shadow-8dp: 0 rem(.5) rem(.625) rem(.0625) rgba($md-black, $md-shadow-penumbra-opacity), 0 rem(.1875) rem(1.25) rem(.125) rgba($md-black, $md-shadow-ambient-opacity), 0 rem(.3125) rem(.3125) rem(-.1875) rgba($md-black, $md-shadow-umbra-opacity); //$md-shadow-8dp;
     // Edge cases ;-)
-    @supports (-ms-ime-align: auto) {
-        --weavy-1rem: $widget-default-rem; //rem(1);
-        --weavy--1rem: -$widget-default-rem; //rem(-1);
-        --weavy-0-25rem: .25 * $widget-default-rem; //rem(0.25);
-        --weavy--0-25rem: -.25 * $widget-default-rem; //rem(-0.25);
-        --md-shadow-4dp: $md-shadow-4dp;
-        --md-shadow-8dp: $md-shadow-8dp;
-    }
+    //@supports (-ms-ime-align: auto) {
+    //    --weavy-1rem: $widget-default-rem; //rem(1);
+    //    --weavy--1rem: -$widget-default-rem; //rem(-1);
+    //    --weavy-0-25rem: .25 * $widget-default-rem; //rem(0.25);
+    //    --weavy--0-25rem: -.25 * $widget-default-rem; //rem(-0.25);
+    //    --md-shadow-4dp: $md-shadow-4dp;
+    //    --md-shadow-8dp: $md-shadow-8dp;
+    //}
 
     .weavy-alert-message {
         padding: rem(.25) rem(.5);
@@ -100,7 +102,8 @@ $widget-border-radius: rem(.25);
 
                     .weavy-bubble-close {
                         opacity: 1;
-                        transform: translate(var(--weavy-0-25rem), var(--weavy--1rem));
+                        //transform: translate(var(--weavy-0-25rem), var(--weavy--1rem));
+                        transform: translate(rem(.25), rem(-1));
                         pointer-events: auto;
                     }
                 }
@@ -174,7 +177,8 @@ $widget-border-radius: rem(.25);
             border-radius: $border-radius;
             pointer-events: all;
             transition: opacity linear 0.1s;
-            box-shadow: var(--md-shadow-4dp);
+            //box-shadow: var(--md-shadow-4dp);
+            box-shadow: $md-shadow-4dp;
             display: none;
             color: $body-color;
 
@@ -261,8 +265,10 @@ $widget-border-radius: rem(.25);
 
             &.weavy-open {
                 background-color: $white;
-                transform: translateX(var(--weavy--1rem)); // -1rem
-                box-shadow: var(--md-shadow-4dp);
+                //transform: translateX(var(--weavy--1rem));
+                transform: translateX(rem(-1));
+                //box-shadow: var(--md-shadow-4dp);
+                box-shadow: $md-shadow-4dp;
                 align-self: flex-end;
 
                 ~ .weavy-bubble-tooltip {
@@ -275,11 +281,13 @@ $widget-border-radius: rem(.25);
                 }
 
                 ~ .weavy-bubble-connect {
-                    transform: translate(var(--weavy-0-25rem), var(--weavy-1rem));
+                    //transform: translate(var(--weavy-0-25rem), var(--weavy-1rem));
+                    transform: translate(rem(.25), rem(1));
                 }
 
                 ~ .weavy-bubble-close {
-                    transform: translate(var(--weavy-0-25rem),var(--weavy--1rem));
+                    //transform: translate(var(--weavy-0-25rem),var(--weavy--1rem));
+                    transform: translate(rem(.25), rem(-1));
                 }
 
                 &, &:not(.weavy-personal) img {
@@ -373,8 +381,10 @@ $widget-border-radius: rem(.25);
             user-select: none;
             background: hsla(0, 0%, 92%, 0.9);
             border-radius: rem(2);
-            box-shadow: var(--md-shadow-4dp);
-            margin: calc(var(--weavy-rem, 16px) * 0.5);
+            //box-shadow: var(--md-shadow-4dp);
+            box-shadow: $md-shadow-4dp;
+            //margin: calc(var(--weavy-rem, 16px) * 0.5);
+            margin: rem(.5);
             //transition: transform 0.05s ease-out;
         }
 
@@ -385,7 +395,7 @@ $widget-border-radius: rem(.25);
             align-items: center;
             justify-content: center;
             padding: rem(.25);
-
+            flex: 0 0 auto;
             svg {
                 fill: currentColor;
                 width: rem(1.5);
@@ -420,7 +430,8 @@ $widget-border-radius: rem(.25);
             width: rem(20); //320px;
             height: 0;
             border: 0;
-            box-shadow: var(--md-shadow-4dp);
+            //box-shadow: var(--md-shadow-4dp);
+            box-shadow: $md-shadow-4dp;
         }
 
         .weavy-strips {
@@ -430,7 +441,8 @@ $widget-border-radius: rem(.25);
             bottom: 0;
             width: 0;
             pointer-events: none;
-            z-index: 10;
+            // fix for chrome high dpi scroll problems
+            z-index: -1;
         }
 
         .weavy-strip {
@@ -441,9 +453,11 @@ $widget-border-radius: rem(.25);
             left: 0;
             opacity: 0;
             z-index: $widget-zindex;
-            box-shadow: var(--md-shadow-8dp);
+            //box-shadow: var(--md-shadow-8dp);
+            box-shadow: $md-shadow-8dp;
             pointer-events: none;
-            transform: translateX(var(--weavy-1rem)); // 1rem
+            //transform: translateX(var(--weavy-1rem)); // 1rem
+            transform: translateX(rem(1));
             border-radius: $widget-border-radius;
             overflow: hidden;
 
@@ -523,7 +537,6 @@ $widget-border-radius: rem(.25);
                 background-color: $backdrop-bg;
             }
 
-
             .weavy-strips {
                 width: auto;
                 left: rem(2.5);
@@ -559,6 +572,10 @@ $widget-border-radius: rem(.25);
                     bottom: 0;
                 }
             }
+
+            .weavy-buttons {
+                display: none;
+            }
         }
 
         &.weavy-left {
@@ -581,7 +598,8 @@ $widget-border-radius: rem(.25);
             .weavy-bubble-item {
                 &:hover, &:active {
                     .weavy-bubble-close {
-                        transform: translate(var(--weavy--0-25rem), var(--weavy--1rem));
+                        //transform: translate(var(--weavy--0-25rem), var(--weavy--1rem));
+                        transform: translate(rem(.25), rem(-1));
                     }
                 }
             }
@@ -600,13 +618,16 @@ $widget-border-radius: rem(.25);
 
             .weavy-button {
                 &.weavy-open {
-                    transform: translateX(var(--weavy-1rem)); // 1rem
+                    //transform: translateX(var(--weavy-1rem)); // 1rem
+                    transform: translateX(rem(1));
                     ~ .weavy-bubble-connect {
-                        transform: translate(var(--weavy--0-25rem), var(--weavy-1rem));
+                        //transform: translate(var(--weavy--0-25rem), var(--weavy-1rem));
+                        transform: translate(rem(.25), rem(1));
                     }
 
                     ~ .weavy-bubble-close {
-                        transform: translate(var(--weavy--0-25rem),var(--weavy--1rem));
+                        //transform: translate(var(--weavy--0-25rem),var(--weavy--1rem));
+                        transform: translate(rem(.25), rem(-1));
                     }
 
                     &, &:not(.weavy-personal) img {
@@ -620,7 +641,8 @@ $widget-border-radius: rem(.25);
             }
 
             .weavy-strip {
-                transform: translateX(var(--weavy--1rem)); // -1rem
+                //transform: translateX(var(--weavy--1rem)); // -1rem
+                transform: translateX(rem(-1)); // -1rem
                 &.weavy-open {
                     transform: translateX(0);
                 }
@@ -688,7 +710,8 @@ $widget-border-radius: rem(.25);
 
             .weavy-draggable {
                 pointer-events: none !important;
-                box-shadow: var(--md-shadow-8dp);
+                //box-shadow: var(--md-shadow-8dp);
+                box-shadow: $md-shadow-8dp;
                 transition: transform 25ms ease-out;
 
                 &.weavy-snap {
@@ -697,20 +720,6 @@ $widget-border-radius: rem(.25);
             }
         }
     }
-    //&.weavy-custom {
-    //   z-index: $widget-zindex;
-    //    height: 100%;
-    //
-    //    .weavy-strip {
-    //        z-index: $widget-zindex;
-    //        height: 100%
-    //    }
-    //    .weavy-strip-frame {
-    //        height: 100%;
-    //        width: 100%;
-    //        border: 0;
-    //    }
-    //}
     @media print {
         display: none;
     }
