@@ -21,20 +21,3 @@
         </small>
     </div>
 </main>
-
-@section scripts {
-    <script>
-        // init pincode input
-        document.addEventListener("turbolinks:load", function () {
-            $(".pincode").pincode();
-        });
-
-        // destroy pincode input
-        document.addEventListener("turbolinks:before-cache", function () {
-            var pincode = $('.pincode').pincode();
-            if (pincode.length) {
-                pincode.data('plugin_pincode').destroy();
-            }
-        });
-    </script>
-}

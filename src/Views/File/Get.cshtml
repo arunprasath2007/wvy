@@ -7,10 +7,13 @@
     var fmt = FileHelper.GetPreviewFormat(Model);
 }
 
-@if (parent.Type == EntityType.App || parent.Type == EntityType.Item) {
-    @section navbar_middle {
-        @{ Html.RenderPartial("_BreadcrumbMenu", Model); }
-    }
+@section navbar_middle {
+<div class="navbar-middle">
+    <span class="navbar-text">
+        @Model.Name
+    </span>
+    @Html.StarToggle(Model)
+</div>
 }
 
 <div class="container my-3">
@@ -77,7 +80,7 @@
         }
 
         @if (timestamp == null) {
-            <section class="file-comments" id="comments">
+            <section class="section-comments file-comments" id="comments">
                 <div class="list-group comments" data-container="comments">
                     @Html.Partial("_Comments", Model.Comments)
                 </div>

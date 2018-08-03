@@ -2,6 +2,8 @@
 @{
     Title = "Edit space";
     Back = Model.Url();
+    var bubbles = ViewBag.Bubbles as IEnumerable<Bubble>;
+    var hasAdminPermission = Model.HasPermission(Permission.Admin);
 }
 
 
@@ -22,6 +24,11 @@
             }
             weavy.alert.success("Script copied to clipboard", 3000);
         });
+
+        $(document).on("click", "[data-delete-bubble]", function () {
+            $(this).closest("tr").remove();
+            $(".update-widget-form").append("<input type='hidden' name='removeIds' value='" + $(this).data("id") + "' />");
+        });
     </script>
 }
 
@@ -30,10 +37,41 @@
 }
 
 <div class="container my-3">
-    @if (Model.HasPermission(Permission.Admin)) {
-        using (Html.BeginForm(nameof(SpaceController.UpdateWidget), typeof(SpaceController).ControllerName(), new { id = Model.Id }, FormMethod.Post, new { autocomplete = "off", data_turboform = "", novalidate = "" })) {
+
+    <label>Connected urls</label>
+    @if (bubbles.IsNullOrEmpty()) {
+        <p class="text-muted">There are no connected urls.</p>
+    } else {
+        <table class="table table-hover table-urls table-fixed">
+            <thead>
+                <tr>
+                    <th>Url</th>
+                    @if (hasAdminPermission) {
+                        <th class="text-right"></th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var bubble in bubbles) {
+                    <tr>
+                        <td>
+                            <a href="@bubble.Url.RemoveTrailing("*")" target="_blank">@bubble.Url</a>
+                        </td>
+                        @if (hasAdminPermission) {
+                            <td class="text-right">
+                                <button class="btn btn-icon" type="button" title="Remove" data-id="@bubble.Id" data-delete-bubble>@Html.SvgIcon("delete")</button>
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    @if (hasAdminPermission) {
+
+        using (Html.BeginForm(nameof(SpaceController.UpdateWidget), typeof(SpaceController).ControllerName(), new { id = Model.Id }, FormMethod.Post, new { @class = "update-widget-form",  autocomplete = "off", data_turboform = "", novalidate = "" })) {
             @Html.HttpMethodOverride(HttpVerbs.Put)
-            @Html.EditorsForModel(group: "Widget")
 
             <div class="form-group">
                 <label>Embed Script</label>
@@ -42,17 +80,14 @@
             </div>
 
             <div class="form-buttons">
-                <button type="submit" class="btn btn-primary btn-load waves-effect">Save</button>
-                <a href="@Model.Url()" class="btn btn-outline-secondary mr-auto waves-effect">Cancel</a>
-                <button type="button" id="copy-script-button" class="btn btn-outline-secondary waves-effect">Copy script</button>
+                <button type="submit" class="btn btn-primary btn-load">Save</button>
+                <a href="@Model.Url()" class="btn btn-outline-secondary mr-auto">Cancel</a>
+                <button type="button" id="copy-script-button" class="btn btn-outline-secondary">Copy script</button>
             </div>
         }
     } else {
-        <fieldset disabled>
-            @Html.EditorsForModel(group: "Widget")
-        </fieldset>
         <div class="form-buttons">
-            <a href="@Back" class="btn btn-outline-secondary waves-effect">Back</a>
+            <a href="@Back" class="btn btn-outline-secondary">Back</a>
         </div>
     }
 </div>

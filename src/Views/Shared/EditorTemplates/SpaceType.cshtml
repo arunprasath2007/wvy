@@ -22,18 +22,16 @@
     @Html.LabelFor(m => m)
 }
 
-<div class="custom-controls-stacked">
-    <label class="custom-control custom-radio">
-        <input class="custom-control-input" id="@ViewData.TemplateInfo.GetFullHtmlFieldId("space")" name="@ViewData.TemplateInfo.GetFullHtmlFieldName("")" type="radio" value="false" @(Model == false ? " checked" : "")>
-        <span class="custom-control-indicator"></span>
-        <span class="custom-control-description">It's for a project</span>
-    </label>
-    <label class="custom-control custom-radio">
-        <input class="custom-control-input" id="@ViewData.TemplateInfo.GetFullHtmlFieldId("team")" name="@ViewData.TemplateInfo.GetFullHtmlFieldName("")" type="radio" value="true" @(Model == true ? " checked" : "")>
-        <span class="custom-control-indicator"></span>
-        <span class="custom-control-description">It's for a team</span>
-    </label>
+
+<div class="custom-control custom-radio">
+    <input class="custom-control-input" id="@ViewData.TemplateInfo.GetFullHtmlFieldId("space")" name="@ViewData.TemplateInfo.GetFullHtmlFieldName("")" type="radio" value="false" @(Model == false ? " checked" : "")>
+    <label class="custom-control-label" for="@ViewData.TemplateInfo.GetFullHtmlFieldId("space")">It's for a project</label>
 </div>
+<div class="custom-control custom-radio">
+    <input class="custom-control-input" id="@ViewData.TemplateInfo.GetFullHtmlFieldId("team")" name="@ViewData.TemplateInfo.GetFullHtmlFieldName("")" type="radio" value="true" @(Model == true ? " checked" : "")>
+    <label class="custom-control-label" for="@ViewData.TemplateInfo.GetFullHtmlFieldId("team")">It's for a team</label>
+</div>
+
 
 
 @if (feedback != null) {

@@ -6,20 +6,34 @@
     flex-wrap: wrap;
     justify-content: center;
     position: relative;
-    margin: 0 (-$card-border-width) (-$card-border-width) 0;
+    border-radius: $border-radius;
+    overflow: hidden;
+    background-color: $card-bg;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background-color: $card-border-color;
+        background-clip: content-box;
+        border: $card-border-width solid transparent;
+        pointer-events: none;
+        border-radius: inherit;
+    }
 
     &::after {
         content: "";
         position: absolute;
         top: 0;
         left: 0;
-        bottom: $card-border-width;
-        right: $card-border-width;
-        border-style: solid;
-        border-color: $card-border-color transparent;
-        border-width: $card-border-width;
+        bottom: 0;
+        right: 0;
+        border: $card-border-width solid $card-border-color;
         pointer-events: none;
-        mix-blend-mode: darken;
+        border-radius: inherit;
     }
 
 
@@ -27,10 +41,23 @@
         padding: 0;
         width: 50%;
         position: relative;
-        border-bottom: $card-border-width solid transparent;
-        border-right: $card-border-width solid transparent;
+        margin: 0 $card-border-width $card-border-width 0;
         flex: auto;
+        background-color: inherit;
+        background-clip: content-box;
 
+        &:last-child {
+            margin-right: 0;
+            margin-bottom: 0;
+        }
+
+        &:nth-last-child(2) {
+            margin-bottom: 0;
+        }
+
+        &:first-child:nth-last-child(3) {
+            margin-right: 0;
+        }
 
         > * {
             display: block;

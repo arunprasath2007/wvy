@@ -38,17 +38,15 @@
     @Html.LabelFor(m => m)
 }
 
-<div class="custom-controls-stacked">
-    @foreach (Privacy item in allowed) {
-        var name = item.GetDisplayName();
-        var desc = item.GetDisplayDescription();
-        <label class="custom-control custom-radio">
-            <input class="custom-control-input" id="@ViewData.TemplateInfo.GetFullHtmlFieldId(item.ToString())" name="@inputName" type="radio" value="@(Convert.ChangeType(item, item.GetTypeCode()))" @(Model == item ? "checked" : "")>
-            <span class="custom-control-indicator"></span>
-            <span class="custom-control-description">@name @if (desc != null) {<span class="form-text d-inline">@desc</span>}</span>            
-        </label>
-    }
-</div>
+@foreach (Privacy item in allowed) {
+    var name = item.GetDisplayName();
+    var desc = item.GetDisplayDescription();
+    <div class="custom-control custom-radio">
+        <input class="custom-control-input" id="@ViewData.TemplateInfo.GetFullHtmlFieldId(item.ToString())" name="@inputName" type="radio" value="@(Convert.ChangeType(item, item.GetTypeCode()))" @(Model == item ? "checked" : "")>
+        <label class="custom-control-label" for="@ViewData.TemplateInfo.GetFullHtmlFieldId(item.ToString())">@name @if (desc != null) {<span class="form-text d-inline">@desc</span>}</label>
+    </div>
+}
+
 
 @if (feedback != null) {
     <div class="invalid-feedback">@feedback</div>

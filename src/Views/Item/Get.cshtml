@@ -6,7 +6,12 @@
 }
 
 @section navbar_middle {
-    @{ Html.RenderPartial("_BreadcrumbMenu", Model); }
+<div class="navbar-middle">
+    <span class="navbar-text">
+        @Title
+    </span>
+    @Html.StarToggle(Model)
+</div>
 }
 
 <div class="container my-3">
@@ -38,7 +43,7 @@
                         <button type="submit" class="btn btn-icon" title="Revert">@Html.SvgIcon("undo", "icon")</button>
                     </form>
                 } else {
-                    if (Model.HasPermission(Permission.Edit)) {
+                    if (Model.HasPermission(Permission.Edit) && (Model.LockedById == null || Model.LockedById == User.Id)) {
                         <a class="btn btn-icon" href="@Model.Url()/edit">@Html.SvgIcon("pencil", "icon")</a>
                     }
                     Html.RenderPartial("_ItemMenu", Model);
@@ -54,7 +59,7 @@
 
             Html.RenderPartial("_Attachments");
 
-            <section class="item-comments my-3">
+            <section class="section-comments item-comments my-3">
                 <h4 class="display-4"><span>Comments</span></h4>
                 <div class="list-group comments" data-container="comments">
                     @Html.Partial("_Comments", Model.Comments)

@@ -9,9 +9,15 @@ $(function () {
         // if href is a cross-origin URL, or falls outside of the specified root, or if the value of Turbolinks.supported is false, 
         // Turbolinks performs a full page load by setting window.location
         var href = $(this).attr("data-href");
+        var target = $(this).attr("data-target");
 
         if (href.length > 0) {
-            Turbolinks.visit(href);
+            if (target && target === "_blank") {
+                window.open(href);
+            } else {
+                Turbolinks.visit(href);
+            }
+            
         }        
     });
 });

@@ -30,22 +30,20 @@
     var inputName = ViewData.TemplateInfo.GetFullHtmlFieldName("");
     Type underlyingType = Nullable.GetUnderlyingType(ViewData.ModelMetadata.ModelType) ?? ViewData.ModelMetadata.ModelType;
     Array values = Enum.GetValues(underlyingType);
-    <div class="custom-controls-stacked">
-        @foreach (Enum item in values) {
-            var name = item.ToString();
-            if (inputType == "checkbox" && name == "None" || name == "All") {
-                continue;
-            } else {
-                name = item.GetDisplayName();
-            }
-            var desc = item.GetDisplayDescription();
-            <label class="custom-control custom-@inputType">
-                <input class="custom-control-input" id="@ViewData.TemplateInfo.GetFullHtmlFieldId(item.ToString())" name="@inputName" type="@inputType" value="@(Convert.ChangeType(item, item.GetTypeCode()))" @Html.Raw(Model.HasFlag(item) ? @"checked=""checked""" : "")>
-                <span class="custom-control-indicator"></span>
-                <span class="custom-control-description">@name @if (desc != null) {<span class="form-text d-inline">@desc</span>}</span>
-            </label>
+    foreach (Enum item in values) {
+        var name = item.ToString();
+        if (inputType == "checkbox" && name == "None" || name == "All") {
+            continue;
+        } else {
+            name = item.GetDisplayName();
         }
-    </div>
+        var desc = item.GetDisplayDescription();
+        <div class="custom-control custom-@inputType">
+            <input class="custom-control-input" id="@ViewData.TemplateInfo.GetFullHtmlFieldId(item.ToString())" name="@inputName" type="@inputType" value="@(Convert.ChangeType(item, item.GetTypeCode()))" @Html.Raw(Model.HasFlag(item) ? @"checked=""checked""" : "")>
+
+            <label class="custom-control-label" for="@ViewData.TemplateInfo.GetFullHtmlFieldId(item.ToString())">@name @if (desc != null) {<span class="form-text d-inline">@desc</span>}</label>
+        </div>
+    }
 }
 
 @if (feedback != null) {

@@ -59,7 +59,7 @@
     }
 
     .list-group-item.active {
-        z-index: unset;
+        z-index: 1;
 
         @media (max-width: 648px) {
             background-color: $list-group-bg;
@@ -92,7 +92,6 @@
         }
     }
 }
-
 
 .list-group-item:not(.active):active {
     background-color: $list-group-hover-bg;
@@ -138,7 +137,6 @@
 .list-group-users {
     flex: 100%;
 }
-
 // toggle more rooms
 .rooms {
     .conversation:nth-child(1n+4) {

@@ -33,10 +33,10 @@
 
         @Html.EditorsForModel()
         <div class="form-buttons">
-            <button type="submit" name="button" value="@nameof(ToolsController.Run)" class="btn btn-primary btn-load waves-effect">Run</button>
-            <a href="@Back" class="btn btn-outline-secondary mr-auto waves-effect" data-shortcut="Esc">Cancel</a>
+            <button type="submit" name="button" value="@nameof(ToolsController.Run)" class="btn btn-primary btn-load">Run</button>
+            <a href="@Back" class="btn btn-outline-secondary mr-auto" data-shortcut="Esc">Cancel</a>
             @if (!Model.IsLoaded()) {
-                <button type="submit" name="button" value="@nameof(ToolsController.Delete)" class="btn btn-danger btn-load waves-effect">Delete</button>
+                <button type="submit" name="button" value="@nameof(ToolsController.Delete)" class="btn btn-danger btn-load">Delete</button>
             }
         </div>
 

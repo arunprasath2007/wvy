@@ -8,11 +8,14 @@
 @if (ViewBag.IsCommentable as bool? ?? true) {
 
     if (Model.HasPermission(Permission.Comment)) {
-        <form action="~/api/comments" method="post" id="comment-form-@Model.Id" data-entity-type="@entityType" data-entity-id="@entityId" data-comments-container="@commentsContainer">
-            <textarea class="comments-form" name="text"></textarea>
-            <input type="hidden" name="id" value="@entityId" />
-            <input type="hidden" name="type" value="@entityType" />
-        </form>
+<form action="~/api/comments" method="post" id="comment-form-@Model.Id" data-entity-type="@entityType" data-entity-id="@entityId" data-comments-container="@commentsContainer">
+    <textarea class="comments-form" name="text"></textarea>
+    <input type="hidden" name="id" value="@entityId" />
+    <input type="hidden" name="type" value="@entityType" />
+    <input type="hidden" name="hasContext" id="hasContext" value="false" />
+    <input type="hidden" name="contextUrl" id="contextUrl" />
+    <input type="hidden" name="contextTitle" id="contextTitle" />
+</form>
 
     } else if (!Model.Comments.Any()) {
         <span class="text-muted">No comments yet...</span>

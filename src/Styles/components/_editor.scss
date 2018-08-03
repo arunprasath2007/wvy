@@ -3,7 +3,7 @@
 
 .card.card-weavy-editor {
     &::after {
-        mix-blend-mode: normal;
+        //mix-blend-mode: normal;
         z-index: 4;
     }
 }
@@ -64,15 +64,16 @@
         .emojionearea-editor {
             max-height: 23em;
             font-size: $font-size-base;
+            line-height: $input-line-height;
             border-bottom: $border-width solid $border-color;
-            padding: 0.75rem;
-            
+            padding: $card-spacer-y ($card-spacer-x - .0625rem);
             // To enable HW acceleration and not cause repaint on scroll
             backface-visibility: hidden;
         }
 
-        .emojionearea .emojionearea-editor:empty:before {
+        .emojionearea-editor:empty::before {
             color: $input-placeholder-color;
+            padding: .0625rem 0;
         }
 
         .emojionearea-picker .emojionearea-wrapper {
@@ -101,7 +102,7 @@
     }
 
     .emojionearea-button-container {
-        padding: $card-spacer-y/2 $card-spacer-x/2;
+        padding: $card-spacer-x/2 $card-spacer-x/2;
         display: flex;
         color: $text-muted;
 
@@ -206,6 +207,10 @@
     .uploads {
 
         .table-attachments {
+            tr:first-child td {
+                border-top: $border-width solid $border-color;
+            }
+
             margin: 0;
         }
 
@@ -229,6 +234,51 @@
             margin-bottom: .5rem;
         }
     }
+
+    div.context {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+
+    .context {
+        .context-data {
+            background: $gray-200;
+            padding: 0 .3125rem 0 .625rem;
+            height: 2rem;
+            margin: .5rem;
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+
+            span {
+                @extend .small;
+                text-overflow: ellipsis;
+                max-width: 100%;
+                overflow: hidden;
+                white-space: nowrap;
+                margin: 0 0.5rem;
+                flex: 1;
+            }
+
+            img {
+                align-self: center;
+            }
+        }
+
+        .btn-add-context {
+            img {
+                align-self: center;
+                margin-right: 0.6rem;
+            }
+        }
+
+        &.has-context {
+            &.btn-add-context {
+                opacity: $opacity-disabled;
+                pointer-events: none;
+            }
+        }
+    }
     // single line editor (for comments etc.)
     &.collapsed {
         flex-wrap: wrap;
@@ -241,6 +291,10 @@
         padding: 0;
         margin: 0;
 
+        .emojionearea .emojionearea-editor:empty::before {
+            font-size: $font-size-sm;
+        }
+
         .emojionearea {
             min-width: 0;
             flex-grow: 1;
@@ -252,7 +306,7 @@
 
             .emojionearea-editor {
                 min-height: 2em;
-                border-bottom: none;
+                margin-bottom: $border-width * -1;
 
                 > div {
                     // Makes the scrollbar appear on the very right side where it should
@@ -309,6 +363,10 @@
                 display: none;
             }
         }
+
+        .context, .add-context {
+            display: none;
+        }
     }
 
     &.textonly {
@@ -356,3 +414,20 @@
     }
 }
 
+@include media-breakpoint-down(xs) {
+    html:not(.embedded) {
+        .card-weavy-editor {
+            .weavy-editor {
+                .emojionearea {
+                    .emojionearea-editor {
+                        padding: $card-spacer-y $card-spacer-x;
+                    }
+                }
+
+                .emojionearea-button-container {
+                    padding: $card-spacer-x/2 $card-spacer-y;
+                }
+            }
+        }
+    }
+}

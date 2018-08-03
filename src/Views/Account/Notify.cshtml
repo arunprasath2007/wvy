@@ -4,7 +4,7 @@
     var message = ViewBag.Message as string;
 }
 
-<div class="container">
+<div class="container mt-5">
     <div class="row justify-content-sm-center">
         <div class="col-sm-6">
             <div class="text-center mb-3">
@@ -26,9 +26,9 @@
             win = window.opener.parent;
         }
         @if (User.IsAuthenticated()) {
-            <text>weavy.postal.post({ name: "signedIn" }, win);</text>
+            <text>weavy.postal.post({ name: "signedIn" }, win, true);</text>
         } else {
-            <text>weavy.postal.post({ name: "signedOut" }, win);</text>
+            <text>weavy.postal.post({ name: "signedOut" }, win, true);</text>
         }
 
         if (win != null) {

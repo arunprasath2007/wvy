@@ -1,16 +1,16 @@
 ﻿<aside id="drawer-spaces" class="drawer drawer-left">
     <header class="drawer-header">
         @if (User.SystemPermissions.Contains(Permission.ManageSystem)) {
-            <a class="btn btn-icon d-standalone" href="@(Url.Action<Weavy.Web.Areas.Manage.Controllers.HomeController>(c => c.Index()))" title=" Manage @WeavyContext.Current.System.Name">@Html.SvgIcon("settings")</a>
+            <a class="btn btn-icon" href="@(Url.Action<Weavy.Web.Areas.Manage.Controllers.HomeController>(c => c.Index()))" title=" Manage @WeavyContext.Current.System.Name">@Html.SvgIcon("settings")</a>
         }
-        <div class="text-center pt-3 pb-2">
+        <a class="text-center pt-3" href="@(Url.Action<HomeController>(c => c.Index()))" title="Open Home">
             @Html.IconImg(64)
-            <p class="drawer-title">@WeavyContext.Current.System.Name</p>
-        </div>
+            <div class="drawer-title">@WeavyContext.Current.System.Name</div>
+        </a>
     </header>
     <div class="drawer-body scroll-y">
         <nav class="nav flex-column">
-            @(Html.ActionLink<HomeController>(c => c.Index(), icon: "home", color: "primary", text: "Home", htmlAttributes: new { @class = "dropdown-item" }, active: LinkActive.Controller))
+            @(Html.ActionLink<HomeController>(c => c.Index(), icon: "home", color: "primary", text: "Home", htmlAttributes: new { @class = "dropdown-item d-standalone" }, active: LinkActive.Controller))
             @(Html.ActionLink<PeopleController>(c => c.Index(null, null, null), icon: "account-multiple", color: "primary", text: "People", htmlAttributes: new { @class = "dropdown-item" }, active: LinkActive.Controller))
             @(Html.ActionLink<SpaceController>(c => c.Index(null, null, null), icon: "view-grid", color: "primary", text: "Spaces", htmlAttributes: new { @class = "dropdown-item" }, active: LinkActive.Path))
 

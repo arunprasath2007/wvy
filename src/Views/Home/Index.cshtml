@@ -7,19 +7,19 @@
 <div class="cover">
     <div class="container d-flex flex-column">
         @if (User.SystemPermissions.Contains(Permission.ManageSystem) && Theme.Icon == null) {
-            <a href="@(Url.Action<Weavy.Web.Areas.Manage.Controllers.HomeController>(c => c.Theme()))" class="my-4 d-flex flex-column align-items-center mx-auto btn btn-outline-primary border-transparent">
+            <a href="@(Url.Action<Weavy.Web.Areas.Manage.Controllers.HomeController>(c => c.Theme()))" class="my-4 d-flex flex-column align-items-center mx-auto btn btn-outline-primary border-transparent align-self-center">
                 @Html.IconImg(128)
                 <div class="small">Add your logo...</div>
             </a>
         } else {
-            <div class="my-4 d-flex flex-column align-items-center mx-auto">
+            <div class="my-4 d-flex flex-column align-items-center mx-auto align-self-center">
                 @Html.IconImg(128)
             </div>
 
         }
         <form action="@(Url.Action<HomeController>(c => c.Search(null, null)))" method="get" class="main-search" data-turboform>
             <div class="form-group" role="search">
-                <input id="weavy-main-search" class="form-control" type="search" name="q" value="" placeholder="Search..." />
+                <input id="weavy-main-search" class="form-control" type="search" name="q" value="" placeholder="Search" />
                 <button type="submit" class="btn btn-icon">@Html.SvgIcon("magnify")</button>
             </div>
         </form>
@@ -43,7 +43,7 @@
     <div class="container d-flex flex-column my-4">
         @if (WeavyContext.Current.HQ != null) {
             <h5 class="d-flex">
-                <a href="@WeavyContext.Current.HQ.Url()">@WeavyContext.Current.HQ.Name</a>
+                <a href="@WeavyContext.Current.HQ.Url()" class="text-hyphens">@WeavyContext.Current.HQ.Name</a>
                 @if (User.SystemPermissions.Contains(Permission.ManageSystem)) {
                     <div class="dropdown ml-auto">
                         <button type="button" class="btn btn-icon dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="Toggle Dropdown">
@@ -71,7 +71,7 @@
                     </div>
                     @WeavyContext.Current.HQ.AvatarImg(64)
                 </div>
-                <div class="card-body text-truncate">
+                <div class="card-body text-hyphens">
                     @(WeavyContext.Current.HQ.Description ?? WeavyContext.Current.HQ.Name)
                 </div>
             </a>
@@ -90,9 +90,9 @@
                     <span class="mr-auto">The main space is the communications hub for your organization. It's a great place to put announcements, notes and stuff everyone needs to know.</span>
                 </div>
                 @if (Model.HQSpaces.Any()) {
-                    <button class="btn btn-primary waves-effect mt-3 mt-md-1" href="#main-space-dialog" data-toggle="modal" data-target="#main-space-dialog" data-keyboard="true">Set main space</button>
+                    <button class="btn btn-primary mt-3 mt-md-1" href="#main-space-dialog" data-toggle="modal" data-target="#main-space-dialog" data-keyboard="true">Set main space</button>
                 } else {
-                    <a href="@(Url.Action<HomeController>(c => c.HQ()))" class="btn btn-primary waves-effect mt-3 mt-md-1">Set main space</a>
+                    <a href="@(Url.Action<HomeController>(c => c.HQ()))" class="btn btn-primary mt-3 mt-md-1">Set main space</a>
                 }
             </div>
         }
@@ -101,7 +101,7 @@
 
 <div class="container d-flex flex-column my-4">
     <h5 class="d-flex">
-        <a href="@(Url.Action<SpaceController>(c => c.Index(null,"teams",null)))">Teams</a>
+        <a href="@(Url.Action<SpaceController>(c => c.Index(null,"teams",null)))" class="text-hyphens">Teams</a>
         @if (User.SystemPermissions.Contains(Permission.CreateSpace)) {
             <a href="@(Url.Action<SpaceController>(c => c.New(true)).ToLower())" class="btn btn-icon ml-auto" title="Add team">@Html.SvgIcon("plus")</a>
         }
@@ -139,7 +139,7 @@
 <div class="container d-flex flex-column my-4">
 
     <h5 class="d-flex">
-        <a href="@(Url.Action<SpaceController>(c => c.Index(null,"projects",null)))">Projects</a>
+        <a href="@(Url.Action<SpaceController>(c => c.Index(null,"projects",null)))" class="text-hyphens">Projects</a>
         @if (User.SystemPermissions.Contains(Permission.CreateSpace)) {
             <a href="@(Url.Action<SpaceController>(c => c.New(null)))" class="btn btn-icon ml-auto" title="Add project">@Html.SvgIcon("plus")</a>
         }
@@ -200,8 +200,8 @@
                             </div>
                         </div>
                         <div class="modal-footer pt-0">
-                            @*<button type="button" class="btn btn-outline-secondary waves-effect" data-dismiss="modal">Cancel</button>*@
-                            <button type="submit" class="btn btn-primary btn-load waves-effect">Set main space</button>
+                            @*<button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>*@
+                            <button type="submit" class="btn btn-primary btn-load">Set main space</button>
                         </div>
                     }
                 </div>

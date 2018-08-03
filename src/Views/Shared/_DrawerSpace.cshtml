@@ -1,0 +1,35 @@
+﻿@model Space
+
+<aside id="drawer-space" class="drawer drawer-left d-embedded">
+    <header class="drawer-header cover cover-bg">
+        <a class="text-center pt-3" href="@Space.Url()" title="@Space.Name Home">
+            @if (Space.Avatar?.Value is Weavy.Core.Models.File avatar && avatar != null) {
+                @avatar.AvatarImg(64)
+            } else {
+                @Space.AvatarImg(64)
+            }
+            <div class="drawer-title px-1">
+                @Html.StarToggle(Space)
+                <span>
+                    @Space.Name
+                    @if (Space.Teamname != null) {
+                        <small>@@@Space.Teamname</small>
+                    }
+                </span>
+
+            </div>
+        </a>
+        @*
+            <div class="facepile">
+                @foreach (var member in Space.Members) {
+                    @member.AvatarLink(size: 32, presence: true)
+                }
+            </div>
+        *@
+    </header>
+    <div class="drawer-body scroll-y">
+        <nav class="nav flex-column">
+            @Html.Partial("_SpaceMenuItems")
+        </nav>
+    </div>
+</aside>

@@ -49,12 +49,11 @@
 @import '../../../styles/utilities/fonts';
 @import '../../../styles/utilities/scroll';
 @import '../../../styles/utilities/text';
-
-// Vendor components
-@import '../../../styles/vendor/node-waves/waves';
+@import '../../../styles/utilities/opacity';
 
 // Custom components
 @import '../../../styles/components/layout';
+@import '../../../styles/components/badge';
 @import '../../../styles/components/alert';
 @import '../../../styles/components/buttons';
 @import '../../../styles/components/custom_form';
@@ -73,12 +72,12 @@
 @import '../../../styles/components/spinner';
 @import '../../../styles/components/togglers';
 @import '../../../styles/components/tables';
-@import '../../../styles/components/waves';
 
 // Messenger components
 $messenger-border-color: rgba(0, 0, 0, .08);
 $messenger-icon-width: 2rem;
 $body-color-base64: str-replace(inspect($body-color), "#", "%23");
+
 @import 'app';
 @import 'forms';
 @import 'list-group';
@@ -90,6 +89,12 @@ $body-color-base64: str-replace(inspect($body-color), "#", "%23");
 
 img.emojione, object.emojione {
     @extend .eo;
+}
+
+.emojionearea {
+    .emojionearea-picker.emojionearea-picker-position-top {
+        margin-top: 0;
+    }
 }
 
 // typing indicators
@@ -139,25 +144,6 @@ img.emojione, object.emojione {
     }
 }
 
-.messenger-textcomplete.dropdown-menu {
-    opacity: 1 !important;
-    max-width: 16rem;
 
-    li a {
-        display: flex;
-        align-items: center;
-        overflow: hidden;
 
-        > .i {
-            vertical-align: middle;
-            margin-right: .5rem;
-        }
 
-        span {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            flex: 1 1 0%;
-        }
-    }
-}

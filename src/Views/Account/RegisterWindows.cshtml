@@ -3,7 +3,7 @@
     Layout = "~/Views/Shared/_LayoutBasic.cshtml";
     Title = "Associate account";
 }
-<div class="container">
+<div class="container mt-5">
     <div class="row justify-content-sm-center">
         <div class="col-sm-6">
             <div class="text-center mb-3">
@@ -15,8 +15,8 @@
             @using (Html.BeginForm(nameof(AccountController.RegisterWindows), typeof(AccountController).ControllerName(), FormMethod.Post, new { data_turboform = true, novalidate = "" })) {
                 @Html.AntiForgeryToken()
                 <div class="form-buttons">
-                    <a href="@Url.Action(nameof(AccountController.AddWindows), typeof(AccountController).ControllerName())" class="btn btn-primary btn-load waves-effect">Yes, I have an account</a>
-                    <button type="submit" class="btn btn-secondary btn-load waves-effect">No, I am a new user</button>
+                    <a href="@Url.Action(nameof(AccountController.AddWindows), typeof(AccountController).ControllerName())" class="btn btn-primary btn-load">Yes, I have an account</a>
+                    <button type="submit" class="btn btn-secondary btn-load">No, I am a new user</button>
                 </div>
             }
         </div>

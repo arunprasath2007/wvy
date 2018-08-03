@@ -33,7 +33,7 @@
     &.read {
         background-color: $gray-100;
         color: $text-muted;
-        opacity: .5;
+        opacity: $opacity-muted;
 
         .btn-primary[data-toggle=notification] {
             color: inherit !important;

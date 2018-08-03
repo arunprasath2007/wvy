@@ -19,8 +19,8 @@
         @Html.AntiForgeryToken()
         @Html.EditorsForModel(Model)
         <div class="form-buttons">
-            <button type="submit" class="btn btn-primary btn-load waves-effect" title="Save">Save</button>
-            <a href="@Back" class="btn btn-outline-secondary mr-auto waves-effect">Cancel</a>
+            <button type="submit" class="btn btn-primary btn-load" title="Save">Save</button>
+            <a href="@Back" class="btn btn-outline-secondary mr-auto">Cancel</a>
         </div>
     }
 
@@ -56,7 +56,7 @@
         using (Html.BeginForm(nameof(AccountController.AddLogin), typeof(AccountController).ControllerName(), FormMethod.Post)) {
             <div class="form-buttons">
                 @foreach (AuthenticationDescription p in loginProviders) {
-                    <button type="submit" class="btn btn-load btn-@p.AuthenticationType.Slugify() waves-effect" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType">@Html.SvgIcon(p.AuthenticationType.Slugify()) Sign in with @p.Caption</button>
+                    <button type="submit" class="btn btn-load btn-@p.AuthenticationType.Slugify()" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType">@Html.SvgIcon(p.AuthenticationType.Slugify()) Sign in with @p.Caption</button>
                 }
             </div>
         }

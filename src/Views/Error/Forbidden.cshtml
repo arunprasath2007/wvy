@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_LayoutBasic.cshtml";
     Title = Model.Code + " " + Model.Description;
 }
-<div class="container mb-4">
+<div class="container my-4">
     <h1 class="display-1">@Model.Code @Model.Description</h1>
     @if (string.IsNullOrEmpty(Model.Message)) {
 
@@ -17,5 +17,5 @@
     } else {
         <p>@Model.Message</p>
     }
-    <a class="btn btn-icon no-waves px-0" href="@Url.Back(WeavyRequestContext.Current.ApplicationPath)" data-turbolinks="false">@Html.SvgIcon("arrow-left")<span>Back</span></a>
+    <a class="btn btn-icon no-ripple px-0" href="@Url.Back(WeavyRequestContext.Current.ApplicationPath)" data-turbolinks="false">@Html.SvgIcon("arrow-left")<span>Back</span></a>
 </div>

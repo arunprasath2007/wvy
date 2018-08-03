@@ -6,17 +6,20 @@
     var files = Model.Attachments.Where(x => !FileHelper.IsWebImage(x.Name));
 }
 <div class="card post" data-type="post" data-id="@Model.Id" data-post-id="@Model.Id">
-    
+
     <div class="card-header media">
         @Model.CreatedBy.AvatarLink(48, htmlAttributes: new { @class = "mr-2" })
         <div class="media-body">
             <h6 class="media-title">@Model.CreatedBy.Link() <small>@@@Model.CreatedBy.Username</small></h6>
             <small class="text-muted">
-                @Html.Time(Model.CreatedAt) @if (details) {<text>in</text> @Model.Space.Link() } 
+                @Html.Time(Model.CreatedAt) @if (details) {<text>in</text> @Model.Space.Link()}
                 @if (Model.ModifiedAt != Model.CreatedAt) {<text>&middot;</text> @Html.Time(Model.ModifiedAt, @"e\di\te\d")}
             </small>
         </div>
-        @{ Html.RenderPartial("_PostMenu", Model, new ViewDataDictionary() { { "details", details } }); }
+        <div class="media-icons">
+            @Html.StarToggle(Model)
+            @{ Html.RenderPartial("_PostMenu", Model, new ViewDataDictionary() { { "details", details } }); }
+        </div>
     </div>
 
     @if (images.Any()) {
@@ -40,6 +43,15 @@
         </div>
     }
 
+    @if (!Model.ContextUrl.IsNullOrEmpty()) {
+        var origin = new Uri(Model.ContextUrl).GetLeftPart(System.UriPartial.Authority);
+        <div class="context-link card-context">
+            <img class="icon" src="https://www.google.com/s2/favicons?domain=@origin">
+            <a class="text" href="@Model.ContextUrl" target="_blank" title="Open in context - @Model.ContextUrl" data-context-url="@Model.ContextUrl" data-weavy-context-url="@Model.Url(absolute: true)" data-weavy-context-space="@Model.SpaceId">@Model.ContextTitle</a>
+            <a class="link-open" href="@Model.ContextUrl" target="_blank" title="Open in context - @Model.ContextUrl" data-context-url="@Model.ContextUrl" data-weavy-context-url="@Model.Url(absolute: true)" data-weavy-context-space="@Model.SpaceId">@Html.SvgIcon("open-in-new", size: 18)</a>
+        </div>
+    }
+
     @if (files.Any()) {
         <div class="card-files">
             <div class="list-group file-list">
@@ -54,7 +66,7 @@
         @{ Html.RenderPartial("_PostFeedback", Model); }
     </div>
 
-    <div class="post-comments@(details ? "":" d-none")">
+    <div class="section-comments post-comments@(details ? "":" d-none")">
         @if (details) {
             <div class="list-group comments">
                 @{Html.RenderPartial("_Comments", Model.Comments); }

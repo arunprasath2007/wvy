@@ -3,4 +3,5 @@
 ~/scripts/vendor/signalr/jquery.signalR.min.js
 ~/scripts/src/connection.js
 ~/scripts/src/realtime.js
+~/scripts/src/urlChecker.js
 ~/scripts/src/widget.js

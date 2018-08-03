@@ -4,14 +4,15 @@
 }
 
 @section navbar_middle {
-    <div class="navbar-middle">
-        @Html.StarToggle(Space)<span class="navbar-text">
-            @Space.Name
-            @if (Space.Teamname != null) {
-                <small>@@@Space.Teamname</small>
-            }
-        </span>
-    </div>
+<div class="navbar-middle">
+    <a href="@Space.Url()" class="navbar-text">
+        @Space.Name
+        @if (Space.Teamname != null) {
+            <small class="d-none d-sm-inline">@@@Space.Teamname</small>
+        }
+    </a>
+    @Html.StarToggle(Space)
+</div>
 }
 
 @if (Space.HasPermission(Permission.List)) {
@@ -33,9 +34,26 @@
         @foreach (var member in Model.Members) {
             @member.AvatarLink(size: 32, presence: true)
         }
+        @if (Space.IsMember) {
+            if (Space.HasPermission(Permission.AddMembers)) {
+                <button type="button" class="btn btn-round btn-primary btn-sm" data-toggle="modal" data-target="#add-dialog" data-keyboard="true" title="Add/invite members">@Html.SvgIcon("plus")</button>
+            }
+        } else if (Space.HasPermission(Permission.Join)) {
+            var pending = SpaceService.HasPendingMembershipRequest(Space.Id);
+            if (pending) {
+                <form action="@(Url.Action<SpaceController>(c => c.Leave(Space.Id)))" method="post" data-turboform>
+                    @Html.HttpMethodOverride(HttpVerbs.Delete)
+                    <button type="submit" class="btn btn-round btn-primary btn-sm" style="background: radial-gradient(rgba(@Theme.PrimaryColor().R, @Theme.PrimaryColor().G, @Theme.PrimaryColor().B, .9), rgba(@Theme.PrimaryColor().R, @Theme.PrimaryColor().G, @Theme.PrimaryColor().B, .5)), url(@User.AvatarUrl()); background-size: cover;" title="Undo membership request">@Html.SvgIcon("account-minus")</button>
+                </form>
+            } else {
+                <form action="@(Url.Action<SpaceController>(c => c.Join(Space.Id)))" method="post" data-turboform>
+                    <button type="submit" class="btn btn-round btn-primary btn-sm" style="background: radial-gradient(rgba(@Theme.PrimaryColor().R, @Theme.PrimaryColor().G, @Theme.PrimaryColor().B, .9), rgba(@Theme.PrimaryColor().R, @Theme.PrimaryColor().G, @Theme.PrimaryColor().B, .5)), url(@User.AvatarUrl()); background-size: cover;" title="Join space">@Html.SvgIcon("account-plus", "white")</button>
+                </form>
+            }
+        }
     </div>
 
-    <div class="top-right dropdown-z">@{ Html.RenderPartial("_SpaceMenu", Space); }</div>
+    <div class="top-right dropdown-z d-standalone">@{ Html.RenderPartial("_SpaceMenu", Space); }</div>
 </div>
 
 <div class="container my-4">
@@ -46,9 +64,9 @@
         <a href="@(Url.Action<SpaceController>(c=>c.Members(Space.Id, null, null)))">@Model.Members.TotalCount.SingularizeOrPluralize("member", "members")</a>@(" · " + Space.Privacy.GetDisplayName())
     </p>
 
-    @if(!Space.IsMember && SpaceService.HasPendingMembershipRequest(Space.Id)) {
+    @if (!Space.IsMember && SpaceService.HasPendingMembershipRequest(Space.Id)) {
         <div class="alert alert-info d-flex">
-            @Html.SvgIcon("information", size: 36, htmlAttributes: new { @class= "align-self-start flex-noscale mt-1 mr-2" })
+            @Html.SvgIcon("information", size: 36, htmlAttributes: new { @class = "align-self-start flex-noscale mt-1 mr-2" })
             <span>Your membership request is waiting for approval.</span>
         </div>
     }
@@ -64,6 +82,8 @@
 
 @section footer {
     @{
+        Html.RenderPartial("_DrawerSpace", Space);
+        Html.RenderPartial("_MembersAddModal");
         Html.RenderPartial("_FeedbackModal");
         Html.RenderPartial("_EditPostModal");
         Html.RenderPartial("_MovePostModal");

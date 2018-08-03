@@ -15,7 +15,7 @@
         </div>
         <div class="text-center pt-3 pb-2">
             @User.AvatarImg(64)
-            <p class="drawer-title px-1">@User.Title <small>@@@User.Username</small></p>
+            <p class="drawer-title px-1"><span>@User.Title <small>@@@User.Username</small></span></p>
         </div>
         <nav class="nav nav-tabs" role="tablist">
             <a class="nav-link nav-icon nav-badge active" href="#notifications" data-toggle="tab" role="tab" title="Notifications">@Html.SvgIcon("bell")@Html.NotificationsBadge()</a>

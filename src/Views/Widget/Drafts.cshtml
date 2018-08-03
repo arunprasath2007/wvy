@@ -2,4 +2,10 @@
     Layout = "_PersonalLayout.cshtml";
 }
 
-@{ Html.RenderPartial("~/Views/Item/_Drafts.cshtml"); }
+<header class="navbar navbar-light sticky-top border-bottom px-3">
+    <h6 class="navbar-title mr-auto">Drafts</h6>
+</header>
+
+<div id="drafts">
+    @{ Html.RenderPartial("~/Views/Item/_Drafts.cshtml"); }
+</div>

@@ -39,7 +39,7 @@
     <a class="alert alert-info fade show d-flex" role="alert" href="#">
         @Html.SvgIcon("information-outline", size: 36, htmlAttributes: new { @class = "align-self-start flex-noscale mt-1 mr-2 d-none d-sm-block" })
         <span>Alls of this alert is <span class="alert-link">a link</span>.</span>
-        <span class="btn btn-outline-info waves-effect ml-auto hidden-sm-down">Button</span>
+        <span class="btn btn-outline-info ml-auto hidden-sm-down">Button</span>
     </a>
 </section>
 
@@ -88,11 +88,10 @@
     <a href="javascript:;" class="btn btn-outline-dark" data-body-bg="dark">Dark</a>
 </div>
 <div class="form-group">
-    <button class="btn btn-primary waves-effect" type="button">Waves</button>
+    <button class="btn btn-primary" type="button">Normal</button>
     <button class="btn btn-secondary btn-load" data-style="zoom-in" type="button">Disable</button>
-    <button class="btn btn-success btn-load waves-effect" data-style="zoom-in" type="button">Waves + Disable</button>
     <button type="button" class="btn btn-info">@Html.SvgIcon("thumb-up") Icon</button>
-    <button class="btn btn-outline-warning waves-effect" type="button">Waves outline</button>
+    <button class="btn btn-outline-warning" type="button">Outline</button>
     <div class="btn-group dropdown">
         <button type="button" class="btn btn-primary">Split button</button>
         <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="Toggle Dropdown">
@@ -111,7 +110,7 @@
 </div>
 
 <div class="form-group">
-    <button type="button" class="btn btn-icon no-waves">@Html.SvgIcon("arrow-left")<span>Back</span></button>
+    <button type="button" class="btn btn-icon no-ripple">@Html.SvgIcon("arrow-left")<span>Back</span></button>
     <button type="button" class="btn btn-icon btn-badge">@Html.SvgIcon("bell") <span class="badge badge-danger">3</span></button>
     <button type="button" class="btn btn-icon btn-badge">@User.AvatarImg(24) <span class="badge badge-danger">3</span></button>
     <button type="button" class="btn btn-icon">@Html.SvgIcon("comment")</button>
@@ -130,9 +129,9 @@
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="#" target="_blank">@Html.SvgIcon("check") Separated action</a>
         </div>
-        <button type="button" class="btn btn-sm btn-round btn-success waves-effect">@Html.SvgIcon("plus")</button>
-        <button type="button" class="btn btn-round btn-success waves-effect">@Html.SvgIcon("plus")</button>
-        <button type="button" class="btn btn-lg btn-round btn-success waves-effect">@Html.SvgIcon("plus")</button>
+        <button type="button" class="btn btn-sm btn-round btn-success">@Html.SvgIcon("plus")</button>
+        <button type="button" class="btn btn-round btn-success">@Html.SvgIcon("plus")</button>
+        <button type="button" class="btn btn-lg btn-round btn-success">@Html.SvgIcon("plus")</button>
     </div>
 </div>
 
@@ -237,6 +236,7 @@
             @Html.EditorFor(x => Model.Image)
         </div>
         <div class="col">
+            <label>&nbsp;<!-- this is just used for alignment--></label>
             @Html.EditorFor(x => Model.Avatar, additionalViewData: new { FormLabel = false, FormText = false })
         </div>
         <div class="col">
@@ -245,8 +245,8 @@
     </div>
     <div class="form-buttons">
         @Html.EditorFor(x => Model.Hidden)
-        <button class="btn btn-primary waves-effect btn-load" type="submit">Submit</button>
-        <button class="btn btn-outline-secondary waves-effect" type="button">Cancel</button>
+        <button class="btn btn-primary btn-load" type="submit">Submit</button>
+        <button class="btn btn-outline-secondary" type="button">Cancel</button>
     </div>
 </form>
 
@@ -265,7 +265,7 @@
 </nav>
 
 
-<nav class="navbar navbar-content px-0 py-3">
+<nav class="navbar navbar-content p-0 mt-3">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#">Space Name</a></li>
         <li class="breadcrumb-item"><a href="#">Name of Folder</a></li>
@@ -277,6 +277,17 @@
     </div>
 </nav>
 
+<nav class="navbar navbar-content p-0">
+    <ol class="breadcrumb hide-last">
+        <li class="breadcrumb-item"><a href="#">Space Name</a></li>
+        <li class="breadcrumb-item"><a href="#">Last item is hidden</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Title of Item That Could Be Long</li>
+    </ol>
+    <div class="navbar-icons ml-auto">
+        @Html.StarToggle(new Item(), true)
+        @{ Html.RenderPartial("_ItemMenu", new Item()); }
+    </div>
+</nav>
 
 
 
@@ -296,7 +307,7 @@
 <hr />
 
 <table class="table table-hover">
-    <thead>
+    <thead class="thead-light">
         <tr>
             <th class="table-icon"></th>
             <th style="width:250px;">Username</th>
@@ -306,7 +317,7 @@
     </thead>
     <tbody>
         <tr data-href="#tables">
-            <td class="table-icon hidden-xs-down">@User.AvatarImg(32, retina: true)</td>
+            <td class="table-icon hidden-xs-down">@User.AvatarImg(24, retina: true)</td>
             <td><a href="#tables">@@linus</a></td>
             <td class="hidden-sm-down">Linus Birgerstam</td>
             <td class="table-icon text-right">
@@ -324,37 +335,37 @@
             </td>
         </tr>
         <tr data-href="#tables">
-            <td class="table-icon hidden-xs-down">@User.AvatarImg(32, retina: true)</td>
+            <td class="table-icon hidden-xs-down">@User.AvatarImg(24, retina: true)</td>
             <td><a href="#">@@johan</a></td>
             <td class="hidden-sm-down">Johan Jeppson</td>
             <td class="table-icon text-right"><button type="button" class="btn btn-icon btn-success">@Html.SvgIcon("check")</button></td>
         </tr>
         <tr class="table-warning" data-href="#tables">
-            <td class="table-icon hidden-xs-down">@User.AvatarImg(32, retina: true)</td>
+            <td class="table-icon hidden-xs-down">@User.AvatarImg(24, retina: true)</td>
             <td><a href="#">@@magnus</a> <span class="badge badge-warning">warning</span></td>
             <td class="hidden-sm-down">Magnus Krona</td>
             <td class="table-icon text-right"><button type="button" class="btn btn-icon">@Html.SvgIcon("close")</button></td>
         </tr>
         <tr class="table-suspended" data-href="#tables">
-            <td class="table-icon hidden-xs-down">@User.AvatarImg(32, retina: true)</td>
+            <td class="table-icon hidden-xs-down">@User.AvatarImg(24, retina: true)</td>
             <td><a href="#">@@jimmy</a></td>
             <td class="hidden-sm-down">Jimmy Wilhelmsson</td>
             <td class="table-icon text-right"><a href="#" class="btn btn-icon btn-danger">@Html.SvgIcon("open-in-new")</a></td>
         </tr>
         <tr class="table-danger" data-href="#tables">
-            <td class="table-icon hidden-xs-down">@User.AvatarImg(32, retina: true)</td>
+            <td class="table-icon hidden-xs-down">@User.AvatarImg(24, retina: true)</td>
             <td><a href="#">@@rickard</a> <span class="badge badge-danger">danger</span></td>
             <td class="hidden-sm-down">Rickard Hansson</td>
             <td class="table-icon text-right"><form method="get" action="" data-turboform><button type="submit" class="btn btn-icon btn-danger">@Html.SvgIcon("delete")</button></form></td>
         </tr>
         <tr class="table-trashed" data-href="#tables">
-            <td class="table-icon hidden-xs-down">@User.AvatarImg(32, retina: true)</td>
+            <td class="table-icon hidden-xs-down">@User.AvatarImg(24, retina: true)</td>
             <td><a href="#">@@robert</a></td>
             <td class="hidden-sm-down">Robert Hess</td>
             <td class="table-icon text-right"><a href="#" class="btn btn-icon btn-danger">@Html.SvgIcon("backup-restore")</a></td>
         </tr>
         <tr data-href="#tables">
-            <td class="table-icon hidden-xs-down">@User.AvatarImg(32, retina: true)</td>
+            <td class="table-icon hidden-xs-down">@User.AvatarImg(24, retina: true)</td>
             <td><a href="#">@@klas</a></td>
             <td class="hidden-sm-down">Klas Lundberg</td>
             <td class="table-icon text-right">

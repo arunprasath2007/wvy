@@ -5,6 +5,7 @@ weavy.discuss = (function ($) {
     document.addEventListener("turbolinks:load", function () {
         $("[data-editor-location='discuss']").weavyEditor({
             minimized: true,
+            context: weavy.browser.embedded,
             onClick: function (e, wrapper) {
                 $(".post-form").addClass("focused");
                 wrapper.addClass("active");
@@ -13,6 +14,9 @@ weavy.discuss = (function ($) {
                 $(".post-form").removeClass("focused");
                 data.wrapper.removeClass("active");
                 weavy.posts.insert(e, data, this);
+            },
+            onContextChange: function (e, data) {
+                $(".post-form").find("input[name=hasContext]").val(data.has_context);
             }
         });
     });

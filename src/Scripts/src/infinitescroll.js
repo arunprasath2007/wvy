@@ -1,7 +1,7 @@
 var weavy = weavy || {};
 weavy.infinitescroll = (function ($) {
 
-    var buffer = 0; // arbitrary value (set to whatever you think is a good distance before triggering automatic click)
+    var buffer = window.innerHeight / 2 || 0; // arbitrary value (set to whatever you think is a good distance before triggering automatic click)
     var hasnext = true;
     var loading = false;
 
@@ -70,23 +70,25 @@ weavy.infinitescroll = (function ($) {
             loadMore();
         });
     });
-
     // throttle window scroll events for better performance
-    $(window).on('scroll', _.throttle(function () {
-        if (!loading) {
-            loadMore();
-        }
-    }, 250));
+    $(function () { 
+        $(window).add("main").on('scroll', _.throttle(function (e) {            
+            if (!loading) {
+                loadMore(e);
+            }
+        }, 250));
+    });
 
     // check if we should load more data directly after page is loaded
     document.addEventListener("turbolinks:load", loadMore);
 
     // load data if $more is visible
-    function loadMore() {
+    function loadMore(e) {
         var $more = $('.scroll-more:not([data-mode=prepend])').first();
+        var target = e && e.target !== document && e.target || window;
         if ($more.length) {
             // calculate distance until $more scrolls into view
-            var distance = 0 + $more.offset().top - $(window).scrollTop() - $(window).height();
+            var distance = 0 + $more.offset().top - $(target).scrollTop() - $(target).height();
             if (distance < buffer) {
                 $more.click();
             }

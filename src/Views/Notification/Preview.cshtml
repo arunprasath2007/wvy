@@ -53,7 +53,7 @@
                         </div>
                     }
                     @if (commentable != null) {
-                        <div class="card-comments">
+                        <div class="section-comments card-comments">
                             <form action="~/api/comments" method="post">
                                 <input type="hidden" name="id" value="@commentable.Id" />
                                 <input type="hidden" name="type" value="@commentable.Type.ToString().ToLower()" />

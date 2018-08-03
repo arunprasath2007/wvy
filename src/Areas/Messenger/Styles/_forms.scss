@@ -44,7 +44,7 @@ legend {
         z-index: 2;
     }
 
-    &.search-user{
+    &.search-user {
         flex: none;
     }
 }
@@ -57,6 +57,10 @@ legend {
     }
 }
 
+// fix for ie
+html.ie .message-form .form-control {
+    width: 100% !important;
+}
 
 .message-form {
     position: relative;
@@ -177,7 +181,6 @@ legend {
         }
     }
 }
-
 // file upload progessbar?
 .progress {
     position: absolute;
@@ -195,6 +198,74 @@ legend {
 
     .textcomplete-item {
         @extend .dropdown-item;
-       
+    }
+}
+
+.messenger-textcomplete.dropdown-menu {
+    opacity: 1 !important;
+    max-width: 16rem;
+
+    li a {
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+
+        > .i {
+            vertical-align: middle;
+            margin-right: .5rem;
+        }
+
+        span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            flex: 1 1 0%;
+        }
+    }
+}
+
+div.context {
+    flex: 1 1 100%;
+    display: none;
+    max-width: 100%;
+}
+
+.context {
+    .context-data {
+        background: $gray-200;
+        padding: 0 .3125rem 0 .625rem;
+        height: 2rem;
+        margin: .5rem;
+        border-radius: 1rem;
+        display: flex;
+        align-items: center;
+
+        span {
+            @extend .small;
+            text-overflow: ellipsis;
+            max-width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            margin: 0 0.5rem;
+            flex: 1;
+        }
+
+        img {
+            align-self: center;
+        }
+    }
+
+    .btn-add-context {
+        img {
+            align-self: center;
+            margin-right: 0.6rem;
+        }
+    }
+
+    &.has-context {
+        &.btn-add-context {
+            opacity: .65;
+            pointer-events: none;
+        }
     }
 }

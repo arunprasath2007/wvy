@@ -22,6 +22,19 @@ html {
             display: none !important;
         }
     }
+
+    // show/hide stuff depending on if we are running mobile
+    &.mobile {
+        .d-desktop {
+            display: none !important;
+        }
+    }
+
+    &:not(.mobile) {
+        .d-mobile {
+            display: none !important;
+        }
+    }
 }
 
 body {
@@ -276,8 +289,8 @@ body {
     transform: translateZ(0);
     flex-direction: column;
     position: relative;
+    -ms-transform: none;
 }
-
 
 .pane-body {
     flex-grow: 1;

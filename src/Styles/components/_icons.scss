@@ -10,7 +10,6 @@
     flex: 0 0 auto;
     width: 1.5rem; // 24px
     height: 1.5rem; // 24px
-
     &.i-18 {
         width: 1.125rem;
         height: 1.125rem;
@@ -41,6 +40,10 @@
 
     &.i-light {
         color: $white;
+    }
+
+    &.rotate-45 {
+        transform: rotate(45deg);
     }
 
     &.rotate-90 {

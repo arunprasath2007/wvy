@@ -3,11 +3,6 @@
 // adapted to scss from https://github.com/mozilla/pdfjs-dist/blob/master/web/pdf_viewer.css
 // and https://github.com/mozilla/pdf.js/blob/master/web/viewer.css
 
-// hide scrollbar when preview is open (to avoid multiple scrollbars)
-html.preview-open {
-    overflow: hidden;
-}
-
 // backdrop for file previews
 .preview-container {
     position: fixed;
@@ -197,7 +192,7 @@ html.preview-open {
         right: 0;
         bottom: 0;
         overflow: hidden;
-        opacity: 0.2;
+        opacity: $opacity-faded;
         line-height: 1.0;
 
         > div {

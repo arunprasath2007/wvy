@@ -1,4 +1,4 @@
-﻿@model ContentMoveModel
+﻿@model ContentAttachModel
 @{ 
     string url = null;
     if (Model.Source.Type == EntityType.App) {
@@ -19,7 +19,7 @@
         @Html.EditorFor(x => x.FolderId, new { Model.Source })
     </div>
     <div class="modal-footer border-0">
-        <button type="button" class="btn btn-outline-secondary waves-effect" data-dismiss="modal">Cancel</button>
-        <button type="submit" class="btn btn-primary btn-load waves-effect">Move</button>
+        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary btn-load">Move</button>
     </div>
 </form>

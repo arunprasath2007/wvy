@@ -38,12 +38,12 @@
             <label class="control-label">Replace file</label>
             <div class="file-upload" id="dz-@Model.Id">
                 <input type="hidden" name="replacement" value="" />
-                <label class="custom-file custom-image">
+                <div class="custom-file custom-image">
                     <img class="img-@size" src="@(Model.ThumbUrl(size, size, retina: true, fit: FitMode.Crop, scale: ScaleMode.Both))" data-thumb="" alt="" width="@size" height="@size" />
-                    <span class="custom-file-label">Select file</span>
+                    <label class="custom-file-label">Select file</label>
                     <input @Html.Raw(attributes.Trim()) />
-                    <span class="progress invisible"><span class="progress-bar" role="progressbar"></span></span>
-                </label>
+                    <div class="progress invisible"><span class="progress-bar" role="progressbar"></span></div>
+                </div>
 
                 <div class="form-text">Click on the thumbnail if you want replace the file.</div>
             </div>

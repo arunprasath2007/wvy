@@ -1,0 +1,51 @@
+/// <reference path="../_core.scss" />
+
+// Shorthand
+
+.sticky-top-secondary {
+    @extend .sticky-top;
+
+    @supports (position: sticky) {
+        top: $navbar-height;
+    }
+}
+
+@supports (position: sticky) {
+    html:not(.scrollbar):not(.windows) {
+        > body.has-navbar {
+            .sticky-top {
+                top: $navbar-height;
+            }
+
+            .sticky-top-secondary {
+                top: $navbar-height * 2;
+            }
+        }
+
+        > body.has-navbar-secondary {
+            .sticky-top {
+                top: $navbar-height * 2;
+            }
+
+            .sticky-top-secondary {
+                top: $navbar-height * 3;
+            }
+        }
+    }
+}
+
+.top-right {
+    position: absolute;
+    top: $card-spacer-y;
+    right: $card-spacer-y;
+    bottom: auto;
+    left: auto;
+}
+
+.top-left {
+    position: absolute;
+    top: $card-spacer-y;
+    right: 0;
+    bottom: auto;
+    left: $card-spacer-y;
+}

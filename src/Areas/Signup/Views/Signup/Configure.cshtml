@@ -3,13 +3,15 @@
 }
 <main>
     <h1>Configuring...</h1>
-    <div class="text-center" data-mobile-set-url="@WeavyContext.Current.ApplicationUrl" data-mobile-transfer-url="@WeavyContext.Current.ApplicationUrl">        
+    <div class="text-center" data-mobile-set-url="@WeavyContext.Current.ApplicationUrl" data-mobile-transfer-url="@WeavyContext.Current.ApplicationUrl">
         @Html.SvgSpinner(160, true)
     </div>
 </main>
 
 @section scripts {
-<script>
-        weavy.postal.post({ name: "setUrl", url: "@WeavyContext.Current.ApplicationUrl", redirect: "@ONBOARDING_URL" });
-</script>
+    <script>
+        $(function () {
+            weavy.postal.post({ name: "setUrl", url: "@WeavyContext.Current.ApplicationUrl", redirect: "@ONBOARDING_URL" }, null, true);
+        });
+    </script>
 }

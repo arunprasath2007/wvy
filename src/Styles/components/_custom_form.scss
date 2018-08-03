@@ -3,10 +3,8 @@
 // validation feedback for custom radios and checks
 .custom-control-input {
     &.is-invalid {
-        ~ .custom-control-description {
-            .invalid-feedback {
-                display: initial;
-            }
+        ~ .invalid-feedback {
+            display: initial;
         }
     }
 }
@@ -25,9 +23,10 @@
 
 .custom-file-input:focus ~ .custom-file-control {
     @if $enable-shadows {
-      box-shadow: $input-box-shadow, $input-btn-focus-box-shadow;
-    } @else {
-      box-shadow: $input-btn-focus-box-shadow;
+        box-shadow: $input-box-shadow, $input-btn-focus-box-shadow;
+    }
+    @else {
+        box-shadow: $input-btn-focus-box-shadow;
     }
 }
 
@@ -68,12 +67,21 @@
     .custom-file-label {
         display: none;
         background-color: rgba(0,0,0,0.5);
-        padding: .25rem;
-        font-size: $small-font-size;
         color: $white;
         position: absolute;
         bottom: .5rem;
         right: .5rem;
+        top: auto;
+        left: auto;
+        margin: 0;
+        border: none;
+        height: auto;
+
+        @include button-size($btn-padding-y-sm, $btn-padding-x-sm, $font-size-sm, $btn-line-height-sm, $btn-border-radius-sm);
+
+        &::after {
+            display: none;
+        }
     }
 
     .mobile & .custom-file-label {
@@ -94,4 +102,3 @@
 .custom-file-input:focus ~ img {
     border-color: $input-focus-border-color;
 }
-

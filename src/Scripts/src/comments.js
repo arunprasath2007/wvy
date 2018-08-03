@@ -16,7 +16,7 @@ weavy.comments = (function ($) {
 
     function init() {
         $("[data-editor-location='comment-edit']").weavyEditor({
-            polls: false,
+            polls: false,            
             mode: 'fixed',
             onSubmit: function (e, data) {
                 e.preventDefault();
@@ -31,14 +31,19 @@ weavy.comments = (function ($) {
     // init comment editor
     function initCommentEditor($el) {
         if ($el.length === 0) return;
-
+        
         $el.weavyEditor({
+            context: weavy.browser.embedded,
             collapsed: true,
             embeds: false,
             polls: false,
             placeholder: 'Your comment...',
             onSubmit: function (e, d) {
                 insertComment(e, d, this);
+            },
+            onContextChange: function (e, data) {
+                var $editor = $(this);                
+                $editor.closest("form").find("input[name=hasContext]").val(data.has_context);
             }
         });
     }
@@ -56,7 +61,8 @@ weavy.comments = (function ($) {
         var entityId = $form.data("entity-id");
         var $commentsContainer = $form.parent().find($form.data("comments-container"));
 
-        var data = $form.serializeObject();
+        var data = $form.serializeObject(true);
+        console.log("Form data", data)
         data["text"] = d.text;
 
         var method = "POST";
@@ -142,7 +148,7 @@ weavy.comments = (function ($) {
         if ($entity.length === 0) {
             return false;
         }
-        
+
         var $div = $("." + type + "-comments", $entity);
         var $spinner = $(".spinner", $div);
 
@@ -152,6 +158,11 @@ weavy.comments = (function ($) {
             if (focus) {
                 $entity.find("textarea.comments-form").weavyEditor("focus");
             }
+
+            // check for context
+            if (weavy.browser.embedded) {
+                weavy.urlContext.check();
+            }            
         }
 
         // start and show spinner
@@ -336,7 +347,8 @@ weavy.comments = (function ($) {
     });
 
     return {
-        on: on
+        on: on,
+        initCommentEditor: initCommentEditor
     }
 
 })($)

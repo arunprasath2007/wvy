@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_LayoutBasic.cshtml";
     Title = "Sign in";
 }
-<div class="container">
+<div class="container mt-5">
     <div class="row justify-content-sm-center">
         <div class="col-sm-8 col-md-6 col-lg-5">
             <div class="text-center mb-3">
@@ -25,7 +25,7 @@
                 </div>
                 <div class="form-buttons align-items-baseline">
                     @Html.EditorFor(x => x.RememberMe)
-                    <button type="submit" class="btn btn-primary btn-load waves-effect ml-auto">Sign in</button>
+                    <button type="submit" class="btn btn-primary btn-load ml-auto">Sign in</button>
                 </div>
             }
 
@@ -35,7 +35,7 @@
                 using (Html.BeginForm(nameof(AccountController.SignInExternal), typeof(AccountController).ControllerName(), new { path = Model.Path }, FormMethod.Post, new { target = "_blank" })) {
                     <div class="form-buttons justify-content-center">
                         @foreach (AuthenticationDescription p in loginProviders) {
-                            <button type="submit" class="btn btn-@p.AuthenticationType.Slugify() waves-effect" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType">@Html.SvgIcon(p.AuthenticationType.Slugify()) Sign in with @p.Caption</button>
+                            <button type="submit" class="btn btn-@p.AuthenticationType.Slugify()" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType">@Html.SvgIcon(p.AuthenticationType.Slugify()) Sign in with @p.Caption</button>
                         }
                     </div>
                 }
@@ -43,3 +43,20 @@
         </div>
     </div>
 </div>
+
+@section scripts{
+<script>
+        $(function () {
+            @if (ViewData.ModelState.Values.SelectMany(x => x.Errors).Any()) {
+                <text>
+                var win = null;
+
+                if (window.opener) {
+                    win = window.opener.parent;
+                }
+                weavy.postal.post({ name: "authenticationError" }, win, true);
+                </text>
+            }           
+        })
+</script>
+}

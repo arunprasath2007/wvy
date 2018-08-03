@@ -11,7 +11,7 @@
             if (Model.LockedById == User.Id) {
                 <a class="dropdown-item" href="@Model.Url()/edit">@Html.SvgIcon("pencil", "primary")<span>Edit</span></a>
             } else if (Model.LockedById != null) {
-                <a class="dropdown-item" href="@Model.Url()/edit?force=true">@Html.SvgIcon("pencil", "primary")<span>Unlock and edit</span></a>
+                <a class="dropdown-item" title="Unlock and edit" href="@Model.Url()/edit?force=true">@Html.SvgIcon("lock-open", "primary")<span>Unlock</span></a>
             } else {
                 <a class="dropdown-item" href="@Model.Url()/edit">@Html.SvgIcon("pencil", "primary")<span>Edit</span></a>
             }

@@ -10,13 +10,13 @@
     <a class="btn btn-primary btn-icon mr-auto" href="@Model.Url()/comments" data-toggle="comments" title="Comment">@Html.SvgIcon("comment-outline", size: 18)</a>
 }
 
-<a class="likes" href="@Model.Url()/likes" data-toggle="modal" data-target="#feedback-modal" data-path="posts/@Model.Id/likes" data-modal-title="Post liked by" title="Show likes">
-    @if (Model.LikedByIds.Any()) {
+@if (Model.LikedByIds.Any()) {
+    <a class="likes" href="@Model.Url()/likes" data-toggle="modal" data-target="#feedback-modal" data-path="posts/@Model.Id/likes" data-modal-title="Post liked by" title="Show likes">
         @Model.LikedByIds.SingularizeOrPluralize("like", "likes")
-    }
-</a>
-<a class="comments" href="@Model.Url()/comments" data-toggle="comments" title="Toggle comments">
-    @if (Model.CommentIds.Any()) {
+    </a>
+}
+@if (Model.CommentIds.Any()) {
+    <a class="comments" href="@Model.Url()/comments" data-toggle="comments" title="Toggle comments">
         @Model.CommentIds.SingularizeOrPluralize("comment", "comments")
-    }
-</a>
+    </a>
+}

@@ -3,7 +3,7 @@
     Layout = "~/Views/Shared/_LayoutBasic.cshtml";
     Title = "Associate account";
 }
-<div class="container">
+<div class="container mt-5">
     <div class="row justify-content-sm-center">
         <div class="col-sm-6">
             <header>
@@ -25,10 +25,10 @@
                 @Html.EditorsForModel()
                 <div class="form-buttons">
                     @if (Model.First) {
-                        <button type="submit" class="btn btn-primary btn-load waves-effect">Confirm</button>
+                        <button type="submit" class="btn btn-primary btn-load">Confirm</button>
                     } else {
-                        <button type="submit" class="btn btn-primary btn-load waves-effect">Associate</button>
-                        @Html.ActionLink("Cancel", nameof(AccountController.RegisterWindows), typeof(AccountController).ControllerName(), null, new { @class = "btn btn-primary waves-effect" })
+                        <button type="submit" class="btn btn-primary btn-load">Associate</button>
+                        @Html.ActionLink("Cancel", nameof(AccountController.RegisterWindows), typeof(AccountController).ControllerName(), null, new { @class = "btn btn-primary" })
                     }
                 </div>
             }

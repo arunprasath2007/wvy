@@ -2,11 +2,11 @@
 @import 'bootstrap';
 
 // Vendor components
-@import 'vendor/node-waves/waves';
 @import 'vendor/select2/core';
 
 // Custom components
 @import 'components/layout';
+@import 'components/badge';
 @import 'components/alert';
 @import 'components/breadcrumb';
 @import 'components/button-group';
@@ -50,5 +50,3 @@
 @import 'components/togglers';
 @import 'components/turbolinks';
 @import 'components/type';
-@import 'components/waves';
-

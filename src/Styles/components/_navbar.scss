@@ -1,7 +1,7 @@
 /// <reference path="../_core.scss" />
 
 .navbar-theme {
-    background-color: rgba($theme-700, .95);
+    background-color: rgba($theme-700, $opacity-panel);
     color: color-yiq($theme-700);
     //box-shadow: $md-shadow-2dp;
     backface-visibility: hidden;
@@ -11,7 +11,6 @@
     }
 
     .navbar-secondary {
-
         .fab {
             position: absolute;
             right: 1rem;
@@ -21,6 +20,25 @@
                 box-shadow: $md-shadow-2dp !important;
             }
         }
+    }
+}
+
+.navbar-light {
+    background-color: rgba($body-bg, $opacity-panel);
+    color: $panel-color;
+
+    .btn-icon {
+        color: $panel-color;
+    }
+}
+
+
+.navbar-panel {
+    background-color: rgba($panel-bg, $opacity-panel);
+    color: $panel-color;
+
+    .btn-icon {
+        color: $panel-color;
     }
 }
 
@@ -81,6 +99,7 @@
         padding: 0;
         display: inline-block;
         @include text-truncate();
+        color: inherit !important;
     }
 
     .dropdown {
@@ -119,4 +138,17 @@
         }
     }
 
+}
+
+.navbar-title {
+    @extend .nav-title;
+}
+
+
+@include media-breakpoint-down(xs) {
+    html:not(.embedded) {
+        .navbar {
+            padding: $navbar-padding-y .75rem !important;
+        }
+    }
 }

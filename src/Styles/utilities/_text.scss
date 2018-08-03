@@ -4,7 +4,13 @@
 }
 
 @mixin font-emphasis {
-    font-style: italic
+    font-style: italic;
+}
+
+@mixin text-hyphens {
+    word-break: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
 }
 
 .font-weight-strong {
@@ -15,3 +21,6 @@
     @include font-emphasis;
 }
 
+.text-hyphens {
+    @include text-hyphens;
+}

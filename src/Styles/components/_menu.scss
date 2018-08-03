@@ -22,7 +22,7 @@
             border-top: 0;
             border-bottom: 0;
             pointer-events: none;
-            mix-blend-mode: darken;
+            //mix-blend-mode: darken;
             height: calc(100vh - #{$navbar-height});
             background-color: $dropdown-bg;
             margin: 0 !important;

@@ -7,12 +7,18 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">New <span id="filename-dialog-type"></span> document</h5>
+                    <button type="button" class="btn btn-icon" data-dismiss="modal" aria-label="Close">
+                        @Html.SvgIcon("close")
+                    </button>
                 </div>
                 @using (Html.BeginForm(nameof(AppController.CreateOffice), typeof(AppController).ControllerName(), new { id = Model.App.Id }, FormMethod.Post, null)) {
                     <div class="modal-body">
                         <div class="input-group">
                             <input class="form-control" placeholder="Filename" name="name" id="name" autofocus>
                             <span class="input-group-addon" id="basic-addon2"></span>
+                            <div class="input-group-btn">
+                                <button class="btn btn-primary" type="submit">Create</button>
+                            </div>
                         </div>
                     </div>
                     @Html.Hidden("ext")
@@ -25,6 +31,7 @@
 
 
 @{
+    Html.RenderPartial("_AttachModal");
     Html.RenderPartial("_ShareModal");
     Html.RenderPartial("_MoveModal");
 }

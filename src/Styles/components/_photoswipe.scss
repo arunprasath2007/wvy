@@ -14,7 +14,26 @@ $pswp__error-text-color: $danger; // "Image not loaded" text color
     -ms-scroll-chaining: none;
 }
 
-// hide scrollbar when photoswipe is open in embedded mode (to avoid multiple scrollbars)
-html.embedded.pswp-open {
-    overflow: hidden;
+html.embedded {
+    body {
+        transition: background-color $md-animation-duration $md-animation-curve-default;
+
+        > *:not(.pswp, .drawer) {
+            transition: opacity $md-animation-duration $md-animation-curve-default;
+        }
+    }
+}
+
+
+html.embedded.pswp-transparent {
+    body {
+        background-color: transparent;
+        transition: none;
+
+        > *:not(.pswp) {
+            opacity: 0;
+            max-width: 24rem;
+            transition: none;
+        }
+    }
 }

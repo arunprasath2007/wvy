@@ -1,13 +1,13 @@
 ﻿<aside id="drawer-profile" class="drawer drawer-left">
     <header class="drawer-header">
-        <div class="text-center pt-3 pb-2">
+        <a class="text-center pt-3 pb-2" href="@(Url.Action<WidgetController>(c => c.Notifications()))" title="@User.Title Home">
             @User.AvatarImg(64)
-            <p class="drawer-title px-1">@User.Title <small>@@@User.Username</small></p>
-        </div>
+            <div class="drawer-title px-1"><span>@User.Title <small>@@@User.Username</small></span></div>
+        </a>
     </header>
     <div class="drawer-body scroll-y">
         <nav class="nav flex-column">
-            <a class="dropdown-item" href="@(Url.Action<WidgetController>(c => c.EditProfile()))">@Html.SvgIcon("account") User profile</a>
+            <a class="dropdown-item" href="@(Url.Action<WidgetController>(c => c.EditProfile()))">@Html.SvgIcon("pencil") Edit profile</a>
             <a class="dropdown-item" href="@(Url.Action<WidgetController>(c => c.EditSettings()))">@Html.SvgIcon("settings") User settings</a>
             <a class="dropdown-item" href="@(Url.Action<WidgetController>(c => c.EditAccount()))">@Html.SvgIcon("account-network") Account details</a>
             <a class="dropdown-item" href="@(Url.Action<WidgetController>(c => c.EditPassword()))">@Html.SvgIcon("account-key") Change password</a>

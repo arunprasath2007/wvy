@@ -30,7 +30,7 @@
 }
 
 <select class="form-control custom-select space-picker" id="@ViewData.TemplateInfo.GetFullHtmlFieldId("space")" data-folder-picker="@ViewData.TemplateInfo.GetFullHtmlFieldId("")">
-    @Html.SelectOptions(spaces, source.SpaceId.Value)
+    @Html.SelectOptions(spaces, source?.SpaceId.Value)
 </select>
 
 @if (group) {
@@ -46,8 +46,13 @@
     @Html.LabelFor(m => m)
 }
 
-<select class="form-control custom-select folder-picker" name="@ViewData.TemplateInfo.GetFullHtmlFieldName("")" id="@ViewData.TemplateInfo.GetFullHtmlFieldId("")" data-type="@source.Type.ToString().ToLower()" data-id="@source.Id">
-    @Html.FolderPickerOptions(source, source.SpaceId.Value)
+<select class="form-control custom-select folder-picker" name="@ViewData.TemplateInfo.GetFullHtmlFieldName("")" id="@ViewData.TemplateInfo.GetFullHtmlFieldId("")" data-type="@(source != null ? source.Type.ToString().ToLower() : "File")" data-id="@(source?.Id)">
+    @if (source != null) {
+        @Html.FolderPickerOptions(source, source.SpaceId.Value)
+    } else if (!spaces.IsNullOrEmpty()) {
+        @Html.FolderPickerOptions(spaces.First().Id)
+    }
+
 </select>
 
 @if (feedback != null) {

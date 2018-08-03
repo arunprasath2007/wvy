@@ -69,8 +69,7 @@ weavy.user = (function ($) {
     // intercept links to user profile and open modal instead
     $(document).on("click", "a[href^='/people/']:not([data-link]), tr[data-href^='/people/'][data-modal]", function (e) {
         var $target = $(e.target);
-        if ($target.hasClass("dropdown-item") || $target.parents(".dropdown").length) {
-            console.debug("dropdown item should not open modal");
+        if ($target.is("a, input, button") || $target.hasClass("dropdown-item") || $target.parents(".dropdown").length) {
             return;
         }
 

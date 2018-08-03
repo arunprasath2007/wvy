@@ -100,13 +100,13 @@
 
                 // add picker css
                 $wrapper.addClass(options.pickerCss);
-                                
+
                 // add button container
                 var $buttoncontainer = $("<div class='emojionearea-button-container'></div>").appendTo($wrapper);
                 if (options.mode === 'fixed') {
                     $buttoncontainer.addClass("footer fixed-bottom");
                 }
-                
+
                 // Move the button                            
                 if (!options.inline) {
                     $buttoncontainer.empty().append(_emojiarea.button);
@@ -136,7 +136,7 @@
                         match: noPrefix ? /((@[a-zA-Z0-9_]+)|([a-zA-Z0-9_]+))$/ : /\B@([a-zA-Z0-9_]+)$/,
                         search: function (term, callback) {
 
-                            $.getJSON(weavy.url.resolve("/api/autocomplete/mentions"), { 
+                            $.getJSON(weavy.url.resolve("/api/autocomplete/mentions"), {
                                 q: term,
                                 top: 5
                             }).done(function (resp) {
@@ -169,19 +169,19 @@
                         match: /\[([^\]]+)$/,
 
                         search: function (term, callback) {
-                            $.getJSON(weavy.url.resolve("/api/autocomplete"), { q: term, top: top }).done(function (resp) { 
+                            $.getJSON(weavy.url.resolve("/api/autocomplete"), { q: term, top: top }).done(function (resp) {
                                 callback(resp);
                             }).fail(function () {
                                 callback([]);
                             });
                         },
                         index: 1,
-                        template: function (item) {           
-                            
+                        template: function (item) {
+
                             var itemIcon = item.icon != null && item.icon.indexOf("fa") === -1 ? item.icon : "file-hidden";
                             var icon = "<svg class='i text-" + item.color + "'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='#" + itemIcon + "'></use></svg>"
-                            
-                            return icon + '<span>' + item.title + ' <small>' + item.type + '</small></span>'; 
+
+                            return icon + '<span>' + item.title + ' <small>' + item.type + '</small></span>';
                         },
                         replace: function (item) {
                             return "[" + item.title + "](" + item.url + ") ";
@@ -231,7 +231,7 @@
                                     $wrapper.find(".uploads .table-attachments").append('<tr>' +
                                         '<td class="table-icon"><svg class="i text-' + file.icon_color + '"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#' + file.icon + '"></use></svg></td>' +
                                         '<td>' + file.title + '</td>' +
-                                        '<td class="table-icon"><a class="btn btn-icon remove"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#close"></use></svg></a><input type="hidden" name="attachments" value="' + file.id + '" /></td>' +
+                                        '<td class="table-icon"><a class="btn btn-icon remove"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#close-circle"></use></svg></a><input type="hidden" name="attachments" value="' + file.id + '" /></td>' +
                                         '</tr>');
                                 });
 
@@ -426,7 +426,48 @@
                         });
                     }
                 }
-                
+
+                // add context button
+                if (options.context) {
+                    //<svg class='i'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='#link-variant'></use></svg>
+                    /*var $context = $("<div class='context has-context'>" +
+                        "<div class='context-data'><img class='context-icon' src=''/><span class='context-url'></span><a href='#' title='Remove as context from this post' class='remove-context'><svg class='i i-18'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='#close-circle'></use></svg></a></div>" +
+                        "<a href='#' class='add-context'><img class='context-icon' src=''/>Attach current url</a>" +
+                        "</div>");*/
+
+                    var $context = $("<div class='context'>" +
+                        "<div class='context-data'><img class='context-icon' src=''/><span class='context-url'></span><a href='#' title='Remove url as context' class='remove-context btn btn-icon'><svg class='i i-18'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='#close-circle'></use></svg></a></div>" +
+                        "</div>");
+
+                    var $contextButton = $("<button type='button' class='context btn btn-icon btn-add-context' title='Attach current url as context'><svg class='i'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='#link-context'></use></svg></button>");
+
+                    // Always hide context initially for comments
+                    if ($wrapper.closest(".section-comments").length) {
+                        $context.hide();
+                    } else {
+                        $context.addClass("has-context");
+                        $contextButton.addClass("has-context");
+                    }
+
+                    $context.prependTo($wrapper);
+                    $contextButton.prependTo($buttoncontainer);
+
+                    $context.on("click", ".remove-context", function (e) {
+                        e.preventDefault();
+                        $wrapper.find(".context").removeClass("has-context");
+                        $context.find(".context-data").fadeOut(200);
+                        $context.slideUp(200);
+                        hook("onContextChange", e, { has_context: false });
+                    });
+
+                    $($contextButton).on("click", function (e) {
+                        e.preventDefault();
+                        $wrapper.find(".context").addClass("has-context");
+                        $context.find(".context-data").fadeIn(200);
+                        $context.slideDown(200);
+                        hook("onContextChange", e, { has_context: true });
+                    });
+                }
 
                 // add more button
                 if (options.minimized) {
@@ -437,7 +478,7 @@
                         $wrapper.toggleClass("minimized");
                     });
                 }
-                
+
 
                 // add submit button
                 var $submit = $("<button tabindex='2' type='submit' class='btn-submit btn btn-icon btn-primary' title='Submit'><svg class='i'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='#send'></use></svg></button>");
@@ -445,14 +486,18 @@
                     $submit = options.submitButton;
                 } else {
                     $submit.appendTo($buttoncontainer);
-                }                
-                
+                }
+
                 $submit.on("click", function (e) {
                     e.preventDefault();
                     e.stopPropagation();
-                                        
+
+                    $wrapper.find(".context").removeClass("has-context");
+                    $wrapper.find("div.context .context-data").fadeOut(200);
+                    $wrapper.find("div.context").slideUp(200);
+
                     toggleMore(true);
-                    
+
                     hook("onSubmit", e, { text: _emojiarea.getText(), wrapper: $wrapper, editor: _emojiarea });
                 });
 
@@ -555,12 +600,12 @@
             if (!options.minimized) return;
 
             if (minimize) {
-                $wrapper.addClass("minimized");                
+                $wrapper.addClass("minimized");
             } else {
-                $wrapper.removeClass("minimized");                
+                $wrapper.removeClass("minimized");
             }
         }
-              
+
         // Initialize the plugin instance.
         init();
 

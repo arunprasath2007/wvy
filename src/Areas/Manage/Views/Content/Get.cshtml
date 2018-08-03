@@ -36,13 +36,13 @@
 
         <div class="form-buttons">
             @if (!Model.IsLoaded()) {
-                <button type="submit" name="button" value="@nameof(HooksController.Delete)" class="btn btn-danger btn-load waves-effect">Delete</button>
+                <button type="submit" name="button" value="@nameof(HooksController.Delete)" class="btn btn-danger btn-load">Delete</button>
             } else if (Model.IsEnabled) {
-                <button type="submit" name="button" value="@nameof(HooksController.Disable)" class="btn btn-warning btn-load waves-effect">Disable</button>
+                <button type="submit" name="button" value="@nameof(HooksController.Disable)" class="btn btn-warning btn-load">Disable</button>
             } else {
-                <button type="submit" name="button" value="@nameof(HooksController.Enable)" class="btn btn-success btn-load waves-effect">Enable</button>
+                <button type="submit" name="button" value="@nameof(HooksController.Enable)" class="btn btn-success btn-load">Enable</button>
             }
-            <a href="@Back" class="btn btn-outline-secondary waves-effect" data-shortcut="Esc">Back</a>
+            <a href="@Back" class="btn btn-outline-secondary" data-shortcut="Esc">Back</a>
         </div>
     }
 </div>

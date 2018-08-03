@@ -1,4 +1,9 @@
 ﻿@model IEnumerable<Comment>
+@{ 
+    // NOTE: hack to enable preview when viewed using the office add-in
+    var preview = ViewData["preview"] as bool? ?? Request.UrlReferrer != null && Request.UrlReferrer.ToString().Contains($"{typeof(OfficeController).ControllerName()}/{nameof(OfficeController.Taskpane)}", StringComparison.OrdinalIgnoreCase)  ? true : false;
+}
+
 
 @foreach (var comment in Model) {
     var images = comment.Attachments.Where(x => FileHelper.IsWebImage(x.Name));
@@ -10,6 +15,15 @@
             <div class="media-body">
                 <p class="mb-1">@comment.CreatedBy.Link() @Html.Raw(comment.Html)</p>
 
+                @if (!comment.ContextUrl.IsNullOrEmpty()) {
+                    var origin = new Uri(comment.ContextUrl).GetLeftPart(System.UriPartial.Authority);
+                    <div class="context-link">
+                        <img class="icon" src="https://www.google.com/s2/favicons?domain=@origin">
+                        <a class="text" href="@comment.ContextUrl" target="_blank" title="Open in context - @comment.ContextUrl" data-context-url="@comment.ContextUrl" data-weavy-context-url="@comment.Url(absolute: true)" data-weavy-context-space="@comment.SpaceId">@comment.ContextTitle</a>
+                        <a class="link-open" href="@comment.ContextUrl" target="_blank" title="Open in context - @comment.ContextUrl" data-context-url="@comment.ContextUrl" data-weavy-context-url="@comment.Url(absolute: true)" data-weavy-context-space="@comment.SpaceId">@Html.SvgIcon("open-in-new", size: 18)</a>
+                    </div>
+                }
+
                 @if (images.Any()) {
                     Html.RenderPartial("_ImageGrid", images);
                 }
@@ -17,7 +31,7 @@
                 @if (files.Any()) {
                     <div class="list-group file-list">
                         @foreach (var file in files) {
-                            Html.RenderPartialContent(ContentView.List, file, viewData: new ViewDataDictionary { { "byline", false }, { "preview", (ViewData["preview"] as bool? ?? false) } });
+                            Html.RenderPartialContent(ContentView.List, file, viewData: new ViewDataDictionary { { "byline", false }, { "preview", preview } });
                         }
                     </div>
                 }
@@ -31,7 +45,10 @@
                 </div>
 
             </div>
-            @{ Html.RenderPartial("_CommentMenu", comment); }
+            <div class="media-icons">
+                @Html.StarToggle(comment)
+                @{ Html.RenderPartial("_CommentMenu", comment); }
+            </div>
         </div>
 
     </div>

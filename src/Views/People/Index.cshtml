@@ -1,6 +1,7 @@
 ﻿@model SearchResult<User, UserQuery>
 @{
     Title = "People";
+    Back = WeavyContext.Current.ApplicationPath;
     if (Model.Query.Suspended ?? false) {
         Title = "Suspended user accounts";
     }
@@ -23,7 +24,7 @@
 
     @if (User.SystemPermissions.Contains(Permission.ManageUsers)) {
         <div class="fab dropdown">
-            <button class="btn btn-round btn-primary dropdown-toggle waves-effect" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#" title="Add or invite user">@Html.SvgIcon("plus")</button>
+            <button class="btn btn-round btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#" title="Add or invite user">@Html.SvgIcon("plus")</button>
             <div class="dropdown-menu dropdown-menu-right">
                 <a class="dropdown-item" href="@(Url.Action<PeopleController>(c => c.New()))">@Html.SvgIcon("account", "primary") Add user</a>
                 <a class="dropdown-item" href="@(Url.Action<PeopleController>(c => c.Invite()))">@Html.SvgIcon("email", "deep-orange") Invite people</a>
@@ -32,7 +33,7 @@
 
     } else if (User.SystemPermissions.Contains(Permission.Invite)) {
         <div class="fab">
-            <a class="btn btn-round btn-primary waves-effect" href="@(Url.Action<PeopleController>(c => c.Invite()))" title="Invite people">@Html.SvgIcon("plus")</a>
+            <a class="btn btn-round btn-primary" href="@(Url.Action<PeopleController>(c => c.Invite()))" title="Invite people">@Html.SvgIcon("plus")</a>
         </div>
     }
 }

@@ -4,6 +4,7 @@
 ~/scripts/vendor/jquery-textcomplete/jquery.textcomplete.min.js
 ~/scripts/vendor/emojione/emojione.js
 ~/scripts/vendor/emojionearea/emojionearea.min.js
+~/scripts/vendor/twitter-text/punycode.js
 ~/scripts/vendor/twitter-text/twitter-text.js
 ~/scripts/src/extensions.js
 ~/scripts/src/turbolinks.js 

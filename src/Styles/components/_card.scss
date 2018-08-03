@@ -14,7 +14,7 @@ $card-size: 10rem;
         border: $card-border-width solid $card-border-color;
         border-radius: $card-border-radius;
         pointer-events: none;
-        mix-blend-mode: darken;
+        //mix-blend-mode: darken;
     }
 
     .table {
@@ -42,7 +42,7 @@ $card-size: 10rem;
 
     &:hover::after {
         border-color: $link-color;
-        mix-blend-mode: normal;
+        //mix-blend-mode: normal;
     }
 }
 
@@ -54,6 +54,7 @@ $card-size: 10rem;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-around;
+    flex-direction: column;
     padding: $card-spacer-x;
     padding-bottom: $card-spacer-x;
     position: relative;
@@ -74,6 +75,7 @@ $card-size: 10rem;
     .facepile {
         width: 100%;
         bottom: -.75rem;
+        left: 0;
         justify-content: center;
         position: absolute;
 
@@ -81,6 +83,20 @@ $card-size: 10rem;
             position: relative;
             top: -.375rem;
         }
+    }
+}
+
+.card-images {
+
+    .image-grid {
+        border-radius: 0;
+        background-color: $card-bg;
+
+        &::after {
+            border-left-color: transparent;
+            border-right-color: transparent;
+        }
+
     }
 }
 

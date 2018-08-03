@@ -67,20 +67,20 @@
 <div class="file-upload" id="dz-@id">
     <input type="hidden" name="@name" value="@(value != null ? value.Id.ToString() : "delete")" />
     @if (thumb == null) {
-        <label class="custom-file">
+        <div class="custom-file">
             <input @Html.Raw(attributes.Trim()) />
-            <span class="custom-file-control">@(value?.Name)</span>
-        </label>
+            <label class="custom-file-label" for="@id">@(value?.Name)</label>
+        </div>
         <div class="progress invisible">
             <div class="progress-bar" role="progressbar"></div>
         </div>
     } else {
-        <label class="custom-file custom-image">
+        <div class="custom-file custom-image">
             <img class="img-@size" src="@(value != null ? value.ThumbUrl(size, size, retina: true, fit: FitMode.Crop, scale: ScaleMode.Both) : thumb)" data-thumb="@thumb" alt="" width="@size" height="@size" />
-            <span class="custom-file-label">@placeholder</span>
+            <label class="custom-file-label" for="@id">@placeholder</label>
             <input @Html.Raw(attributes.Trim()) />
-            <span class="progress invisible"><span class="progress-bar" role="progressbar"></span></span>
-        </label>
+            <div class="progress invisible"><span class="progress-bar" role="progressbar"></span></div>
+        </div>
     }
     <div class="invalid-feedback@(feedback != null ? " d-block" : "")">@feedback</div>
     <div class="form-text@(feedback != null ? " d-none" : "")">@meta.Description <a href="javascript:;" class="clear@(value == null ? " d-none": "")">Remove @prop.DisplayName().ToLower().</a></div>

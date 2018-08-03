@@ -10,6 +10,7 @@ $md-menu-fade-duration: 0.2s;
 .dropdown-menu {
     opacity: 0;
     transition: opacity $md-menu-fade-duration $md-animation-curve-default;
+    max-width: 20rem;
 
     &.show {
         opacity: 1;
@@ -88,7 +89,7 @@ $md-menu-fade-duration: 0.2s;
 }
 
 .dropdown-header {
-    text-transform: uppercase;
+    //text-transform: uppercase;
     padding-top: $dropdown-item-padding-y / 12 * 14;
     padding-bottom: $dropdown-item-padding-y / 12 * 11;
     line-height: $line-height-sm;

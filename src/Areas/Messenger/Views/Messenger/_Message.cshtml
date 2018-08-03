@@ -22,25 +22,33 @@
     <div class="message me@(emoji)" data-message="@Model.Id">
         <a id="message-@Model.Id"></a>
         
-            <div class="bubble">
-
-                @if (images.Any()) {
-                    <div class="card-images" @(width != null ? Html.Raw(@"style=""width:" + @width + @"px""") : null )>
-                        @{ Html.RenderPartial("_ImageGrid", images); }
-                    </div>
-                }
-
-                @if (files.Any()) {
-                    <div class="card-files">
-                        @{ Html.RenderPartial("_Attachments", files); }
-                    </div>
-                }
-
-               <div class="text">@Html.Raw(Model.Html)</div>
-                <div class="meta">
-                    @Html.Time(Model.CreatedAt, "t")
+        <div class="bubble">
+            @if (images.Any()) {
+                <div class="card-images" @(width != null ? Html.Raw(@"style=""width:" + @width + @"px""") : null )>
+                    @{ Html.RenderPartial("_ImageGrid", images); }
                 </div>
+            }
+
+            @if (files.Any()) {
+                <div class="card-files">
+                    @{ Html.RenderPartial("_Attachments", files); }
+                </div>
+            }
+
+            <div class="text">@Html.Raw(Model.Html)</div>
+            <div class="meta">
+                @Html.Time(Model.CreatedAt, "t")
             </div>
+
+            @if (!Model.ContextUrl.IsNullOrDefault()) {
+                var origin = new Uri(Model.ContextUrl).GetLeftPart(System.UriPartial.Authority);
+                <div class="context-link">
+                    <img class="icon" src="https://www.google.com/s2/favicons?domain=@origin">
+                    <a class="text" href="@Model.ContextUrl" target="_blank" title="Open in context - @Model.ContextUrl" data-context-url="@Model.ContextUrl" data-weavy-context-url="@Model.Url(absolute: true)" data-weavy-context-space="@Model.SpaceId">@Model.ContextTitle</a>
+                    <a class="link-open" href="@Model.ContextUrl" target="_blank" title="Open in context - @Model.ContextUrl" data-context-url="@Model.ContextUrl" data-weavy-context-url="@Model.Url(absolute: true)" data-weavy-context-space="@Model.SpaceId">@Html.SvgIcon("open-in-new", size: 18)</a>
+                </div>
+            }
+        </div>
         
 
         @if (parent.Messages.Skip == 0) {
@@ -79,18 +87,18 @@
         <a id="message-@Model.Id"></a>
         <a class="mr-2" href="#" data-profile="@Model.CreatedById">@Model.CreatedBy.AvatarImg(32, retina: true)</a>
           
-          <div class="bubble">
+        <div class="bubble">
             @if (parent.Conversation.IsRoom) {
-              <div class="from">
-                <a href="#" data-profile="@Model.CreatedById">@Model.CreatedBy.Title</a>
-              </div>
+                <div class="from">
+                    <a href="#" data-profile="@Model.CreatedById">@Model.CreatedBy.Title</a>
+                </div>
             }
 
             @if (images.Any()) {
                 <div class="card-images" @(width != null ? Html.Raw(@"style=""width:" + @width + @"px""") : null )>
                     @{ Html.RenderPartial("_ImageGrid", images); }
                 </div>
-             }
+            }
 
             @if (files.Any()) {
                 <div class="card-files">
@@ -102,6 +110,15 @@
             <div class="meta">
                 @Html.Time(Model.CreatedAt, "t")
             </div>
-          </div>
+
+            @if (!Model.ContextUrl.IsNullOrDefault()) {
+                var origin = new Uri(Model.ContextUrl).GetLeftPart(System.UriPartial.Authority);
+                <div class="context-link">
+                    <img class="icon" src="https://www.google.com/s2/favicons?domain=@origin">
+                    <a class="text" href="@Model.ContextUrl" target="_blank" title="Open in context - @Model.ContextUrl" data-context-url="@Model.ContextUrl" data-weavy-context-url="@Model.Url(absolute: true)" data-weavy-context-space="@Model.SpaceId">@Model.ContextTitle</a>
+                    <a class="link-open" href="@Model.ContextUrl" target="_blank" title="Open in context - @Model.ContextUrl" data-context-url="@Model.ContextUrl" data-weavy-context-url="@Model.Url(absolute: true)" data-weavy-context-space="@Model.SpaceId">@Html.SvgIcon("open-in-new", size: 18)</a>
+                </div>
+            }
+        </div>
     </div>
 }

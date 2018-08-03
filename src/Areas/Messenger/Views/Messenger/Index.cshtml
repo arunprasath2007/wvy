@@ -11,6 +11,9 @@
     <title>Messenger | @Theme.Name</title>
     @Html.ThemeHead(AreaName)
     @Html.ThemeStyle("~/areas/messenger/styles/messenger.scss")
+    @if (WeavyRequestContext.Current.Browser.Browser == "IE") {
+        @Bundler.Scripts("~/scripts/ie.bundle", htmlAttributes: new { data_turbolinks_track = "reload" })
+    }
 </head>
 <body class="@BodyClasses()" @BodyAttributes>
     @Html.SvgSprite()
@@ -172,7 +175,7 @@
     @{ Html.RenderPartial("_PhotoSwipe"); }
     @{ Html.RenderPartial("_Preview"); }
 
-    <audio id="message-sound" src="~/media/message.mp3"></audio>
+    <audio id="message-sound" src="~/media/message.mp3" preload="none"></audio>
     @Bundler.Scripts("~/areas/messenger/scripts/messenger.bundle")
 </body>
 </html>

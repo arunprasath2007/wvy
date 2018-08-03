@@ -39,7 +39,7 @@ weavy.turbolinks = (function ($) {
         //window.addEventListener("unload", function (e) { console.debug("window:" + e.type); });
 
         // submit form through turbolinks by clicking submit button
-        $(document).on("click", "form[data-turboform] [type=submit][name][value]", function (e) {
+        $(document).on("click", "form[data-turboform] [type=submit][name][value], form[data-turboform] [type=submit][data-bubble-formtarget], form[data-turboform] [type=submit][formaction]", function (e) {
             e.preventDefault();
 
             // serialize form
@@ -48,11 +48,14 @@ weavy.turbolinks = (function ($) {
             var data = $form.serialize();
 
             // add button name and value
-            data = data + (data.length === 0 ? "" : "&") + encodeURIComponent($submit.attr("name")) + "=" + encodeURIComponent($submit.attr('value'));
+            if ($submit.attr("name") && $submit.attr('value')) {
+                data = data + (data.length === 0 ? "" : "&") + encodeURIComponent($submit.attr("name")) + "=" + encodeURIComponent($submit.attr('value'));
+            }
 
             // submit form with data
-            submitFormWithData($form, data);
+            submitFormWithData($form, data, $submit);
         });
+
 
         // submit form through turbolinks without clicking submit button
         $(document).on("submit", "form[data-turboform]", function (e) {
@@ -67,17 +70,37 @@ weavy.turbolinks = (function ($) {
             if ($submits.length === 1) {
                 var $submit = $($submits[0]);
                 data = data + "&" + encodeURIComponent($submit.attr("name")) + "=" + encodeURIComponent($submit.attr('value'));
+                submitFormWithData($form, data, $submit);
+            } else {
+                submitFormWithData($form, data);
             }
+        });
 
-            // submit form with data
-            submitFormWithData($form, data);
+        // submit form through turbolinks by clicking submit button
+        $(document).on("click", "a[href][data-bubble-target]", function (e) {
+            e.preventDefault();
+            var $link = $(this);
+            sendData($link.attr('href'), null, "get", this.dataset.bubbleTarget);
+        });
+
+        window.addEventListener("message", function (e) {
+            switch (e.data.name) {
+                case "send":
+                    sendData(e.data.url, e.data.data, e.data.method);
+                    break;
+            }
+        });
+
+        $(document).on("DOMContentLoaded turbolinks:load", function (e) {
+            weavy.postal.post({ name: "ready" });
         });
     }
 
     // submit the specified form and data to the server via ajax adding the Turbolinks-Referrer header
-    function submitFormWithData($form, data) {
-        var url = $form.attr("action");
-        var method = $form.attr("method")
+    function submitFormWithData($form, data, $submit) {
+        var url = $submit && $submit.attr("formaction") || $form.attr("action");
+        var method = $submit && $submit.attr("formmethod") || $form.attr("method");
+        var target = $submit && $submit.attr("data-bubble-formtarget") || $form.attr("data-bubble-target");
 
         if ($form.hasClass("tab-content")) {
             // add active tab to data (so that we can activate the correct tab when the page reloads)
@@ -85,12 +108,32 @@ weavy.turbolinks = (function ($) {
             data = data + "&tab=" + encodeURIComponent($tab.attr('id'));
         }
 
-        if (method === "get") {
+        sendData(url, data, method, target);
+    }
+
+    function absolutePath(href) {
+        var link = document.createElement("a");
+        link.href = href;
+        return link.href;
+    }
+
+    function sendData(url, data, method, bubbleTarget) {
+
+        if (bubbleTarget && weavy.browser.embedded) {
+            weavy.postal.post({ name: 'send', url: absolutePath(url), data: data, method: method, bubbleTarget: bubbleTarget });
+            return;
+        }
+
+        console.debug("sending turbolinks data");
+
+        if (!method || method === "get") {
             // append data to querystring
-            if (url.indexOf('?') === -1) {
-                url = url + "?" + data;
-            } else {
-                url = url + "&" + data;
+            if (data) {
+                if (url.indexOf('?') === -1) {
+                    url = url + "?" + data;
+                } else {
+                    url = url + "&" + data;
+                }
             }
 
             // visit url
@@ -111,7 +154,10 @@ weavy.turbolinks = (function ($) {
         }
     }
 
+
+
     return {
-        enabled: enabled
+        enabled: enabled,
+        visit: sendData
     };
 })($);

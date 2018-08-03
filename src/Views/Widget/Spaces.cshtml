@@ -16,7 +16,7 @@
     </nav>
     @if (User.SystemPermissions.Contains(Permission.CreateSpace)) {
         <div class="fab">
-            <a class="btn btn-round btn-primary waves-effect" href="@(Url.Action<WidgetController>(c => c.NewSpace()))" title="Add space">@Html.SvgIcon("plus")</a>
+            <a class="btn btn-round btn-primary" href="@(Url.Action<WidgetController>(c => c.NewSpace()))" title="Add space">@Html.SvgIcon("plus")</a>
         </div>
     }
 }

@@ -4,180 +4,41 @@
     Back = Url.Action<TestController>(c => c.Index());
 
 }
-<div class="container mt-3">
-    <section id="cloud-pickers">
-        <h1 class="display-3">Cloud file pickers</h1>
-        <hr />
-        <div class="d-flex">
-            <button class="dropbox btn btn-primary mr-3">@Html.SvgIcon("dropbox") Dropbox</button>
-            <button class="google btn btn-primary mr-3" disabled>@Html.SvgIcon("google") Google Drive</button>
-            <button class="box btn btn-primary mr-3">@Html.SvgIcon("box") Box</button>
-            <button class="onedrive btn btn-primary mr-3">@Html.SvgIcon("onedrive") OneDrive</button>
-        </div>
-
-        <div id="links"></div>
-
-    </section>
-</div>
+<iframe id="filebrowser" src="about:blank" style="display:none;width:100%;height:100%;position:absolute;top:0;left:0" frameborder="0" scrolling="no"></iframe>
 
 @section scripts{
-    <script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="n3lzi8ia37kv4pw"></script>
-    <script type="text/javascript" src="https://cdn01.boxcdn.net/js/static/select.js"></script>
-    <script type="text/javascript" src="https://js.live.net/v7.2/OneDrive.js"></script>
-
+    
     <script>
 
         // FOR RESEARCH ONLY - NO PRODUCTION CODE!
 
-        var boxPicker = (function () {
-           
-            var options = {
-                clientId: '17yshx1l7eg0qxzcbaolwuz42j16i2ik',
-                linkType: 'shared'
-            };
-            var boxSelect = new BoxSelect(options);
+        var loadIframe = function(origin){
+            $("#filebrowser").attr("src", "https://filebrowser.weavycloud.com?origin=" + origin);
+            $("#filebrowser").show();
+        }
 
-            // Register a success callback handler
-            boxSelect.success(function (response) {
-                console.log(response);
-                for (var i = 0; i < response.length; i++) {
-                    pickerHelpers.addLink(response[i].url);
-                }
+        $(function () {
+            if (weavy.browser.embedded) {
+                window.parent.postMessage({ name: 'requestOrigin' }, "*");
+            } else {
+                loadIframe("@Request.Url.GetLeftPart(UriPartial.Authority)");
+            }
+            
+        })
 
-
-            });
-            // Register a cancel callback handler
-            boxSelect.cancel(function () {
-                console.log("The user clicked cancel or closed the popup");
-            });
-
-
-            $(function () {
-                $("button.box").on("click", function () {
-                    boxSelect.launchPopup();
-                })
-            });
-        })();
-
-        var googlePicker = (function () {
-
-            // google drive
-            var developerKey = 'AIzaSyCkFSttc_TxQ8P6sce6AqYUpGUJuCkjurA';
-            var clientId = '1006851984270-5ksidb1a9guafeit9ne69bsu7o6rudft.apps.googleusercontent.com';
-            var scope = 'https://www.googleapis.com/auth/drive.readonly';
-            var pickerApiLoaded = false;
-            var oauthToken;
-
-            var loaded = function () {
-                console.log("loaded");
-
-                // Use the API Loader script to load the Authentication script.
-                gapi.load('auth', { 'callback': onAuthApiLoad });
-
-
-                // Use the API Loader script to load the google.picker script.
-                gapi.load('picker', { 'callback': onPickerApiLoad });
+        window.addEventListener("message", function (e) {
+            if (e.data.name === "insert") {
+                pickerHelpers.addLink(e.data.link);
+                console.log("Message", e)
+                alert("Top window received file: " + e.data.link)
             }
 
-            function onAuthApiLoad() {
-
-                var authBtn = $("button.google").get(0);
-                authBtn.disabled = false;
-
-                authBtn.addEventListener('click', function () {
-                    gapi.auth2.authorize({
-                        client_id: clientId,
-                        scope: scope
-                    }, handleAuthResult);
-                });
+            if (e.data.name === "origin") {
+                loadIframe(e.data.url);                
             }
-
-            function onPickerApiLoad() {
-                pickerApiLoaded = true;
-                createPicker();
-            }
-
-            function handleAuthResult(authResult) {
-                if (authResult && !authResult.error) {
-                    oauthToken = authResult.access_token;
-                    createPicker();
-                }
-            }
-
-            // Create and render a Picker object for picking user Photos.
-            function createPicker() {
-                if (pickerApiLoaded && oauthToken) {
-                    var picker = new google.picker.PickerBuilder().
-                        enableFeature(google.picker.Feature.MULTISELECT_ENABLED).
-                        addView(google.picker.ViewId.PHOTOS).
-                        addView(google.picker.ViewId.DOCS).
-                        addView(google.picker.ViewId.RECENTLY_PICKED).
-                        setOAuthToken(oauthToken).
-                        setDeveloperKey(developerKey).
-                        setCallback(pickerCallback).
-                        build();
-                    picker.setVisible(true);
-                }
-            }
-
-            function pickerCallback(data) {
-                var url = 'nothing';
-                console.log(data)
-                if (data[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
-                    for (var i = 0; i < data[google.picker.Response.DOCUMENTS].length; i++) {
-                        var doc = data[google.picker.Response.DOCUMENTS][i];
-                        url = doc[google.picker.Document.URL];
-
-                        pickerHelpers.addLink(url);
-                    }
-                    
-                }
-
-
-            }
-
-            return {
-                onLoad: loaded
-            }
-        })();
-
-        var dropboxPicker = (function () {
-            $(function () {
-                $("button.dropbox").on("click", function () {
-
-                    var options = {
-                        multiselect: true,
-                        success: function (files) {
-                            for (var i = 0; i < files.length; i++) {
-                                pickerHelpers.addLink(files[i].link);
-                            }
-                            
-                        },
-                    };
-                    Dropbox.choose(options);
-                });
-            })
-        })();
-
-        var onedrivePicker = (function () {
-            $(function () {
-                $("button.onedrive").on("click", function () {
-                    var options = {
-                        clientId: "2e600adb-3706-4c54-839f-64cf43f79e95",
-                        action: 'share',
-                        multiSelect: true,
-                        success: function (files) {
-                            for (var i = 0; i < files.value.length; i++) {
-                                pickerHelpers.addLink(files.value[i].webUrl)
-                            }
-                        },
-                    };
-
-                    OneDrive.open(options);
-                });
-            })
-        })();
-
+            
+        })
+        
         var pickerHelpers = (function () {
 
             var addLink = function (link) {
@@ -191,6 +52,6 @@
         })();
         
     </script>
-    <script async defer type="text/javascript" src="https://apis.google.com/js/api.js?" onload="this.onload=function(){};googlePicker.onLoad()" onreadystatechange="if (this.readyState === 'complete') this.onload()"></script>
+    
 
 }

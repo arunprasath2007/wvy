@@ -35,14 +35,14 @@
 
         @Html.EditorsForModel()
         <div class="form-buttons">
-            <button type="submit" name="button" value="@nameof(HooksController.Update)" class="btn btn-primary btn-load waves-effect">Save</button>
-            <a href="@Back" class="btn btn-outline-secondary mr-auto waves-effect" data-shortcut="Esc">Cancel</a>
+            <button type="submit" name="button" value="@nameof(HooksController.Update)" class="btn btn-primary btn-load">Save</button>
+            <a href="@Back" class="btn btn-outline-secondary mr-auto" data-shortcut="Esc">Cancel</a>
             @if (!Model.IsLoaded()) {
-                <button type="submit" name="button" value="@nameof(HooksController.Delete)" class="btn btn-danger btn-load waves-effect" @if (Model.IsCore()) { <text> disabled</text> }>Delete</button>
+                <button type="submit" name="button" value="@nameof(HooksController.Delete)" class="btn btn-danger btn-load" @if (Model.IsCore()) { <text> disabled</text> }>Delete</button>
             } else if (Model.IsEnabled) {
-                <button type="submit" name="button" value="@nameof(HooksController.Disable)" class="btn btn-warning btn-load waves-effect" @if (Model.IsCore()) { <text> disabled</text> }>Disable</button>
+                <button type="submit" name="button" value="@nameof(HooksController.Disable)" class="btn btn-warning btn-load" @if (Model.IsCore()) { <text> disabled</text> }>Disable</button>
             } else {
-                <button type="submit" name="button" value="@nameof(HooksController.Enable)" class="btn btn-success btn-load waves-effect">Enable</button>
+                <button type="submit" name="button" value="@nameof(HooksController.Enable)" class="btn btn-success btn-load">Enable</button>
             }
         </div>
     }

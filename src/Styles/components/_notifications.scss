@@ -2,7 +2,7 @@
 
 .card-notification {
     border: 0;
-    background-color: initial;
+    box-shadow: $md-shadow-4dp;
 
     .card-header {
         border: 0;
@@ -32,7 +32,7 @@
         display: block;
         padding: $spacer;
         background: $card-cap-bg;
-        
+
         form {
             padding: 0;
         }
@@ -58,12 +58,22 @@
         }
     }
 
-    .weavy-editor {
+    .weavy-editor.collapsed {
         box-shadow: none;
+
+        .emojionearea {
+            position: static !important;
+        }
 
         .emojionearea-editor {
             min-height: 2em;
             max-height: 8em;
+        }
+
+        .emojionearea-picker.emojionearea-picker-position-top {
+            margin-left: -1rem;
+            margin-right: -1rem;
+            max-width: calc(100% + 2rem);
         }
 
         .uploads {
@@ -76,11 +86,15 @@
 
 .controller-notification.action-preview {
     padding-top: 0;
-    background-color: #fff;
-    overflow-y: hidden;
+    background-color: transparent;
+    overflow: hidden;
+    max-width: 100%;
+    height: 100vh;
 
     .container-fluid {
-        padding: 0;
+        position: absolute;
+        bottom: 0;
+        padding: .5rem;
     }
 }
 

@@ -2,7 +2,7 @@
 
 // presence indicator
 .presence {
-    display:inline-block;
+    display: inline-block;
 }
 
 .presence[data-active] {
@@ -11,8 +11,8 @@
     &:after {
         @include dot($success, .625rem);
         position: absolute;
-        bottom: -.1875rem;
-        right: -.1875rem;
+        bottom: 0;
+        right: 0;
         border: $border-width solid rgba($white, .5);
     }
 }

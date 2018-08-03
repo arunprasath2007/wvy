@@ -27,7 +27,12 @@
         </div>
     }
 
-    @if (subscriptionModel != null) {
+    @if (subscriptionModel?.Email == null) {
+        <div class="alert alert-warning d-flex" role="alert">
+            <span>You need to update your account and add your email address to view or edit your subscription.</span>
+            <a class="btn btn-outline-warning ml-auto" href="@(Url.Action<Weavy.Web.Controllers.AccountController>(x => x.EditAccount()))">Edit account</a>
+        </div>
+    } else { 
         <div class="subscription">
             <form id="post-login" class="d-none" action="@subscriptionModel.Url" method="post" target="subscription">
                 @Html.Hidden("key", subscriptionModel.LicenseKey)

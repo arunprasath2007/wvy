@@ -10,25 +10,31 @@ $scrollbar-size: .5rem !default;
     }
 
     &::-webkit-scrollbar-thumb {
-        background-color: $gray-300;
+        background-color: rgba($gray-500, 0.75);
 
         &:hover {
-            background-color: $gray-400;
+            background-color: $gray-500;
         }
 
-        :window-inactive {
-            background-color: $gray-200;
+        &:window-inactive {
+            background-color: rgba($gray-500, 0.5);
         }
     }
 }
 
 @mixin scroll {
     // to enable HW acceleration and not cause repaint on scroll
-    backface-visibility: hidden;
+    will-change: scroll-position;
     overflow-x: auto;
     overflow-y: auto;
 
-    @include scrollbar;
+    @at-root {
+        // Opt-out on windows, opt-in on mac/android
+        html.windows.chrome:not(.overlay-scrollbar) &, html.chrome.scrollbar & {
+            @include scrollbar;
+        }
+    }
+
     @include overscroll-behavior-contain;
     // ios momentum scrolling, cannot be used on the <body> element!
     &:not(body) {
@@ -49,7 +55,6 @@ $scrollbar-size: .5rem !default;
 @mixin overscroll-behavior-contain {
     // ms-scroll-chaining only applies to touch and touchpad input
     -ms-scroll-chaining: none;
-
     // overscroll-behavior unfortunately does not support blocking iframe scrollchaning, so we have scroll.js to take care of that
     overscroll-behavior: contain;
 }
@@ -68,4 +73,16 @@ $scrollbar-size: .5rem !default;
 
 .overscroll-behavior-contain {
     @include overscroll-behavior-contain;
+}
+
+.scroll-check {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 8rem;
+    height: 8rem;
+    overflow: scroll;
+    z-index: -99999;
+    pointer-events: none;
+    visibility: hidden;
 }

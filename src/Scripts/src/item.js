@@ -10,6 +10,17 @@ weavy.item = (function ($) {
         }
     });
 
+    // maximize widget if link item of type google drive
+    $(document).on("click", "a[data-link-type]", function (e) {
+        
+        var provider = $(this).data("link-type");
+
+        if (provider === "google-drive") {        
+            window.parent.postMessage({ name: 'maximize' }, "*")
+        }
+        
+    });
+
     // subscribe to specified item
     function subscribe(id) {
         weavy.api.follow("item", id).then(function () {

@@ -7,5 +7,8 @@
             <h6 class="media-title">@Model.Title</h6>
             <small class="text-muted">@(Model.MetaData().ModifyVerb)d @Html.Time(Model.ModifiedAt) by @Model.ModifiedBy.Title</small>
         </div>
+        <div class="media-icons">
+            @Html.StarToggle(Model)
+        </div>
     </div>
 </a>

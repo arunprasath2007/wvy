@@ -2,7 +2,12 @@
 
 <tr data-href="@Model.Url()">
     <td class="table-icon">@Html.SvgIcon(Model.IconName(), Model.IconColor())</td>
-    <td><a href="@Model.Url()">@Model.Title</a></td>
+    <td class="my-2 align-middle">
+        <div class="d-flex align-items-center">
+            <a href="@Model.Url()" class="text-truncate">@Model.Title</a>
+            @Html.StarToggle(Model)
+        </div>
+    </td>
     <td class="table-icon"><a class="btn btn-icon" href="@Model.Url()/edit" title="Continue editing">@Html.SvgIcon("pencil")</a></td>
 </tr>
 

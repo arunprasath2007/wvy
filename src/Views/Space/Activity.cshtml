@@ -4,7 +4,15 @@
 }
 
 @section navbar_middle {
-    <div class="navbar-middle">@Html.StarToggle(Space)<span class="navbar-text">@Space.Name</span></div>
+<div class="navbar-middle">
+    <a href="@Space.Url()" class="navbar-text">
+        @Space.Name
+        @if (Space.Teamname != null) {
+            <small class="d-none d-sm-inline">@@@Space.Teamname</small>
+        }
+    </a>
+    @Html.StarToggle(Space)
+</div>
 }
 
 @section navbar_secondary {
@@ -24,3 +32,10 @@
     }
 
 </div>
+
+@section footer {
+    @{
+        Html.RenderPartial("_DrawerSpace", Space);
+        Html.RenderPartial("_MembersAddModal");
+    }
+}

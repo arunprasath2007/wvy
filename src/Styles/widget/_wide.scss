@@ -1,0 +1,41 @@
+/// <reference path="../widget.scss" />
+
+// Wide expanded strip mode
+
+&.weavy-wide {
+    &.weavy-open {
+        background-color: $backdrop-bg;
+    }
+
+    .weavy-strips {
+        width: auto;
+        max-width: none;
+        left: $widget-icon-size + rem(1.75);
+
+        @include media-breakpoint-down(sm) {
+            left: 0;
+            top: 0;
+            bottom: 0;
+            right: 0;
+
+            .weavy-strip {
+                left: 0;
+                top: 0;
+                bottom: 0;
+                right: 0;
+                border-radius: 0;
+            }
+        }
+    }
+
+    .weavy-controls {
+
+        .weavy-collapse {
+            display: inline-flex;
+        }
+
+        .weavy-expand {
+            display: none;
+        }
+    }
+}

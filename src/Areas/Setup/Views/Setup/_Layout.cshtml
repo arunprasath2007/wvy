@@ -10,15 +10,17 @@
     @Bundler.Styles("~/styles/weavy.scss", htmlAttributes: new { data_turbolinks_track = "reload" })
     @Bundler.Scripts("~/areas/setup/scripts/setup.bundle", htmlAttributes: new { data_turbolinks_track = "reload" })
 </head>
-<body class="@BodyClasses("body-dark no-navbar")" @BodyAttributes>
+<body class="@BodyClasses("body-dark")" @BodyAttributes>
     @Html.SvgSprite()
-    <main class="container">
-        <div class="row justify-content-md-center">
-            <div class="col-lg-6 col-md-8">
-                <div class="text-center mt-3 mb-3">
-                    @Html.IconImg(128, retina: true)
+    <main>
+        <div class="container my-4">
+            <div class="row justify-content-md-center">
+                <div class="col-lg-6 col-md-8">
+                    <div class="text-center mt-3 mb-3">
+                        @Html.IconImg(128, retina: true)
+                    </div>
+                    @RenderBody()
                 </div>
-                @RenderBody()
             </div>
         </div>
     </main>

@@ -36,11 +36,7 @@ body.controller-space.action-get {
     .card-header {
         background: none;
         border: none;
-
-        .dropdown {
-            margin-right: -$card-spacer-y;
-            margin-top: -.25rem;
-        }
+        padding: $card-spacer-x;
     }
 
     .card-title {
@@ -53,39 +49,51 @@ body.controller-space.action-get {
         padding-bottom: $card-spacer-y;
     }
 
-    .card-embed {
-    }
-
     .card-files {
         padding: $card-spacer-y $card-spacer-x;
     }
 
-    .card-images {
+    .card-context {
+        background: $gray-100;
+        border-bottom: 1px solid $border-color;
+        margin: 0 $card-spacer-x;
+    }
+
+    .card-embed, .card-images {
+        + .card-context {
+            margin-top: $card-spacer-y !important;
+        }
     }
 
     .card-feedback {
-        padding: $card-spacer-y $card-spacer-y;
+        padding: $card-spacer-y;
         display: flex;
         font-size: $font-size-sm;
-
-        .btn {
-            margin-right: .25rem;
-        }
+        align-items: center;
 
         a:not(.btn) {
             @extend .text-muted;
             line-height: 1.5rem;
-            margin-left: $spacer;
+            margin: 0 $spacer/2;
+
+            &:empty {
+                display: none;
+            }
         }
     }
 
     .post-comments {
         background: $card-cap-bg;
         border-top: $card-border-width solid $card-border-color;
-        padding: $card-spacer-y $card-spacer-x;
+        padding: $card-spacer-x;
 
         &:last-child {
             @include border-radius(0 0 $card-inner-border-radius $card-inner-border-radius);
+        }
+
+        .comment {
+            padding: 0;
+            margin-bottom: $card-spacer-y;
         }
 
         svg.spinner {
@@ -95,10 +103,6 @@ body.controller-space.action-get {
 
         .media-body {
             font-size: $font-size-sm;
-        }
-
-        .dropdown {
-            margin-right: -$card-spacer-y;
         }
     }
 }
@@ -149,7 +153,7 @@ body.controller-space.action-get {
             background-position: 50%;
             background-size: 48px;
             background-color: #fff;
-            opacity: 0.15;
+            opacity: $opacity-faded;
         }
 
         @-webkit-keyframes faketext-animation {
@@ -223,6 +227,39 @@ body.controller-space.action-get {
         .post-form.focused & {
             pointer-events: auto;
             opacity: 1;
+        }
+    }
+}
+
+@include media-breakpoint-down(xs) {
+    html:not(.embedded) {
+        .post, .post-form {
+            margin-left: calc(-#{$grid-gutter-width/2});
+            margin-right: calc(-#{$grid-gutter-width/2});
+
+            &, > *, &::after {
+                border-radius: 0;
+            }
+
+            &::after {
+                border-left-width: 0;
+                border-right-width: 0;
+            }
+        }
+    }
+
+    html.embedded {
+        .post {
+            .card-header,
+            .card-body,
+            .card-files,
+            .post-comments {
+                padding: $card-spacer-y;
+            }
+
+            .card-context {
+                margin: 0 $card-spacer-y;
+            }
         }
     }
 }

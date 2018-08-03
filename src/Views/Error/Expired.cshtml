@@ -4,12 +4,12 @@
     Title = Model.Code + " " + Model.Description;
 }
 
-<div class="container mb-4">
+<div class="container my-4">
     <h1 class="display-1">@Model.Code @Model.Description</h1>
     @if (User.SystemPermissions.Contains(Permission.ManageSystem)) {
         <p>License expired. Please <a href="@Url.Action(nameof(Weavy.Web.Areas.Manage.Controllers.HomeController.License), typeof(Weavy.Web.Areas.Manage.Controllers.HomeController).ControllerName(), new { area = "Manage" })">update your license</a>.</p>
     } else {
         <p>License expired. Please contact your system administrator.</p>
     }
-    <a class="btn btn-icon no-waves px-0" href="@Url.Back(WeavyRequestContext.Current.ApplicationPath)" data-turbolinks="false">@Html.SvgIcon("arrow-left")<span>Back</span></a>
+    <a class="btn btn-icon no-ripple px-0" href="@Url.Back(WeavyRequestContext.Current.ApplicationPath)" data-turbolinks="false">@Html.SvgIcon("arrow-left")<span>Back</span></a>
 </div>

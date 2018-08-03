@@ -7,7 +7,6 @@
 @import "vendor/bootstrap/variables";
 @import "vendor/bootstrap/mixins";
 @import "vendor/bootstrap/root";
-@import "vendor/bootstrap/print";
 @import "vendor/bootstrap/reboot";
 @import "vendor/bootstrap/type";
 @import "vendor/bootstrap/images";
@@ -38,6 +37,7 @@
 //@import "vendor/bootstrap/popover";
 //@import "vendor/bootstrap/carousel";
 @import "vendor/bootstrap/utilities";
+@import "vendor/bootstrap/print";
 
 // Additional mixins
 @import 'mixins/animation';
@@ -46,7 +46,10 @@
 
 // Additional utilities
 @import 'utilities/color';
+@import 'utilities/container';
 @import 'utilities/flex';
 @import 'utilities/fonts';
+@import 'utilities/opacity';
+@import 'utilities/position';
 @import 'utilities/scroll';
 @import 'utilities/text';

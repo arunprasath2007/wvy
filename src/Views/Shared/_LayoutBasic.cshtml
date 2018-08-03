@@ -8,6 +8,9 @@
     @Html.ThemeHead()
     @Html.ThemeStyle("~/styles/weavy.scss", htmlAttributes: new { data_turbolinks_track = "reload" })
     @RenderSection("styles", required: false)
+    @if (WeavyRequestContext.Current.Browser.Browser == "IE") {
+        @Bundler.Scripts("~/scripts/ie.bundle", htmlAttributes: new { data_turbolinks_track = "reload" })
+    }
     @Bundler.Scripts("~/scripts/weavy.bundle", htmlAttributes: new { data_turbolinks_track = "reload" })
     @RenderSection("scripts", required: false)
 </head>

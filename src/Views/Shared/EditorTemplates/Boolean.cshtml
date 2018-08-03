@@ -16,21 +16,20 @@
 }
 
 @if (group) {
-    WriteLiteral(@"<div class=""form-check"">");
+    WriteLiteral(@"<div class=""form-group"">");
 }
 
-<label class="custom-control custom-checkbox">
+<div class="custom-control custom-checkbox">
     @Html.CheckBox("", Model.HasValue && Model.Value, attrs)
-    <span class="custom-control-indicator"></span>
-    <span class="custom-control-description">
-        @Html.DisplayNameFor(m => m)
-        @if (feedback != null) {
-            <span class="invalid-feedback">@feedback</span>
-        } else if (text) {
-            <span class="form-text d-inline">@meta.Description</span>
-        }
-    </span>
-</label>
+    @if (label) {
+        @Html.LabelFor(m => m, new { @class = "custom-control-label" })
+    }
+    @if (feedback != null) {
+        <div class="invalid-feedback">@feedback</div>
+    } else if (text) {
+        <div class="form-text d-inline">@meta.Description</div>
+    }
+</div>
 
 @if (group) {
     WriteLiteral(@"</div>");

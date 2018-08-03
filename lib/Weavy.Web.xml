@@ -75,6 +75,17 @@
             </summary>
             <param name="context"></param>
         </member>
+        <member name="T:Weavy.Web.Areas.Api.Attributes.SecureAttribute">
+            <summary>
+            Api controllers and methods with this attribute must be served over a secure (HTTPS) connection.
+            </summary>
+        </member>
+        <member name="M:Weavy.Web.Areas.Api.Attributes.SecureAttribute.OnAuthorization(System.Web.Http.Controllers.HttpActionContext)">
+            <summary>
+            
+            </summary>
+            <param name="actionContext"></param>
+        </member>
         <member name="T:Weavy.Web.Areas.Api.Attributes.NoDocumentationAttribute">
             <summary>
             Api controllers and methods with this attribute will not have any automatic documentation generated.
@@ -421,6 +432,14 @@
             <param name="id">Id of the app to move.</param>
             <param name="destinationId">The id for the destination app.</param>
             <returns>The moved app.</returns>
+        </member>
+        <member name="M:Weavy.Web.Areas.Api.Controllers.AppsController.Attach(System.Int32,Weavy.Web.Areas.Api.Models.LinksIn)">
+            <summary>
+            Attach a link to an app.
+            </summary>
+            <param name="id">Id of the app.</param>
+            <param name="model"></param>        
+            <returns></returns>
         </member>
         <member name="M:Weavy.Web.Areas.Api.Controllers.AppsController.Insert(Weavy.Web.Areas.Api.Models.AppIn)">
             <summary>
@@ -2097,16 +2116,33 @@
             api for adding and removing user specific bubbles 
             </summary>
         </member>
-        <member name="M:Weavy.Web.Areas.Api.Controllers.WidgetsController.AddBubble(Weavy.Web.Models.BubbleModel)">
+        <member name="M:Weavy.Web.Areas.Api.Controllers.WidgetsController.OpenBubble(Weavy.Core.Models.SpaceBubble)">
             <summary>
-            Add a new bubble.
+            Open a bubble. Adds it to the bubbles repo as personal or global if it does not exist.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Weavy.Web.Areas.Api.Controllers.WidgetsController.RemoveBubble(Weavy.Web.Models.BubbleModel)">
+        <member name="M:Weavy.Web.Areas.Api.Controllers.WidgetsController.ConnectBubble(System.Int32,Weavy.Web.Areas.Api.Models.ConnectBubbleIn)">
             <summary>
-            Remove a bubble.
+            Connects a bubble with a specific url.
             </summary>
+            <param name="id">Id of the bubble to connect.</param>
+            <param name="model">Contains the url to connect the bubble to.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Areas.Api.Controllers.WidgetsController.ConnectSpace(System.Int32,Weavy.Web.Areas.Api.Models.ConnectBubbleIn)">
+            <summary>
+            Creates and connects a bubble to a space.
+            </summary>
+            <param name="id">Id of the space to connect.</param>
+            <param name="model">Contains the url to connect with.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Areas.Api.Controllers.WidgetsController.RemoveBubble(System.Int32)">
+            <summary>
+            Removes a bubble.
+            </summary>
+            <param name="id">Id of bubble to remove.</param>
             <returns></returns>
         </member>
         <member name="M:Weavy.Web.Areas.Api.Controllers.WidgetsController.GetConfiguration">
@@ -2122,6 +2158,12 @@
             Each user has a profile that holds all the personal details of the user. 
             This includes basic information like the name and email address, but can also include more advanced fields like phone numbers and IM addresses.
             </summary>
+        </member>
+        <member name="M:Weavy.Web.Areas.Api.Controllers.UsersController.Authenticate(System.String,System.String)">
+            <summary>
+            Authenticate user with specified username and password.
+            </summary>
+            <returns>Returns user claims.</returns>
         </member>
         <member name="M:Weavy.Web.Areas.Api.Controllers.UsersController.GetMe">
             <summary>
@@ -2410,6 +2452,61 @@
             <param name="formatters">The set of MediaTypeFormatter objects from which to choose.</param>
             <returns></returns>
         </member>
+        <member name="T:Weavy.Web.Areas.Api.Models.ConnectBubbleIn">
+            <summary>
+            Model for connecting bubble.
+            </summary>
+        </member>
+        <member name="P:Weavy.Web.Areas.Api.Models.ConnectBubbleIn.Url">
+            <summary>
+            Gets or sets the url to connect the bubble with.
+            </summary>
+        </member>
+        <member name="T:Weavy.Web.Areas.Api.Models.LinkIn">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Weavy.Web.Areas.Api.Models.LinkIn.Url">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Weavy.Web.Areas.Api.Models.LinkIn.Title">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Weavy.Web.Areas.Api.Models.LinkIn.Type">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Weavy.Web.Areas.Api.Models.LinkIn.ItemUrl">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Weavy.Web.Areas.Api.Models.LinkIn.Embedded">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Weavy.Web.Areas.Api.Models.LinksIn">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Weavy.Web.Areas.Api.Models.LinksIn.Provider">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Weavy.Web.Areas.Api.Models.LinksIn.Links">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="T:Weavy.Web.Areas.Api.Models.RegisterIn">
             <summary>
             Verify signup model.
@@ -2515,6 +2612,21 @@
         <member name="P:Weavy.Web.Areas.Api.Models.CommentIn.Attachments">
             <summary>
             Gets or sets the attachment ids.
+            </summary>
+        </member>
+        <member name="P:Weavy.Web.Areas.Api.Models.CommentIn.HasContext">
+            <summary>
+            If the post should set a contextual url set or not.
+            </summary>
+        </member>
+        <member name="P:Weavy.Web.Areas.Api.Models.CommentIn.ContextUrl">
+            <summary>
+            Contextual url when using in embedded mode.
+            </summary>
+        </member>
+        <member name="P:Weavy.Web.Areas.Api.Models.CommentIn.ContextTitle">
+            <summary>
+            Contextual title when using in embedded mode.
             </summary>
         </member>
         <member name="T:Weavy.Web.Areas.Api.Models.CommentUp">
@@ -2860,6 +2972,21 @@
         <member name="P:Weavy.Web.Areas.Api.Models.MessageIn.Embed">
             <summary>
             Gets or sets the embed id.
+            </summary>
+        </member>
+        <member name="P:Weavy.Web.Areas.Api.Models.MessageIn.HasContext">
+            <summary>
+            If the post should set a contextual url set or not.
+            </summary>
+        </member>
+        <member name="P:Weavy.Web.Areas.Api.Models.MessageIn.ContextUrl">
+            <summary>
+            Contextual url when using in embedded mode.
+            </summary>
+        </member>
+        <member name="P:Weavy.Web.Areas.Api.Models.MessageIn.ContextTitle">
+            <summary>
+            Contextual title when using in embedded mode.
             </summary>
         </member>
         <member name="M:Weavy.Web.Areas.Api.Models.MessageIn.Validate(System.ComponentModel.DataAnnotations.ValidationContext)">
@@ -4532,7 +4659,7 @@
             Creates a new message in the specified conversation.
             </summary>
             <param name="id">The conversation id.</param>
-            <param name="message">The message to insert.</param>
+            <param name="model">The message to insert.</param>
             <returns>The inserted message.</returns>
         </member>
         <member name="M:Weavy.Web.Areas.Messenger.Controllers.MessengerApiController.SetDelivered(System.Int32)">
@@ -5547,12 +5674,6 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Weavy.Web.Controllers.AccountController.Welcome">
-            <summary>
-            Onboarding page for new Weavy users.
-            </summary>
-            <returns></returns>
-        </member>
         <member name="M:Weavy.Web.Controllers.AccountController.CheckWindowsLogin">
             <summary>
             A simple check that throws an exception if there is already a login for the current Windows user.
@@ -5593,7 +5714,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Weavy.Web.Controllers.ContentController.MoveFile(System.Int32,Weavy.Web.Models.ContentMoveModel)">
+        <member name="M:Weavy.Web.Controllers.ContentController.MoveFile(System.Int32,Weavy.Web.Models.ContentAttachModel)">
             <summary>
             Move file to new folder.
             </summary>
@@ -5604,9 +5725,14 @@
             Controller for the Office AddIn.
             </summary>
         </member>
-        <member name="M:Weavy.Web.Controllers.OfficeController.Taskpane(System.String)">
+        <member name="M:Weavy.Web.Controllers.OfficeController.Taskpane(System.String,System.String)">
             <summary>
             Display taskpane for the specified file.
+            </summary>
+        </member>
+        <member name="M:Weavy.Web.Controllers.OfficeController.AttachAndUpload(System.Guid,Weavy.Web.Models.DocumentSlice,System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Endpoint for saving file from office add-in.
             </summary>
         </member>
         <member name="T:Weavy.Web.Controllers.ShareController">
@@ -5719,7 +5845,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Weavy.Web.Controllers.AppController.Move(System.Int32,Weavy.Web.Models.ContentMoveModel)">
+        <member name="M:Weavy.Web.Controllers.AppController.Move(System.Int32,Weavy.Web.Models.ContentAttachModel)">
             <summary>
             Move app.
             </summary>
@@ -6309,7 +6435,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Weavy.Web.Controllers.ItemController.Move(System.Int32,Weavy.Web.Models.ContentMoveModel)">
+        <member name="M:Weavy.Web.Controllers.ItemController.Move(System.Int32,Weavy.Web.Models.ContentAttachModel)">
             <summary>
             Move item.
             </summary>
@@ -6689,7 +6815,7 @@
             <param name="id">Space id</param>
             <returns></returns>
         </member>
-        <member name="M:Weavy.Web.Controllers.SpaceController.UpdateWidget(System.Int32)">
+        <member name="M:Weavy.Web.Controllers.SpaceController.UpdateWidget(System.Int32,System.Int32[])">
             <summary>
             Update widget settings for the space.
             </summary>
@@ -6926,6 +7052,13 @@
             <param name="spaceid">Id of space for which to list folders.</param>
             <returns></returns>
         </member>
+        <member name="M:Weavy.Web.Controllers.UIController.AttachFolderOptions(System.Int32)">
+            <summary>
+            Gets html markup for options in select list for selecting a folder.
+            </summary>
+            <param name="spaceid">Id of the space for which to list folders.</param>
+            <returns></returns>
+        </member>
         <member name="T:Weavy.Web.Controllers.WeavyController">
             <summary>
             Abstract base class for controllers.
@@ -7133,6 +7266,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Weavy.Web.Controllers.WidgetController.FileBrowser">
+            <summary>
+            Display notifications.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:Weavy.Web.Controllers.WidgetController.Stars">
             <summary>
             Display starred items.
@@ -7226,36 +7365,951 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Weavy.Web.Controllers.WidgetController.ConnectModal(System.String)">
+            <summary>
+            Get partial for connecting bubble to url modal.
+            </summary>
+            <param name="url">The url to connect the bubble with.</param>
+            <returns></returns>
+        </member>
         <member name="M:Weavy.Web.Controllers.WidgetController.Script">
             <summary>
             Returns the widget script.
             </summary>
             <returns></returns>
         </member>
-        <member name="T:Weavy.Web.Models.BubbleModel">
+        <member name="T:Weavy.Web.Extensions.ControllerExtensions">
             <summary>
-            Api bubble model
+            
             </summary>
         </member>
-        <member name="P:Weavy.Web.Models.BubbleModel.SpaceId">
+        <member name="M:Weavy.Web.Extensions.ControllerExtensions.ControllerName(System.Type)">
             <summary>
-            The id of the space to add as a bubble
+            
+            </summary>
+            <param name="controller"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.ControllerExtensions.ControllerName(System.Web.Mvc.ControllerContext)">
+            <summary>
+            Gets the name of the current controller.
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.ControllerExtensions.ActionName(System.Web.Mvc.ControllerContext)">
+            <summary>
+            Gets the name of the current action.
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.ControllerExtensions.GetViewName(System.Web.Mvc.ControllerContext,System.String,System.Nullable{System.Guid})">
+            <summary>
+            Returns the name of a view for rendering an extension with the specified guid.
+            </summary>
+            <param name="context"></param>
+            <param name="name"></param>
+            <param name="guid"></param>
+            <returns>A view name</returns>
+        </member>
+        <member name="T:Weavy.Web.Extensions.ExpressionHelper">
+            <summary>
+            Helper methods for working with Expressions.
             </summary>
         </member>
-        <member name="P:Weavy.Web.Models.BubbleModel.Url">
+        <member name="M:Weavy.Web.Extensions.ExpressionHelper.GetRouteValuesFromExpression``1(System.Linq.Expressions.Expression{System.Action{``0}})">
             <summary>
-            The current url
+            
+            </summary>
+            <typeparam name="TController"></typeparam>
+            <param name="action"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.ExpressionHelper.GetTargetActionName(System.Reflection.MethodInfo)">
+            <summary>
+            This method contains some heuristics that will help determine the correct action name from a given MethodInfo
+            assuming the default sync / async invokers are in use. The logic's not foolproof, but it should be good enough
+            for most uses. 
+            </summary>
+            <param name="methodInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.ExpressionHelper.AddParameterValuesFromExpressionToDictionary(System.Web.Routing.RouteValueDictionary,System.Linq.Expressions.MethodCallExpression)">
+            <summary>
+            
+            </summary>
+            <param name="rvd"></param>
+            <param name="call"></param>
+        </member>
+        <member name="M:Weavy.Web.Extensions.ExpressionHelper.Wrap(System.Linq.Expressions.Expression)">
+            <summary>
+            
+            </summary>
+            <param name="arg"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Weavy.Web.Extensions.HtmlHelperExtensions">
+            <summary>
+            Helper methods for generating Html markup.
             </summary>
         </member>
-        <member name="P:Weavy.Web.Models.BubbleModel.Destination">
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.AlertMessages(System.Web.Mvc.HtmlHelper,System.Boolean)">
             <summary>
-            The url to open up in the bubble
+            Renders alert messages that are stored in TempData.
+            </summary>
+            <param name="helper"></param>
+            <param name="inline"><c>true</c> to render inline alerts, or <c>false</c> to render <see cref="T:Weavy.Web.Models.AlertModel"/> messages where the IsInline property is <c>false</c>. </param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.Scripts(System.Web.Mvc.HtmlHelper,System.Object)">
+            <summary>
+            Renders script that are stored in TempData.
+            </summary>
+            <param name="helper"></param>
+            <param name="htmlAttributes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.Badge(System.Web.Mvc.HtmlHelper,Weavy.Core.Models.Privacy)">
+            <summary>
+            Returns a badge indicating the space privacy level.
+            </summary>
+            <param name="html">The HTML helper instance that this method extends.</param>
+            <param name="privacy">The privacy level for which to render a badge.</param>
+            <returns>HTML markup for a badge.</returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.Badge(System.Web.Mvc.HtmlHelper,Weavy.Core.Models.Invite)">
+            <summary>
+            Returns a badge indicating the invite status.
+            </summary>
+            <param name="html">The HTML helper instance that this method extends.</param>
+            <param name="invite">The invite for which to render a badge.</param>
+            <returns>HTML markup for a badge.</returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.NotificationsBadge(System.Web.Mvc.HtmlHelper)">
+            <summary>
+            Returns a badge indicating the number of unread notifications.
+            </summary>
+            <param name="html"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.ConversationsBadge(System.Web.Mvc.HtmlHelper)">
+            <summary>
+            Returns a badge indicating the number of unread conversations.
+            </summary>
+            <param name="html"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.Badge(System.Web.Mvc.HtmlHelper,Weavy.Core.Models.Member)">
+            <summary>
+            Returns a badge indicating the space member permission.
+            </summary>
+            <param name="html">The HTML helper instance that this method extends.</param>
+            <param name="member">The member for which to render a badge.</param>
+            <returns>HTML markup for a badge.</returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.Badge(System.Web.Mvc.HtmlHelper,Weavy.Core.Models.User)">
+            <summary>
+            Returns a badge indicating the user status.
+            </summary>
+            <param name="html">The HTML helper instance that this method extends.</param>
+            <param name="user">The user for which to render a badge.</param>
+            <returns>HTML markup for a badge.</returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.FilterForm``1(System.Web.Mvc.HtmlHelper,System.Linq.Expressions.Expression{System.Action{``0}},Weavy.Core.Models.Query,System.Object,System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="html"></param>
+            <param name="expression"></param>
+            <param name="query"></param>
+            <param name="htmlAttributes"></param>
+            <param name="inputAttributes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.SearchResultText``2(System.Web.Mvc.HtmlHelper,Weavy.Core.Models.SearchResult{``0,``1})">
+            <summary>
+            Returns a descriptive text for the specified search result.
+            </summary>
+            <param name="html"></param>
+            <param name="result"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.DisplayGroups(System.Web.Mvc.HtmlHelper,System.Object,System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            
+            </summary>
+            <param name="html"></param>
+            <param name="model"></param>
+            <param name="group"></param>
+            <param name="exclude"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.EditorsForModel(System.Web.Mvc.HtmlHelper,System.Object,System.String,System.Boolean,System.Boolean,System.Boolean,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Returns an HTML input field for each property in the model.
+            </summary>
+            <param name="html">The HTML helper instance that this method extends.</param>
+            <param name="model">The object for which to render input fields, <c>null</c> to render input fields for the current model.</param>
+            <param name="group">The name of the group for which to return input fields, <c>null</c> to return input fields for properties without GroupName in the model.</param>
+            <param name="formGroups"><c>true</c> to wrap the label and input field in .form-group, otherwise <c>false</c></param>
+            <param name="formLabels"><c>true</c> to render labels for input fields, otherwise <c>false</c></param>
+            <param name="formText"><c>true</c> to render help text for input fields, otherwise <c>false</c></param>
+            <param name="include">Names of properties that should not be rendered, <c>null</c> to include all properties.</param>
+            <param name="exclude">Names of properties that should not be rendered, <c>null</c> includes all properties.</param>
+            <returns>An HTML input element for each property in the model.</returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.SvgSprite(System.Web.Mvc.HtmlHelper)">
+            <summary>
+            Renders markup for the svg sprite map on the page.
+            </summary>
+            <param name="html"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.SvgIcon(System.Web.Mvc.HtmlHelper,Weavy.Core.Models.IEntity,System.Nullable{System.Int32},System.Object)">
+            <summary>
+            Renders icon markup for the specified entity.
+            </summary>
+            <param name="html"></param>
+            <param name="entity"></param>
+            <param name="size"></param>
+            <param name="htmlAttributes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.SvgIcon(System.Web.Mvc.HtmlHelper,System.String,System.String,System.Nullable{System.Int32},System.Object)">
+            <summary>
+            Renders markup for the specified icon.
+            </summary>
+            <param name="html"></param>
+            <param name="name">name of icon, e.g. "home", see icons task in gulpfile.js for a complete list.</param>
+            <param name="color">name of color to use for the icon, e.g. "blue", "red-500", "green-700" etc.</param>
+            <param name="size">icon size, i.e. 18, 24, 36 or 48.</param>
+            <param name="htmlAttributes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.SvgIcons(System.Web.Mvc.HtmlHelper)">
+            <summary>
+            Renders a list of all icons in our sprite (used on test page)
+            </summary>
+            <param name="html"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.SelectOptions(System.Web.Mvc.HtmlHelper,System.Collections.Generic.IEnumerable{Weavy.Core.Models.IEntity},System.Nullable{System.Int32})">
+            <summary>
+            Returns a list of &lt;option&gt; elements representing the specified entities.
+            </summary>
+            <param name="html"></param>
+            <param name="entities">The entities for which to create options.</param>
+            <param name="selected">Id of selected entity.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.FolderPickerOptions(System.Web.Mvc.HtmlHelper,Weavy.Core.Models.IContent,System.Int32)">
+            <summary>
+            Returns a list of &lt;option&gt; elements representing folders in the specified space.
+            </summary>
+            <param name="html"></param>
+            <param name="content">Content (folder, item, file) to move.</param>
+            <param name="spaceId">Id of space for which to list folders.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.FolderPickerOptions(System.Web.Mvc.HtmlHelper,System.Int32)">
+            <summary>
+            Returns a list of &lt;option&gt; elements representing folders in the specified space.
+            </summary>
+            <param name="html"></param>
+            <param name="spaceId">Id of space for which to list folders.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.FolderpickerOptions(Weavy.Core.Models.IContent,System.Collections.Generic.IEnumerable{Weavy.Core.Models.App},System.Collections.Generic.IEnumerable{Weavy.Core.Models.App},System.Int32)">
+            <summary>
+            Recursively create a list of &lt;option&gt; elements representing folders.
+            </summary>
+            <param name="content">Content to move</param>
+            <param name="folders">List of folders</param>
+            <param name="descendants">Descendants of source folder.</param>
+            <param name="depth"></param>
+            <returns>A flat list of <see cref="T:Weavy.Core.Models.App"/> objects.</returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.FolderpickerOptions(System.Collections.Generic.IEnumerable{Weavy.Core.Models.App},System.Int32)">
+            <summary>
+            Recursively create a list of &lt;option&gt; elements representing folders.
+            </summary>
+            <param name="folders">List of folders</param>
+            <param name="depth"></param>
+            <returns>A flat list of <see cref="T:Weavy.Core.Models.App"/> objects.</returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.ActionLink``1(System.Web.Mvc.HtmlHelper,System.Linq.Expressions.Expression{System.Action{``0}},System.String,System.String,System.String,System.String,System.Object,Weavy.Web.Models.LinkActive)">
+            <summary>
+            
+            </summary>
+            <typeparam name="TController"></typeparam>
+            <param name="html"></param>
+            <param name="qs">query string</param>
+            <param name="icon">icon name</param>
+            <param name="color">icon color</param>
+            <param name="text"></param>
+            <param name="expression"></param>
+            <param name="active"></param>
+            <param name="htmlAttributes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.Pagination(System.Web.Mvc.HtmlHelper,Weavy.Core.Collections.IPagedList)">
+            <summary>
+            Renders pagination controls.
+            </summary>
+            <param name="html"></param>
+            <param name="list"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.WriteDots(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Renders the dots (…) for the pager.
+            </summary>
+            <param name="html">The <see cref="T:System.Web.UI.HtmlTextWriter" /> object that receives the server control content.</param>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.WritePageNumber(System.Web.UI.HtmlTextWriter,Weavy.Core.Collections.IPagedList,System.String,System.Collections.Specialized.NameValueCollection,System.Int32,System.Int32)">
+            <summary>
+            Renders the anchors used for paging.
+            </summary>
+            <param name="html">The <see cref="T:System.Web.UI.HtmlTextWriter" /> object that receives the server control content.</param>
+            <param name="list"></param>
+            <param name="path"></param>
+            <param name="qs"></param>
+            <param name="page">The current page number.</param>
+            <param name="top"></param>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.GetRouteValuesFromExpression``1(System.Linq.Expressions.Expression{System.Action{``0}})">
+            <summary>
+            
+            </summary>
+            <typeparam name="TController"></typeparam>
+            <param name="action"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.GetTargetActionName(System.Reflection.MethodInfo)">
+            <summary>
+            
+            </summary>
+            <param name="methodInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.AddParameterValuesFromExpressionToDictionary(System.Web.Routing.RouteValueDictionary,System.Linq.Expressions.MethodCallExpression)">
+            <summary>
+            
+            </summary>
+            <param name="rvd"></param>
+            <param name="mce"></param>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.IconImg(System.Web.Mvc.HtmlHelper,System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Object)">
+            <summary>
+            Returns an img element with the theme icon.
+            </summary>
+            <param name="helper">The HTML helper instance that this method extends.</param>
+            <param name="size"></param>
+            <param name="retina"></param>
+            <param name="absolute"></param> 
+            <param name="htmlAttributes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.Time(System.Web.Mvc.HtmlHelper,System.Nullable{System.DateTime},System.String)">
+            <summary>
+            Returns a &lt;time&gt; element with the specified date.
+            </summary>
+            <param name="helper">The HTML helper instance that this method extends.</param>
+            <param name="date">The (UTC) date to return as text.</param>
+            <param name="format">A standard or custom date and time format string.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.Time(System.Web.Mvc.HtmlHelper,System.DateTime,System.String,System.Boolean)">
+            <summary>
+            Returns a &lt;time&gt; element with the specified date.
+            </summary>
+            <param name="helper">The HTML helper instance that this method extends.</param>
+            <param name="date">The (UTC) date to return as text.</param>
+            <param name="format">A standard or custom date and time format string.</param>
+            <param name="abbrev"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.TimeWhen(System.Web.Mvc.HtmlHelper,System.Nullable{System.DateTime},System.Boolean)">
+            <summary>
+            Returns a &lt;time&gt; element when the specified date occured.
+            </summary>
+            <param name="helper">The HTML helper instance that this method extends.</param>
+            <param name="date">The (UTC) date to return as text.</param>
+            <param name="abbrev"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.TimeWhen(System.Web.Mvc.HtmlHelper,System.DateTime,System.Boolean)">
+            <summary>
+            Returns a &lt;time&gt; element when the specified date occured.
+            </summary>
+            <param name="helper">The HTML helper instance that this method extends.</param>
+            <param name="date">The (UTC) date to return as text.</param>
+            <param name="abbrev"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.WhatByWhen(System.Web.Mvc.HtmlHelper,Weavy.Core.Models.Item)">
+            <summary>
+            Returns a string containing when item was created/modified and by whom.
+            </summary>
+            <param name="helper"></param>
+            <param name="item"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.SubscribersText(System.Web.Mvc.HtmlHelper,Weavy.Core.Models.IFollowable)">
+            <summary>
+            Returns a string containing info about number of subscribers.
+            </summary>
+            <param name="helper"></param>
+            <param name="followable"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.ScrollMore(System.Web.Mvc.HtmlHelper,Weavy.Core.Collections.IPagedList,System.String,System.String,System.String)">
+            <summary>
+            Renders an anchor for loading more data with infinite scroll.
+            </summary>
+            <param name="helper"></param>
+            <param name="list"></param>
+            <param name="target">Selector for target element where next page should be appended</param>
+            <param name="mode">Specify "append" or "prepend" to indicate whether new data scould be appended or prepended to <paramref name="target"/>.</param>
+            <param name="url">Base url to use when constructing the link for loading next page of data.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.ScrollNext(System.Web.Mvc.HtmlHelper,Weavy.Core.Collections.IPagedList,System.String)">
+            <summary>
+            Renders an anchor element for loading next page of data with infinite scroll.
+            </summary>
+            <param name="helper"></param>
+            <param name="list"></param>
+            <param name="url">base url to use when generating the link</param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.SvgSpinner(System.Web.Mvc.HtmlHelper,System.Int32,System.Boolean)">
+            <summary>
+            Renders markup for the animated spinner.
+            </summary>
+            <param name="html"></param>
+            <param name="size"></param>
+            <param name="spin"><c>true</c> to add the .spin class on first render.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.SvgOverlaySpinner(System.Web.Mvc.HtmlHelper,System.Int32,System.Boolean,System.String,System.String)">
+            <summary>
+            Renders markup for an animated spinner on an overlay background.
+            </summary>
+            <param name="html"></param>
+            <param name="size"></param>
+            <param name="spin"><c>true</c> to add the .spin class on first render.</param>
+            <param name="color">Background color of overlay</param>
+            <param name="id">DOM id of the overlay spinner</param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.Title(System.Web.Mvc.HtmlHelper,System.String)">
+            <summary>
+            Helper for getting the title for the html head.
+            </summary>
+            <param name="helper">The HTML helper instance that this method extends.</param>
+            <param name="title">The defined title.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.ThemeHead(System.Web.Mvc.HtmlHelper,System.String)">
+            <summary>
+            Helper for rendering link to favicon, app manifest etc.
+            </summary>
+            <param name="helper">The HTML helper instance that this method extends.</param>
+            <param name="area"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.ThemeStyle(System.Web.Mvc.HtmlHelper,System.String)">
+            <summary>
+            Helper for rendering a themed stylesheet.
+            </summary>
+            <param name="helper">The HTML helper instance that this method extends.</param>
+            <param name="fileName">Virtual path to scss file, e.g. ~/styles/weavy.scss</param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.ThemeStyle(System.Web.Mvc.HtmlHelper,System.String,System.String,System.Object,System.Nullable{Weavy.Bundler.BundleOutput})">
+            <summary>
+            Helper for rendering a themed stylesheet.
+            </summary>
+            <param name="helper">The HTML helper instance that this method extends.</param>
+            <param name="fileName">Virtual path to scss file, e.g. ~/styles/weavy.scss</param>
+            <param name="htmlColor">html color, e.g. "red" or "#0275D8", <c>null</c> uses the color from the current <see cref="T:Weavy.Core.Models.Theme"/> settings.</param>
+            <param name="htmlAttributes"></param>
+            <param name="output"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.GetThemedScssFile(System.String,System.String)">
+            <summary>
+            Helper method for returning a .scss stylesheet file with our theme colors injected.
+            </summary>
+            <param name="fileName"></param>
+            <param name="htmlColor"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.GetThemedCss(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="fileName"></param>
+            <param name="htmlColor"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.StarToggle(System.Web.Mvc.HtmlHelper,Weavy.Core.Models.IEntity,System.Boolean,System.Object,System.Boolean)">
+            <summary>
+            Returns an button element for starring/unstarring the specified entity.
+            </summary>
+            <param name="html">The HTML helper instance that this method extends.</param>
+            <param name="entity">The entity for which to generate a star link.</param>
+            <param name="compact">Set to false to allow toggling an unstarred entity.</param>
+            <param name="badge">Set to true to make it appear as a badge on top of another icon.</param>
+            <param name="htmlAttributes">Html attributes to merge with the button.</param>
+            <returns>An anchor element (a element).</returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.FollowToggle(System.Web.Mvc.HtmlHelper,Weavy.Core.Models.User)">
+            <summary>
+            Returns a button element (&lt;button&gt;) for following/unfollowing the specified user.
+            </summary>
+            <param name="html">The HTML helper instance that this method extends.</param>
+            <param name="user">The entity for which to generate a star link.</param>
+            <returns>A button.</returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.SubscribeToggle(System.Web.Mvc.HtmlHelper,Weavy.Core.Models.IFollowable,System.Object)">
+            <summary>
+            Returns a anchor element (a element) for turning on/off notifications for the specified entity.
+            </summary>
+            <param name="html">The HTML helper instance that this method extends.</param>
+            <param name="followable">The entity.</param>
+            <param name="htmlAttributes">Html attributes to merge.</param>
+            <returns>An anchor.</returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.JoinToggle(System.Web.Mvc.HtmlHelper,Weavy.Core.Models.Space)">
+            <summary>
+            Returns an anchor element (a element) for joining/leaving the specified space.
+            </summary>
+            <param name="html">The HTML helper instance that this method extends.</param>
+            <param name="space">The entity for which to generate a star link.</param>
+            <returns>An anchor element (a element).</returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.ItemBadge(System.Web.Mvc.HtmlHelper,Weavy.Core.Models.Item)">
+            <summary>
+            Returns a badge with item status, i.e. editing, locked etc.
+            </summary>
+            <param name="html">The HTML helper instance that this method extends.</param>
+            <param name="item">The entity for which to generate a badge.</param>
+            <returns>A badge (span element).</returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.PreviewAttributes(System.Web.Mvc.HtmlHelper,Weavy.Core.Models.File,System.String,Weavy.Core.Models.IEntity)">
+            <summary>
+            Gets html attributes needed for triggering image and document preview.
+            </summary>
+            <param name="html"></param>
+            <param name="file"></param>
+            <param name="href"></param>
+            <param name="attachedto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.InitHtmlEditor(System.Web.Mvc.HtmlHelper)">
+            <summary>
+            Returns a javascript for initializing the html editor.
+            </summary>
+            <param name="helper"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.PartialContent(System.Web.Mvc.HtmlHelper,Weavy.Core.Models.ContentView,Weavy.Core.Models.IContent,System.Object,System.Web.Mvc.ViewDataDictionary)">
+            <summary>
+            Renders the specified partial view as an HTML-encoded string.
+            </summary>
+            <param name="html"></param>
+            <param name="view"></param>
+            <param name="content"></param>
+            <param name="model"></param>
+            <param name="viewData"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.RenderPartialContent(System.Web.Mvc.HtmlHelper,Weavy.Core.Models.ContentView,Weavy.Core.Models.IContent,System.Object,System.Web.Mvc.ViewDataDictionary)">
+            <summary>
+            Renders the specified partial view.
+            </summary>
+            <param name="html"></param>
+            <param name="view"></param>
+            <param name="content"></param>
+            <param name="model"></param>
+            <param name="viewData"></param>
+        </member>
+        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.GetPartialContentViewName(System.Web.Mvc.HtmlHelper,Weavy.Core.Models.ContentView,Weavy.Core.Models.IContent)">
+            <summary>
+            
+            </summary>
+            <param name="html"></param>
+            <param name="view"></param>
+            <param name="content"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Weavy.Web.Extensions.HtmlHelperExtensions.ViewDataContainer">
+            <summary>
+            Private helper class needed to create a HtmlHelper with a new view context etc.
             </summary>
         </member>
-        <member name="P:Weavy.Web.Models.BubbleModel.Type">
+        <member name="T:Weavy.Web.Extensions.UrlHelperExtensions">
             <summary>
-            How the space should be added
+            Extension methods for creating urls.
             </summary>
+        </member>
+        <member name="F:Weavy.Web.Extensions.UrlHelperExtensions.CONTROLLER">
+            <summary>
+            Returns the string "Controller".
+            </summary>
+        </member>
+        <member name="F:Weavy.Web.Extensions.UrlHelperExtensions.ACTION">
+            <summary>
+            Returns the string "Action".
+            </summary>
+        </member>
+        <member name="F:Weavy.Web.Extensions.UrlHelperExtensions.AREA">
+            <summary>
+            Returns the string "Area".
+            </summary>
+        </member>
+        <member name="M:Weavy.Web.Extensions.UrlHelperExtensions.Back(System.Web.Mvc.UrlHelper,System.String)">
+            <summary>
+            Get an url suitable for navigating back from the current page.
+            </summary>
+            <param name="helper">The URL helper instance that this method extends.</param>
+            <param name="url">Default back url.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.UrlHelperExtensions.Back``1(System.Web.Mvc.UrlHelper,System.Linq.Expressions.Expression{System.Action{``0}})">
+            <summary>
+            Helper method for generating for getting an url for navigating back from the current page.
+            </summary>
+            <typeparam name="TController"></typeparam>
+            <param name="helper">The URL helper instance that this method extends.</param>
+            <param name="expression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.UrlHelperExtensions.Action``1(System.Web.Mvc.UrlHelper,System.Linq.Expressions.Expression{System.Action{``0}})">
+            <summary>
+            Helper method for generating urls to strongly typed actions.
+            </summary>
+            <typeparam name="TController"></typeparam>
+            <param name="helper">The URL helper instance that this method extends.</param>
+            <param name="expression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.UrlHelperExtensions.IsActive``1(System.Web.Mvc.UrlHelper,System.Linq.Expressions.Expression{System.Action{``0}},Weavy.Web.Models.LinkActive)">
+            <summary>
+            
+            </summary>
+            <typeparam name="TController"></typeparam>
+            <param name="helper"></param>
+            <param name="expression"></param>
+            <param name="active"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.UrlHelperExtensions.Rebuild(System.Web.Mvc.UrlHelper,System.Object[])">
+            <summary>
+            Rebuilds the url of the current request by adding, removing and/or replacing query string parameters.
+            </summary>
+            <param name="helper">The URL helper instance that this method extends.</param>
+            <param name="replacement"></param>
+            <returns></returns>
+            <example>
+            A call to <c>Rebuild("tab", null, "p", 1, "ps", 25)</c> should remove the 'tab' parameter and add or replace the 'p' and 'ps' parameters depending on if they exist or not.
+            </example>
+        </member>
+        <member name="M:Weavy.Web.Extensions.UrlHelperExtensions.OrderBy(System.Web.Mvc.UrlHelper,System.String)">
+            <summary>
+            Adds an orderby query string parameter to the current request path.
+            </summary>
+            <param name="helper">The URL helper instance that this method extends.</param>
+            <param name="column"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.UrlHelperExtensions.ScrollNext(System.Web.Mvc.UrlHelper,Weavy.Core.Collections.IPagedList,System.String)">
+            <summary>
+            Renders an url for loading next page of data with infinite scroll.
+            </summary>
+            <param name="helper">The URL helper instance that this method extends.</param>
+            <param name="list"></param>
+            <param name="url">base url to use when generating the link</param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.UrlHelperExtensions.Icon(System.Web.Mvc.UrlHelper,System.Nullable{System.Int32},System.Boolean,System.Boolean)">
+            <summary>
+            Returns the url to the theme icon.
+            </summary>
+            <param name="helper">The URL helper instance that this method extends.</param>
+            <param name="size"></param>
+            <param name="retina"></param>
+            <param name="absolute"></param> 
+            <returns></returns>
+        </member>
+        <member name="T:Weavy.Web.Extensions.WeavyHtmlExtensions">
+            <summary>
+            Contains extension methods for generating html markup.
+            </summary>
+        </member>
+        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.AvatarImg(Weavy.Core.Models.IHasAvatar,System.Int32,System.Boolean,System.Nullable{System.Drawing.Color},System.Boolean,System.Object,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean)">
+            <summary>
+            Returns the avatar image for the specified item.
+            </summary>
+            <param name="item"></param>
+            <param name="size"></param>
+            <param name="retina"></param>
+            <param name="background"></param>
+            <param name="absolute"></param>
+            <param name="htmlAttributes"></param>
+            <param name="width"></param>
+            <param name="height"></param>
+            <param name="presence"><c>true</c> to add presence status to the image, otherwise <c>false</c>.</param>
+            <param name="rasterize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.AvatarImg(Weavy.Core.Models.Notification,System.Int32,System.Boolean,System.Nullable{System.Drawing.Color},System.Boolean,System.Object,System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            
+            </summary>
+            <param name="item"></param>
+            <param name="size"></param>
+            <param name="retina"></param>
+            <param name="background"></param>
+            <param name="absolute"></param>
+            <param name="htmlAttributes"></param>
+            <param name="width"></param>
+            <param name="height"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.AvatarImg(Weavy.Core.Models.File,System.Int32,System.Boolean,System.Nullable{System.Drawing.Color},System.Boolean,System.Object,System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            
+            </summary>
+            <param name="file"></param>
+            <param name="size"></param>
+            <param name="retina"></param>
+            <param name="background"></param>
+            <param name="absolute"></param>
+            <param name="htmlAttributes"></param>
+            <param name="width"></param>
+            <param name="height"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.AvatarImg(Weavy.Core.Models.Post,System.Int32,System.Boolean,System.Nullable{System.Drawing.Color},System.Boolean,System.Object,System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            
+            </summary>
+            <param name="item"></param>
+            <param name="size"></param>
+            <param name="retina"></param>
+            <param name="background"></param>
+            <param name="absolute"></param>
+            <param name="htmlAttributes"></param>
+            <param name="width"></param>
+            <param name="height"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.AvatarLink(Weavy.Core.Models.IHasAvatar,System.Int32,System.Boolean,System.Nullable{System.Drawing.Color},System.Boolean,System.Object,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean)">
+            <summary>
+            Returns an avatar image that links to the specified entity.
+            </summary>
+            <param name="entity"></param>
+            <param name="size"></param>
+            <param name="retina"></param>
+            <param name="background"></param>
+            <param name="absolute"></param>
+            <param name="htmlAttributes"></param>
+            <param name="width"></param>
+            <param name="height"></param>
+            <param name="presence"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.Breadcrumb(Weavy.Core.Models.IContent,System.Object)">
+            <summary>
+            Returns breadcrumb navigation for the specified content item.
+            </summary>
+            <param name="entity"></param>
+            <param name="htmlAttributes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.Description(Weavy.Core.Models.IndexResult)">
+            <summary>
+            Returns a descriptive text for the specified search result.
+            </summary>
+            <param name="result"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.FAB(Weavy.Core.Models.App)">
+            <summary>
+            Returns a FAB with links for creating content in folder.
+            </summary>
+            <param name="app"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.AllowedChildrenString(Weavy.Core.Models.App)">
+            <summary>
+            Gets the allowed children for the app as a comma separated string of guids, or <c>null</c> if all are allowed.
+            </summary>
+            <param name="app"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.AllowedParentsString(Weavy.Core.Models.App)">
+            <summary>
+            Gets the allowed parents for the app as a comma separated string of guids, or <c>null</c> if all are allowed.
+            </summary>
+            <param name="app"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.DisplayInTreeView(Weavy.Core.Models.App)">
+            <summary>
+            Returns true if an app should be displayed in the tree view
+            </summary>
+            <param name="app"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.AllowedParentsString(Weavy.Core.Models.Item)">
+            <summary>
+            Gets the allowed parents for the item as a comma separated string of guids, or <c>null</c> if all are allowed.
+            </summary>
+            <param name="item"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.AsTagLinks(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Returns the tags as a comma separated list of anchors.
+            </summary>
+            <param name="tags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.MarkdownToHtml(System.String)">
+            <summary>
+            Converts a markdown string to Html.
+            </summary>
+            <param name="markdown">The markdown to convert to html</param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.CommentsText(Weavy.Core.Models.ICommentable,System.Boolean)">
+            <summary>
+            Return a string with the number of comments for en entity, e.g. "3 comments".
+            </summary>
+            <param name="entity"></param>
+            <param name="abbrev"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.FollowersText(Weavy.Core.Models.User,System.Boolean)">
+            <summary>
+            Return a string with the number of follers a user has, e.g. "3 followers".
+            </summary>
+            <param name="user"></param>
+            <param name="abbrev"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.MembersText(Weavy.Core.Models.Space,System.Boolean)">
+            <summary>
+            Return a string with the number of members in a space, e.g. "3 members".
+            </summary>
+            <param name="space"></param>
+            <param name="abbrev"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.MembersText(Weavy.Core.Models.Role,System.Boolean)">
+            <summary>
+            Return a string with the number of members in a group, e.g. "3 members".
+            </summary>
+            <param name="group"></param>
+            <param name="abbrev"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.Icon(Weavy.Core.Models.Layout)">
+            <summary>
+            Returns the icon to use for the layout.
+            </summary>
+            <param name="layout"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.Icon(Weavy.Core.Models.ContentView)">
+            <summary>
+            Returns the icon to use for the view.
+            </summary>
+            <param name="view"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.Liketext(Weavy.Core.Models.ILikeable)">
+            <summary>
+            Return a contextual description of which people likes the object, e.g. "You and 3 others like this".
+            </summary>
+            <param name="likeable"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.Domain(Weavy.Core.Models.Embed)">
+            <summary>
+            Gets the domain where the embed originates.
+            </summary>
+            <param name="embed"></param>
+            <returns>The domain.</returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.Facepile(System.Collections.Generic.IEnumerable{Weavy.Core.Models.User},System.Int32,System.Int32,System.Boolean,System.Object)">
+            <summary>
+            Render linked avatar images for the specified user objects. 
+            </summary>
+            <param name="users"></param>
+            <param name="max"></param>
+            <param name="size"></param>
+            <param name="retina"></param>
+            <param name="htmlAttributes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.Link(Weavy.Core.Models.IEntity)">
+            <summary>
+            Returns a link to the entity.
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.GetAdditionalData(System.Web.Mvc.ViewDataDictionary,System.String)">
+            <summary>
+            Helper method to return additional data for a ViewDataDictionary.
+            </summary>
+            <param name="viewData"></param>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.WidgetScript(Weavy.Core.Models.Space,System.Boolean)">
+            <summary>
+            Gets the script needed to embed this strip in the external system.
+            </summary>
+        </member>
+        <member name="T:Weavy.Web.Filters.HandleExceptionFilter">
+            <summary>
+            Logs unhandled exceptions and displays a custom error page.
+            </summary>
+        </member>
+        <member name="M:Weavy.Web.Filters.HandleExceptionFilter.OnException(System.Web.Mvc.ExceptionContext)">
+            <summary>
+            Called when an exception occurs.
+            </summary>
+            <param name="filterContext">The filter context.</param>
+        </member>
+        <member name="T:Weavy.Web.WeavyApplication">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Weavy.Web.WeavyApplication.Application_Start">
+            <summary>
+            Start up Weavy on application start.
+            </summary>
+        </member>
+        <member name="M:Weavy.Web.WeavyApplication.Application_End">
+            <summary>
+            Shut down Weavy to free up some resources.
+            </summary>
+        </member>
+        <member name="M:Weavy.Web.WeavyApplication.Application_PreSendRequestHeaders(System.Object,System.EventArgs)">
+            <summary>
+            Remove some HTTP Headers for a little extra security (by obscurity)
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
         </member>
         <member name="T:Weavy.Web.Models.AccountModel">
             <summary>
@@ -7501,27 +8555,6 @@
             <summary>
             
             </summary>
-        </member>
-        <member name="T:Weavy.Web.Models.WelcomeModel">
-            <summary>
-            Model for onboarding new users.
-            </summary>
-        </member>
-        <member name="P:Weavy.Web.Models.WelcomeModel.AllowSignup">
-            <summary>
-            Gets or sets a value indicating if signups are allowed.
-            </summary>
-        </member>
-        <member name="P:Weavy.Web.Models.WelcomeModel.Strips">
-            <summary>
-            Gets or sets all strips in installation.
-            </summary>
-        </member>
-        <member name="P:Weavy.Web.Models.WelcomeModel.OnboardingSpace">
-            <summary>
-            Gets or sets the space used for onboarding.
-            </summary>
-            <returns></returns>
         </member>
         <member name="T:Weavy.Web.Models.CreateAccountModel">
             <summary>
@@ -7798,6 +8831,36 @@
             Performs custom validation.
             </summary>
         </member>
+        <member name="T:Weavy.Web.Models.OfficeTaskpaneModel">
+            <summary>
+            The view model for the office add-in.
+            </summary>
+        </member>
+        <member name="P:Weavy.Web.Models.OfficeTaskpaneModel.ContentAttachModel">
+            <summary>
+            Gets or sets the <see cref="P:Weavy.Web.Models.OfficeTaskpaneModel.ContentAttachModel"/> used to attach a document to weavy.
+            </summary>
+        </member>
+        <member name="P:Weavy.Web.Models.OfficeTaskpaneModel.Document">
+            <summary>
+            Gets or sets the document (word, excel, ppt) from weavy.
+            </summary>
+        </member>
+        <member name="P:Weavy.Web.Models.OfficeTaskpaneModel.IsWebDav">
+            <summary>
+            Gets or sets a value indicating if document is accessed over webdav.
+            </summary>
+        </member>
+        <member name="P:Weavy.Web.Models.OfficeTaskpaneModel.Name">
+            <summary>
+            Gets or sets the suggested name of the document.
+            </summary>       
+        </member>
+        <member name="P:Weavy.Web.Models.OfficeTaskpaneModel.Extension">
+            <summary>
+            Gets or sets the extension of the file.
+            </summary>
+        </member>
         <member name="T:Weavy.Web.Models.HomeModel">
             <summary>
             View model for home page.
@@ -7994,6 +9057,11 @@
         <member name="M:Weavy.Web.Models.DocumentSlice.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:Weavy.Web.Models.DocumentSlice"/> class.
+            </summary>
+        </member>
+        <member name="P:Weavy.Web.Models.DocumentSlice.Name">
+            <summary>
+            Gets or sets the name of the document.
             </summary>
         </member>
         <member name="P:Weavy.Web.Models.DocumentSlice.Index">
@@ -8470,17 +9538,17 @@
             Poll option text
             </summary>
         </member>
-        <member name="T:Weavy.Web.Models.ContentMoveModel">
+        <member name="T:Weavy.Web.Models.ContentAttachModel">
             <summary>
-            Model for moving content between spaces/folders.
+            Model for attaching/moving content between spaces/folders.
             </summary>
         </member>
-        <member name="P:Weavy.Web.Models.ContentMoveModel.Source">
+        <member name="P:Weavy.Web.Models.ContentAttachModel.Source">
             <summary>
-            Entity to move.
+            Entity to move. 
             </summary>
         </member>
-        <member name="P:Weavy.Web.Models.ContentMoveModel.FolderId">
+        <member name="P:Weavy.Web.Models.ContentAttachModel.FolderId">
             <summary>
             Id of parent folder where content should be moved.
             </summary>
@@ -8593,6 +9661,21 @@
         <member name="P:Weavy.Web.Models.PostInsertModel.Options">
             <summary>
             Gets or sets poll options.
+            </summary>
+        </member>
+        <member name="P:Weavy.Web.Models.PostInsertModel.HasContext">
+            <summary>
+            If the post should set a contextual url set or not.
+            </summary>
+        </member>
+        <member name="P:Weavy.Web.Models.PostInsertModel.ContextUrl">
+            <summary>
+            Contextual url when using in embedded mode.
+            </summary>
+        </member>
+        <member name="P:Weavy.Web.Models.PostInsertModel.ContextTitle">
+            <summary>
+            Contextual title when using in embedded mode.
             </summary>
         </member>
         <member name="M:Weavy.Web.Models.PostInsertModel.Validate(System.ComponentModel.DataAnnotations.ValidationContext)">
@@ -8957,904 +10040,6 @@
             <summary>
             
             </summary>
-        </member>
-        <member name="T:Weavy.Web.Extensions.ControllerExtensions">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:Weavy.Web.Extensions.ControllerExtensions.ControllerName(System.Type)">
-            <summary>
-            
-            </summary>
-            <param name="controller"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.ControllerExtensions.ControllerName(System.Web.Mvc.ControllerContext)">
-            <summary>
-            Gets the name of the current controller.
-            </summary>
-            <param name="context"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.ControllerExtensions.ActionName(System.Web.Mvc.ControllerContext)">
-            <summary>
-            Gets the name of the current action.
-            </summary>
-            <param name="context"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.ControllerExtensions.GetViewName(System.Web.Mvc.ControllerContext,System.String,System.Nullable{System.Guid})">
-            <summary>
-            Returns the name of a view for rendering an extension with the specified guid.
-            </summary>
-            <param name="context"></param>
-            <param name="name"></param>
-            <param name="guid"></param>
-            <returns>A view name</returns>
-        </member>
-        <member name="T:Weavy.Web.Extensions.ExpressionHelper">
-            <summary>
-            Helper methods for working with Expressions.
-            </summary>
-        </member>
-        <member name="M:Weavy.Web.Extensions.ExpressionHelper.GetRouteValuesFromExpression``1(System.Linq.Expressions.Expression{System.Action{``0}})">
-            <summary>
-            
-            </summary>
-            <typeparam name="TController"></typeparam>
-            <param name="action"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.ExpressionHelper.GetTargetActionName(System.Reflection.MethodInfo)">
-            <summary>
-            This method contains some heuristics that will help determine the correct action name from a given MethodInfo
-            assuming the default sync / async invokers are in use. The logic's not foolproof, but it should be good enough
-            for most uses. 
-            </summary>
-            <param name="methodInfo"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.ExpressionHelper.AddParameterValuesFromExpressionToDictionary(System.Web.Routing.RouteValueDictionary,System.Linq.Expressions.MethodCallExpression)">
-            <summary>
-            
-            </summary>
-            <param name="rvd"></param>
-            <param name="call"></param>
-        </member>
-        <member name="M:Weavy.Web.Extensions.ExpressionHelper.Wrap(System.Linq.Expressions.Expression)">
-            <summary>
-            
-            </summary>
-            <param name="arg"></param>
-            <returns></returns>
-        </member>
-        <member name="T:Weavy.Web.Extensions.HtmlHelperExtensions">
-            <summary>
-            Helper methods for generating Html markup.
-            </summary>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.AlertMessages(System.Web.Mvc.HtmlHelper,System.Boolean)">
-            <summary>
-            Renders alert messages that are stored in TempData.
-            </summary>
-            <param name="helper"></param>
-            <param name="inline"><c>true</c> to render inline alerts, or <c>false</c> to render <see cref="T:Weavy.Web.Models.AlertModel"/> messages where the IsInline property is <c>false</c>. </param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.Scripts(System.Web.Mvc.HtmlHelper,System.Object)">
-            <summary>
-            Renders script that are stored in TempData.
-            </summary>
-            <param name="helper"></param>
-            <param name="htmlAttributes"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.Badge(System.Web.Mvc.HtmlHelper,Weavy.Core.Models.Privacy)">
-            <summary>
-            Returns a badge indicating the space privacy level.
-            </summary>
-            <param name="html">The HTML helper instance that this method extends.</param>
-            <param name="privacy">The privacy level for which to render a badge.</param>
-            <returns>HTML markup for a badge.</returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.Badge(System.Web.Mvc.HtmlHelper,Weavy.Core.Models.Invite)">
-            <summary>
-            Returns a badge indicating the invite status.
-            </summary>
-            <param name="html">The HTML helper instance that this method extends.</param>
-            <param name="invite">The invite for which to render a badge.</param>
-            <returns>HTML markup for a badge.</returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.NotificationsBadge(System.Web.Mvc.HtmlHelper)">
-            <summary>
-            Returns a badge indicating the number of unread notifications.
-            </summary>
-            <param name="html"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.Badge(System.Web.Mvc.HtmlHelper,Weavy.Core.Models.Member)">
-            <summary>
-            Returns a badge indicating the space member permission.
-            </summary>
-            <param name="html">The HTML helper instance that this method extends.</param>
-            <param name="member">The member for which to render a badge.</param>
-            <returns>HTML markup for a badge.</returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.Badge(System.Web.Mvc.HtmlHelper,Weavy.Core.Models.User)">
-            <summary>
-            Returns a badge indicating the user status.
-            </summary>
-            <param name="html">The HTML helper instance that this method extends.</param>
-            <param name="user">The user for which to render a badge.</param>
-            <returns>HTML markup for a badge.</returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.FilterForm``1(System.Web.Mvc.HtmlHelper,System.Linq.Expressions.Expression{System.Action{``0}},Weavy.Core.Models.Query,System.Object,System.Object)">
-            <summary>
-            
-            </summary>
-            <param name="html"></param>
-            <param name="expression"></param>
-            <param name="query"></param>
-            <param name="htmlAttributes"></param>
-            <param name="inputAttributes"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.SearchResultText``2(System.Web.Mvc.HtmlHelper,Weavy.Core.Models.SearchResult{``0,``1})">
-            <summary>
-            Returns a descriptive text for the specified search result.
-            </summary>
-            <param name="html"></param>
-            <param name="result"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.DisplayGroups(System.Web.Mvc.HtmlHelper,System.Object,System.String,System.Collections.Generic.IEnumerable{System.String})">
-            <summary>
-            
-            </summary>
-            <param name="html"></param>
-            <param name="model"></param>
-            <param name="group"></param>
-            <param name="exclude"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.EditorsForModel(System.Web.Mvc.HtmlHelper,System.Object,System.String,System.Boolean,System.Boolean,System.Boolean,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String})">
-            <summary>
-            Returns an HTML input field for each property in the model.
-            </summary>
-            <param name="html">The HTML helper instance that this method extends.</param>
-            <param name="model">The object for which to render input fields, <c>null</c> to render input fields for the current model.</param>
-            <param name="group">The name of the group for which to return input fields, <c>null</c> to return input fields for properties without GroupName in the model.</param>
-            <param name="formGroups"><c>true</c> to wrap the label and input field in .form-group, otherwise <c>false</c></param>
-            <param name="formLabels"><c>true</c> to render labels for input fields, otherwise <c>false</c></param>
-            <param name="formText"><c>true</c> to render help text for input fields, otherwise <c>false</c></param>
-            <param name="include">Names of properties that should not be rendered, <c>null</c> to include all properties.</param>
-            <param name="exclude">Names of properties that should not be rendered, <c>null</c> includes all properties.</param>
-            <returns>An HTML input element for each property in the model.</returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.SvgSprite(System.Web.Mvc.HtmlHelper)">
-            <summary>
-            Renders markup for the svg sprite map on the page.
-            </summary>
-            <param name="html"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.SvgIcon(System.Web.Mvc.HtmlHelper,Weavy.Core.Models.IEntity,System.Nullable{System.Int32},System.Object)">
-            <summary>
-            Renders icon markup for the specified entity.
-            </summary>
-            <param name="html"></param>
-            <param name="entity"></param>
-            <param name="size"></param>
-            <param name="htmlAttributes"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.SvgIcon(System.Web.Mvc.HtmlHelper,System.String,System.String,System.Nullable{System.Int32},System.Object)">
-            <summary>
-            Renders markup for the specified icon.
-            </summary>
-            <param name="html"></param>
-            <param name="name">name of icon, e.g. "home", see icons task in gulpfile.js for a complete list.</param>
-            <param name="color">name of color to use for the icon, e.g. "blue", "red-500", "green-700" etc.</param>
-            <param name="size">icon size, i.e. 18, 24, 36 or 48.</param>
-            <param name="htmlAttributes"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.SvgIcons(System.Web.Mvc.HtmlHelper)">
-            <summary>
-            Renders a list of all icons in our sprite (used on test page)
-            </summary>
-            <param name="html"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.SelectOptions(System.Web.Mvc.HtmlHelper,System.Collections.Generic.IEnumerable{Weavy.Core.Models.IEntity},System.Nullable{System.Int32})">
-            <summary>
-            Returns a list of &lt;option&gt; elements representing the specified entities.
-            </summary>
-            <param name="html"></param>
-            <param name="entities">The entities for which to create options.</param>
-            <param name="selected">Id of selected entity.</param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.FolderPickerOptions(System.Web.Mvc.HtmlHelper,Weavy.Core.Models.IContent,System.Int32)">
-            <summary>
-            Returns a list of &lt;option&gt; elements representing folders in the specified space.
-            </summary>
-            <param name="html"></param>
-            <param name="content">Content (folder, item, file) to move.</param>
-            <param name="spaceId">Id of space for which to list folders.</param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.FolderpickerOptions(Weavy.Core.Models.IContent,System.Collections.Generic.IEnumerable{Weavy.Core.Models.App},System.Collections.Generic.IEnumerable{Weavy.Core.Models.App},System.Int32)">
-            <summary>
-            Recursively create a list of &lt;option&gt; elements representing folders.
-            </summary>
-            <param name="content">Content to move</param>
-            <param name="folders">List of folders</param>
-            <param name="descendants">Descendants of source folder.</param>
-            <param name="depth"></param>
-            <returns>A flat list of <see cref="T:Weavy.Core.Models.App"/> objects.</returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.ActionLink``1(System.Web.Mvc.HtmlHelper,System.Linq.Expressions.Expression{System.Action{``0}},System.String,System.String,System.String,System.String,System.Object,Weavy.Web.Models.LinkActive)">
-            <summary>
-            
-            </summary>
-            <typeparam name="TController"></typeparam>
-            <param name="html"></param>
-            <param name="qs">query string</param>
-            <param name="icon">icon name</param>
-            <param name="color">icon color</param>
-            <param name="text"></param>
-            <param name="expression"></param>
-            <param name="active"></param>
-            <param name="htmlAttributes"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.Pagination(System.Web.Mvc.HtmlHelper,Weavy.Core.Collections.IPagedList)">
-            <summary>
-            Renders pagination controls.
-            </summary>
-            <param name="html"></param>
-            <param name="list"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.WriteDots(System.Web.UI.HtmlTextWriter)">
-            <summary>
-            Renders the dots (…) for the pager.
-            </summary>
-            <param name="html">The <see cref="T:System.Web.UI.HtmlTextWriter" /> object that receives the server control content.</param>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.WritePageNumber(System.Web.UI.HtmlTextWriter,Weavy.Core.Collections.IPagedList,System.String,System.Collections.Specialized.NameValueCollection,System.Int32,System.Int32)">
-            <summary>
-            Renders the anchors used for paging.
-            </summary>
-            <param name="html">The <see cref="T:System.Web.UI.HtmlTextWriter" /> object that receives the server control content.</param>
-            <param name="list"></param>
-            <param name="path"></param>
-            <param name="qs"></param>
-            <param name="page">The current page number.</param>
-            <param name="top"></param>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.GetRouteValuesFromExpression``1(System.Linq.Expressions.Expression{System.Action{``0}})">
-            <summary>
-            
-            </summary>
-            <typeparam name="TController"></typeparam>
-            <param name="action"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.GetTargetActionName(System.Reflection.MethodInfo)">
-            <summary>
-            
-            </summary>
-            <param name="methodInfo"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.AddParameterValuesFromExpressionToDictionary(System.Web.Routing.RouteValueDictionary,System.Linq.Expressions.MethodCallExpression)">
-            <summary>
-            
-            </summary>
-            <param name="rvd"></param>
-            <param name="mce"></param>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.IconImg(System.Web.Mvc.HtmlHelper,System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Object)">
-            <summary>
-            Returns an img element with the theme icon.
-            </summary>
-            <param name="helper">The HTML helper instance that this method extends.</param>
-            <param name="size"></param>
-            <param name="retina"></param>
-            <param name="absolute"></param> 
-            <param name="htmlAttributes"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.Time(System.Web.Mvc.HtmlHelper,System.Nullable{System.DateTime},System.String)">
-            <summary>
-            Returns a &lt;time&gt; element with the specified date.
-            </summary>
-            <param name="helper">The HTML helper instance that this method extends.</param>
-            <param name="date">The (UTC) date to return as text.</param>
-            <param name="format">A standard or custom date and time format string.</param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.Time(System.Web.Mvc.HtmlHelper,System.DateTime,System.String,System.Boolean)">
-            <summary>
-            Returns a &lt;time&gt; element with the specified date.
-            </summary>
-            <param name="helper">The HTML helper instance that this method extends.</param>
-            <param name="date">The (UTC) date to return as text.</param>
-            <param name="format">A standard or custom date and time format string.</param>
-            <param name="abbrev"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.TimeWhen(System.Web.Mvc.HtmlHelper,System.Nullable{System.DateTime},System.Boolean)">
-            <summary>
-            Returns a &lt;time&gt; element when the specified date occured.
-            </summary>
-            <param name="helper">The HTML helper instance that this method extends.</param>
-            <param name="date">The (UTC) date to return as text.</param>
-            <param name="abbrev"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.TimeWhen(System.Web.Mvc.HtmlHelper,System.DateTime,System.Boolean)">
-            <summary>
-            Returns a &lt;time&gt; element when the specified date occured.
-            </summary>
-            <param name="helper">The HTML helper instance that this method extends.</param>
-            <param name="date">The (UTC) date to return as text.</param>
-            <param name="abbrev"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.WhatByWhen(System.Web.Mvc.HtmlHelper,Weavy.Core.Models.Item)">
-            <summary>
-            Returns a string containing when item was created/modified and by whom.
-            </summary>
-            <param name="helper"></param>
-            <param name="item"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.SubscribersText(System.Web.Mvc.HtmlHelper,Weavy.Core.Models.IFollowable)">
-            <summary>
-            Returns a string containing info about number of subscribers.
-            </summary>
-            <param name="helper"></param>
-            <param name="followable"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.ScrollMore(System.Web.Mvc.HtmlHelper,Weavy.Core.Collections.IPagedList,System.String,System.String,System.String)">
-            <summary>
-            Renders an anchor for loading more data with infinite scroll.
-            </summary>
-            <param name="helper"></param>
-            <param name="list"></param>
-            <param name="target">Selector for target element where next page should be appended</param>
-            <param name="mode">Specify "append" or "prepend" to indicate whether new data scould be appended or prepended to <paramref name="target"/>.</param>
-            <param name="url">Base url to use when constructing the link for loading next page of data.</param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.ScrollNext(System.Web.Mvc.HtmlHelper,Weavy.Core.Collections.IPagedList,System.String)">
-            <summary>
-            Renders an anchor element for loading next page of data with infinite scroll.
-            </summary>
-            <param name="helper"></param>
-            <param name="list"></param>
-            <param name="url">base url to use when generating the link</param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.SvgSpinner(System.Web.Mvc.HtmlHelper,System.Int32,System.Boolean)">
-            <summary>
-            Renders markup for the animated spinner.
-            </summary>
-            <param name="html"></param>
-            <param name="size"></param>
-            <param name="spin"><c>true</c> to add the .spin class on first render.</param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.Title(System.Web.Mvc.HtmlHelper,System.String)">
-            <summary>
-            Helper for getting the title for the html head.
-            </summary>
-            <param name="helper">The HTML helper instance that this method extends.</param>
-            <param name="title">The defined title.</param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.ThemeHead(System.Web.Mvc.HtmlHelper,System.String)">
-            <summary>
-            Helper for rendering link to favicon, app manifest etc.
-            </summary>
-            <param name="helper">The HTML helper instance that this method extends.</param>
-            <param name="area"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.ThemeStyle(System.Web.Mvc.HtmlHelper,System.String)">
-            <summary>
-            Helper for rendering a themed stylesheet.
-            </summary>
-            <param name="helper">The HTML helper instance that this method extends.</param>
-            <param name="fileName">Virtual path to scss file, e.g. ~/styles/weavy.scss</param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.ThemeStyle(System.Web.Mvc.HtmlHelper,System.String,System.String,System.Object,System.Nullable{Weavy.Bundler.BundleOutput})">
-            <summary>
-            Helper for rendering a themed stylesheet.
-            </summary>
-            <param name="helper">The HTML helper instance that this method extends.</param>
-            <param name="fileName">Virtual path to scss file, e.g. ~/styles/weavy.scss</param>
-            <param name="htmlColor">html color, e.g. "red" or "#0275D8", <c>null</c> uses the color from the current <see cref="T:Weavy.Core.Models.Theme"/> settings.</param>
-            <param name="htmlAttributes"></param>
-            <param name="output"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.GetThemedScssFile(System.String,System.String)">
-            <summary>
-            Helper method for returning a .scss stylesheet file with our theme colors injected.
-            </summary>
-            <param name="fileName"></param>
-            <param name="htmlColor"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.GetThemedCss(System.String,System.String)">
-            <summary>
-            
-            </summary>
-            <param name="fileName"></param>
-            <param name="htmlColor"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.StarToggle(System.Web.Mvc.HtmlHelper,Weavy.Core.Models.IEntity,System.Boolean,System.Object)">
-            <summary>
-            Returns an button element for starring/unstarring the specified entity.
-            </summary>
-            <param name="html">The HTML helper instance that this method extends.</param>
-            <param name="entity">The entity for which to generate a star link.</param>
-            <param name="compact">Set to false to allow toggling an unstarred entity.</param>
-            <param name="htmlAttributes">Html attributes to merge with the button.</param>
-            <returns>An anchor element (a element).</returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.FollowToggle(System.Web.Mvc.HtmlHelper,Weavy.Core.Models.User)">
-            <summary>
-            Returns a button element (&lt;button&gt;) for following/unfollowing the specified user.
-            </summary>
-            <param name="html">The HTML helper instance that this method extends.</param>
-            <param name="user">The entity for which to generate a star link.</param>
-            <returns>A button.</returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.SubscribeToggle(System.Web.Mvc.HtmlHelper,Weavy.Core.Models.IFollowable,System.Object)">
-            <summary>
-            Returns a anchor element (a element) for turning on/off notifications for the specified entity.
-            </summary>
-            <param name="html">The HTML helper instance that this method extends.</param>
-            <param name="followable">The entity.</param>
-            <param name="htmlAttributes">Html attributes to merge.</param>
-            <returns>An anchor.</returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.JoinToggle(System.Web.Mvc.HtmlHelper,Weavy.Core.Models.Space)">
-            <summary>
-            Returns an anchor element (a element) for joining/leaving the specified space.
-            </summary>
-            <param name="html">The HTML helper instance that this method extends.</param>
-            <param name="space">The entity for which to generate a star link.</param>
-            <returns>An anchor element (a element).</returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.ItemBadge(System.Web.Mvc.HtmlHelper,Weavy.Core.Models.Item)">
-            <summary>
-            Returns a badge with item status, i.e. editing, locked etc.
-            </summary>
-            <param name="html">The HTML helper instance that this method extends.</param>
-            <param name="item">The entity for which to generate a badge.</param>
-            <returns>A badge (span element).</returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.PreviewAttributes(System.Web.Mvc.HtmlHelper,Weavy.Core.Models.File,System.String,Weavy.Core.Models.IEntity)">
-            <summary>
-            Gets html attributes needed for triggering image and document preview.
-            </summary>
-            <param name="html"></param>
-            <param name="file"></param>
-            <param name="href"></param>
-            <param name="attachedto"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.InitHtmlEditor(System.Web.Mvc.HtmlHelper)">
-            <summary>
-            Returns a javascript for initializing the html editor.
-            </summary>
-            <param name="helper"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.PartialContent(System.Web.Mvc.HtmlHelper,Weavy.Core.Models.ContentView,Weavy.Core.Models.IContent,System.Object,System.Web.Mvc.ViewDataDictionary)">
-            <summary>
-            Renders the specified partial view as an HTML-encoded string.
-            </summary>
-            <param name="html"></param>
-            <param name="view"></param>
-            <param name="content"></param>
-            <param name="model"></param>
-            <param name="viewData"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.RenderPartialContent(System.Web.Mvc.HtmlHelper,Weavy.Core.Models.ContentView,Weavy.Core.Models.IContent,System.Object,System.Web.Mvc.ViewDataDictionary)">
-            <summary>
-            Renders the specified partial view.
-            </summary>
-            <param name="html"></param>
-            <param name="view"></param>
-            <param name="content"></param>
-            <param name="model"></param>
-            <param name="viewData"></param>
-        </member>
-        <member name="M:Weavy.Web.Extensions.HtmlHelperExtensions.GetPartialContentViewName(System.Web.Mvc.HtmlHelper,Weavy.Core.Models.ContentView,Weavy.Core.Models.IContent)">
-            <summary>
-            
-            </summary>
-            <param name="html"></param>
-            <param name="view"></param>
-            <param name="content"></param>
-            <returns></returns>
-        </member>
-        <member name="T:Weavy.Web.Extensions.HtmlHelperExtensions.ViewDataContainer">
-            <summary>
-            Private helper class needed to create a HtmlHelper with a new view context etc.
-            </summary>
-        </member>
-        <member name="T:Weavy.Web.Extensions.UrlHelperExtensions">
-            <summary>
-            Extension methods for creating urls.
-            </summary>
-        </member>
-        <member name="F:Weavy.Web.Extensions.UrlHelperExtensions.CONTROLLER">
-            <summary>
-            Returns the string "Controller".
-            </summary>
-        </member>
-        <member name="F:Weavy.Web.Extensions.UrlHelperExtensions.ACTION">
-            <summary>
-            Returns the string "Action".
-            </summary>
-        </member>
-        <member name="F:Weavy.Web.Extensions.UrlHelperExtensions.AREA">
-            <summary>
-            Returns the string "Area".
-            </summary>
-        </member>
-        <member name="M:Weavy.Web.Extensions.UrlHelperExtensions.Back(System.Web.Mvc.UrlHelper,System.String)">
-            <summary>
-            Get an url suitable for navigating back from the current page.
-            </summary>
-            <param name="helper">The URL helper instance that this method extends.</param>
-            <param name="url">Default back url.</param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.UrlHelperExtensions.Back``1(System.Web.Mvc.UrlHelper,System.Linq.Expressions.Expression{System.Action{``0}})">
-            <summary>
-            Helper method for generating for getting an url for navigating back from the current page.
-            </summary>
-            <typeparam name="TController"></typeparam>
-            <param name="helper">The URL helper instance that this method extends.</param>
-            <param name="expression"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.UrlHelperExtensions.Action``1(System.Web.Mvc.UrlHelper,System.Linq.Expressions.Expression{System.Action{``0}})">
-            <summary>
-            Helper method for generating urls to strongly typed actions.
-            </summary>
-            <typeparam name="TController"></typeparam>
-            <param name="helper">The URL helper instance that this method extends.</param>
-            <param name="expression"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.UrlHelperExtensions.IsActive``1(System.Web.Mvc.UrlHelper,System.Linq.Expressions.Expression{System.Action{``0}},Weavy.Web.Models.LinkActive)">
-            <summary>
-            
-            </summary>
-            <typeparam name="TController"></typeparam>
-            <param name="helper"></param>
-            <param name="expression"></param>
-            <param name="active"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.UrlHelperExtensions.Rebuild(System.Web.Mvc.UrlHelper,System.Object[])">
-            <summary>
-            Rebuilds the url of the current request by adding, removing and/or replacing query string parameters.
-            </summary>
-            <param name="helper">The URL helper instance that this method extends.</param>
-            <param name="replacement"></param>
-            <returns></returns>
-            <example>
-            A call to <c>Rebuild("tab", null, "p", 1, "ps", 25)</c> should remove the 'tab' parameter and add or replace the 'p' and 'ps' parameters depending on if they exist or not.
-            </example>
-        </member>
-        <member name="M:Weavy.Web.Extensions.UrlHelperExtensions.OrderBy(System.Web.Mvc.UrlHelper,System.String)">
-            <summary>
-            Adds an orderby query string parameter to the current request path.
-            </summary>
-            <param name="helper">The URL helper instance that this method extends.</param>
-            <param name="column"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.UrlHelperExtensions.ScrollNext(System.Web.Mvc.UrlHelper,Weavy.Core.Collections.IPagedList,System.String)">
-            <summary>
-            Renders an url for loading next page of data with infinite scroll.
-            </summary>
-            <param name="helper">The URL helper instance that this method extends.</param>
-            <param name="list"></param>
-            <param name="url">base url to use when generating the link</param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.UrlHelperExtensions.Icon(System.Web.Mvc.UrlHelper,System.Nullable{System.Int32},System.Boolean,System.Boolean)">
-            <summary>
-            Returns the url to the theme icon.
-            </summary>
-            <param name="helper">The URL helper instance that this method extends.</param>
-            <param name="size"></param>
-            <param name="retina"></param>
-            <param name="absolute"></param> 
-            <returns></returns>
-        </member>
-        <member name="T:Weavy.Web.Extensions.WeavyHtmlExtensions">
-            <summary>
-            Contains extension methods for generating html markup.
-            </summary>
-        </member>
-        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.AvatarImg(Weavy.Core.Models.IHasAvatar,System.Int32,System.Boolean,System.Nullable{System.Drawing.Color},System.Boolean,System.Object,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean)">
-            <summary>
-            Returns the avatar image for the specified item.
-            </summary>
-            <param name="item"></param>
-            <param name="size"></param>
-            <param name="retina"></param>
-            <param name="background"></param>
-            <param name="absolute"></param>
-            <param name="htmlAttributes"></param>
-            <param name="width"></param>
-            <param name="height"></param>
-            <param name="presence"><c>true</c> to add presence status to the image, otherwise <c>false</c>.</param>
-            <param name="rasterize"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.AvatarImg(Weavy.Core.Models.Notification,System.Int32,System.Boolean,System.Nullable{System.Drawing.Color},System.Boolean,System.Object,System.Nullable{System.Int32},System.Nullable{System.Int32})">
-            <summary>
-            
-            </summary>
-            <param name="item"></param>
-            <param name="size"></param>
-            <param name="retina"></param>
-            <param name="background"></param>
-            <param name="absolute"></param>
-            <param name="htmlAttributes"></param>
-            <param name="width"></param>
-            <param name="height"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.AvatarImg(Weavy.Core.Models.File,System.Int32,System.Boolean,System.Nullable{System.Drawing.Color},System.Boolean,System.Object,System.Nullable{System.Int32},System.Nullable{System.Int32})">
-            <summary>
-            
-            </summary>
-            <param name="file"></param>
-            <param name="size"></param>
-            <param name="retina"></param>
-            <param name="background"></param>
-            <param name="absolute"></param>
-            <param name="htmlAttributes"></param>
-            <param name="width"></param>
-            <param name="height"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.AvatarImg(Weavy.Core.Models.Post,System.Int32,System.Boolean,System.Nullable{System.Drawing.Color},System.Boolean,System.Object,System.Nullable{System.Int32},System.Nullable{System.Int32})">
-            <summary>
-            
-            </summary>
-            <param name="item"></param>
-            <param name="size"></param>
-            <param name="retina"></param>
-            <param name="background"></param>
-            <param name="absolute"></param>
-            <param name="htmlAttributes"></param>
-            <param name="width"></param>
-            <param name="height"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.AvatarLink(Weavy.Core.Models.IHasAvatar,System.Int32,System.Boolean,System.Nullable{System.Drawing.Color},System.Boolean,System.Object,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean)">
-            <summary>
-            Returns an avatar image that links to the specified entity.
-            </summary>
-            <param name="entity"></param>
-            <param name="size"></param>
-            <param name="retina"></param>
-            <param name="background"></param>
-            <param name="absolute"></param>
-            <param name="htmlAttributes"></param>
-            <param name="width"></param>
-            <param name="height"></param>
-            <param name="presence"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.Breadcrumb(Weavy.Core.Models.IContent,System.Object)">
-            <summary>
-            Returns breadcrumb navigation for the specified content item.
-            </summary>
-            <param name="entity"></param>
-            <param name="htmlAttributes"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.Description(Weavy.Core.Models.IndexResult)">
-            <summary>
-            Returns a descriptive text for the specified search result.
-            </summary>
-            <param name="result"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.FAB(Weavy.Core.Models.App)">
-            <summary>
-            Returns a FAB with links for creating content in folder.
-            </summary>
-            <param name="app"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.AllowedChildrenString(Weavy.Core.Models.App)">
-            <summary>
-            Gets the allowed children for the app as a comma separated string of guids, or <c>null</c> if all are allowed.
-            </summary>
-            <param name="app"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.AllowedParentsString(Weavy.Core.Models.App)">
-            <summary>
-            Gets the allowed parents for the app as a comma separated string of guids, or <c>null</c> if all are allowed.
-            </summary>
-            <param name="app"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.DisplayInTreeView(Weavy.Core.Models.App)">
-            <summary>
-            Returns true if an app should be displayed in the tree view
-            </summary>
-            <param name="app"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.AllowedParentsString(Weavy.Core.Models.Item)">
-            <summary>
-            Gets the allowed parents for the item as a comma separated string of guids, or <c>null</c> if all are allowed.
-            </summary>
-            <param name="item"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.AsTagLinks(System.Collections.Generic.IEnumerable{System.String})">
-            <summary>
-            Returns the tags as a comma separated list of anchors.
-            </summary>
-            <param name="tags"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.MarkdownToHtml(System.String)">
-            <summary>
-            Converts a markdown string to Html.
-            </summary>
-            <param name="markdown">The markdown to convert to html</param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.CommentsText(Weavy.Core.Models.ICommentable,System.Boolean)">
-            <summary>
-            Return a string with the number of comments for en entity, e.g. "3 comments".
-            </summary>
-            <param name="entity"></param>
-            <param name="abbrev"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.FollowersText(Weavy.Core.Models.User,System.Boolean)">
-            <summary>
-            Return a string with the number of follers a user has, e.g. "3 followers".
-            </summary>
-            <param name="user"></param>
-            <param name="abbrev"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.MembersText(Weavy.Core.Models.Space,System.Boolean)">
-            <summary>
-            Return a string with the number of members in a space, e.g. "3 members".
-            </summary>
-            <param name="space"></param>
-            <param name="abbrev"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.MembersText(Weavy.Core.Models.Role,System.Boolean)">
-            <summary>
-            Return a string with the number of members in a group, e.g. "3 members".
-            </summary>
-            <param name="group"></param>
-            <param name="abbrev"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.Icon(Weavy.Core.Models.Layout)">
-            <summary>
-            Returns the icon to use for the layout.
-            </summary>
-            <param name="layout"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.Icon(Weavy.Core.Models.ContentView)">
-            <summary>
-            Returns the icon to use for the view.
-            </summary>
-            <param name="view"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.Liketext(Weavy.Core.Models.ILikeable)">
-            <summary>
-            Return a contextual description of which people likes the object, e.g. "You and 3 others like this".
-            </summary>
-            <param name="likeable"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.Domain(Weavy.Core.Models.Embed)">
-            <summary>
-            Gets the domain where the embed originates.
-            </summary>
-            <param name="embed"></param>
-            <returns>The domain.</returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.Facepile(System.Collections.Generic.IEnumerable{Weavy.Core.Models.User},System.Int32,System.Int32,System.Boolean,System.Object)">
-            <summary>
-            Render linked avatar images for the specified user objects. 
-            </summary>
-            <param name="users"></param>
-            <param name="max"></param>
-            <param name="size"></param>
-            <param name="retina"></param>
-            <param name="htmlAttributes"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.Link(Weavy.Core.Models.IEntity)">
-            <summary>
-            Returns a link to the entity.
-            </summary>
-            <param name="entity"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.GetAdditionalData(System.Web.Mvc.ViewDataDictionary,System.String)">
-            <summary>
-            Helper method to return additional data for a ViewDataDictionary.
-            </summary>
-            <param name="viewData"></param>
-            <param name="key"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Weavy.Web.Extensions.WeavyHtmlExtensions.WidgetScript(Weavy.Core.Models.Space,System.Boolean)">
-            <summary>
-            Gets the script needed to embed this strip in the external system.
-            </summary>
-        </member>
-        <member name="T:Weavy.Web.Filters.HandleExceptionFilter">
-            <summary>
-            Logs unhandled exceptions and displays a custom error page.
-            </summary>
-        </member>
-        <member name="M:Weavy.Web.Filters.HandleExceptionFilter.OnException(System.Web.Mvc.ExceptionContext)">
-            <summary>
-            Called when an exception occurs.
-            </summary>
-            <param name="filterContext">The filter context.</param>
-        </member>
-        <member name="T:Weavy.Web.WeavyApplication">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:Weavy.Web.WeavyApplication.Application_Start">
-            <summary>
-            Start up Weavy on application start.
-            </summary>
-        </member>
-        <member name="M:Weavy.Web.WeavyApplication.Application_End">
-            <summary>
-            Shut down Weavy to free up some resources.
-            </summary>
-        </member>
-        <member name="M:Weavy.Web.WeavyApplication.Application_PreSendRequestHeaders(System.Object,System.EventArgs)">
-            <summary>
-            Remove some HTTP Headers for a little extra security (by obscurity)
-            </summary>
-            <param name="sender"></param>
-            <param name="e"></param>
         </member>
         <member name="T:Weavy.Web.Owin.BasicAuthenticationExtensions">
             <summary>
@@ -10420,9 +10605,16 @@
             <param name="e"></param>
             <returns></returns>
         </member>
+        <member name="M:Weavy.Web.Plugins.RealTimeHook.HandleAsync(Weavy.Core.Events.AfterInsertSpace)">
+            <summary>
+            Push inserted space to user.
+            </summary>
+            <param name="e"></param>
+            <returns></returns>
+        </member>
         <member name="M:Weavy.Web.Plugins.RealTimeHook.HandleAsync(Weavy.Core.Events.AfterTrashSpace)">
             <summary>
-            Push trahsed space to user.
+            Push trashed space to user.
             </summary>
             <param name="e"></param>
             <returns></returns>
@@ -10574,16 +10766,16 @@
             <param name="e"></param>
             <returns></returns>
         </member>
-        <member name="M:Weavy.Web.Plugins.RealTimeHook.HandleAsync(Weavy.Core.Events.AfterAddBubble)">
+        <member name="M:Weavy.Web.Plugins.RealTimeHook.HandleAsync(Weavy.Core.Events.AfterOpenBubble)">
             <summary>
-            
+            Push newly added bubbles to clients.
             </summary>
             <param name="e"></param>
             <returns></returns>
         </member>
         <member name="M:Weavy.Web.Plugins.RealTimeHook.HandleAsync(Weavy.Core.Events.AfterRemoveBubble)">
             <summary>
-            
+            Push newly removed bubbles to clients.
             </summary>
             <param name="e"></param>
             <returns></returns>
@@ -10851,6 +11043,11 @@
             
             </summary>
         </member>
+        <member name="F:Weavy.Web.SignalR.RealTimeHub.EVENT_INSERTED_SPACE">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="F:Weavy.Web.SignalR.RealTimeHub.EVENT_TRASHED_SPACE">
             <summary>
             
@@ -10911,7 +11108,7 @@
             
             </summary>
         </member>
-        <member name="F:Weavy.Web.SignalR.RealTimeHub.EVENT_BUBBLE_ADDED">
+        <member name="F:Weavy.Web.SignalR.RealTimeHub.EVENT_BUBBLE_OPENED">
             <summary>
             
             </summary>
@@ -11102,7 +11299,7 @@
             
             </summary>            
         </member>
-        <member name="P:Weavy.Web.SignalR.WidgetHub.WidgetSettings.Origin">
+        <member name="P:Weavy.Web.SignalR.WidgetHub.WidgetSettings.Href">
             <summary>
             
             </summary>
@@ -11123,6 +11320,11 @@
             </summary>
         </member>
         <member name="P:Weavy.Web.SignalR.WidgetHub.WidgetSettings.ThemeColor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Weavy.Web.SignalR.WidgetHub.WidgetSettings.Logo">
             <summary>
             
             </summary>
@@ -11152,6 +11354,11 @@
             Gets or sets a value indicating if the client should update its resources due to a version mismatch between client and server. 
             </summary>
         </member>
+        <member name="P:Weavy.Web.SignalR.WidgetHub.WidgetSettings.StatusUrl">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="P:Weavy.Web.SignalR.WidgetHub.WidgetSettings.PersonalAvatar">
             <summary>
             
@@ -11173,6 +11380,11 @@
             </summary>
         </member>
         <member name="P:Weavy.Web.SignalR.WidgetHub.WidgetSettings.MessengerUrl">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Weavy.Web.SignalR.WidgetHub.WidgetSettings.FileBrowserUrl">
             <summary>
             
             </summary>

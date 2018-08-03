@@ -1,8 +1,0 @@
-/// <reference path="../_core.scss" />
-.waves-effect {
-    .waves-ripple {
-        background: rgba($black, .05);
-        $gradient: rgba($black, .05) 0, rgba($black, .15) 40%, rgba($black, .25) 50%, rgba($black, .15) 60%, rgba($black, .05) 70%;
-        background: radial-gradient($gradient);
-    }
-}

@@ -15,12 +15,9 @@
     flex-direction: column;
     display: none;
     padding: $modal-dialog-margin; // TODO: Rename to $modal-padding
+    @include scroll-y;
     // custom click handling to close modal
     pointer-events: all;
-    overflow-x: hidden;
-    overflow-y: auto;
-    // Prevent body scroll, use polyfill for cross browser support
-    @include overscroll-behavior-contain;
     // Prevent Chrome on Windows from adding a focus outline. For details, see
     // https://github.com/twbs/bootstrap/pull/10951.
     outline: 0;
@@ -33,8 +30,12 @@
         transform: translate(0, -25%);
     }
 
-    &.show .modal-dialog {
-        transform: translate(0, 0);
+    &.show {
+        display: flex !important;
+
+        .modal-dialog {
+            transform: translate(0, 0);
+        }
     }
 }
 
@@ -46,15 +47,12 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    overflow-x: hidden;
-    overflow-y: auto;
-    // Prevent body scroll, use polyfill for cross browser support
-    @include overscroll-behavior-contain;
     // counteract the pointer-events: none; in the .modal-dialog
     pointer-events: auto;
     background-color: $modal-content-bg;
     background-clip: padding-box;
     border: $modal-content-border-width solid $modal-content-border-color;
+    @include scroll-y;
     @include border-radius($border-radius-lg);
     @include box-shadow($modal-content-box-shadow-xs);
 }

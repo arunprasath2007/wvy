@@ -6,10 +6,10 @@
             var width = (int)Math.Floor((option.VoteCount / (double)Model.Poll.VoteCount) * 100);
             <tr @if (option.HasVoted) { <text>class="active" </text> }>
                 <td class="input">
-                    <label class="custom-control custom-radio">
+                    <div class="custom-control custom-radio">
                       <input id="option-@option.Id" name="option" type="radio" class="custom-control-input" value="@option.Id" @if (option.HasVoted) { <text> checked</text>}>
-                      <span class="custom-control-indicator"></span>
-                    </label>
+                      <label class="custom-control-label" for="option-@option.Id"></label>
+                    </div>
                 </td>
                 <td class="option" data-votes="@option.VoteCount">
                     <div class="progress">

@@ -28,7 +28,7 @@
         var spaceid = $(this).data("spaceid");
 
         if (spaceid) {
-            weavy.bubbles.open(spaceid, "personal", "", $(this).attr("href"));
+            weavy.bubbles.open(spaceid, $(this).attr("href"));
         }
     });
 
@@ -86,24 +86,26 @@
             }
         });
         
-        _height = $("html").height();
+        _height = $("html").height() || $("main").outerHeight();
 
         window.top.postMessage({ "name": "notificationLoaded", "id": _notificationId, "height": _height }, "*");
 
+        window.requestAnimationFrame(reportHeight);
+
         // create an observer
-        var target = document.querySelector(".card-comments");
+        var comments = document.querySelector(".card-comments");
 
-        observer = new MutationObserver(function (mutations) {
-            reportHeight();
-        });
-
-        var config = { attributes: true, childList: true, characterData: false, subtree: true };
-        observer.observe(target, config);
+        if (comments) {
+            try {
+                observer = new MutationObserver(reportHeight);
+                observer.observe(comments, { attributes: true, childList: true, characterData: false, subtree: true });
+            } catch (e) { }
+        }
         _timer = close(_timespan);
     });
 
     function reportHeight() {
-        var tempHeight = $("html").height();
+        var tempHeight = Math.max($("main").outerHeight(), $(".card-comments").outerHeight() + 276 + 16); // Respect the overflowing height of the emoji-picker (276) 
 
         if (tempHeight !== _height) {
             _height = tempHeight;

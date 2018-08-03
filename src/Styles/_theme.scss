@@ -1,6 +1,6 @@
-// custom variables
-$font-size-xs: .75rem;
-$font-size-xxs: .6667rem;
+﻿// custom variables
+$font-size-xs: .75rem; // 9pt 12px
+$font-size-xxs: .625rem; // 7.5pt 10px
 
 $font-weight-thin: 200;
 $font-weight-light: 400; // 300 is incorrectly displayed as 200 on chrome/win
@@ -14,6 +14,13 @@ $deep-orange: #E17637 !default;
 $light-green: #7CD345 !default;
 $amber: #E7BD32 !default;
 $lime: #C1E335 !default;
+
+$opacity-faded: .15;
+$opacity-backdrop: .55; // Almost matching Material Design (.54) + color shade 500 (55%)
+$opacity-muted: .55;
+$opacity-disabled: .65;
+$opacity-hover: .75;
+$opacity-panel: .95;
 
 $shades: ( 50: 98%, 100: 96%, 200: 88%, 300: 77%, 400: 66%, 500: 55%, 600: 44%, 700: 33%, 800: 22%, 900: 12% ) !default;
 
@@ -35,8 +42,8 @@ $cover-gradient-end: mix($theme-500, #1EBFC2, 40%) !default; // cyan-600
 $navbar-height: 3rem;
 $sidebar-left-width: 16rem;
 
-$backdrop-bg: rgba(0, 0, 0, 0.54); 
-$icon-color: rgba(0, 0, 0, .54); // see http://google.github.io/material-design-icons/#styling-icons-in-material-design
+$backdrop-bg: rgba(0, 0, 0, $opacity-backdrop); // (opacity ~.54)
+$icon-color: rgba(0, 0, 0, $opacity-muted); // (opacity ~.54) see http://google.github.io/material-design-icons/#styling-icons-in-material-design
 
 // material design animation and shadows from https://fezvrasta.github.io/bootstrap-material-design/
 $md-animation-curve-fast-out-slow-in: cubic-bezier(0.4, 0, 0.2, 1) !default;
@@ -106,11 +113,39 @@ $theme-colors: (
     "transparent": transparent
 );
 
+
+// The yiq lightness value that determines when the lightness of color changes from "dark" to "light". Acceptable values are between 0 and 255.
+$yiq-contrasted-threshold: 186;
+
+// Customize the light and dark text colors for use in our YIQ color contrast function.
+$yiq-text-dark: $gray-800; // $gray-900;
+$yiq-text-light: $white;
+
 $enable-caret: false;
 $enable-shadows: true;
 
+$spacer: 1rem; // 1rem
+
+// Negative spacers added
+$spacers: (
+  -5: ($spacer * -3),
+  -4: ($spacer * -1.5),
+  -3: ($spacer * -1),
+  -2: ($spacer * -.5),
+  -1: ($spacer * -.25),
+  0: 0,
+  1: ($spacer * .25),
+  2: ($spacer * .5),
+  3: $spacer,
+  4: ($spacer * 1.5),
+  5: ($spacer * 3)
+);
+
 $body-bg: $white; // $white
 $body-color: $gray-800; // $gray-900
+
+$panel-bg: $gray-100;
+$panel-color: $gray-700;
 
 $link-color: $theme-600; // theme-color("primary")
 $link-hover-color: darken($link-color, 15%); // darken($link-color, 15%)
@@ -128,28 +163,40 @@ $container-max-widths: (
 // sm: 540px, md: 720px, lg: 960px, xl: 1140px
 */
 
-$grid-gutter-width: 2rem; //30px;
+$grid-gutter-width: 1.5rem; //30px;
 
 $line-height-lg: 1.6; // Makes font-size 20 (1.25rem) -> 32px
 $line-height-sm: 1/0.7; // Makes font-size 14 (0.875rem) -> 20px
 
 // Border-width is 1 pixel to always be hairline sharp
 $border-width: 1px; // .0625rem; // 1px;
+$border-color: $gray-200; // $gray-300;
+
 $border-radius: .1875rem; // .25rem
 $border-radius-lg: .1875rem; // .3rem
 $border-radius-sm: .1875rem; // .2rem
 
+// TODO: Map these to md-shadows
+$box-shadow-sm: 0 .125rem .25rem rgba($black, .075);
+$box-shadow: 0 .5rem 1rem rgba($black, .15);
+$box-shadow-lg: 0 1rem 3rem rgba($black, .175);
+
+$component-active-color: $white;
+$component-active-bg: $primary;
+
 $headings-line-height: 1.25; // 1.2
 
-$display1-size: 3rem; // 6rem
-$display2-size: 2.5rem; // 5.5rem
-$display3-size: 2rem; // 4.5rem
-$display4-size: 1.5rem; // 3.5rem
+$display1-size: 2.5rem;// 3rem; // 6rem
+$display2-size: 2rem; // 2.5rem; // 5.5rem
+$display3-size: 1.75rem; // 2rem; // 4.5rem
+$display4-size: 1.5rem; // 1.5rem; // 3.5rem
 
 $display1-weight: $font-weight-thin; // 300
 $display2-weight: $font-weight-thin; // 300
 $display3-weight: $font-weight-thin; // 300
-$display4-weight: $font-weight-light; // 300
+$display4-weight: $font-weight-thin; // 300
+
+$display-line-height: 1.33333333 !default;
 
 $lead-font-size: 1.125rem; // ($font-size-base * 1.25)
 $lead-font-weight: $font-weight-light; // 300
@@ -163,11 +210,33 @@ $blockquote-font-size: 1.125rem; // ($font-size-base * 1.25)
 
 $hr-border-color: rgba($black,.1); // rgba($black,.1)
 
+$table-cell-padding: .75rem; //.75rem
+$table-cell-padding-sm: .25rem; //.3rem
+
+$table-border-color: $gray-200; //$gray-300
+
+$table-head-bg: $body-bg; //$gray-200;
+$table-head-color: $panel-color; // $gray-700;
+
+$input-btn-focus-width: .1875rem; //.2rem;
+$input-btn-focus-color: rgba($component-active-bg, .25);
+$input-btn-focus-box-shadow: 0 0 0 $input-btn-focus-width $input-btn-focus-color;
+
+$btn-disabled-opacity: $opacity-disabled; // .65
 $btn-link-disabled-color: $text-muted; // $gray-600;
+$btn-transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out; // background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 
 $input-border-color: $theme-300; // $gray-400
 
-$input-placeholder-color: $gray-300; // $gray-600
+$input-placeholder-color: $gray-500; // $gray-600
+
+$form-check-input-margin-y: .125rem; // .25rem
+
+$custom-control-indicator-box-shadow: inset 0 .25rem .25rem rgba($black, .0625); // inset 0 .25rem .25rem rgba($black, .1);
+$custom-control-indicator-checked-box-shadow: 0 0 0 1px $white; // none;
+$custom-control-indicator-focus-box-shadow: 0 0 0 1px $white, $input-btn-focus-box-shadow; // 0 0 0 1px $body-bg, $input-btn-focus-box-shadow;
+$custom-control-indicator-active-box-shadow: 0 0 0 1px $white; // none;
+$custom-checkbox-indicator-indeterminate-box-shadow: 0 0 0 1px $white; // none;
 
 $dropdown-padding-y: .25rem; // .5rem
 $dropdown-spacer: .25rem; // .125rem;
@@ -210,6 +279,7 @@ $card-spacer-x: 1rem; // 1.25rem
 
 $card-columns-count: 2; // 3
 
+//$badge-font-size: $font-size-xxs; // 75%
 $badge-font-weight: $font-weight-strong; // $font-weight-bold
 
 $modal-inner-padding: 1rem; //15px;
@@ -219,6 +289,7 @@ $modal-content-border-width: 0; // $border-width
 $modal-content-box-shadow-xs: $md-shadow-24dp; //  0 3px 9px rgba($black,.5)
 $modal-content-box-shadow-sm-up: $md-shadow-24dp; //  0 5px 15px rgba($black,.5)
 
+$modal-backdrop-opacity: $opacity-backdrop; //.5;
 $modal-header-padding: .75rem 1rem 0 1rem; // 15px
 
 $alert-padding-x: 1rem; // 1.25rem
@@ -231,14 +302,15 @@ $list-group-item-padding-x: 1rem; // 1.25rem
 
 $list-group-disabled-color: $text-muted; // $gray-600
 
-$breadcrumb-padding-y: 0; // .75rem !default;
-$breadcrumb-padding-x: .5rem; // 1rem !default;
+$breadcrumb-padding-y: .5rem; // .75rem !default;
+$breadcrumb-padding-x: 0rem; // 1rem !default;
 $breadcrumb-item-padding: .5rem !default;
 
 $breadcrumb-margin-bottom: 0; //1rem !default;
 
-$breadcrumb-bg: transparent; // $gray-200
+$breadcrumb-bg: $gray-200; // $gray-200
 $breadcrumb-divider-color: $text-muted; // $gray-600
 $breadcrumb-active-color: $text-muted; //$gray-600
+$breadcrumb-divider: ""; // quote("/");
 
 $close-font-weight: $font-weight-strong; // $font-weight-bold

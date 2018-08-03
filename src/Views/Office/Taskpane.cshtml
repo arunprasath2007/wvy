@@ -1,12 +1,13 @@
 ﻿@using Weavy.web.Controllers
-@model Weavy.Core.Models.File
+@model OfficeTaskpaneModel
 @{
     Layout = null;
-    Title = Model.Name;
+    var spaces = SpaceService.Search(new SpaceQuery() { Archived = false, Filter = true }).Where(x => x.HasPermission(Permission.Create));
 }
 <!DOCTYPE html>
 <html class="@HtmlClasses()" lang="@System.Threading.Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName">
 <head>
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, maximum-scale=1, user-scalable=no"> @* Viewport must contain width=device-width, minimum-scale=1.0 to trigger GPU Rasterization https://www.chromium.org/developers/design-documents/chromium-graphics/how-to-get-gpu-rasterization *@
     <meta name="turbolinks-cache-control" content="no-preview">
@@ -15,83 +16,71 @@
     @Html.ThemeStyle("~/styles/weavy.scss")
     @Bundler.Scripts("~/scripts/office.bundle")
 </head>
-<body class="@BodyClasses("has-navbar", "has-navbar-secondary")" @BodyAttributes>
+<body class="@BodyClasses()" @BodyAttributes data-spaces-count="@spaces.Count()">
     @Html.SvgSprite()
 
-    <nav class="navbar-theme fixed-top">
-        <div class="navbar navbar-primary justify-content-center">
-            <div class="navbar-middle">
-                <span class="navbar-text">@Model.Name</span>
+    <main role="main">
+        <div class="container-fluid my-3" data-file-id="@(Model.Document?.Id)">
+            <div class="actions">
+                @if (!Model.IsWebDav && Model.Document.HasPermission(Permission.Edit)) {
+                    <button class="btn btn-icon btn-badge" title="Save to Weavy" data-id="@Model.Document.Id" data-save>@Html.SvgIcon("content-save") </button>
+                }
+                <a class="btn btn-icon nav-link btn-badge" data-toggle="drawer" data-target="#drawer-messenger" title="Messenger">
+                    @Html.SvgIcon("message-text")
+                    @Html.ConversationsBadge()
+                </a>
             </div>
-        </div>
-        <div class="navbar navbar-secondary">
-            <nav class="nav nav-tabs" role="tablist">
-                <a class="nav-link active" href="#comments-tab" data-toggle="tab" role="tab" title="Comments">Comments</a>
-                <a class="nav-link" href="#details-tab" data-toggle="tab" role="tab" title="Details">Details</a>
-            </nav>
-        </div>
-    </nav>
 
-    <div class="alerts">@Html.AlertMessages()</div>
-
-    <main role="main" data-file-id="@Model.Id">
-        <div class="container-fluid my-3">
-            <div class="tab-content">
-
-                <div class="tab-pane active" id="comments-tab" role="tabpanel">
-                    <section class="file-comments" id="comments">
-                        <div class="list-group comments" data-container="comments">
-                            @Html.Partial("_Comments", Model.Comments, new ViewDataDictionary() { { "preview", true } })
+            @if (Model.Document == null) {
+                <div class="attach @(spaces.Count() != 0 ? "office-attach" : "office-newbie")" id="drawer-attach">
+                    @if (spaces.Count() == 0) {
+                        @Html.SvgIcon("star", color: "yellow-400", htmlAttributes: new { @class = "large-icon" })
+                        <h1 class="display-2">Newbie</h1>
+                        <p>Looks like your Weavy installation is brand new and fresh.</p>
+                        <p>We suggest you head over to Weavy and setup some spaces you can attach your files to.</p>
+                        <div class="form-buttons d-flex justify-content-center">
+                            <button type="button" class="btn btn-outline-secondary" title="Refresh" data-reload>@Html.SvgIcon("refresh")</button>
+                            <a class="btn btn-primary" href="~/" target="_blank">Take me there</a>
                         </div>
-                        @Html.Partial("_CommentForm", Model, new ViewDataDictionary() { { "container", ".comments" } })
+                    } else {
+                        <h1 class="display-2">Attach file</h1>
+                        <form action="" method="post" data-attach>
+                            @Html.EditorFor(x => x.ContentAttachModel.FolderId)
+                            <label for="DocName">Name</label>
+                            <div class="input-group">
+                                @Html.TextBox("DocName", Model.Name, new { @class = "form-control filename", placeholder = "Filename" })
+                                <span class="input-group-addon" id="extension">.@Model.Extension</span>
+                            </div>
+                            <div class="form-buttons">
+                                <button type="submit" class="btn btn-primary">Attach</button>
+                                <button type="button" class="btn btn-outline-secondary" data-toggle-attach>Cancel</button>
+                            </div>
+                        </form>
+                    }
+                </div>
+                <div class="office-splash">
+                    <img class="i large-icon" src="@Url.Content("~/img/upload-plus.svg")" />
+                    <h1 class="display-2">Collaborate and Share</h1>
+                    <p>This document is not yet attached to your Weavy installation.</p>
+                    <p>Attach to enable cross app collaboration and sharing.</p>
+                    <div class="form-buttons d-flex justify-content-center">
+                        <button type="button" class="btn btn-primary" data-toggle-attach>Attach</button>
+                    </div>
+                </div>
+            } else {
+                <div class="comments">
+                    <h1 class="display-2">Comments</h1>
+                    <section class="file-comments my-4" id="comments">
+                        <div class="list-group comments" data-container="comments">
+                            @if (Model.Document.Comments.IsNullOrEmpty()) {
+                                <p class="text-muted text-center">Start the conversation! @Html.SvgIcon("message-plus", null, null, new { @class = "i-inline" })</p>
+                            }
+                            @Html.Partial("_Comments", Model.Document.Comments, new ViewDataDictionary() { { "preview", true } })
+                        </div>
+                        @Html.Partial("_CommentForm", Model.Document, new ViewDataDictionary() { { "container", ".comments" } })
                     </section>
                 </div>
-
-                <div class="tab-pane" id="details-tab" role="tabpanel">
-                    @if (WeavyRequestContext.Current.Space != null) {
-                        <div class="form-group">
-                            <label>Space</label>
-                            <p class="form-control-static"><a href="@WeavyRequestContext.Current.Space.Url(absolute: true)" target="_blank">@WeavyRequestContext.Current.Space.Name</a></p>
-                        </div>
-                    }
-
-                    @if (WeavyRequestContext.Current.App != null && WeavyRequestContext.Current.App is IFolder) {
-                        <div class="form-group">
-                            <label>Folder</label>
-                            <p class="form-control-static"><a href="@WeavyRequestContext.Current.App.Url(absolute: true)" target="_blank">@WeavyRequestContext.Current.App.Name</a></p>
-                        </div>
-                    }
-
-                    @if (Model.Description != null) {
-                        <div class="form-group">
-                            <label>Description</label>
-                            <p class="form-control-static">@Model.Description</p>
-                        </div>
-                    }
-
-                    <div class="form-group">
-                        <label>Size</label>
-                        <p class="form-control-static">@FileHelper.FileSizeAsString(Model.Size)</p>
-                    </div>
-
-                    @if (Model.Tags.Any()) {
-                        <div class="form-group">
-                            <label>Tags</label>
-                            <p class="form-control-static">@Model.Tags.JoinTags()</p>
-                        </div>
-                    }
-
-                    <div class="form-group">
-                        <label>Created</label>
-                        <p class="form-control-static">@Model.CreatedAt.ToLongDateString() @Model.CreatedAt.ToShortTimeString()</p>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Modified</label>
-                        <p class="form-control-static">@Model.ModifiedAt.ToLongDateString() @Model.ModifiedAt.ToShortTimeString()</p>
-                    </div>
-                </div>
-            </div>
+            }
         </div>
     </main>
 
@@ -100,7 +89,21 @@
         Html.RenderPartial("_Preview");
         Html.RenderPartial("_EditCommentModal");
         Html.RenderPartial("_ProfileModal");
+        Html.RenderPartial("_FeedbackModal");
     }
 
+    <aside id="drawer-messenger" class="drawer drawer-right">
+        <header class="pane-header">
+            <div class="navbar navbar-secondary">
+                <h1 class="display-2">Messenger</h1>
+                <button class="btn btn-icon" type="button" data-close="drawer">@Html.SvgIcon("close")</button>
+            </div>
+        </header>
+
+        <div class="drawer-body drawer-body-padded">
+            <iframe src="@Url.Action(nameof(Weavy.Web.Areas.Messenger.Controllers.MessengerController.Index), typeof(Weavy.Web.Areas.Messenger.Controllers.MessengerController).ControllerName(), new { area =  typeof(Weavy.Web.Areas.Messenger.Controllers.MessengerController).ControllerName() })" name="weavy-standalone"></iframe>
+        </div>
+    </aside>
+    <div class="drawer-backdrop"></div>
 </body>
 </html>

@@ -4,9 +4,10 @@ weavy.connection = (function ($, w) {
     var connection = $.hubConnection("/signalr", { useDefaultPath: false });        
     var reconnecting = false;
     var hubProxies = { rtm: connection.createHubProxy('rtm'), widget: connection.createHubProxy('widget') };        
-    var wins = []; // all windows when in embedded mode
+    var wins = [w]; // all windows when in embedded mode
     var _reconnectTimeout = null;
     var reconnectRetries = 0;
+    var explicitlyDisconnected = false;
 
     //----------------------------------------------------------
     // Init the connection
@@ -20,7 +21,7 @@ weavy.connection = (function ($, w) {
         }
 
         // init windows collection
-        wins = windows || [w];
+        wins = windows || wins;
         
         if ((weavy.context && weavy.context.user > 0) || force) {            
             // connect to the server                
@@ -32,7 +33,8 @@ weavy.connection = (function ($, w) {
     }
 
     // start the connection
-    function connect(url) {        
+    function connect(url) {     
+        explicitlyDisconnected = false;
         if (connection.state === $.signalR.connectionState.disconnected) {
             return connection.start();
         } else {
@@ -42,6 +44,7 @@ weavy.connection = (function ($, w) {
 
     // stop connection
     function disconnect() {
+        explicitlyDisconnected = true;
         if (connection.state !== $.signalR.connectionState.disconnected) {
             return connection.stop();
         }
@@ -59,7 +62,7 @@ weavy.connection = (function ($, w) {
     connection.logging = false;
 
     connection.stateChanged(function (state) {
-        
+
         if (state.newState === $.signalR.connectionState.connected) {
             console.debug("connected: " + connection.id + " (" + connection.transport.name + ")");
 
@@ -105,16 +108,18 @@ weavy.connection = (function ($, w) {
     connection.disconnected(function () {
         console.info("disconnected...");
 
-        reconnectRetries++;
-        
-        if (reconnecting) {            
-            connection.start();
-            reconnecting = false;
-        } else {            
-            // connection dropped, try to connect again after 5s
-            setTimeout(function () {
-                connection.start();                
-            }, 5000);        
+        if (!explicitlyDisconnected) {
+            reconnectRetries++;
+
+            if (reconnecting) {
+                connection.start();
+                reconnecting = false;
+            } else {
+                // connection dropped, try to connect again after 5s
+                setTimeout(function () {
+                    connection.start();
+                }, 5000);
+            }
         }
 
         // trigger event
@@ -135,13 +140,15 @@ weavy.connection = (function ($, w) {
     }
 
     function triggerPostMessage(name, eventName, data) {
-        // trigger a post message on all windows when in ebedded mode
+        // trigger a post message on all windows when in embedded mode
         $(wins).each(function (i, win) {
             // trigger on all except the current one            
             if (win != w) {
                 try {
                     win.postMessage({ name: name, eventName: eventName, data: data }, "*")
-                } catch (e) {}
+                } catch (e) {
+                    console.error("could not relay realtime message", { name: name, eventName: eventName }, e);
+                }
                 
             }
         });
@@ -175,14 +182,15 @@ weavy.connection = (function ($, w) {
         
     function addWindow(win) {        
         // add window to array if not already added
-        if (wins.indexOf(win) === -1)
+        if (wins.indexOf(win) === -1) {
             wins.push(win)        
+        }
     }
 
     function removeWindow(win) {        
-        wins = _.filter(wins, function (existingWindow) {            
+        wins = _.filter(wins, function (existingWindow) {
             return existingWindow != win;
-        });        
+        });
     }
     
     return {

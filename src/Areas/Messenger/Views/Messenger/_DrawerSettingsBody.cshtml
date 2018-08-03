@@ -3,16 +3,12 @@
 <form class="form-settings">
     <fieldset>
         <legend>List settings</legend>
-        <div class="custom-controls-stacked">
-            @Html.EditorsForModel(group: "List", formGroups: false, formText: false)
-        </div>
+        @Html.EditorsForModel(group: "List", formGroups: false, formText: false)
     </fieldset>
 
     <fieldset>
         <legend>Message settings</legend>
-        <div class="custom-controls-stacked">
-            @Html.EditorsForModel(group: "Message", formGroups: false, formText: false)
-        </div>
+        @Html.EditorsForModel(group: "Message", formGroups: false, formText: false)
     </fieldset>
 
     <fieldset>
@@ -22,9 +18,8 @@
             <div class="alert alert-danger notification-denied">Desktop notifications have been disabled in this browser.</div>
             <div class="alert alert-info notification-missing">This browser does not support desktop notifications.</div>
         </div>
-        <div class="custom-controls-stacked">
-            @Html.EditorsForModel(group: "Notifications", formGroups: false, formText: false)
-        </div>
+        @Html.EditorsForModel(group: "Notifications", formGroups: false, formText: false)
+
     </fieldset>
 
     <fieldset>

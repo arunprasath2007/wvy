@@ -1,11 +1,15 @@
 /// <reference path="../_core.scss" />
 .nav-tabs {
+    padding-left: .25rem;
+    padding-right: .25rem;
+    min-height: $navbar-height;
+    flex-wrap: nowrap;
 
     .drawer-header > &, .navbar > & {
         border: none;
-        margin: -.5rem -.25rem;
+        margin: -1 * $navbar-padding-y -1 * $navbar-padding-x;
         align-items: flex-end;
-        width: 100%;
+        width: calc(100% + #{2 * $navbar-padding-x});
     }
 
     .nav-item {
@@ -27,6 +31,13 @@
         text-align: center;
         line-height: 1.75rem;
 
+        &:not(.nav-icon) {
+            display: flex;
+            flex: 0 1 auto;
+            min-width: 0;
+            justify-content: center;
+        }
+
         &.active {
             color: $link-color;
             border-color: $nav-tabs-link-active-border-color;
@@ -34,13 +45,12 @@
     }
 
     .nav-icon {
-        padding: .5rem 1rem .1875rem 1rem;
+        padding: .5rem .25rem;
 
         &.nav-search {
             // navbar search icon
-            padding: .625rem 0 0 0;
             margin-left: auto;
-            margin-right: 0;
+            margin-right: .25rem;
         }
 
 
@@ -48,20 +58,7 @@
             position: relative;
 
             .badge {
-                position: absolute;
-                top: .25rem;
-                right: .75rem;
-                font-size: $font-size-xs;
-                border-radius: 1.125rem;
-                margin: 0;
-                padding: .25rem .375rem;
-                min-width: 1.125rem;
-                height: 1.125rem;
-                line-height: 1.125rem;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                background: $deep-orange;
+                @include badge-notification;
             }
         }
     }
@@ -71,7 +68,11 @@
     }
 }
 
-
+.nav-title {
+    line-height: 2rem;
+    margin-top: 0;
+    margin-bottom: 0;
+}
 
 
 .tab-loading {

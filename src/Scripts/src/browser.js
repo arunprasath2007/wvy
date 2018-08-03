@@ -42,14 +42,14 @@ weavy.browser = {
         weavy.browser.tablet = true;
     }
 
-    window.addEventListener("message", function (e) {        
+    window.addEventListener("message", function (e) {                    
         switch (e.data.name) {
             case "ping":
                 e.source.postMessage({ "name": "pong" }, e.origin);
                 break;
             case "reload":
                 window.location.reload();
-                break;
+                break;            
             default:
         }
     }, false);

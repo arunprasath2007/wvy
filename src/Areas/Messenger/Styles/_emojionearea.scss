@@ -41,6 +41,13 @@ $inline-height: 34px;
     }
 }
 
+// fix for ie
+html.ie .#{$css-prefix} {
+    .#{$css-prefix}-editor {        
+        min-height: 3em;
+    }
+}
+
 .#{$css-prefix} {
     &, & * {
         box-sizing: border-box;
@@ -88,6 +95,7 @@ $inline-height: 34px;
             content: attr(placeholder);
             display: block;
             color: $placeholder-color;
+            font-size: $font-size-sm;
         }
 
         &:focus {

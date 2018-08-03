@@ -70,7 +70,7 @@ weavy.fileupload = (function () {
                 $upload.find(".progress").addClass("invisible").find(".progress-bar").css("width", "0%");
             }
         });
-
+        
         $(".fab-upload input[type=file]").fileupload({
             dataType: "json",
             pasteZone: null,
@@ -79,7 +79,7 @@ weavy.fileupload = (function () {
 
                 if (e.delegatedEvent.type !== "drop") {
                     // close dropup
-                    $(".main-fab [data-toggle='dropdown']").dropdown("toggle");
+                    $("main > .fab [data-toggle='dropdown']").dropdown("toggle");
                 }
 
                 // upload file
@@ -87,7 +87,7 @@ weavy.fileupload = (function () {
             },
             progressall: function (e, data) {
                 // update progress bar            
-                $("head").next().css({ "width": parseInt(data.loaded / data.total * 100, 10) + "%", "opacity": 1 });
+                $("html > .turbolinks-progress-bar.custom").css({ "width": parseInt(data.loaded / data.total * 100, 10) + "%", "opacity": 1 });
             },
             done: function (e, data) {
                 var ids = null;
@@ -143,7 +143,7 @@ weavy.fileupload = (function () {
             },
             always: function () {
                 // remove progress bar
-                $("html").find(".turbolinks-progress-bar.custom").remove();
+                $("html > .turbolinks-progress-bar.custom").remove();
             }
         });
     });

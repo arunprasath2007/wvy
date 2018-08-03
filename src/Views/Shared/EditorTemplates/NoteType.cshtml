@@ -7,11 +7,10 @@
     <div class="swatches">
         @foreach (AlertType item in values) {
             var name = item.GetDisplayName();
-            <label class="custom-control custom-radio" title="@name">
+            <div class="custom-control custom-radio" title="@name">
                 <input class="custom-control-input" id="@ViewData.TemplateInfo.GetFullHtmlFieldId(item.ToString())" name="@inputName" type="radio" value="@item" @(Model == item ? @"checked" : "")>
-                <span class="custom-control-indicator swatch swatch-@name.ToLower()"></span>
-
-            </label>
+                <label class="custom-control-label swatch swatch-@name.ToLower()"></label>
+            </div>
         }
     </div>
 }

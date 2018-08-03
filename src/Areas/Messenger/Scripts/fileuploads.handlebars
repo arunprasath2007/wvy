@@ -1,7 +1,7 @@
 {{#each data}}
 <tr>
-    <td><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#file"></use></svg></td>
+    <td class="table-icon"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#file"></use></svg></td>
     <td>{{title}} ({{file_size size}})<input type="hidden" name="attachments" value="{{id}}" /></td>
-    <td><button type="button" class="btn btn-icon" data-remove="{{id}}"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#close"></use></svg></button></td>
+    <td class="table-icon"><button type="button" class="btn btn-icon" data-remove="{{id}}"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#close-circle"></use></svg></button></td>
 </tr>
 {{/each}}

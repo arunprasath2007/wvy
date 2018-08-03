@@ -31,7 +31,7 @@
             <legend>People</legend>
             <table class="table table-users">
                 <tr>
-                    <td><button type="button" class="btn btn-icon">@Html.SvgIcon("plus")</button></td>
+                    <td class="table-icon"><button type="button" class="btn btn-icon">@Html.SvgIcon("plus")</button></td>
                     <td><a href="javascript:;" data-toggle="drawer-add-people">Add People</a></td>
                     <td></td>
                 </tr>
@@ -41,9 +41,9 @@
                         <td>@member.Title</td>
                         <td class="table-icon dropdown">
                             @if (member.Id == User.Id) {
-                                <button type="button" class="btn btn-icon" data-leave="@member.Id">@Html.SvgIcon("close")</button>
+                                <button type="button" class="btn btn-icon" data-leave="@member.Id">@Html.SvgIcon("close-circle")</button>
                             } else {
-                                <button type="button" class="btn btn-icon" data-remove-user="@member.Id">@Html.SvgIcon("close")</button>
+                                <button type="button" class="btn btn-icon" data-remove-user="@member.Id">@Html.SvgIcon("close-circle")</button>
                             }
                         </td>
                     </tr>

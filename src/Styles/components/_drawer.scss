@@ -32,8 +32,8 @@ $zindex-drawer-backdrop: $zindex-modal-backdrop;
     background-color: $body-bg;
     box-shadow: $md-shadow-8dp;
     // transform offscreen
-    transition: transform;
-    will-change: transform;
+    transition: transform, opacity;
+    will-change: transform, opacity;
     transform-style: preserve-3d;
     @include material-animation-default();
 }
@@ -114,7 +114,13 @@ $zindex-drawer-backdrop: $zindex-modal-backdrop;
 
 .drawer-title {
     margin: .5rem 0;
-    @include text-truncate();
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    > span {
+        @include text-truncate();
+    }
 }
 
 

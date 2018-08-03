@@ -8,6 +8,7 @@
 ~/scripts/vendor/jquery-textcomplete/jquery.textcomplete.min.js
 ~/scripts/vendor/emojione/emojione.js
 ~/scripts/vendor/emojionearea/emojionearea.min.js
+~/scripts/vendor/twitter-text/punycode.js
 ~/scripts/vendor/twitter-text/twitter-text.js
 ~/scripts/vendor/mousetrap/mousetrap.min.js
 ~/scripts/vendor/mousetrap/mousetrap-global-bind.min.js
@@ -39,6 +40,7 @@
 ~/scripts/src/alert.js
 ~/scripts/src/audio.js
 ~/scripts/src/bubbles.js
+~/scripts/src/connect.js
 ~/scripts/src/dropdown.js
 ~/scripts/src/modal.js
 ~/scripts/src/infinitescroll.js
@@ -54,6 +56,8 @@
 ~/scripts/src/share.js
 ~/scripts/src/userspicker.js
 ~/scripts/src/autosave.js
+~/scripts/src/attach.js
+~/scripts/src/urlContext.js
 ~/scripts/_fileupload.bundle
 ~/scripts/_button.bundle
 ~/scripts/_preview.bundle

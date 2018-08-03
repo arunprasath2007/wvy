@@ -3,7 +3,7 @@
     Layout = "~/Views/Shared/_LayoutBasic.cshtml";
     Title = "Sign up";
 }
-<div class="container">
+<div class="container mt-5">
     <div class="row justify-content-sm-center">
         <div class="col-sm-6">
             <div class="text-center mb-3">
@@ -16,8 +16,8 @@
                 @Html.AntiForgeryToken()
                 @Html.EditorsForModel(formLabels: false, formText: false)
                 <div class="form-buttons">
-                    <button type="submit" class="btn btn-primary btn-load waves-effect">Sign up</button>
-                    <a href="@Url.Action(nameof(AccountController.SignIn), typeof(AccountController).ControllerName())" class="btn btn-outline-secondary waves-effect">Cancel</a>
+                    <button type="submit" class="btn btn-primary btn-load">Sign up</button>
+                    <a href="@Url.Action(nameof(AccountController.SignIn), typeof(AccountController).ControllerName())" class="btn btn-outline-secondary">Cancel</a>
                 </div>
             }
         </div>

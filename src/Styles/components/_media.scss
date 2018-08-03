@@ -10,9 +10,17 @@
 .media-body {
     word-break: break-word;
     line-height: 1.25;
+    // needed for text-truncate to work, see https://css-tricks.com/flexbox-truncated-text/
+    min-width: 0;
 }
 
 
 .media-title {
     font-weight: normal;
+}
+
+.media-icons {
+    display: flex;
+    flex: 0 0 auto;
+    margin: -.25rem;
 }

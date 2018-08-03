@@ -34,17 +34,18 @@ weavy.content = (function ($) {
     $(document).on("change", ".space-picker[data-folder-picker]", function (e) {
         var $spacepicker = $(this);
         var $folderpicker = $("#" + $spacepicker.data("folder-picker"));
+        var id = $folderpicker.data("id");
+
+        var url = "/ui/" + (id.length > 0 ? $folderpicker.data("type") + "s/" + $folderpicker.data("id") + "/folders?spaceid=" + $spacepicker.val() : $spacepicker.val() + "/folders");
 
         // fetch select options for folder picker from server
         $.ajax({
-            url: weavy.url.resolve("/ui/" + $folderpicker.data("type") + "s/" + $folderpicker.data("id") + "/folders?spaceid=" + $spacepicker.val()),
+            url: weavy.url.resolve(url),
             type: "GET"
         }).then(function (html) {
             $folderpicker.html(html);
         });
 
     });
-
-
 })($);
 

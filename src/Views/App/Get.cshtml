@@ -2,24 +2,64 @@
 @{
     IEntity current = Model.App.Parent == null ? (IEntity)Space : Model.App;
     IEntity parent = Model.App.Parent ?? (IEntity)Space;
-}
-
-@if (parent.Type == EntityType.Space) {
     Title = "Files";
-    @section navbar_middle {
-        <div class="navbar-middle">@Html.StarToggle(Space)<span class="navbar-text">@Space.Name</span></div>
-    }
-    @section navbar_secondary {
-        @{ Html.RenderPartial("_SpaceTabs"); }
-    }
-} else {
-    @section navbar_middle {
-        @{ Html.RenderPartial("_BreadcrumbMenu", Model.App); }
-    }
-    Back = Url.Back(parent.Url());
+    bool hasBreadcrumbOverflow = Model.App.Breadcrumbs().Count() > 1;
+    bool forceBreadcrumbOverflow = Model.App.Breadcrumbs().Count() > 4;
+    string breadcrumbClasses = "hide-last";
+    breadcrumbClasses += hasBreadcrumbOverflow ? " pl-sm-1 pl-xl-0 pr-2" : " ml-1 pr-2 pl-xl-0 ml-xl-0";
+    breadcrumbClasses += forceBreadcrumbOverflow ? " hide-trail" : "";
 }
 
-<div class="my-3">
+@section navbar_middle {
+<div class="navbar-middle">
+    <a href="@Space.Url()" class="navbar-text">
+        @Space.Name
+        @if (Space.Teamname != null) {
+            <small class="d-none d-sm-inline">@@@Space.Teamname</small>
+        }
+    </a>
+    @Html.StarToggle(Space)
+</div>
+}
+@section navbar_secondary {
+    @{ Html.RenderPartial("_SpaceTabs"); }
+}
+
+<nav class="navbar navbar-light navbar-files container-xl sticky-top flex-nowrap align-items-start pl-xl-0 pl-2">
+    <div class="d-flex flex-wrap align-items-start flex-shrink-1">
+        @if (parent is App p) {
+            <div class="d-flex align-items-start flex-shrink-1">
+                @if (hasBreadcrumbOverflow) {
+                    <div class="@(forceBreadcrumbOverflow ? "" : "d-sm-none")">
+                        @{ Html.RenderPartial("_BreadcrumbMenu", Model.App); }
+                    </div>
+                }
+                @Model.App.Breadcrumb(htmlAttributes: new { @class = breadcrumbClasses })
+            </div>
+        }
+
+        <h6 class="nav-title mx-1 align-center d-flex flex-shrink-1" title="@Model.App.Title">
+            @if (parent is App) {
+                <span class="text-truncate mx-1">
+                    @Model.App.Title
+                </span>
+            } else {
+                <span class="text-truncate mr-1">Files</span>
+            }
+
+        </h6>
+    </div>
+    <div class="ml-auto d-flex">
+        @if (Model.App is IStarrable starrable) {
+            @Html.StarToggle(starrable, true)
+        }
+        @{ Html.RenderPartial("_AppMenu", Model.App);}
+    </div>
+</nav>
+
+
+<div class="container-xl">
+
     @if (Model.View == ContentView.Table) {
         <table class="table table-hover table-content">
             <thead>
@@ -47,16 +87,6 @@
             }
 
             <tbody id="infinite-scroll-target">
-                @if (parent is App p) {
-                    <tr data-href="@p.Url()">
-                        <td class="table-icon">@Html.SvgIcon("subdirectory-arrow-left", htmlAttributes: new { @class = "rotate-90" })</td>
-                        <td><a href="@p.Url()">..</a></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td class="table-icon">@{ Html.RenderPartial("_AppMenu", Model.App);}</td>
-                    </tr>
-                }
                 @{ Html.RenderPartial("_Content" + Model.View.ToString(), Model.Content); }
             </tbody>
         </table>
@@ -69,7 +99,9 @@
             @{ Html.RenderPartial("_Content" + Model.View.ToString(), Model.Content); }
         </div>
     }
-    @Html.ScrollMore(Model.Content)
+</div>
+
+@Html.ScrollMore(Model.Content)
 </div>
 
 
@@ -79,4 +111,8 @@
 
 @section footer {
     @Html.Partial("_Modals", Model)
+    @{
+        Html.RenderPartial("_DrawerSpace", Space);
+        Html.RenderPartial("_MembersAddModal");
+    }
 }

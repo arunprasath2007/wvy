@@ -10,11 +10,7 @@
     tr:first-child td {
         border-top-color: transparent;
     }
-    // avatar
-    td:nth-child(1) {
-        padding: $spacer/2 0;
-        width: 2rem;
-    }
+
     // name
     td:nth-child(2), th:nth-child(2) {
         width: 100%;
@@ -33,15 +29,9 @@
 
     td {
         border: none;
-        padding: .5rem;
         background-color: $gray-100;
     }
-    // file icon
-    td:nth-child(1) {
-        padding-left: .75rem;
-        padding-right: 0;
-        width: 2.25rem;
-    }
+
     // name
     td:nth-child(2), th:nth-child(2) {
         width: 100%;
@@ -67,12 +57,7 @@
         border: none;
 
     }
-    // file icon
-    td:nth-child(1) {
-        padding-left: 0;
-        padding-right: 0;
-        width: 1.5rem;
-    }
+
     // name
     td:nth-child(2), th:nth-child(2) {
         width: 100%;

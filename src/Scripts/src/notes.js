@@ -67,7 +67,6 @@ weavy.notes = (function ($) {
 
     // change bg color on modal according to selected note type
     $(document).on("change", "#note-modal input[name=NoteType]", function (e) {
-        console.log("change");
         var $label = $(this).closest("label");
         var $content = $(this).closest(".modal-content");
         var css = "note-" + $label.attr("title").toLowerCase();

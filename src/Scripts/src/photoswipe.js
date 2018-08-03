@@ -4,28 +4,33 @@
     $(document).on("click", "[data-photoswipe]", function (e) {
         // open widget preview
         if (weavy.browser.embedded) {
+            document.documentElement.classList.add("pswp-transparent");
             weavy.postal.post({ name: "open-preview" });
         }
 
         var $target = $(e.target);
-        e.preventDefault();        
+        e.preventDefault();
 
         if (weavy.browser.embedded) {
             // embedded: let widget apply styles before photoswipe init
             var $that = $(this);
-            setTimeout(function () { photoswipe($that); }, 0);
+            $(window).one("resize", function () { photoswipe($that, true); });
+
         } else {
             photoswipe($(this));
         }
     });
 
+
+
     // cleanup before cache (needed when clicking back in the browser)
     $(document).on("turbolinks:before-cache", function () {
         // close photoswipe
         $(".pswp--open").removeClass("pswp--open pswp--animate_opacity pswp--notouch pswp--css_animation pswp--svg pswp--animated-in pswp--has_mouse");
+        document.documentElement.classList.remove("pswp-transparent");
     });
 
-    function photoswipe(element) {
+    function photoswipe(element, noZoomAnimation) {
         var $element = $(element);
         var photoswipeId = $element.data("photoswipe");
 
@@ -65,6 +70,10 @@
             }
         };
 
+        if (noZoomAnimation) {
+            delete options.getThumbBoundsFn;
+        }
+
         // init and open PhotoSwipe
         var pswpelement = document.querySelectorAll('.pswp')[0];
         var pswp = new PhotoSwipe(pswpelement, PhotoSwipeUI_Default, slides, options);
@@ -86,7 +95,8 @@
             // close widget preview
             if (weavy.browser.embedded) {
                 weavy.postal.post({ name: "close-preview" });
-            }            
+                $(window).one("resize", function () { requestAnimationFrame(function () { document.documentElement.classList.remove("pswp-transparent"); }) });
+            }
         });
 
         // beforeResize event fires each time size of gallery viewport updates
