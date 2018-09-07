@@ -10,7 +10,7 @@
         <a class="dropdown-item" href="@(Url.Action<SpaceController>(c => c.Edit(Model.Id)))">@Html.SvgIcon("pencil", "primary") Edit</a>
     }
 
-    @Html.StarToggle(Model, false, new { @class = "dropdown-item" })
+    @Html.StarToggle(Model, false, htmlAttributes: new { @class = "dropdown-item" })
 
     @Html.SubscribeToggle(Model, new { @class = "dropdown-item" })
 
@@ -83,7 +83,7 @@
     <button class="dropdown-item d-not-connected" data-close-space="@Model.Id">@Html.SvgIcon("close-circle") Close</button>
 
     if (Model.HasPermission(Permission.Admin)) {
-        <button class="dropdown-item d-connected" data-disconnect-space="@Model.Id">@Html.SvgIcon("link-variant-off", "orange") Disconnect this url</button>
+        <button class="dropdown-item d-connected" data-disconnect-space="@Model.Id">@Html.SvgIcon("link-variant-off", "orange") Disconnect from url</button>
     }
 
 }

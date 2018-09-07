@@ -13,10 +13,10 @@
         @Html.HttpMethodOverride(HttpVerbs.Put)
 
         <div class="text-center">
-            @Html.EditorsForModel(include: new string[] { nameof(Model.Avatar) }, formLabels: false)
+            @Html.EditorFor(x => Model.Avatar, additionalViewData: new { AvatarFor = Model })
         </div>
 
-        @Html.EditorsForModel(exclude: new string[] { nameof(Model.Avatar) })
+        @Html.EditorsForModel()
 
         <div class="form-buttons">
             <button type="submit" name="button" value="@(nameof(SpaceController.Update))" class="btn btn-primary btn-load" title="Save">Save</button>

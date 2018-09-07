@@ -1,160 +1,110 @@
 ﻿var weavy = weavy || {};
 weavy.api = (function ($) {
 
-    // get file
-    function getFile(id) {
+    // get entity
+    function get(entityType, entityId) {
         return $.ajax({
-            url: "/api/files/" + id,
-            type: "GET"
+            url: weavy.url.api(entityType) + entityId,
+            type: "GET",
+            cache: false
         });
     }
 
-    // TODO: remove these and use trash/restore(entityType, entityId) instead
-
-    // trash user
-    function trashUser(id, method) {
-        return trash("user", id, method);
-    }
-
-    // restore user
-    function restoreUser(id, method) {
-        return restore("user", id, method);
-    }
-
-    // trash note
-    function trashNote(id, method) {
-        return trash("note", id, method);
-    }
-
-    // restore note
-    function restoreNote(id, method) {
-        return restore("note", id, method);
-    }
-
-    // trash post
-    function trashPost(id, method) {
-        return trash("post", id, method);
-    }
-
-    // restore post
-    function restorePost(id, method) {
-        return restore("post", id, method);
-    }
-
-    // trash comment 
-    function trashComment(id) {
-        return trash("comment", id);
-    }
-
-    // restore comment 
-    function restoreComment(id) {
-        return restore("comment", id);
-    }
-
-    // trash the specified entity
+    // trash entity
     function trash(entityType, entityId, method) {
         return $.ajax({
-            url: weavy.url.resolve("/api/" + entityType + "s/" + entityId + "/trash"),
+            url: weavy.url.api(entityType) + entityId + "/trash",
             method: method || "POST",
             contentType: "application/json"
         });
     }
 
-    // restore the specified entity
+    // restore entity
     function restore(entityType, entityId, method) {
         return $.ajax({
-            url: weavy.url.resolve("/api/" + entityType + "s/" + entityId + "/restore"),
+            url: weavy.url.api(entityType) + entityId + "/restore",
             method: method || "POST",
             contentType: "application/json"
         });
     }
 
-    // like the specified entity
+    // like entity
     function like(entityType, entityId) {
         return $.ajax({
-            url: weavy.url.resolve("/api/" + entityType + "s/" + entityId + "/like"),
+            url: weavy.url.api(entityType) + entityId + "/like",
             method: "POST",
             contentType: "application/json"
         });
     }
 
-    // unlike the specified entity
+    // unlike entity
     function unlike(entityType, entityId) {
         return $.ajax({
-            url: weavy.url.resolve("/api/" + entityType + "s/" + entityId + "/like"),
+            url: weavy.url.api(entityType) + entityId + "/like",
             method: "DELETE",
             contentType: "application/json"
         });
     }
 
-    // star the specified entity
+    // star entity
     function star(entityType, entityId) {
         return $.ajax({
-            url: weavy.url.resolve("/api/" + entityType + "s/" + entityId + "/star"),
+            url: weavy.url.api(entityType) + entityId + "/star",
             method: "POST",
             contentType: "application/json"
         });
     }
 
-    // unstar the specified entity
+    // unstar entity
     function unstar(entityType, entityId) {
         return $.ajax({
-            url: weavy.url.resolve("/api/" + entityType + "s/" + entityId + "/star"),
+            url: weavy.url.api(entityType) + entityId + "/star",
             method: "DELETE",
             contentType: "application/json"
         });
     }
 
-    // follow the specified entity
+    // follow entity
     function follow(entityType, entityId) {
         return $.ajax({
-            url: weavy.url.resolve("/api/" + entityType + "s/" + entityId + "/follow"),
+            url: weavy.url.api(entityType) + entityId + "/follow",
             method: "POST",
             contentType: "application/json"
         });
     }
 
-    // unfollow the specified entity
+    // unfollow entity
     function unfollow(entityType, entityId) {
         return $.ajax({
-            url: weavy.url.resolve("/api/" + entityType + "s/" + entityId + "/follow"),
+            url: weavy.url.api(entityType) + entityId + "/follow",
             method: "DELETE",
             contentType: "application/json"
         });
     }
 
-    // join the specified space
-    function join(id) {
+    // join space
+    function join(spaceId) {
         return $.ajax({
-            url: weavy.url.resolve("/api/spaces/" + id + "/members"),
+            url: weavy.url.api("space") + spaceId + "/members",
             method: "POST",
             contentType: "application/json"
         });
     }
 
-    // leave the specified space
-    function leave(id) {
+    // leave space
+    function leave(spaceId) {
         return $.ajax({
-            url: weavy.url.resolve("/api/spaces/" + id + "/members"),
+            url: weavy.url.api("space") + spaceId + "/members",
             method: "DELETE",
             contentType: "application/json"
         });
     }
 
-    // marks the specified notification as read
+    // marks notification as read
     function read(notificationId) {
         return $.ajax({
-            url: weavy.url.resolve("/api/notifications/" + notificationId + "/read"),
+            url: weavy.url.api("notification") + notificationId + "/read",
             method: "POST",
-            contentType: "application/json"
-        });
-    }
-
-    // marks the specified notification as unread
-    function unread(notificationId) {
-        return $.ajax({
-            url: weavy.url.resolve("/api/notifications/" + notificationId + "/read"),
-            method: "DELETE",
             contentType: "application/json"
         });
     }
@@ -162,16 +112,25 @@ weavy.api = (function ($) {
     // marks all notifications as read
     function readAll() {
         return $.ajax({
-            url: weavy.url.resolve("/api/notifications/read"),
+            url: weavy.url.api("notification") + "read",
             method: "POST",
             ContentType: "application/json"
+        });
+    }
+
+    // marks notification as unread
+    function unread(notificationId) {
+        return $.ajax({
+            url: weavy.url.api("notification") + notificationId + "/read",
+            method: "DELETE",
+            contentType: "application/json"
         });
     }
 
     // pin a post
     function pin(postId) {
         return $.ajax({
-            url: weavy.url.resolve("/api/posts/" + postId + "/pin"),
+            url: weavy.url.api("post") + postId + "/pin",
             method: "POST",
             ContentType: "application/json"
         });
@@ -180,22 +139,14 @@ weavy.api = (function ($) {
     // unpin a post
     function unpin(postId) {
         return $.ajax({
-            url: weavy.url.resolve("/api/posts/" + postId + "/pin"),
+            url: weavy.url.api("post") + postId + "/pin",
             method: "DELETE",
             ContentType: "application/json"
         });
     }
 
     return {
-        getFile: getFile,
-        trashComment: trashComment,
-        restoreComment: restoreComment,
-        trashPost: trashPost,
-        restorePost: restorePost,
-        trashNote: trashNote,
-        restoreNote: restoreNote,
-        trashUser: trashUser,
-        restoreUser: restoreUser,
+        get: get,
         like: like,
         unlike: unlike,
         follow: follow,

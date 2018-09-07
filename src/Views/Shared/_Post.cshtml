@@ -2,17 +2,24 @@
 
 @{
     bool details = ViewData["details"] as bool? ?? false;
-    var images = Model.Attachments.Where(x => FileHelper.IsWebImage(x.Name));
-    var files = Model.Attachments.Where(x => !FileHelper.IsWebImage(x.Name));
+    var creator = Model.CreatedBy();
+    var attachments = Model.Attachments();
+
+    var images = attachments.Where(x => FileHelper.IsWebImage(x.Blob.Name));
+    var files = attachments.Where(x => !FileHelper.IsWebImage(x.Blob.Name));
+
+    var embeds = Model.Embeds();
+    var embed = embeds.FirstOrDefault(x => !x.IsLink);
+    var link = embeds.FirstOrDefault(x => x.IsLink);
 }
 <div class="card post" data-type="post" data-id="@Model.Id" data-post-id="@Model.Id">
 
     <div class="card-header media">
-        @Model.CreatedBy.AvatarLink(48, htmlAttributes: new { @class = "mr-2" })
+        @creator.AvatarLink(48, htmlAttributes: new { @class = "mr-2" })
         <div class="media-body">
-            <h6 class="media-title">@Model.CreatedBy.Link() <small>@@@Model.CreatedBy.Username</small></h6>
+            <h6 class="media-title">@creator.Link() <small>@@@creator.Username</small></h6>
             <small class="text-muted">
-                @Html.Time(Model.CreatedAt) @if (details) {<text>in</text> @Model.Space.Link()}
+                @Html.Time(Model.CreatedAt) @if (details) {<text>in</text> @Model.Space().Link()}
                 @if (Model.ModifiedAt != Model.CreatedAt) {<text>&middot;</text> @Html.Time(Model.ModifiedAt, @"e\di\te\d")}
             </small>
         </div>
@@ -28,9 +35,9 @@
         </div>
     }
 
-    @if (Model.Embed != null) {
-        <div class="card-embed">
-            @{ Html.RenderPartial("_Embed", Model.Embed); }
+    @if (embed != null) {
+        <div class="card-embeds">
+            @{ Html.RenderPartial("_Embed", embed); }
         </div>
     }
 
@@ -43,22 +50,16 @@
         </div>
     }
 
-    @if (!Model.ContextUrl.IsNullOrEmpty()) {
-        var origin = new Uri(Model.ContextUrl).GetLeftPart(System.UriPartial.Authority);
-        <div class="context-link card-context">
-            <img class="icon" src="https://www.google.com/s2/favicons?domain=@origin">
-            <a class="text" href="@Model.ContextUrl" target="_blank" title="Open in context - @Model.ContextUrl" data-context-url="@Model.ContextUrl" data-weavy-context-url="@Model.Url(absolute: true)" data-weavy-context-space="@Model.SpaceId">@Model.ContextTitle</a>
-            <a class="link-open" href="@Model.ContextUrl" target="_blank" title="Open in context - @Model.ContextUrl" data-context-url="@Model.ContextUrl" data-weavy-context-url="@Model.Url(absolute: true)" data-weavy-context-space="@Model.SpaceId">@Html.SvgIcon("open-in-new", size: 18)</a>
-        </div>
-    }
 
     @if (files.Any()) {
         <div class="card-files">
-            <div class="list-group file-list">
-                @foreach (var file in files) {
-                    Html.RenderPartialContent(ContentView.List, file, viewData: new ViewDataDictionary { { "byline", false }, { "preview", true } });
-                }
-            </div>
+            @{ Html.RenderPartial("_Attachments", files); }
+        </div>
+    }
+
+    @if (link != null) {
+        <div class="card-context">
+            @{Html.RenderPartial("_ContextLink", link); }
         </div>
     }
 
@@ -69,7 +70,7 @@
     <div class="section-comments post-comments@(details ? "":" d-none")">
         @if (details) {
             <div class="list-group comments">
-                @{Html.RenderPartial("_Comments", Model.Comments); }
+                @{Html.RenderPartial("_Comments", Model.Comments()); }
             </div>
         } else {
             @Html.SvgSpinner()

@@ -14,7 +14,7 @@
         }
         @(Html.ActionLink<WidgetController>(c => c.Spaces(null, "archived"), text: "Archived", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Path))
     </nav>
-    @if (User.SystemPermissions.Contains(Permission.CreateSpace)) {
+    @if (PermissionService.HasSystemPermission(Permission.CreateSpace)) {
         <div class="fab">
             <a class="btn btn-round btn-primary" href="@(Url.Action<WidgetController>(c => c.NewSpace()))" title="Add space">@Html.SvgIcon("plus")</a>
         </div>

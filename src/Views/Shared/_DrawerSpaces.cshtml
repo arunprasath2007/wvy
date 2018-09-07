@@ -1,6 +1,6 @@
 ﻿<aside id="drawer-spaces" class="drawer drawer-left">
     <header class="drawer-header">
-        @if (User.SystemPermissions.Contains(Permission.ManageSystem)) {
+        @if (PermissionService.HasSystemPermission(Permission.ManageSystem)) {
             <a class="btn btn-icon" href="@(Url.Action<Weavy.Web.Areas.Manage.Controllers.HomeController>(c => c.Index()))" title=" Manage @WeavyContext.Current.System.Name">@Html.SvgIcon("settings")</a>
         }
         <a class="text-center pt-3" href="@(Url.Action<HomeController>(c => c.Index()))" title="Open Home">

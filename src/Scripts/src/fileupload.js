@@ -16,9 +16,39 @@ weavy.fileupload = (function () {
         $(this).addClass("d-none");
     });
 
+    // replace existing files after uploading files to folder
+    $(document).on("submit", ".upload-replace", function (e) {
+        e.preventDefault();
+        var $alert = $(this).closest(".alert");
+        var action = $(this).attr("action");
+        ids = $(this).find("input[name=blobs]").val().split(',').map(function (val) { return Number(val); });
+        $.ajax({
+            url: action,
+            type: "PUT",
+            contentType: "application/json",
+            data: JSON.stringify({ blobs: ids })
+        }).done(function (data, status, xhr) {
+            // reload page
+            Turbolinks.visit(location.toString(), { action: "replace" })
+        }).fail(function (xhr, status, error) {
+            var json = JSON.parse(xhr.responseText);
+            weavy.alert.warning(json.message);
+        }).always(function () {
+            $alert.alert('close');
+        });
+    });
+
+    // skip existing files after upload to folder
+    $(document).on("click", ".upload-skip", function (e) {
+        $(this).closest(".alert").alert('close');
+        if ($(this).data("uploaded") > 0) {
+            // reload page to display uploaded files
+            Turbolinks.visit(location.toString(), { action: "replace" })
+        }
+    });
+
     // init file uploads
     document.addEventListener("turbolinks:load", function () {
-        //console.debug("fileupload.js:init");
         // file upload
         $(".file-upload input[type=file]").fileupload({
             dataType: "json",
@@ -90,49 +120,33 @@ weavy.fileupload = (function () {
                 $("html > .turbolinks-progress-bar.custom").css({ "width": parseInt(data.loaded / data.total * 100, 10) + "%", "opacity": 1 });
             },
             done: function (e, data) {
-                var ids = null;
-
                 if (data.result.skipped) {
-                    ids = $.map(data.result.skipped, function (val) { return val.id; }).join(",");
-
+                    var action = weavy.url.resolve($(this).data("url"));
+                    var ids = $.map(data.result.skipped, function (val) { return val.id; }).join(",");
+                    var uploaded = data.result.uploaded ? data.result.uploaded.length : 0;
                     if (data.result.skipped.length === 1) {
                         weavy.alert.warning('There is already a file named ' + data.result.skipped[0].name + '.' +
-                            '<form class="alert-form skipped-files">' +
-                            '<button type="submit" class="btn btn-icon"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#check"></use></svg> Replace the file</button>' +
-                            '<input type="hidden" name="ids" value="' + ids + '" />' +
+                            '<form action="' + action + '" class="alert-form upload-replace">' +
+                            '<input type="hidden" name="blobs" value="' + ids + '" />' +
+                            '<button type="submit" class="btn btn-icon"><svg class="i">' +
+                            '<use xmlns: xlink="http://www.w3.org/1999/xlink" xlink: href="#check"></use></svg> Replace the file' +
+                            '</button > ' +
                             '</form>' +
-                            '<button type="button" class="btn btn-icon" data-dismiss="alert"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#close"></use></svg> Skip this file</button>');
+                            '<button type="button" class="btn btn-icon upload-skip" data-uploaded="' + uploaded + '">' +
+                            '<svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#close"></use></svg> Skip this file' +
+                            '</button>');
                     } else {
-                        weavy.alert.warning('There are ' + data.result.skipped.length + ' files with the same names. ' +
-                            '<form class="alert-form skipped-files">' +
-                            '<button type="submit" class="btn btn-icon"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#check"></use></svg> Replace the files</button>' +
-                            '<input type="hidden" name="ids" value="' + ids + '" />' +
+                        weavy.alert.warning('There are ' + data.result.skipped.length + ' files with the same names.' +
+                            '<form action="' + action +'" class="alert-form upload-replace">' +
+                            '<input type="hidden" name="blobs" value="' + ids + '" />' +
+                            '<button type="submit" class="btn btn-icon">' +
+                            '<svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#check"></use></svg> Replace the files' +
+                            '</button>' +
                             '</form>' +
-                            '<button type="button" class="btn btn-icon" data-dismiss="alert"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#close"></use></svg> Skip these files</button>');
+                            '<button type="button" class="btn btn-icon upload-skip" data-uploaded="' + uploaded + '">' +
+                            '<svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#close"></use></svg> Skip these files' +
+                            '</button>');
                     }
-
-                    var replaceUrl = weavy.url.resolve($(this).data("url").replace("files", "attach"));
-
-                    $(".skipped-files").on("submit", function (e) {
-                        // attach and replace existing files
-                        e.preventDefault();
-                        var $alert = $(this).closest(".alert");
-                        ids = $(this).find("input[name=ids]").val().split(',').map(function (val) { return Number(val); });
-                        $.ajax({
-                            url: replaceUrl,
-                            type: "POST",
-                            contentType: "application/json",
-                            data: JSON.stringify({ files: ids, replace: true })
-                        }).done(function (data, status, xhr) {
-                            // reload page
-                            Turbolinks.visit(location.toString(), { action: "replace" })
-                        }).fail(function (xhr, status, error) {
-                            var json = JSON.parse(xhr.responseText);
-                            weavy.alert.warning(json.message);
-                        }).always(function () {
-                            $alert.alert('close');
-                        });
-                    });
                 } else {
                     // reload page
                     Turbolinks.visit(location.toString(), { action: "replace" })
@@ -144,6 +158,62 @@ weavy.fileupload = (function () {
             always: function () {
                 // remove progress bar
                 $("html > .turbolinks-progress-bar.custom").remove();
+            }
+        });
+
+        $(".content-upload input[type=file]").fileupload({
+            dataType: "json",
+            pasteZone: null,
+            add: function (e, data) {
+                // TODO: start displaying upload progress/spinner
+                //$(".upload-progress").removeClass("invisible");
+
+                // upload file
+                data.submit();
+            },
+            progressall: function (e, data) {
+                // TODO: update progress bar/spinner            
+                //$(".upload-progress").css({ "width": parseInt(data.loaded / data.total * 100, 10) + "%", "opacity": 1 });
+            },
+            done: function (e, data) {
+                if (data.result.skipped) {
+                    var action = weavy.url.resolve($(this).data("url"));
+                    var ids = $.map(data.result.skipped, function (val) { return val.id; }).join(",");
+                    var uploaded = data.result.uploaded ? data.result.uploaded.length : 0;
+                    if (data.result.skipped.length === 1) {
+                        weavy.alert.warning('There is already a file named ' + data.result.skipped[0].name + '.' +
+                            '<form action="' + action + '" class="alert-form upload-replace">' +
+                            '<input type="hidden" name="blobs" value="' + ids + '" />' +
+                            '<button type="submit" class="btn btn-icon"><svg class="i">' +
+                            '<use xmlns: xlink="http://www.w3.org/1999/xlink" xlink: href="#check"></use></svg> Replace the file' +
+                            '</button > ' +
+                            '</form>' +
+                            '<button type="button" class="btn btn-icon upload-skip" data-uploaded="' + uploaded + '">' +
+                            '<svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#close"></use></svg> Skip this file' +
+                            '</button>');
+                    } else {
+                        weavy.alert.warning('There are ' + data.result.skipped.length + ' files with the same names.' +
+                            '<form action="' + action + '" class="alert-form upload-replace">' +
+                            '<input type="hidden" name="blobs" value="' + ids + '" />' +
+                            '<button type="submit" class="btn btn-icon">' +
+                            '<svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#check"></use></svg> Replace the files' +
+                            '</button>' +
+                            '</form>' +
+                            '<button type="button" class="btn btn-icon upload-skip" data-uploaded="' + uploaded + '">' +
+                            '<svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#close"></use></svg> Skip these files' +
+                            '</button>');
+                    }
+                } else {
+                    // reload page
+                    Turbolinks.visit(location.toString(), { action: "replace" })
+                }
+            },
+            fail: function (e, data) {
+                console.error(data.jqXHR.responseJSON.message);
+            },
+            always: function () {
+                // TODO: hide progress/spinner
+                //$(".upload-progress").addClass("invisible");
             }
         });
     });

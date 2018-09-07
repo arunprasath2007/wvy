@@ -33,25 +33,6 @@
     }
 }
 
-@*@{
-        var htmlAttributes = ViewData["htmlAttributes"] != null ? HtmlHelper.AnonymousObjectToHtmlAttributes(ViewData["htmlAttributes"]) : new RouteValueDictionary();
-
-        htmlAttributes.Add("class", "form-control");
-        htmlAttributes.Add("data-role", "tagsinput");
-        //htmlAttributes.Add("placeholder", ViewData.ModelMetadata.Watermark);
-
-    }
-    <div class="form-group@(Html.ValidationStateFor(m => m))">
-        @Html.LabelFor(m => m, new { @class = "form-control-label" })
-        <select class="form-control" id="@ViewData.TemplateInfo.GetFullHtmlFieldId("")" name="@ViewData.TemplateInfo.GetFullHtmlFieldName("")" data-role="tagsinput" multiple>
-            @foreach (var tag in Model) {
-                <option value="@tag">@tag</option>
-            }
-        </select>
-        @Html.FormControlFeedbackFor(m => m)
-        @Html.FormTextFor(m => m)
-    </div>*@
-
 @if (group) {
     WriteLiteral(@"<div class=""form-group"">");
 }

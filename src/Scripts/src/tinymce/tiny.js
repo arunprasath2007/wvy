@@ -29,7 +29,7 @@ weavy.tiny = (function ($) {
             init_instance_callback: function (editor) {
                 console.debug("tinymce initialized for '" + editor.id + "'");
             },
-            
+
             setup: function (editor) {
                 try {
                     document.dispatchEvent(new CustomEvent("tinymce.setup", { detail: editor }));
@@ -113,7 +113,7 @@ weavy.tiny = (function ($) {
                 group.removeClass("has-error");
 
                 // basic check for duplicate filenames
-                var existing = _.map($("#attachments [data-filename]"), function (f) { return $(f).data("filename") });
+                var existing = _.map($(".result [data-filename]"), function (f) { return $(f).data("filename") });
 
                 _.each(data.files, function (file) {
                     if (_.contains(existing, file.name)) {
@@ -144,23 +144,21 @@ weavy.tiny = (function ($) {
                     v.thumb_url = v.thumb_url.split('?')[0];
                 });
 
-                var html = ""; //Handlebars.templates["picker-attachments-template"](data.result);
-                
+                var html = "";
                 _.each(data.result.data, function (f) {
-                
                     html += '<div class="card mr-1" style="width: 96px;">' +
-                        '<a href="javascript:;" class="thumbnail" data-filename="' + f.name + '" data-content-url="' + f.content_url + '" data-thumb-url="' + f.thumb_url + '" data-width="' + f.width + '" data-height="' + f.height + '" title="' + f.description + '">' + 
-                            '<img src="' + f.thumb_url.replace("{options}", "96x96-crop,both") + '" alt="" />' +
-                            '<div class="card-block p-1">' +
-                                '<small title="' + f.name + '">' + f.name + '</small>' +
-                                '<input type="hidden" name="attachments" value="' + f.id + '" />' +
-                            '</div>'
+                        '<a href="javascript:;" class="thumbnail" data-name="' + f.name + '" data-file-url="' + f.file_url + '" data-thumb-url="' + f.thumb_url + '" data-width="' + f.width + '" data-height="' + f.height + '" title="' + f.name + '">' +
+                        '<img src="' + f.thumb_url.replace("{options}", "96x96-crop,both") + '" alt="" />' +
+                        '<div class="card-block p-1">' +
+                        '<small title="' + f.name + '">' + f.name + '</small>' +
+                        '<input type="hidden" name="blobs" value="' + f.id + '" />' +
+                        '</div>'
                         '</a>' +
-                    '</div>';
+                        '</div>';
                 });
-
                 container.prepend(html);
                 $("#filecount").text(container.children().length);
+
                 setFileProperties(data.result.data[0]);
             },
             fail: function (e, data) {
@@ -179,7 +177,7 @@ weavy.tiny = (function ($) {
             var height = $("input[name=height]").val()
             var sizer = $("#size button");
             sizer.removeClass("active");
-            
+
             if (url.indexOf("/1024x0/") != -1) {
                 sizer.eq(3).addClass("active");
             } else if (url.indexOf("/640x0/") != -1) {
@@ -196,10 +194,9 @@ weavy.tiny = (function ($) {
             if (editorType === "html") {
                 e.preventDefault();
                 e.stopPropagation();
-                var file = getFileProperties();
-                if (file.url.length > 0) {
-                    var isImage = $("#size").length > 0;
-                    parent.tinymce.activeEditor.windowManager.getParams().insertImageOrDocument(file.url, file.description, file.content_url, file.name, isImage);
+                var props = getFileProperties();
+                if (props.url.length > 0) {
+                    parent.tinymce.activeEditor.windowManager.getParams().insertImageOrDocument(props);
                 }
                 parent.tinymce.activeEditor.windowManager.close();
                 return false;
@@ -216,77 +213,74 @@ weavy.tiny = (function ($) {
 
         // click attachment
         $(".ui-insertimage .result").on("click", "a", function () {
-            
-            var file = new Object();
-            if ($(this).attr("title") && $(this).attr("title").length > 0) {
-                file.description = $(this).attr("title")
-            }
-            file.width = $(this).data("width");
-            file.height = $(this).data("height");
-            file.thumb_url = $(this).data("thumb-url");
-            file.content_url = $(this).data("content-url");
-            file.name = $(this).data("filename");
-            setFileProperties(file);
+            var props = new Object();
+            props.name = $(this).data("name");
+            props.file_url = $(this).data("file-url");
+            props.thumb_url = $(this).data("thumb-url");
+            props.width = $(this).data("width");
+            props.height = $(this).data("height");
+            setFileProperties(props);
         });
 
         // resize
         $(".ui-insertimage #size button").click(function (e) {
-            var sizer = $("#size button");
-            sizer.removeClass("active");
-
-            var file = getFileProperties();
-            if (/\.(png|jpg|jpeg|gif)$/i.test(file.name)) {
-                var url = file.thumb_url.replace("{options}", file.width + "x" + file.height);
+            var sizer = $("#size button").removeClass("active");
+            var props = getFileProperties();
+            console.log(props);
+            if (/\.(png|jpg|jpeg|gif)$/i.test(props.name)) {
                 var size = $(this).attr("id");
+                console.log(size);
+                var url = props.file_url;
+                console.log(url);
                 switch (size) {
-                    case "original":
-                        url = file.thumb_url.replace("{options}", file.width + "x" + file.height);
-                        break;
-                    case "large":
-                        url = file.thumb_url.replace("{options}", "1024x0")
+                    case "small":
+                        url = props.thumb_url.replace("{options}", "240x0")
                         break;
                     case "medium":
-                        url = file.thumb_url.replace("{options}", "640x0")
+                        url = props.thumb_url.replace("{options}", "640x0")
                         break;
-                    case "small":
-                        url = file.thumb_url.replace("{options}", "240x0")
+                    case "large":
+                        url = props.thumb_url.replace("{options}", "1024x0")
+                        break;
+                    case "original":
+                    default:
+                        url = props.file_url;
                         break;
                 }
+                console.log(url);
                 $("input[name=url]").val(convertToRelativeUrl(url));
             }
         });
 
         function getFileProperties() {
-
-            var file = new Object();
-            file.url = $("input[name=url]").val();
-            file.content_url = $("input[name=content_url]").val();
-            file.description = $("input[name=alt]").val();
-            file.name = $("input[name=filename]").val();
-            file.thumb_url = $("input[name=thumb_url]").val();
-            file.width = $("input[name=width]").val();
-            file.height = $("input[name=height]").val();
-            return file;
+            var props = new Object();
+            props.url = $("input[name=url]").val();
+            props.description = $("input[name=alt]").val();
+            props.name = $("input[name=name]").val();
+            props.file_url = $("input[name=file_url]").val();
+            props.thumb_url = $("input[name=thumb_url]").val();
+            props.width = $("input[name=width]").val();
+            props.height = $("input[name=height]").val();
+            return props;
         }
 
         function setFileProperties(file) {
+            console.log(file);
 
-            var url = file.content_url;
-            
-            if (file.width && file.height) {
-                url = file.thumb_url.replace("{options}", file.width + "x" + file.height);
-            }
-
+            var url = file.url || file.file_url;
+            $("input[name=name]").val(file.name);
             $("input[name=url]").val(convertToRelativeUrl(url));
             $("input[name=alt]").val(file.description);
-            $("input[name=content_url]").val(convertToRelativeUrl(file.content_url));
-            $("input[name=filename]").val(file.name);
+            $("input[name=file_url]").val(convertToRelativeUrl(file.file_url));
             $("input[name=thumb_url]").val(convertToRelativeUrl(file.thumb_url));
             $("input[name=width]").val(file.width);
             $("input[name=height]").val(file.height);
 
+            // activate original size button
+            $("button[name=size]").removeClass("active");
+            $("button[name=size][id=original]").addClass("active");
+
             // select properties tab
-            $("#size button").removeClass("active").eq(4).addClass("active");
             $("a[href='#nav-properties']").tab('show');
         }
 

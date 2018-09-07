@@ -26,13 +26,12 @@
 ~/scripts/src/user.js
 ~/scripts/src/space.js
 ~/scripts/src/content.js
-~/scripts/src/item.js
 ~/scripts/src/star.js
 ~/scripts/src/subscribe.js
 ~/scripts/src/editor.js
 ~/scripts/src/emoji.js
 ~/scripts/src/comments.js
-~/scripts/src/notes.js
+~/scripts/src/attachment.js
 ~/scripts/src/pincode.js
 ~/scripts/src/posts.js
 ~/scripts/src/discuss.js

@@ -1,6 +1,6 @@
 ﻿@model IHook
 @{
-    Title = "Tools";
+    Title = "Hooks";
     Back = Url.Action<HooksController>(c => c.Index());
 }
 
@@ -20,29 +20,28 @@
             <label class="control-label">Desciption</label>
             <p class="form-control-static">@Model.Description</p>
         </div>
-        <div class="form-group">
-            <label class="control-label">Status</label>
-            <p class="form-control-static">
-                @if (!Model.IsLoaded()) {
+        if (!Model.IsLoaded()) {
+            <div class="form-group">
+                <label class="control-label">Status</label>
+                <p class="form-control-static">
                     <span class="badge badge-danger">missing</span>
-                } else if (!Model.IsEnabled) {
-                    <span class="badge badge-warning">disabled</span>
-                } else {
-                    <span class="badge badge-success">enabled</span>
-                }
-            </p>
-        </div>
+                </p>
+            </div>
+        }
 
         @Html.EditorsForModel()
         <div class="form-buttons">
             <button type="submit" name="button" value="@nameof(HooksController.Update)" class="btn btn-primary btn-load">Save</button>
             <a href="@Back" class="btn btn-outline-secondary mr-auto" data-shortcut="Esc">Cancel</a>
+
             @if (!Model.IsLoaded()) {
                 <button type="submit" name="button" value="@nameof(HooksController.Delete)" class="btn btn-danger btn-load" @if (Model.IsCore()) { <text> disabled</text> }>Delete</button>
-            } else if (Model.IsEnabled) {
-                <button type="submit" name="button" value="@nameof(HooksController.Disable)" class="btn btn-warning btn-load" @if (Model.IsCore()) { <text> disabled</text> }>Disable</button>
-            } else {
-                <button type="submit" name="button" value="@nameof(HooksController.Enable)" class="btn btn-success btn-load">Enable</button>
+            } else if (!Model.IsCore()) {
+                if (Model.IsEnabled) {
+                    <button type="submit" name="button" value="@nameof(HooksController.Disable)" class="btn btn-outline-warning btn-load">Disable</button>
+                } else {
+                    <button type="submit" name="button" value="@nameof(HooksController.Enable)" class="btn btn-outline-success btn-load">Enable</button>
+                }
             }
         </div>
     }

@@ -1,6 +1,5 @@
 ﻿@using Weavy.Web.Areas.Manage.Controllers
 @model User
-
 @{
     bool editing = ControllerName == typeof(PeopleController).ControllerName() && (ActionName == nameof(PeopleController.EditAccount) || ActionName == nameof(PeopleController.EditProfile) || ActionName == nameof(PeopleController.EditSettings));
 }
@@ -13,7 +12,7 @@
 }
 
 @if (!Model.IsTrashed()) {
-    <div class="dropdown">
+    <div class="dropdown" prevent-modal>
         <button type="button" class="btn btn-icon dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="Toggle Dropdown">
             @Html.SvgIcon("dots-vertical")
         </button>

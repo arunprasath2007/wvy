@@ -6,7 +6,7 @@
             @if (Model.Conversation?.IsRoom ?? false) {
                 <text>Details</text>
             } else {
-                <text>@(Model.Other?.Title)</text>
+                <text>@(Model.Other?.GetTitle())</text>
             }
         </div>
         <div class="navbar-icons">
@@ -38,12 +38,12 @@
                 @foreach (var member in Model.Conversation.Members) {
                     <tr>
                         <td class="table-icon">@member.AvatarImg(32, presence:true)</td>
-                        <td>@member.Title</td>
+                        <td>@member.GetTitle()</td>
                         <td class="table-icon dropdown">
                             @if (member.Id == User.Id) {
-                                <button type="button" class="btn btn-icon" data-leave="@member.Id">@Html.SvgIcon("close-circle")</button>
+                                <button type="button" class="btn btn-icon" data-leave="@member.Id">@Html.SvgIcon("close")</button>
                             } else {
-                                <button type="button" class="btn btn-icon" data-remove-user="@member.Id">@Html.SvgIcon("close-circle")</button>
+                                <button type="button" class="btn btn-icon" data-remove-user="@member.Id">@Html.SvgIcon("close")</button>
                             }
                         </td>
                     </tr>
@@ -55,16 +55,16 @@
         Html.RenderPartial("_DrawerUserBody", Model.Other);
     }
 
-    @if (Model.Files.Any()) {
+    @if (Model.Attachments.Any()) {
     <fieldset>
         <legend>Recent files</legend>
         <table class="table table-files">
-            @foreach (var file in Model.Files) {
-                var attrs = Html.PreviewAttributes(file, attachedto: Model.Conversation);
-                var href = attrs["data-href"] ?? file.ContentUrl(download:true);
+            @foreach (var attachment in Model.Attachments) {
+              var attrs = Html.PreviewAttributes(attachment);
+              var href = attrs["data-href"] ?? attachment.FileUrl(download:true);
                 <tr @Html.Raw(attrs.AsHtmlAttributes())>
-                    <td class="table-icon">@Html.SvgIcon(file.IconName(), file.IconColor())</td>
-                    <td><a href="@href">@file.Name</a></td>
+                    <td class="table-icon">@Html.SvgIcon(attachment)</td>
+                    <td><a href="@href">@attachment.Blob.Name</a></td>
                 </tr>
             }
         </table>

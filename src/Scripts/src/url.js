@@ -1,6 +1,16 @@
 ﻿var weavy = weavy || {};
 weavy.url = (function () {
 
+    // helper function for resolving url to api controller for entity type, e.g. "comment" -> "/api/comments/"
+    function api(entityType) {
+        return resolve("/api/" + (entityType === "content" ? entityType : entityType + "s") + "/");
+    }
+
+    // helper function for resolving url to mvc controller for entity type, e.g. "comment" -> "/comments/"
+    function mvc(entityType) {
+        return resolve("/" + (entityType === "content" ? entityType : entityType + "s") + "/");
+    }
+
     // converts a URL into one that is usable on the requesting client
     function resolve(url) {
         if (url.length > 0) {
@@ -30,7 +40,9 @@ weavy.url = (function () {
     }
 
     return {
-        resolve : resolve,
-        thumb : thumb
+        api: api, 
+        mvc: mvc,
+        resolve: resolve,
+        thumb: thumb
     };
 })();

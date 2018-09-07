@@ -4,6 +4,8 @@
 <nav class="nav nav-tabs">
     @(Html.ActionLink<SpaceController>(c => c.Edit(Model.Id), text: "Details", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Path))
     @(Html.ActionLink<SpaceController>(c => c.Settings(Model.Id), text: "Settings", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Path))
-    @(Html.ActionLink<SpaceController>(c => c.Widget(Model.Id), text: "Widget", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Path))
+    @if (Model.HasPermission(Permission.Admin)) { 
+        @(Html.ActionLink<SpaceController>(c => c.Widget(Model.Id), text: "Widget", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Path))
+    }
 </nav>
 

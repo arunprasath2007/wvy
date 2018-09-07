@@ -15,10 +15,10 @@
 
 
         <div class="text-center">
-            @Html.EditorsForModel(Model.Profile, include: new string[] { nameof(Model.Profile.Avatar) }, formLabels: false)
+            @Html.EditorFor(x => Model.Avatar, additionalViewData: new { AvatarFor = Model })
         </div>
 
-        @Html.EditorsForModel(Model.Profile, exclude: new string[] { nameof(Model.Profile.Avatar) })
+        @Html.EditorsForModel(Model.Profile)
         <div class="form-buttons">
             <button type="submit" class="btn btn-primary btn-load" title="Save">Save</button>
             <a href="@Back" class="btn btn-outline-secondary mr-auto" data-link>Cancel</a>

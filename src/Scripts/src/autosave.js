@@ -41,7 +41,7 @@ weavy.autosave = (function () {
 
         if ($form.length) {
             $status = $($form.data("status"));
-            _id = weavy.context.item;
+            _id = weavy.context.content;
             _force = !$form.data("is-draft");
 
             // clear dirty flag when submitting form via buttons
@@ -106,11 +106,15 @@ weavy.autosave = (function () {
         // serialize form
         var properties = $form.serializeObject(true);
 
+        // make sure tags is array
+        if (properties.tags !== undefined && !Array.isArray(properties.tags)) {
+            properties.tags = [properties.tags];
+        }
+
         // remove unwanted properties
-        delete properties.item_id;
         delete properties.x_http_method_override;
 
-        var url = "/api/items/" + _id + "/autosave?force=" + _force;
+        var url = "/api/content/" + _id + "/draft?force=" + _force;
 
         if (!_cancel) {
             $.ajax({
@@ -120,7 +124,7 @@ weavy.autosave = (function () {
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (data, status, xhr) {
-                    _force = false;
+                    _force = false;                   
                     console.debug(data.modified_at);
                     var now = new Date();
                     $status.html('Saved ' + (now.getHours() < 10 ? "0" : "") + now.getHours() + ":" + (now.getMinutes() < 10 ? "0" : "") + now.getMinutes());
@@ -128,10 +132,10 @@ weavy.autosave = (function () {
                 error: function (xhr, status, err) {
                     $status.html('');
 
-                    // conflict - item has been taken over by someone else, redirect to item view
-                    if (xhr.status == 409) {
+                    // conflict - item has been taken over by someone else
+                    if (xhr.status === 409) {
                         $form.removeClass("dirty");
-                        document.location.href = weavy.url.resolve("~/items/" + _id);
+                        document.location.href = weavy.url.resolve("~/content/" + _id + "/edit");
                     } else {
                         var json = JSON.parse(xhr.responseText);
                         weavy.alert.warning(json.message);

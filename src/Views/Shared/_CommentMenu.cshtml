@@ -6,7 +6,7 @@
             @Html.SvgIcon("dots-vertical")
         </button>
         <div class="dropdown-menu dropdown-menu-right">
-            @Html.StarToggle(Model, false, new { @class = "dropdown-item toggle-dropdown" })
+            @Html.StarToggle(Model, false, htmlAttributes: new { @class = "dropdown-item toggle-dropdown" })
             
             @if (Model.HasPermission(Permission.Edit)) {
                 <button class="dropdown-item" type="button" data-toggle="modal" data-target="#edit-comment-modal" data-path="@(Url.Action<CommentController>(c => c.Edit(Model.Id)))" title="Edit comment">@Html.SvgIcon("pencil", "success") Edit</button>

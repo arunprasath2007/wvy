@@ -9,9 +9,7 @@
         var previewingFullscreen = false;
         var disconnected = false;
         var minimizeTimer;
-        var contextUrl = null;
         var preloading = false;
-        var weavyStorage = null;
 
         // dom elements
         this.container = null;
@@ -981,7 +979,7 @@
                     if (bubble.is_admin) {
                         var disconnect = document.createElement("a");
                         disconnect.className = "weavy-bubble-action weavy-bubble-disconnect";
-                        disconnect.title = "Disconnect this url";
+                        disconnect.title = "Disconnect from url";
                         //link: disconnect.innerHTML = '<svg viewBox="0 0 24 24"><path d="M2,5.27L3.28,4L20,20.72L18.73,22L14.73,18H13V16.27L9.73,13H8V11.27L5.5,8.76C4.5,9.5 3.9,10.68 3.9,12C3.9,14.26 5.74,16.1 8,16.1H11V18H8A6,6 0 0,1 2,12C2,10.16 2.83,8.5 4.14,7.41L2,5.27M16,6A6,6 0 0,1 22,12C22,14.21 20.8,16.15 19,17.19L17.6,15.77C19.07,15.15 20.1,13.7 20.1,12C20.1,9.73 18.26,7.9 16,7.9H13V6H16M8,6H11V7.9H9.72L7.82,6H8M16,11V13H14.82L12.82,11H16Z" /></svg>'
                         disconnect.innerHTML = '<svg viewBox="0 0 24 24"><path d="M2 5.27L3.28 4 20 20.72 18.73 22l-4.83-4.83-2.61 2.61a5.003 5.003 0 0 1-7.07 0 5.003 5.003 0 0 1 0-7.07l1.49-1.49c-.01.82.12 1.64.4 2.43l-.47.47a2.982 2.982 0 0 0 0 4.24 2.982 2.982 0 0 0 4.24 0l2.62-2.6-1.62-1.61c-.01.24-.11.49-.29.68-.39.39-1.03.39-1.42 0A4.973 4.973 0 0 1 7.72 11L2 5.27m10.71-1.05a5.003 5.003 0 0 1 7.07 0 5.003 5.003 0 0 1 0 7.07l-1.49 1.49c.01-.82-.12-1.64-.4-2.42l.47-.48a2.982 2.982 0 0 0 0-4.24 2.982 2.982 0 0 0-4.24 0l-3.33 3.33-1.41-1.42 3.33-3.33m.7 4.95c.39-.39 1.03-.39 1.42 0a4.999 4.999 0 0 1 1.23 5.06l-1.78-1.77c-.05-.68-.34-1.35-.87-1.87a.973.973 0 0 1 0-1.42z"></path></svg>';
                         disconnect.addEventListener("click", function (e) { self.removeBubble.call(self, buttonContainer.dataset["bubbleId"], e); });
@@ -1308,10 +1306,9 @@
         }
 
         function getDragPos(ev) {
-            // set snapping with options.snappingX or CSS --weavy-snapping-x
+            // set snapping with options.snappingY or CSS --weavy-snapping-y
             var $draggable = $(self.draggable);
             var weavyRem = parseInt($draggable.css("--weavy-rem")) || 16;
-            var snappingX = weavyRem * (parseFloat($draggable.css("--weavy-snapping-x")) || self.options.snappingX);
             var snappingY = weavyRem * (parseFloat($draggable.css("--weavy-snapping-y")) || self.options.snappingY);
 
             var isCollapsed = $(self.container).hasClass("weavy-collapsed") && !$(self.container).hasClass("weavy-open");
@@ -1932,8 +1929,8 @@
 
         weavy.realtime.on("message", function (e, data) {
             var message = data;
-            if (message.attached_to.type === "conversation" && (message.created_by.id !== self.options.user_id && message.created_by.id > 0)) {
-                weavy.realtime.invoke("widget", "getConversation", message.attached_to.id);
+            if (message.created_by.id !== self.options.user_id && message.created_by.id > 0) {
+                weavy.realtime.invoke("widget", "getConversation", message.conversation);
                 triggerEvent("message", data);
             }
         });

@@ -15,7 +15,7 @@
         </div>
         <div class="text-center pt-3 pb-2">
             @User.AvatarImg(64)
-            <p class="drawer-title px-1"><span>@User.Title <small>@@@User.Username</small></span></p>
+            <p class="drawer-title px-1">@User.GetTitle() <small>@@@User.Username</small></p>
         </div>
         <nav class="nav nav-tabs" role="tablist">
             <a class="nav-link nav-icon nav-badge active" href="#notifications" data-toggle="tab" role="tab" title="Notifications">@Html.SvgIcon("bell")@Html.NotificationsBadge()</a>
@@ -35,7 +35,7 @@
         </div>
         <div class="tab-pane" id="drafts" role="tabpanel">
             <div class="tab-loading">@Html.SvgSpinner()</div>
-            <div class="tab-remote" data-url="@(Url.Action<ItemController>(c => c.Drafts()))"></div>
+            <div class="tab-remote" data-url="@(Url.Action<ContentController>(c => c.Drafts()))"></div>
         </div>
     </div>
 </aside>

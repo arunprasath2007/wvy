@@ -1,0 +1,15 @@
+﻿@model Content
+@{
+    Title = Model.Name ?? "Untitled";
+    Back = Url.Back(Model.Url());
+    
+}
+<div class="container mt-3">
+    @{ Html.RenderPartial("_Edit", Model, new ViewDataDictionary { { "turboform", true } }); }    
+</div>
+
+@if (Model.HasHtmlProperty()) {
+    @section scripts{
+        @Html.InitHtmlEditor()
+    }
+}

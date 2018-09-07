@@ -1,5 +1,5 @@
 ﻿tinymce.PluginManager.add("weavy_image", function (editor, url) {
-    
+
     editor.addMenuItem("weavy_image", {
         icon: "image",
         text: "Insert/edit image",
@@ -52,18 +52,17 @@
                 }
             }
         }
-        var itemid = $("#ItemId").val();
-        if (itemid) {
-            params += (params.length > 0 ? "&" : "") + "id=" + itemid;
+
+        if (weavy.context.content) {
+            params += (params.length > 0 ? "&" : "") + "id=" + weavy.context.content;
         }
 
-        if (!isImage) {
-            params += (params.length > 0 ? "&" : "") + "isImage=false";
-        }
+        // img or link?
+        params += (params.length > 0 ? "&" : "") + "img=" + (isImage ? "true" : "false");
 
-        // get attachments
-        $("#attachments input[type='hidden']").each(function (i, item) {
-            params += (params.length > 0 ? "&" : "") + "att=" + $(item).val();
+        // get blobs
+        $("#blobs input[type='hidden']").each(function (i, item) {
+            params += (params.length > 0 ? "&" : "") + "blobs=" + $(item).val();
         });
 
         editor.windowManager.open({
@@ -74,68 +73,62 @@
             resizable: true,
             maximizable: true,
             inline: 1,
-            onclose: function () {                
-                var attachmentsRoot = $("#attachments", window.document).empty();                               
-                $("iframe[src*='ui/insertimage']").contents().find(".result").find("input[type='hidden']").each(function (i, item) {                
-                    attachmentsRoot.append($("<input type='hidden' name='attachmentids' value='" + $(item).val() + "' />"));
+            onclose: function () {
+                var attachmentsRoot = $("#blobs", window.document).empty();
+                $("iframe[src*='ui/insertimage']").contents().find(".result").find("input[type='hidden']").each(function (i, item) {
+                    attachmentsRoot.append($("<input type='hidden' name='blobs' value='" + $(item).val() + "' />"));
                 });
             }
         }, {
-                insertImageOrDocument: function (url, description, original, filename, isImage) {                
-                var elm = editor.selection.getNode();
-                var dom = editor.dom;
-                var isThumbnail = url !== original;                
-                    
-                editor.execCommand("mceBeginUndoLevel");
+                insertImageOrDocument: function (props) {
+                    console.log(props);
 
-                if (isImage && /.(jpg|jpeg|gif|png)$/i.test(url)) {
-                    // image
+                    var elm = editor.selection.getNode();
+                    var dom = editor.dom;
+                    var isThumbnail = props.url !== props.file_url;
 
-                    if (elm != null && elm.nodeName == "IMG") {
-                        // update existing
+                    editor.execCommand("mceBeginUndoLevel");
 
-                        dom.setAttrib(elm, "src", url);
-                        dom.setAttrib(elm, "alt", description);
+                    if (/.(jpg|jpeg|gif|png)$/i.test(props.url)) {
+                        // image
+                        if (elm != null && elm.nodeName == "IMG") {
+                            // update existing
+                            dom.setAttrib(elm, "src", props.url);
+                            dom.setAttrib(elm, "alt", props.description);
+                            var parentNode = elm.parentNode;
+                            if (parentNode != null && parentNode.nodeName == "A" && parentNode.hasAttribute("rel") && parentNode.getAttribute("rel") == "lightbox") {
+                                // update anchor
+                                dom.setAttrib(parentNode, "href", props.file_url);
+                            }
+                        } else {
+                            // create new
+                            elm = editor.dom.create('img', { src: props.url, alt: '' });
+                            dom.setAttrib(elm, "src", props.url);
+                            dom.setAttrib(elm, "alt", props.description);
 
-                        var parentNode = elm.parentNode;
-
-                        if (parentNode != null && parentNode.nodeName == "A" && parentNode.hasAttribute("rel") && parentNode.getAttribute("rel") == "lightbox") {
-                            // update anchor
-                            dom.setAttrib(parentNode, "href", original);
+                            var a = dom.create('a', { href: props.file_url, "rel": "lightbox" });
+                            dom.add(a, elm);
+                            editor.selection.setNode(a);
                         }
+
                     } else {
-                        // create new
-                        elm = editor.dom.create('img', { src: url, alt: '' });
-                        dom.setAttrib(elm, "alt", description);
-                        dom.setAttrib(elm, "src", url);
-
-                        var a = dom.create('a', { href: original, "rel": "lightbox" });
-                        dom.add(a, elm);
-                        editor.selection.setNode(a);
-                    }
-
-                } else {
-                    // document
-
-                    if (elm != null && elm.nodeName == 'A') {
-                        // update existing
-                        dom.setAttrib(elm, "href", url);
-                        dom.setAttrib(elm, "title", description);
-                    } else {
-                        // create new
-                        var text = editor.selection.getContent({ format: 'text' });
-
-                        if (text.length == 0) {
-                            text = filename;
+                        // link to file
+                        if (elm != null && elm.nodeName == 'A') {
+                            // update existing
+                            dom.setAttrib(elm, "href", props.url);
+                        } else {
+                            // create new
+                            var text = editor.selection.getContent({ format: 'text' });
+                            if (text.length == 0) {
+                                text = props.name;
+                            }
+                            elm = editor.dom.create('a', { href: props.url }, text);
+                            dom.setAttrib(elm, "href", props.url);
+                            editor.selection.setNode(elm);
                         }
-                        elm = editor.dom.create('a', { href: url, title: '' }, text);
-                        dom.setAttrib(elm, "title", description);
-                        dom.setAttrib(elm, "href", url);
-                        editor.selection.setNode(elm);
                     }
+                    editor.execCommand("mceEndUndoLevel");
                 }
-                editor.execCommand("mceEndUndoLevel");
-            }
-        });
+            });
     }
 });

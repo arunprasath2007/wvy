@@ -8,15 +8,15 @@
             users.Add(s);
         }
     }
-    users = users.OrderBy(x => x.Title).ToList();
+    users = users.OrderBy(x => x.GetTitle()).ToList();
 }
 
 @if (users.HasItems()) {
-    foreach (var group in users.GroupBy(x => x.Title.ToUpper().Trim().FirstOrDefault())) {
+    foreach (var group in users.GroupBy(x => x.GetTitle().ToUpper().Trim().FirstOrDefault())) {
         <div class="list-group-separator">@group.Key</div>
         foreach (var user in group) {
             bool active = selected.Any(s => s.Id == user.Id);
-            <div class="list-group-item list-group-item-action @(active ? "selected" : "")" data-user="@user.Id" data-user-title="@user.Title">
+            <div class="list-group-item list-group-item-action @(active ? "selected" : "")" data-user="@user.Id" data-user-title="@user.GetTitle()">
                 <div class="media">
                     <div class="mr-3">
                         @user.AvatarImg(48, presence: true)
@@ -27,7 +27,7 @@
                         } else if (user.LastSeenAt != null) {
                             @Html.Time(user.LastSeenAt.Value, abbrev: true)
                         }
-                        <div class="media-title text-capitalize">@user.Title</div>
+                        <div class="media-title text-capitalize">@user.GetTitle()</div>
                         <div class="media-text">
                             @@@user.Username
                             @if (user.IsSuspended) {

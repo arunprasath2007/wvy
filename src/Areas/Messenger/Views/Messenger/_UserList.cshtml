@@ -3,7 +3,7 @@
 @model SearchResult<User, UserQuery>
 
 @if (Model.HasItems()) {
-    foreach (var group in Model.GroupBy(x => x.Title.ToUpper().Trim().FirstOrDefault())) {
+    foreach (var group in Model.GroupBy(x => x.GetTitle().ToUpper().Trim().FirstOrDefault())) {
         <div class="list-group-separator">@group.Key</div>
         foreach (var user in group) {
             <a class="list-group-item list-group-item-action" href="@Url.Action(nameof(MessengerController.GetConversationWithUser), new { id = user.Id })" data-user="@user.Id" @(user.IsSuspended ? @"data-profile=" + user.Id + @"" : "" )>
@@ -17,7 +17,7 @@
                         } else if (user.LastSeenAt != null) {
                             @Html.Time(user.LastSeenAt.Value, abbrev: true)
                         }
-                        <div class="media-title text-capitalize">@user.Title</div>
+                        <div class="media-title text-capitalize">@user.GetTitle()</div>
                         <div class="media-text">
                             @@@user.Username
                             @if (user.IsSuspended) {
@@ -35,7 +35,7 @@
     }
 } else if (!Model.Query.Text.IsNullOrEmpty()) {
     <div class="list-group-separator reset">No match for <strong>@Model.Query.Text</strong>.</div>
-    if (User.SystemPermissions.Contains(Permission.Invite)) {
+    if (PermissionService.HasSystemPermission(Permission.Invite)) {
         <div class="list-group-separator reset text-center"><a href="@Url.Action(nameof(Invite), typeof(PeopleController).ControllerName(), new { area = "" })" target="_blank" data-toggle="drawer-invite">Can't find your team members? Invite them!</a></div>
     }
 } else {

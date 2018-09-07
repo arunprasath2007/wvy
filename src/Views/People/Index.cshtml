@@ -1,7 +1,6 @@
 ﻿@model SearchResult<User, UserQuery>
 @{
     Title = "People";
-    Back = WeavyContext.Current.ApplicationPath;
     if (Model.Query.Suspended ?? false) {
         Title = "Suspended user accounts";
     }
@@ -22,7 +21,7 @@
         @(Html.ActionLink<PeopleController>(c => c.Index(null, "external", null), text: "External", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Path))
     </nav>
 
-    @if (User.SystemPermissions.Contains(Permission.ManageUsers)) {
+    @if (PermissionService.HasSystemPermission(Permission.ManageUsers)) {
         <div class="fab dropdown">
             <button class="btn btn-round btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#" title="Add or invite user">@Html.SvgIcon("plus")</button>
             <div class="dropdown-menu dropdown-menu-right">
@@ -31,7 +30,7 @@
             </div>
         </div>
 
-    } else if (User.SystemPermissions.Contains(Permission.Invite)) {
+    } else if (PermissionService.HasSystemPermission(Permission.Invite)) {
         <div class="fab">
             <a class="btn btn-round btn-primary" href="@(Url.Action<PeopleController>(c => c.Invite()))" title="Invite people">@Html.SvgIcon("plus")</a>
         </div>
@@ -42,7 +41,7 @@
     @(Html.FilterForm<PeopleController>(c => c.Index(null, tab, null), Model.Query))
 
     @if (Model.HasItems()) {
-        <table class="table table-hover table-people">
+        <table class="table table-hover table-people" prevent-modal>
             <thead>
                 <tr>
                     <th class="table-icon"></th>
@@ -51,7 +50,7 @@
                 </tr>
             </thead>
             <tbody id="infinite-scroll-target">
-                @{ Html.RenderPartial("_PeopleTable", Model); }
+                @{ Html.RenderPartial("_PeopleTable", Model, new ViewDataDictionary() { { "modal", false } }); }
             </tbody>
         </table>
         @Html.ScrollMore(Model)

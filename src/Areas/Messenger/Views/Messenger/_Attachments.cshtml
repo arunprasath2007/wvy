@@ -1,15 +1,15 @@
-﻿@model IEnumerable<Weavy.Core.Models.File>
+﻿@model IEnumerable<Attachment>
 
 <div class="list-group">
     @foreach (var file in Model) {
         var attrs = Html.PreviewAttributes(file);
 
-        <a class="list-group-item list-group-item-action" href="@file.ContentUrl()" @Html.Raw(attrs.AsHtmlAttributes())>
+        <a class="list-group-item list-group-item-action" href="@file.FileUrl()" @Html.Raw(attrs.AsHtmlAttributes())>
             <div class="media">
-                @Html.SvgIcon(file.IconName(), file.IconColor(), size: 48)
+                @Html.SvgIcon(file, size: 48)
                 <div class="media-body">
-                    <h6 class="media-title">@file.Name</h6>
-                    <small class="text-muted">@FileHelper.FileSizeAsString(file.Size)</small>
+                    <h6 class="media-title">@file.Blob.Name</h6>
+                    <small class="text-muted">@FileHelper.FileSizeAsString(file.Blob.Size)</small>
                 </div>
             </div>
         </a>

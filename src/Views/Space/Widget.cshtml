@@ -3,9 +3,7 @@
     Title = "Edit space";
     Back = Model.Url();
     var bubbles = ViewBag.Bubbles as IEnumerable<Bubble>;
-    var hasAdminPermission = Model.HasPermission(Permission.Admin);
 }
-
 
 @section scripts {
     <script>
@@ -24,11 +22,6 @@
             }
             weavy.alert.success("Script copied to clipboard", 3000);
         });
-
-        $(document).on("click", "[data-delete-bubble]", function () {
-            $(this).closest("tr").remove();
-            $(".update-widget-form").append("<input type='hidden' name='removeIds' value='" + $(this).data("id") + "' />");
-        });
     </script>
 }
 
@@ -38,56 +31,39 @@
 
 <div class="container my-3">
 
-    <label>Connected urls</label>
-    @if (bubbles.IsNullOrEmpty()) {
-        <p class="text-muted">There are no connected urls.</p>
-    } else {
+    @if (bubbles.HasItems()) {
         <table class="table table-hover table-urls table-fixed">
             <thead>
                 <tr>
-                    <th>Url</th>
-                    @if (hasAdminPermission) {
-                        <th class="text-right"></th>
-                    }
+                    <th>Connected urls</th>
+                    <th class="text-right"></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var bubble in bubbles) {
                     <tr>
-                        <td>
-                            <a href="@bubble.Url.RemoveTrailing("*")" target="_blank">@bubble.Url</a>
-                        </td>
-                        @if (hasAdminPermission) {
-                            <td class="text-right">
-                                <button class="btn btn-icon" type="button" title="Remove" data-id="@bubble.Id" data-delete-bubble>@Html.SvgIcon("delete")</button>
+                        <td><a href="@bubble.Url.RemoveTrailing("*")" target="_blank">@bubble.Url</a></td>
+                        <td class="text-right">
+                            @using (Html.BeginForm(nameof(SpaceController.UpdateWidget), typeof(SpaceController).ControllerName(), new { id = Model.Id }, FormMethod.Post, new { autocomplete = "off", data_turboform = "", novalidate = "" })) {
+                                @Html.HttpMethodOverride(HttpVerbs.Delete)
+                                @Html.Hidden("bubbleid", bubble.Id)
+                                <button class="btn btn-icon" type="submit" title="Disconnect from url">@Html.SvgIcon("delete")</button>
+                            }
                             </td>
-                        }
                     </tr>
                 }
             </tbody>
         </table>
     }
 
-    @if (hasAdminPermission) {
+    <div class="form-group">
+        <label>Embed Script</label>
+        <textarea class="form-control" style="height:100px" readonly="readonly" id="strip-script">@Model.WidgetScript(min:true)</textarea>
+        <small class="form-text text-muted">Copy and paste the script just before the <code>&lt;/body&gt;</code> tag on the site where you want Weavy to appear.</small>
+    </div>
 
-        using (Html.BeginForm(nameof(SpaceController.UpdateWidget), typeof(SpaceController).ControllerName(), new { id = Model.Id }, FormMethod.Post, new { @class = "update-widget-form",  autocomplete = "off", data_turboform = "", novalidate = "" })) {
-            @Html.HttpMethodOverride(HttpVerbs.Put)
-
-            <div class="form-group">
-                <label>Embed Script</label>
-                <textarea class="form-control" style="height:100px" readonly="readonly" id="strip-script">@Model.WidgetScript(min:true)</textarea>
-                <small class="form-text text-muted">Copy and paste the script just before the <code>&lt;/body&gt;</code> tag on the site where you want Weavy to appear.</small>
-            </div>
-
-            <div class="form-buttons">
-                <button type="submit" class="btn btn-primary btn-load">Save</button>
-                <a href="@Model.Url()" class="btn btn-outline-secondary mr-auto">Cancel</a>
-                <button type="button" id="copy-script-button" class="btn btn-outline-secondary">Copy script</button>
-            </div>
-        }
-    } else {
-        <div class="form-buttons">
-            <a href="@Back" class="btn btn-outline-secondary">Back</a>
-        </div>
-    }
+    <div class="form-buttons">
+        <button type="button" id="copy-script-button" class="btn btn-primary">Copy script</button>
+        <a href="@Back" class="btn btn-outline-secondary">Cancel</a>
+    </div>
 </div>

@@ -7,22 +7,22 @@
         <tr class="@(space.IsArchived() ? "table-archived" : "") @(space.IsTrashed() ? "table-trashed" : "")" @Html.Raw(visible ? $@"data-href=""{space.Url()}""" : "")>
             <td class="table-icon">@space.AvatarImg(32)</td>
             <td class="py-2 align-middle">
-                <div class="d-flex align-items-center">
-                    <div class="text-truncate">
-                        @if (visible) {
-                            <a href="@space.Url()">@space.Name</a>
-                        } else {
-                            @space.Name
-                        }
-                        @if (space.Teamname != null) {<small>@@@space.Teamname</small>}
-                    </div>
-                    @if (space.IsHQ) {
-                        <span class="badge badge-info m-1 flex-noscale">main</span>
-                    } else if(space.Privacy != Privacy.Open) {
-                        <span class="m-1 flex-noscale">@Html.Badge(space.Privacy)</span>
-                    }
-                    @Html.StarToggle(space, htmlAttributes: new { @class = "flex-noscale" })
+              <div class="d-flex align-items-center">
+                <div class="text-truncate">
+                  @if (visible) {
+                    <a href="@space.Url()">@space.Name</a>
+                  } else {
+                    @space.Name
+                  }
+                  @if (space.Teamname != null) {<small>@@@space.Teamname</small>}
                 </div>
+                @Html.StarToggle(space, htmlAttributes: new { @class = "flex-noscale" })
+                @if (space.IsHQ) {
+                  <span class="badge badge-info m-1 flex-noscale">main</span>
+                } else if (space.Privacy != Privacy.Open) {
+                  <span class="m-1 flex-noscale">@Html.Badge(space.Privacy)</span>
+                }
+              </div>
             </td>
             <td class="text-right">
                 @if (visible) {

@@ -25,28 +25,34 @@
 }
 
 <div class="container text-center">
-    @Space.AvatarImg(128, htmlAttributes: new { @class = "my-4" })
-    <form action="@Url.Rebuild("q", null)" method="get" data-turboform>
-        <div class="form-group" role="search">
-            <input class="form-control" type="search" name="q" id="search-q" value="@Model.Query.Text" placeholder="Search @Space.Name" />
-            <button type="submit" class="btn btn-icon">@Html.SvgIcon("magnify")</button>
-        </div>
-        @*
-            <div class="form-group">
-                <a class="custom-control custom-radio custom-control-inline" href="@Url.Rebuild("spaceid", null)">
-                    <input type="radio" id="search-in-space" class="custom-control-input" @(Model.Query.SpaceId != null ? "checked" : " ") />
-                    <label for="search-in-space" class="custom-control-label text-dark">Search @Space.Name</label>
-                </a>
-                <a class="custom-control custom-radio custom-control-inline" href="@Url.Rebuild("spaceid", 0)">
-                    <input type="radio" id="search-in-global" class="custom-control-input" @(Model.Query.SpaceId == null ? "checked" : " ") />
-                    <label for="search-in-global" class="custom-control-label text-dark">Search all spaces</label>
-                </a>
-            </div>
-        *@
-        <div class="form-group">
-            <button type="submit" data-bubble-formtarget="add" formaction="@(Url.Action<HomeController>(c => c.Search(null, null)))" class="btn btn-link btn-sm d-inline-flex"><span>Try global search »</span></button>
-        </div>
-    </form>
+    @Space.AvatarImg(32, htmlAttributes: new { @class = "my-4" })
+  <form action="@Url.Rebuild("q", null)" method="get" data-turboform>
+    <div class="form-group" role="search">
+      <input class="form-control" type="search" name="q" id="search-q" value="@Model.Query.Text" placeholder="Search @Space.Name" />
+      @if (Model.Query.Text.IsNullOrEmpty()) {
+        <button type="submit" class="btn btn-icon">@Html.SvgIcon("magnify")</button>
+      } else {
+        <a href="@(Url.Action<SpaceController>(c => c.Search(Space.Id, null, null)))" class="btn btn-icon">@Html.SvgIcon("close")</a>
+      }
+    </div>
+    @*
+    <div class="form-group">
+        <a class="custom-control custom-radio custom-control-inline" href="@Url.Rebuild("spaceid", null)">
+            <input type="radio" id="search-in-space" class="custom-control-input" @(Model.Query.SpaceId != null ? "checked" : " ") />
+            <label for="search-in-space" class="custom-control-label text-dark">Search @Space.Name</label>
+        </a>
+        <a class="custom-control custom-radio custom-control-inline" href="@Url.Rebuild("spaceid", 0)">
+            <input type="radio" id="search-in-global" class="custom-control-input" @(Model.Query.SpaceId == null ? "checked" : " ") />
+            <label for="search-in-global" class="custom-control-label text-dark">Search all spaces</label>
+        </a>
+    </div>
+    *@
+    @*
+    <div class="form-group">
+        <button type="submit" data-bubble-formtarget="add" formaction="@(Url.Action<HomeController>(c => c.Search(null, null)))" class="btn btn-link btn-sm d-inline-flex"><span>Try global search »</span></button>
+    </div>
+    *@
+  </form>
 </div>
 
 <div class="container my-4">
@@ -54,18 +60,18 @@
         <nav class="nav nav-tabs mb-4">
             @if (Space.Id == SpaceService.SystemId) {
                 if (tab == null) {
-                    @(Html.ActionLink<HomeController>(c => c.Search("everything", null), qs: qs, text: "All", htmlAttributes: new { @class = "nav-link active" }))
+                    @(Html.ActionLink<HomeController>(c => c.Search(null, null), qs: qs, text: "Everything", htmlAttributes: new { @class = "nav-link active" }))
                 } else {
-                    @(Html.ActionLink<HomeController>(c => c.Search("everything", null), qs: qs, text: "All", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Path))
+                    @(Html.ActionLink<HomeController>(c => c.Search(null, null), qs: qs, text: "Everything", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Path))
                 }
                 @(Html.ActionLink<HomeController>(c => c.Search("posts", null), qs: qs, text: "Posts", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Path))
                 @(Html.ActionLink<HomeController>(c => c.Search("files", null), qs: qs, text: "Files", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Path))
                 @(Html.ActionLink<HomeController>(c => c.Search("comments", null), qs: qs, text: "Comments", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Path))
             } else {
                 if (tab == null) {
-                    @(Html.ActionLink<SpaceController>(c => c.Search(Space.Id, "everything", null), qs: qs, text: "All", htmlAttributes: new { @class = "nav-link active" }))
+                    @(Html.ActionLink<SpaceController>(c => c.Search(Space.Id, null, null), qs: qs, text: "Everything", htmlAttributes: new { @class = "nav-link active" }))
                 } else {
-                    @(Html.ActionLink<SpaceController>(c => c.Search(Space.Id, "everything", null), qs: qs, text: "All", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Path))
+                    @(Html.ActionLink<SpaceController>(c => c.Search(Space.Id, null, null), qs: qs, text: "Everything", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Path))
                 }
                 @(Html.ActionLink<SpaceController>(c => c.Search(Space.Id, "posts", null), qs: qs, text: "Posts", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Path))
                 @(Html.ActionLink<SpaceController>(c => c.Search(Space.Id, "files", null), qs: qs, text: "Files", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Path))
@@ -75,11 +81,11 @@
     }
 
     @if (Model.TotalCount == 0 && !string.IsNullOrEmpty(Model.Query.Text)) {
-        <p>Your search - <strong>@Model.Query.Text</strong> - did not match @(tab == null || tab == "everything" ? "anything" : "any " + tab).</p>
+        <p>Your search - <strong>@Model.Query.Text</strong> - did not match @(tab == null || tab == "everything" ? "anything" : "any " + tab) in @Space.Name.</p>
         <p>Suggestions:</p>
         <ul>
             @if (Model.Query.SpaceId != null) {
-                <li>@(Html.ActionLink<HomeController>(c => c.Search(null, null), qs: qs, text: "Try a global search instead.", htmlAttributes: new { data_bubble_target = "add" }))</li>
+                <li>@(Html.ActionLink<HomeController>(c => c.Search(null, null), qs: qs, text: "Try searching all spaces.", htmlAttributes: new { data_bubble_target = "add" }))</li>
             }
             <li>Make sure that all words are spelled correctly.</li>
             <li>Try different keywords.</li>

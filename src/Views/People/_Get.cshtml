@@ -1,15 +1,15 @@
 ﻿@model User
 @{
-    Title = Model.Title;
+    Title = Model.GetTitle();
     var profiledata = Html.DisplayGroups(Model.Profile, exclude: new[] { "Avatar", "Name" })?.ToHtmlString();
 }
 
 <div class="cover cover-bg text-center py-4">
     @Model.AvatarImg(128)
-    @if (Model.Username == Model.Title) {
+    @if (Model.Username == Title) {
         <p class="pt-2 mb-0">@@@Model.Username @Html.Badge(Model)</p>
     } else {
-        <p class="pt-2 mb-0">@Model.Title <small>@@@Model.Username</small> @Html.Badge(Model)</p>
+        <p class="pt-2 mb-0">@Title <small>@@@Model.Username</small> @Html.Badge(Model)</p>
     }
 
     <button type="button" class="btn btn-icon top-right" data-dismiss="modal">@Html.SvgIcon("close")</button>
@@ -21,7 +21,7 @@
         if (Model.Id == User.Id) {
             <p class="text-muted text-center py-3 empty">You should <a href="@Url.Action(nameof(AccountController.EditProfile), typeof(AccountController).ControllerName())">edit your profile</a> and add some information to this page...</p>
         } else {
-            <p class="text-muted text-center py-3 empty">You should let @Model.Title know that their profile page is empty...</p>
+            <p class="text-muted text-center py-3 empty">You should let @Title know that their profile page is empty...</p>
         }
     } else {
         @Html.Raw(profiledata);

@@ -6,9 +6,13 @@
     // strip HTML and whitespace and check zero-length
     string emoji = !Model.Html.IsNullOrEmpty() && Regex.Replace(Model.Html, "<[^>]*>|\\s+", "").Length == 0 ? " emoji" : "";
     bool attachments = Model.AttachmentIds.Any();
-    var images = attachments ? Model.Attachments.Where(x => FileHelper.IsWebImage(x.Name)) : new List<Weavy.Core.Models.File>();
-    var files = attachments ? Model.Attachments.Where(x => !FileHelper.IsWebImage(x.Name)) : new List<Weavy.Core.Models.File>();
-    var width = images.FirstOrDefault()?.Width;
+    var images = attachments ? Model.Attachments().Where(x => FileHelper.IsWebImage(x.Blob.Name)) : new List<Weavy.Core.Models.Attachment>();
+    var files = attachments ? Model.Attachments().Where(x => !FileHelper.IsWebImage(x.Blob.Name)) : new List<Weavy.Core.Models.Attachment>();
+    var width = images.FirstOrDefault()?.Blob?.Width;
+
+    var embeds = Model.Embeds();
+    //var embed = embeds.FirstOrDefault(x => !x.IsLink);
+    var link = embeds.FirstOrDefault(x => x.IsLink);
 }
 
 @if (Model.CreatedById == UserService.SystemId && parent.Other?.Id != UserService.SystemId) {
@@ -40,12 +44,9 @@
                 @Html.Time(Model.CreatedAt, "t")
             </div>
 
-            @if (!Model.ContextUrl.IsNullOrDefault()) {
-                var origin = new Uri(Model.ContextUrl).GetLeftPart(System.UriPartial.Authority);
-                <div class="context-link">
-                    <img class="icon" src="https://www.google.com/s2/favicons?domain=@origin">
-                    <a class="text" href="@Model.ContextUrl" target="_blank" title="Open in context - @Model.ContextUrl" data-context-url="@Model.ContextUrl" data-weavy-context-url="@Model.Url(absolute: true)" data-weavy-context-space="@Model.SpaceId">@Model.ContextTitle</a>
-                    <a class="link-open" href="@Model.ContextUrl" target="_blank" title="Open in context - @Model.ContextUrl" data-context-url="@Model.ContextUrl" data-weavy-context-url="@Model.Url(absolute: true)" data-weavy-context-space="@Model.SpaceId">@Html.SvgIcon("open-in-new", size: 18)</a>
+            @if (link != null) {
+                <div class="card-context">
+                    @{Html.RenderPartial("_ContextLink", link); }
                 </div>
             }
         </div>
@@ -59,14 +60,14 @@
                 if (members.Any(x => x.ReadAt >= Model.CreatedAt && x.ReadAt < next.CreatedAt)) {
                     <div class="status status-read">
                         @foreach (var member in members.Where(x => x.ReadAt >= Model.CreatedAt && x.ReadAt < next.CreatedAt)) {
-                            @member.AvatarImg(18, retina: true, htmlAttributes: new { title = $"Seen by {member.Title}", data_user = member.Id })
+                            @member.AvatarImg(18, retina: true, htmlAttributes: new { title = $"Seen by {member.GetTitle()}", data_user = member.Id })
                         }
                     </div>
                 }
             } else if (members.Any(x => x.ReadAt >= Model.CreatedAt)) {
                 <div class="status status-read">
                     @foreach (var member in members.Where(x => x.ReadAt >= Model.CreatedAt)) {
-                        @member.AvatarImg(18, retina: true, htmlAttributes: new { title = $"Seen by {member.Title}", data_user = member.Id })
+                        @member.AvatarImg(18, retina: true, htmlAttributes: new { title = $"Seen by {member.GetTitle()}", data_user = member.Id })
                     }
                 </div>
             } else if (members.Any(x => x.DeliveredAt >= Model.CreatedAt)) {
@@ -85,12 +86,12 @@
 } else {
     <div class="message@(emoji)" data-message="@Model.Id">
         <a id="message-@Model.Id"></a>
-        <a class="mr-2" href="#" data-profile="@Model.CreatedById">@Model.CreatedBy.AvatarImg(32, retina: true)</a>
+        <a class="mr-2" href="#" data-profile="@Model.CreatedById">@Model.CreatedBy().AvatarImg(32, retina: true)</a>
           
         <div class="bubble">
             @if (parent.Conversation.IsRoom) {
                 <div class="from">
-                    <a href="#" data-profile="@Model.CreatedById">@Model.CreatedBy.Title</a>
+                    <a href="#" data-profile="@Model.CreatedById">@Model.CreatedBy().GetTitle()</a>
                 </div>
             }
 
@@ -99,6 +100,8 @@
                     @{ Html.RenderPartial("_ImageGrid", images); }
                 </div>
             }
+
+
 
             @if (files.Any()) {
                 <div class="card-files">
@@ -111,14 +114,12 @@
                 @Html.Time(Model.CreatedAt, "t")
             </div>
 
-            @if (!Model.ContextUrl.IsNullOrDefault()) {
-                var origin = new Uri(Model.ContextUrl).GetLeftPart(System.UriPartial.Authority);
-                <div class="context-link">
-                    <img class="icon" src="https://www.google.com/s2/favicons?domain=@origin">
-                    <a class="text" href="@Model.ContextUrl" target="_blank" title="Open in context - @Model.ContextUrl" data-context-url="@Model.ContextUrl" data-weavy-context-url="@Model.Url(absolute: true)" data-weavy-context-space="@Model.SpaceId">@Model.ContextTitle</a>
-                    <a class="link-open" href="@Model.ContextUrl" target="_blank" title="Open in context - @Model.ContextUrl" data-context-url="@Model.ContextUrl" data-weavy-context-url="@Model.Url(absolute: true)" data-weavy-context-space="@Model.SpaceId">@Html.SvgIcon("open-in-new", size: 18)</a>
+            @if (link != null) {
+                <div class="card-context">
+                    @{Html.RenderPartial("_ContextLink", link); }
                 </div>
             }
+
         </div>
     </div>
 }

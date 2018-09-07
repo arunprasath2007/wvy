@@ -1,4 +1,4 @@
-﻿@model SearchResult<IContent, ContentQuery>
+﻿@model SearchResult<Content, ContentQuery>
 @{
     Title = "Activity";
 }
@@ -22,7 +22,7 @@
 <div class="container-fluid my-3">
     @if (Model.Any()) {
         <div class="list-group mb-4" id="infinite-scroll-target">
-            @{ Html.RenderPartial("_ContentList", Model); }
+            @{ Html.RenderPartial("~/Views/Content/_ListItems.cshtml", Model); }
         </div>
         @Html.ScrollMore(Model)
     } else {

@@ -71,22 +71,21 @@ weavy.comments = (function ($) {
         // disable submit button
         $button.prop("disabled", true);
 
-        // make sure attachments is an array
-        if (data.attachments) {
-            if (!$.isArray(data.attachments)) {
-                var id = data.attachments;
-                data.attachments = [];
-                data.attachments[0] = id;
+        // make sure blobs is an array
+        if (data.blobs) {
+            if (!$.isArray(data.blobs)) {
+                var id = data.blobs;
+                data.blobs = [];
+                data.blobs[0] = id;
             }
         }
 
         var type = data.type;
-        data.attached_to = { type: type, id: data.id };
+        data.parent = { type: type, id: data.id };
         delete data.type;
         delete data.id;
 
         // insert temporary comment
-
         $("<div class='list-group-item comment fake-comment'>" + 
             "<div class='media'>" + 
                 "<div class='fake-user'></div>" +
@@ -107,21 +106,23 @@ weavy.comments = (function ($) {
             url: url,
             data: JSON.stringify(data)
         }).then(function () {
-            // update comment list
-            $.ajax({
-                url: weavy.url.resolve("/" + entityType + "s/" + entityId + "/comments"),
-                method: "GET",
-                cache: false,
-                contentType: "application/json"
-            }).then(function (html) {
-                triggerEvent("insert", { entityType: entityType, entityId: entityId });
-            });            
+            // trigger insert event
+            triggerEvent("insert", { entityType: entityType, entityId: entityId });
+            // NOTE: the UI is updated by the RTM connection
+            //// update comment list
+            //$.ajax({
+            //    url: weavy.url.mvc(entityType) + entityId + "/comments",
+            //    method: "GET",
+            //    cache: false,
+            //    contentType: "application/json"
+            //}).then(function (html) {
+            //    triggerEvent("insert", { entityType: entityType, entityId: entityId });
+            //});            
         }).fail(function () {
             $(".fake-comment").remove();
         }).always(function () {
             $button.prop("disabled", false);
         });
-
     };
 
     // update comment feedback partial view
@@ -131,7 +132,7 @@ weavy.comments = (function ($) {
         if (!$comment.length) return;
         
         $.ajax({
-            url: weavy.url.resolve("/comments/" + id + "/feedback"),
+            url: weavy.url.mvc("comment") + id + "/feedback",
             method: "GET",
             cache: false,
             contentType: "application/json"
@@ -140,23 +141,27 @@ weavy.comments = (function ($) {
         });
     };
 
-    // get comments for a post
+    // get comments for an entity, i.e. post or content
     function getComments(id, type, expand) {
 
-        // check if the comments parent entity is present on the page
-        var $entity = $("[data-" + type + "-id='" + id + "']")
+        
+
+        // check if the entity is present on the page
+        var selector = "[data-type=" + type + "][data-id=" + id + "]";
+        console.log(selector);
+        var $entity = $(selector)
         if ($entity.length === 0) {
             return false;
         }
-
-        var $div = $("." + type + "-comments", $entity);
+        
+        var $div = $(selector + " ." + type + "-comments");
         var $spinner = $(".spinner", $div);
 
         // init weavy editor (if needed)               
-        if (!$(".comments-form.emojionearea", $entity).length) {
-            initCommentEditor($entity.find(".comments-form"));
+        if (!$(selector + " .comments-form.emojionearea").length) {
+            initCommentEditor($(selector  + " .comments-form"));
             if (focus) {
-                $entity.find("textarea.comments-form").weavyEditor("focus");
+                $(selector + " textarea.comments-form").weavyEditor("focus");
             }
 
             // check for context
@@ -170,11 +175,10 @@ weavy.comments = (function ($) {
             $spinner.addClass("spin");
             $div.removeClass("d-none");
         }
-        
+
         $.ajax({
-            url: weavy.url.resolve("/" + type + "s/" + id + "/comments"),
+            url: weavy.url.mvc(type) + id + "/comments",
             method: "GET",
-            contentType: "application/json",
             cache: false
         }).then(function (html) {
             // remove spinner
@@ -255,10 +259,9 @@ weavy.comments = (function ($) {
         var parentId = $comment.data("parent-id");
         var parentEntity = $comment.data("parent-entity");
 
-        weavy.api.trashComment(id).then(function () {
+        weavy.api.trash("comment", id).then(function () {
             $comment.slideUp("fast")
             weavy.alert.alert("success", "Comment was trashed. <a class='alert-link' href='#' data-comment-restore='" + id + "' data-parent-id='" + parentId + "' data-parent-entity='" + parentEntity + "'>Undo</a>", 5000, "alert-comment-trash-" + id);
-
             triggerEvent("trash", { entityType: parentEntity, entityId: parentId });
 
         });
@@ -273,10 +276,9 @@ weavy.comments = (function ($) {
         var parentId = $el.data("parent-id");
         var parentEntity = $el.data("parent-entity");
 
-        weavy.api.restoreComment(id).then(function () {
+        weavy.api.restore("comment", id).then(function () {
             $comment.slideDown("fast")
             weavy.alert.alert("success", "Comment was restored.", 5000, "alert-comment-trash-" + id);
-
             triggerEvent("restore", { entityType: parentEntity, entityId: parentId });
 
         });
@@ -288,8 +290,8 @@ weavy.comments = (function ($) {
         // do nothing if already exists
         if ($("div[data-comment-id='" + comment.id + "']").length !== 0) return;
 
-        // todo: get specific comment and add it instead of reloading all.
-        getComments(comment.attached_to.id, comment.attached_to.type, false);
+        // TODO: get specific comment and add it instead of reloading all
+        getComments(comment.parent.id, comment.parent.type, false);
     });
 
     // rtm like comment

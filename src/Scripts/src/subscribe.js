@@ -19,7 +19,9 @@ weavy.subscribe = (function ($) {
         $("[data-toggle=subscribe][data-entity=" + entity + "][data-id=" + id + "]").addClass("on");
 
         // call api to subscribe (follow) to entity
-        weavy.api.follow(entity, id);
+        weavy.api.follow(entity, id).then(function () {
+            updateSubscribers(entity, id);
+        });
     }
 
     // unsubscribe specified entity
@@ -28,13 +30,26 @@ weavy.subscribe = (function ($) {
         $("[data-toggle=subscribe][data-entity=" + entity + "][data-id=" + id + "]").removeClass("on");
 
         // call api to unsubscribe (unfollow) to entity
-        weavy.api.unfollow(entity, id);
+        weavy.api.unfollow(entity, id).then(function () {
+            updateSubscribers(entity, id);
+        });
     }
 
-    return {
-        subscribe: subscribe,
-        unsubscribe: unsubscribe
-    };
+    // get subscribers partial from server and update the ui
+    function updateSubscribers(entity, id) {
+        var $subscribers = $("[data-type="+entity+"][data-id='" + id + "'] .subscribers");
+        if (!$subscribers.length) {
+            return;
+        }
+
+        $.ajax({
+            url: weavy.url.mvc(entity) + id + "/subscribers",
+            method: "GET",
+            contentType: "application/json"
+        }).then(function (html) {
+            $subscribers.replaceWith(html);
+        });
+    }
 
 })($);
 

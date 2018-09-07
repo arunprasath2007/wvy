@@ -22,7 +22,7 @@
                                             @if (Model.Conversation.IsRoom) {
                                                 <text>in <a href="@Model.Conversation.Url()">@Model.Conversation.Name</a>.</text>
                                             } else {
-                                                <text>from <a href="@Model.Conversation.Url()">@Model.Conversation.Title</a>.</text>
+                                                <text>from <a href="@Model.Conversation.Url()">@Model.Conversation.GetTitle()</a>.</text>
                                             }
 
                                         </td>
@@ -58,7 +58,7 @@
                                     @foreach (var message in Model.Unread) {
                                         <tr>
                                             <td valign="top" class="imageContent" width="52" style="padding-top:4px;">
-                                                <img src="@message.CreatedBy.AvatarUrl(32)" width="32" height="32" style="border-radius:32px;" />
+                                                <img src="@message.CreatedBy().AvatarUrl(32)" width="32" height="32" style="border-radius:32px;" />
                                             </td>
                                             <td valign="top" class="textContent">
                                                 @Html.Raw(HtmlExtensions.GetHtmlForEmail(message))<br />

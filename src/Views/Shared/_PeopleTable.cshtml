@@ -1,20 +1,22 @@
 ﻿@model SearchResult<User, UserQuery>
-
+@{
+    var isModal = ViewData["modal"] as bool? ?? true;
+}
 @if (Model.Any()) {
     foreach (var user in Model) {
-        <tr class="@($"{(user.IsTrashed() ? "table-trashed" : "")} {(user.IsSuspended ? "table-suspended": "")}")" @Html.Raw(user.IsTrashed() ? "" : $@"data-href=""{ user.Url()}""") data-type="user" data-id="@user.Id" data-modal>
+        <tr class="@($"{(user.IsTrashed() ? "table-trashed" : "")} {(user.IsSuspended ? "table-suspended": "")}")" @Html.Raw(user.IsTrashed() ? "" : $@"data-href=""{ user.Url()}""") data-type="user" data-id="@user.Id" @(isModal ? "data-modal" : "")>
             <td class="table-icon">@user.AvatarImg(32, presence: true)</td>
             <td>
                 @if (user.IsTrashed()) {
-                    if (user.Username != user.Title) {
-                        <text>@user.Title</text>
+                    if (user.Username != user.GetTitle()) {
+                        <text>@user.GetTitle()</text>
                     }
                     <small>@@@user.Username</small>
                 } else {
-                    if (user.Username == user.Title) {
+                    if (user.Username == user.GetTitle()) {
                         <a href="@user.Url()"><small>@@@user.Username</small></a>
                     } else {
-                        <a href="@user.Url()">@user.Title</a> <small>@@@user.Username</small>
+                        <a href="@user.Url()">@user.GetTitle()</a> <small>@@@user.Username</small>
                     }
                 }
                 @Html.Badge(user)

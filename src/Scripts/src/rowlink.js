@@ -11,7 +11,7 @@ $(function () {
         var href = $(this).attr("data-href");
         var target = $(this).attr("data-target");
 
-        if (href.length > 0) {
+        if (href.length > 0) {            
             if (target && target === "_blank") {
                 window.open(href);
             } else {

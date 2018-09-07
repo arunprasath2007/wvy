@@ -64,7 +64,7 @@
         .emojionearea-editor {
             max-height: 23em;
             font-size: $font-size-base;
-            line-height: $input-line-height;
+            line-height: $input-btn-line-height;
             border-bottom: $border-width solid $border-color;
             padding: $card-spacer-y ($card-spacer-x - .0625rem);
             // To enable HW acceleration and not cause repaint on scroll

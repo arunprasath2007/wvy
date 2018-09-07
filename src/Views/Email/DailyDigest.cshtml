@@ -1,5 +1,5 @@
 ﻿@model Weavy.Core.Models.DailyDigestEmail
-
+@using Weavy.Core.Models
 @* STANDARD MODULE // *@
 <tr>
     <td align="center" valign="top">
@@ -49,7 +49,7 @@
                                     @foreach (var notification in Model.Notifications) {
                                     <tr>
                                         <td valign="top" class="imageContent" width="52" style="padding-top:4px;">
-                                            <img src="@notification.CreatedBy.AvatarUrl(32)" width="32" height="32" style="border-radius:32px;" />
+                                            <img src="@notification.CreatedBy().AvatarUrl(32)" width="32" height="32" style="border-radius:32px;" />
                                         </td>
                                         <td valign="top" class="textContent">
                                             @Html.Raw(HtmlExtensions.GetHtmlForEmail(notification))<br />

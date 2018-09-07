@@ -12,9 +12,9 @@
     </button>
     <div class="dropdown-menu dropdown-menu-right">
         <a class="dropdown-item" href="@Model.Url()">@Html.SvgIcon("information", "info") Details</a>
-        @if (!Model.ContextUrl.IsNullOrEmpty()) {
+        @*@if (!Model.ContextUrl.IsNullOrEmpty()) {
             <a class="dropdown-item" href="@Model.ContextUrl" target="_blank" title="@Model.ContextUrl" data-context-url="@Model.ContextUrl" data-weavy-context-url="@Model.Url(absolute: true)" data-weavy-context-space="@Model.SpaceId">@Html.SvgIcon("open-in-new") Open in context</a>
-        }
+        }*@
         <div class="dropdown-divider"></div>
         @if (!details && Model.HasPermission(Permission.Pin)) {
             if (Model.IsPinned()) {
@@ -31,7 +31,7 @@
             }
         }
 
-        @Html.StarToggle(Model, false, new { @class = "dropdown-item toggle-dropdown" })
+        @Html.StarToggle(Model, compact: false, htmlAttributes: new { @class = "dropdown-item toggle-dropdown" })
 
         @Html.SubscribeToggle(Model, new { @class = "dropdown-item toggle-dropdown" })
 

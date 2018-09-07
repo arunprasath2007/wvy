@@ -6,9 +6,7 @@ weavy.context = {
     guid: null,
     thumb: null,
     space: null,
-    app: null,
-    item: null,
-    file: null,
+    content: null,
     culture: "en-US",
     uiculture: "en-US",
     time: 0,
@@ -31,9 +29,7 @@ weavy.context = {
         weavy.context.guid = document.body.getAttribute("data-guid");
         weavy.context.thumb = document.body.getAttribute("data-thumb");
         weavy.context.space = Number(document.body.getAttribute("data-space")) || null;
-        weavy.context.app = Number(document.body.getAttribute("data-app")) || null;
-        weavy.context.item = Number(document.body.getAttribute("data-item")) || null;
-        weavy.context.file = Number(document.body.getAttribute("data-file")) || null;
+        weavy.context.content = Number(document.body.getAttribute("data-content")) || null;
         weavy.context.culture = document.body.getAttribute("data-culture") || "en-US";
         weavy.context.uiculture = document.body.getAttribute("data-ui-culture") || "en-US";
         weavy.context.time = Number(document.body.getAttribute("data-time"));

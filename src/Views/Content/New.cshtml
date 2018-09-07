@@ -1,0 +1,15 @@
+﻿@model Content
+@{
+  Title = "New " + Model.MetaData().Name;
+  Back = Url.Back(Content.Url() ?? Space.Url());
+}
+
+<div class="container my-3">
+    @{ Html.RenderPartial("_New", Model, new ViewDataDictionary { { "turboform", true } }); }
+</div>
+
+@if (Model.HasHtmlProperty()) {
+  @section scripts{
+    @Html.InitHtmlEditor()
+  }
+}

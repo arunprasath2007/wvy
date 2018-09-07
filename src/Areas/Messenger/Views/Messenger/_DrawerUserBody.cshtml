@@ -6,7 +6,7 @@
 @Model.AvatarImg(128, presence: true)
 
 <fieldset class="text-center">
-    <div class="media-title">@Model.Title <small>@@@Model.Username</small></div>
+    <div class="media-title">@Model.GetTitle() <small>@@@Model.Username</small></div>
 
     @if (Model.Email != null) {
         <div class="media-separator"></div>

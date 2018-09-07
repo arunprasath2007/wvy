@@ -1,23 +1,18 @@
 ﻿@model User
 @{
-    Title = Model.Title;
+    Title = Model.GetTitle();
     Back = Url.Back<PeopleController>(c => c.Index(null, null, null));
     var profiledata = Html.DisplayGroups(Model.Profile, exclude: new[] { "Avatar", "Name" })?.ToHtmlString();
 }
 
 <div class="cover cover-bg cover-under-navbar">
     <div class="container text-center py-4">
-        @if (Model.Avatar?.Value is Weavy.Core.Models.File avatar && avatar != null) {
-            <a href="@avatar.Url()" @Html.Raw(Html.PreviewAttributes(avatar, href: avatar.Url()).AsHtmlAttributes())>
-                @avatar.AvatarImg(128)
-            </a>
-        } else {
             @Model.AvatarImg(128)
-        }
-        @if (Model.Username == Model.Title) {
+
+        @if (Model.Username == Title) {
             <p class="pt-2 mb-0">@@@Model.Username @Html.Badge(Model)</p>
         } else {
-            <p class="pt-2 mb-0">@Model.Title <small>@@@Model.Username</small> @Html.Badge(Model)</p>
+            <p class="pt-2 mb-0">@Title <small>@@@Model.Username</small> @Html.Badge(Model)</p>
         }
     </div>
     <div class="top-right">@{ Html.RenderPartial("_UserMenu", Model);}</div>
@@ -29,7 +24,7 @@
         if (Model.Id == User.Id) {
             <p class="text-muted text-center py-3 empty">You should <a href="@Url.Action(nameof(AccountController.EditProfile), typeof(AccountController).ControllerName())">edit your profile</a> and add some information to this page...</p>
         } else {
-            <p class="text-muted text-center py-3 empty">You should let @Model.Title know that their profile page is empty...</p>
+            <p class="text-muted text-center py-3 empty">You should let @Title know that their profile page is empty...</p>
         }
     } else {
         @Html.Raw(profiledata);

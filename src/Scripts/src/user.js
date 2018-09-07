@@ -5,7 +5,7 @@ weavy.user = (function ($) {
     var _href = null;
 
     // regex for matching link to user profile
-    var _re = new RegExp("^\/people\/\\d+$")
+    var _re = new RegExp("^/people/\\d+$")
 
     // trash user
     $(document).on("click", "[data-trash=user][data-id]", function (e) {
@@ -13,7 +13,7 @@ weavy.user = (function ($) {
         var $el = $(this);
         var id = $el.data("id");
 
-        weavy.api.trashUser(id).then(function () {
+        weavy.api.trash("user", id).then(function () {
             $("[data-type=user][data-id="+id+"]").addClass("d-none");
             weavy.alert.alert("success", "User was trashed. <button type='button' class='btn btn-link alert-link' data-restore='user' data-id='" + id + "'>Undo</button>", 5000, "alert-trash-user-" + id);
         });
@@ -25,7 +25,7 @@ weavy.user = (function ($) {
 
         var id = this.dataset.id;
 
-        weavy.api.restoreUser(id).then(function () {
+        weavy.api.restore("user", id).then(function () {
             $("[data-type=user][data-id=" + id + "]").removeClass("d-none");
             weavy.alert.alert("success", "User was restored.", 5000, "alert-trash-user-" + id);
         });
@@ -69,7 +69,8 @@ weavy.user = (function ($) {
     // intercept links to user profile and open modal instead
     $(document).on("click", "a[href^='/people/']:not([data-link]), tr[data-href^='/people/'][data-modal]", function (e) {
         var $target = $(e.target);
-        if ($target.is("a, input, button") || $target.hasClass("dropdown-item") || $target.parents(".dropdown").length) {
+
+        if ($target.parents("[prevent-modal]").length) {
             return;
         }
 

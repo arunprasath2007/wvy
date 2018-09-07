@@ -1,23 +1,20 @@
 ﻿@model ICommentable
 @{
-    var entityType = ((IEntity)Model).Type.ToString().ToLower();
-    var entityId = Model.Id;
+    var type = Model.Type.ToString().ToLower();
+    var id = Model.Id;
+    var url = Url.Content($"~/api/{(Model.Type == EntityType.Content ? "content" : type + "s")}/{id}/comments");
     var commentsContainer = ViewBag.container;
 }
 
-@if (ViewBag.IsCommentable as bool? ?? true) {
-
-    if (Model.HasPermission(Permission.Comment)) {
-<form action="~/api/comments" method="post" id="comment-form-@Model.Id" data-entity-type="@entityType" data-entity-id="@entityId" data-comments-container="@commentsContainer">
-    <textarea class="comments-form" name="text"></textarea>
-    <input type="hidden" name="id" value="@entityId" />
-    <input type="hidden" name="type" value="@entityType" />
-    <input type="hidden" name="hasContext" id="hasContext" value="false" />
-    <input type="hidden" name="contextUrl" id="contextUrl" />
-    <input type="hidden" name="contextTitle" id="contextTitle" />
+@if (Model.HasPermission(Permission.Comment)) {
+<form action="@url" method="post" id="comment-form-@id" data-type="@type" data-id="@id" data-comments-container="@commentsContainer">
+  <textarea class="comments-form" name="text"></textarea>
+  <input type="hidden" name="hasContext" id="hasContext" value="false" />
+  <input type="hidden" name="contextUrl" id="contextUrl" />
+  <input type="hidden" name="contextTitle" id="contextTitle" />
 </form>
 
-    } else if (!Model.Comments.Any()) {
-        <span class="text-muted">No comments yet...</span>
-    }
+} else if (!Model.CommentIds.Any()) {
+    <span class="text-muted">No comments yet...</span>
 }
+

@@ -50,10 +50,10 @@
                 @foreach (var invite in Model.Invites) {
                     <tr class="table-warning">
                         <td class="table-icon">@u.AvatarImg(32)</td>
-                        <td>@invite.Email @Html.Badge(invite)</td>
+                        <td class="text-truncate">@invite.Email @Html.Badge(invite)</td>
                         <td class="table-icon">
                             @if (Space.IsMember && Space.HasPermission(Permission.Admin)) {
-                                <div class="dropdown d-inline-block">
+                                <div class="dropdown d-inline-block d-flex justify-content-end">
                                     <button type="button" class="btn btn-icon dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="Toggle Dropdown">
                                         @Html.SvgIcon("dots-vertical")
                                     </button>
@@ -73,13 +73,12 @@
                     <tr data-href="@member.Url()" data-modal class="@(member.IsPending ? "table-warning" : "") @(member.IsSuspended ? "table-suspended": "")">
                         <td class="table-icon">@(member.AvatarImg(32, presence: true))</td>
                         <td class="text-truncate">
-
-                                @if (member.Username == member.Title) {
-                                    <a href="@(Url.Action<PeopleController>(c => c.Get(member.Id)))"><small>@@@member.Username</small></a>
-                                } else {
-                                    <a href="@(Url.Action<PeopleController>(c => c.Get(member.Id)))">@member.Title</a> <small>@@@member.Username</small>
-                                }
-                                @Html.Badge(member)
+                            @if (member.Username == member.GetTitle()) {
+                                <a href="@(Url.Action<PeopleController>(c => c.Get(member.Id)))"><small>@@@member.Username</small></a>
+                            } else {
+                                <a href="@(Url.Action<PeopleController>(c => c.Get(member.Id)))">@member.GetTitle()</a> <small>@@@member.Username</small>
+                            }
+                            @Html.Badge(member)
                         </td>
                         <td class="table-icon">
                             <div class="d-flex justify-content-end">

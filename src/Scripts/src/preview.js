@@ -15,15 +15,18 @@ weavy.preview = (function ($) {
 
     // open pdf viewer on click
     $(document).on("click", "[data-preview]", function (e) {
-        var $target = $(e.target);
         e.preventDefault();
 
-        // get parameters for the open() function
-        var previewUrl = $(this).data("preview");
-        var href = $(this).data("href") || $(this).attr("href");
-        var fileId = $(this).data("id");
-
-        open(previewUrl, href, fileId);
+        // open with options from data attributes
+        open({
+            preview: $(this).data("preview"), // url to pdf 
+            name: $(this).data("name"), // name to display in header
+            icon: $(this).data("icon"), // icon of item (used for open in office)
+            download: $(this).data("download"), // url for downloading file
+            office: $(this).data("office"), // url for opening document in office
+            starred: $(this).data("starred"), // true|false indicating if document is starred (if starrable)
+            comments: $(this).data("comments") // number of comments (if commentable)
+        });
     });
 
     // close pdf viewer when clicking the close button
@@ -54,24 +57,52 @@ weavy.preview = (function ($) {
             // exit if no preview container
             return;
         }
-        //console.debug("preview.js:init");
         weavy.pdf.pdfjsWebApp.PDFViewerApplication.initialize(options);
     }
 
     // open file preview for the specified file
-    function open(previewUrl, href, fileId) {
+    function open(opts) {
         // add event handle for closing preview on ESC
         $(document).on("keyup", keyup);
 
         // open up the document with pdf.js
-        weavy.pdf.pdfjsWebApp.PDFViewerApplication.open(previewUrl);
+        weavy.pdf.pdfjsWebApp.PDFViewerApplication.open(opts.preview);
 
-        // show container
-        $("html").addClass("preview-open");
-        $(".preview-container").show();
+        // add navbar
+        var $container = $(".preview-container");
+        $container.find(".navbar-preview").remove();
+        var $navbar = $('<nav class="navbar navbar-preview fixed-top"><div class="navbar-icons"><button type="button" class="btn btn-icon" title="Close" data-preview-close data-widget-event data-widget-name="close-preview"><svg class="i"><use xlink:href="#arrow-left" /></svg></button></div></nav>');
+        var $middle = $('<div class="navbar-middle" />');
+        $middle.append('<span class="navbar-text">' + opts.name + '</span>');
+        $navbar.append($middle);
 
-        // then apply nice header with document title etc.
-        applyHeader(href || previewUrl, fileId);
+        // add star?
+        if (opts.starred !== undefined) {
+            // get id from url
+            var match = opts.preview.match(/\/(files|attachments)\/([0-9]+)\//);
+            var type = match[1] === "files" ? "content" : "attachment";
+            var id = match[2];
+            var $star = $('<button type="button" class="btn btn-icon" data-toggle="star" data-entity="' + type + '" data-id="' + id + '"><svg class="i d-block"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#star-outline"></use></svg><svg class="i d-none"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#star"></use></svg></button>');
+            if (opts.starred) {
+                $star.addClass("on");
+            } else {
+                $star.addClass("d-none");
+            }
+            $middle.append($star);
+
+        }
+        var $icons = $('<div class="navbar-icons"/>');
+        if (opts.office) {
+            $icons.append('<a href="' + opts.office + '" class="btn btn-icon" title="Open in Office"><svg class="i"><use xlink:href="#' + opts.icon + '" /></svg></a>');
+        }
+        if (opts.download) {
+            $icons.append('<a href="' + opts.download + '" class="btn btn-icon" title="Download"><svg class="i"><use xlink:href="#download" /></svg></a>');
+        }
+        $navbar.append($icons);
+        $container.append($navbar);
+
+        // show preview container
+        $container.show();
 
         if (weavy.browser.embedded) {
             // maximize widget window
@@ -95,13 +126,12 @@ weavy.preview = (function ($) {
         $(document).off("keyup", keyup);
 
         // hide container
-        $("html").removeClass("preview-open");
         $(".preview-container").hide();
 
         // clear selection
         try {
             window.getSelection().removeAllRanges();
-        } catch (e) {}
+        } catch (e) { }
 
         // REVIEW: is this the correct way to close the viewer?
         weavy.pdf.pdfjsWebApp.PDFViewerApplication.cleanup();
@@ -113,77 +143,6 @@ weavy.preview = (function ($) {
     function keyup(e) {
         if (e.keyCode === 27) {
             close();
-        }
-    }
-
-    // get filename from url
-    function getFileName(url) {
-        // remove #anchor
-        url = url.substring(0, (url.indexOf("#") === -1) ? url.length : url.indexOf("#"));
-        // remove ?querystring
-        url = url.substring(0, (url.indexOf("?") === -1) ? url.length : url.indexOf("?"));
-        // remove everything before the last slash in the path
-        url = url.substring(url.lastIndexOf("/") + 1, url.length);
-        // return
-        return url;
-    }
-
-    // add header with document title etc.
-    function applyHeader(href, fileId) {
-        var $previewContainer = $(".preview-container");
-
-        // remove existing header and create new
-        $previewContainer.find(".navbar-preview").remove();
-        var header = $('<nav class="navbar fixed-top navbar-preview" />');
-        var left = $('<div class="navbar-nav" />');
-
-        if (fileId == null) {
-            // add header with only name and button since we don't have any file meta data
-            left.append('<a class="nav-item nav-link" href="' + href + '">' + getFileName(href) + '</a>');
-            header.append(left);
-            header.append('<div class="navbar-icons">' +
-                '<button type="button" class="btn btn-icon" title="Close" data-preview-close data-widget-event data-widget-name="close-preview"><svg class="i"><use xlink:href="#close" /></svg></button>' +
-                '</div > ');
-            header.appendTo($previewContainer);
-        } else {
-            // get meta data from server and render nice header with filename, star, download etc.
-            weavy.api.getFile(fileId).done(function (data, textStatus, jqXHR) {
-                left.append('<a class="nav-item nav-link" href="' + href + '">' + data.name + '</a>');
-                if (data.permissions.includes("star") && weavy.context.area !== "messenger") {
-                    // add star
-                    var star = $('<button type="button" class="btn btn-icon" data-toggle="star" data-entity="' + data.type + '" data-id="' + data.id + '"><svg class="i d-block"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#star-outline"></use></svg><svg class="i d-none"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#star"></use></svg></button>');
-                    if (data.starred_by && data.starred_by.indexOf(weavy.context.user) !== -1) {
-                        star.addClass("on");
-                    }
-                    left.append(star);
-                }
-                header.append(left);
-                var comments = data.comments || [];
-                var right = $('<div class="navbar-icons" />');
-                if (weavy.context.area !== "messenger") {
-                    right.append('<a class="btn btn-icon" data-preview-close href="' + href + '#comments" title="' + comments.length + (comments.length !== 1 ? ' comments' : ' comment') + '"><svg class="i"><use xlink:href="' + (comments.length ? '#comment' : '#comment-outline') + '" /></svg></a>');
-                }
-
-                if (data.permissions.includes("edit")) {
-                    var dropdown = $('<div class="dropdown"><button type="button" class="btn btn-icon dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="Toggle Dropdown"><svg class="i"><use xlink:href="#dots-vertical" /></svg></button></div>');
-                    var dropdownmenu = $('<div class="dropdown-menu dropdown-menu-right"></div>');
-                    dropdown.append(dropdownmenu);
-
-                    if (data.properties && data.properties.office_url) {
-                        dropdownmenu.append('<a class="dropdown-item" href="' + data.properties.office_url + '"><svg class="text-' + data.icon_color + ' i"><use xlink:href="#' + data.icon + '" /></svg> Open in ' + data.properties.product_name + '</a>');
-                    }
-                    dropdownmenu.append('<a class="dropdown-item" href="' + href + '/edit"><svg class="text-primary i"><use xlink:href="#pencil" /></svg> Edit</a>');
-                    dropdownmenu.append('<a class="dropdown-item" href="' + data.content_url + '?dl=1"><svg class="i"><use xlink:href="#download" /></svg> Download</a>');
-                    right.append(dropdown);
-                } else {
-                    right.append('<a class="btn btn-icon" href="' + data.content_url + '?dl=1" title="Download"><svg class="i"><use xlink:href="#download" /></svg></a>');
-                }
-
-                right.append('<button type="button" class="btn btn-icon" title="Close preview" data-preview-close data-widget-event data-widget-name="close-preview"><svg class="i"><use xlink:href="#close" /></svg></button>');
-                right.appendTo(header);
-
-                header.appendTo($previewContainer);
-            });
         }
     }
 

@@ -35,9 +35,9 @@
                         <td>
                             @invite.Email
                             @if (invite.IsExternal) {
-                                <span class="badge badge-warning" title="Invited to @invite.Space.Name by @invite.CreatedBy.Title">external</span>
+                                <span class="badge badge-warning" title="Invited to @invite.Space.Name by @invite.CreatedBy.GetTitle()">external</span>
                             } else if (invite.IsInvite) {
-                                <span class="badge badge-info" title="Invited by @invite.CreatedBy.Title">invite</span>
+                                <span class="badge badge-info" title="Invited by @invite.CreatedBy.GetTitle()">invite</span>
                             } else {
                                 <span class="badge badge-success">signup</span>
                             }

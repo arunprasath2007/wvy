@@ -113,7 +113,6 @@ $theme-colors: (
     "transparent": transparent
 );
 
-
 // The yiq lightness value that determines when the lightness of color changes from "dark" to "light". Acceptable values are between 0 and 255.
 $yiq-contrasted-threshold: 186;
 
@@ -151,7 +150,6 @@ $link-color: $theme-600; // theme-color("primary")
 $link-hover-color: darken($link-color, 15%); // darken($link-color, 15%)
 $link-hover-decoration: none; // underline
 
-
 // We don't really know if we can or should use rem for the grid column widths
 /*
 $container-max-widths: ( 
@@ -163,7 +161,7 @@ $container-max-widths: (
 // sm: 540px, md: 720px, lg: 960px, xl: 1140px
 */
 
-$grid-gutter-width: 1.5rem; //30px;
+$grid-gutter-width: 1.5rem; // 30px;
 
 $line-height-lg: 1.6; // Makes font-size 20 (1.25rem) -> 32px
 $line-height-sm: 1/0.7; // Makes font-size 14 (0.875rem) -> 20px

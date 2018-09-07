@@ -9,6 +9,7 @@
 ~/scripts/src/url.js
 ~/scripts/src/api.js
 ~/scripts/src/infinitescroll.js
+~/scripts/src/postal.js
 ~/scripts/_fileupload.bundle
 ~/scripts/_button.bundle
 ~/scripts/_photoswipe.bundle

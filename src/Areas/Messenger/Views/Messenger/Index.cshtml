@@ -26,7 +26,7 @@
                 <div class="navbar-icons">
                     <button type="button" class="btn btn-icon" data-toggle="drawer-settings" title="Settings">@User.AvatarImg(24, presence: true)</button>
                 </div>
-                <div class="navbar-middle conversation-title">@(Model.Conversation?.Title ?? "Messenger")</div>
+                <div class="navbar-middle conversation-title">@(Model.Conversation?.GetTitle() ?? "Messenger")</div>
                 <div class="navbar-icons">
                     <button type="button" class="btn btn-icon d-embedded visibility-h">@Html.SvgIcon("expand-window")</button>
                     <button type="button" class="btn btn-icon d-embedded visibility-h">@Html.SvgIcon("close")</button>

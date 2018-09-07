@@ -24,11 +24,7 @@
 <div class="cover cover-bg cover-under-navbar">
 
     <div class="text-center my-4" style="padding-bottom:2.5rem;">
-        @if (Space.Avatar?.Value is Weavy.Core.Models.File avatar && avatar != null) {
-            <a href="@avatar.Url()" @Html.Raw(Html.PreviewAttributes(avatar, href: avatar.Url()).AsHtmlAttributes())>@avatar.AvatarImg(128)</a>
-        } else {
             @Space.AvatarImg(128)
-        }
     </div>
     <div class="facepile">
         @foreach (var member in Model.Members) {
@@ -53,7 +49,7 @@
         }
     </div>
 
-    <div class="top-right dropdown-z d-standalone">@{ Html.RenderPartial("_SpaceMenu", Space); }</div>
+    @*<div class="top-right dropdown-z d-standalone">@{ Html.RenderPartial("_SpaceMenu", Space); }</div>*@
 </div>
 
 <div class="container my-4">

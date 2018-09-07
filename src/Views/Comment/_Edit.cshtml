@@ -16,8 +16,8 @@
             <table class="table table-attachments">
                 @foreach (var file in Model.Files) {
                     <tr>
-                        <td class="table-icon">@Html.SvgIcon(file.Icon, file.IconColor)</td>
-                        <td>@file.Name</td>
+                        <td class="table-icon">@Html.SvgIcon(file)</td>
+                        <td>@file.GetTitle()</td>
                         <td class="table-icon"><a class="btn btn-icon remove" data-file="file.title" href="#" data-remove-attachment="@file.Id" title="Remove file">@Html.SvgIcon("close")</a><input type="hidden" name="attachments" value="@file.Id" /></td>
                     </tr>
                 }

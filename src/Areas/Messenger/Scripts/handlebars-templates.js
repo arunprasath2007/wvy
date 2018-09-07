@@ -12,17 +12,21 @@ this["Handlebars"]["templates"]["autocomplete-mention-template"] = Handlebars.te
     + "</small>\r\n";
 },"useData":true});
 this["Handlebars"]["templates"]["fileuploads"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
-    var helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
+    var stack1, helper, alias1=container.lambda, alias2=container.escapeExpression, alias3=depth0 != null ? depth0 : (container.nullContext || {}), alias4=helpers.helperMissing, alias5="function";
 
-  return "<tr>\r\n    <td class=\"table-icon\"><svg class=\"i\"><use xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:href=\"#file\"></use></svg></td>\r\n    <td>"
-    + alias4(((helper = (helper = helpers.title || (depth0 != null ? depth0.title : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"title","hash":{},"data":data}) : helper)))
+  return "<tr>\r\n    <td class=\"table-icon\"><svg class=\"i text-"
+    + alias2(alias1(((stack1 = (depth0 != null ? depth0.icon : depth0)) != null ? stack1.color : stack1), depth0))
+    + "\"><use xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:href=\"#"
+    + alias2(alias1(((stack1 = (depth0 != null ? depth0.icon : depth0)) != null ? stack1.name : stack1), depth0))
+    + "\"></use></svg></td>\r\n    <td>"
+    + alias2(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias4),(typeof helper === alias5 ? helper.call(alias3,{"name":"name","hash":{},"data":data}) : helper)))
     + " ("
-    + alias4((helpers.file_size || (depth0 && depth0.file_size) || alias2).call(alias1,(depth0 != null ? depth0.size : depth0),{"name":"file_size","hash":{},"data":data}))
-    + ")<input type=\"hidden\" name=\"attachments\" value=\""
-    + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
+    + alias2((helpers.file_size || (depth0 && depth0.file_size) || alias4).call(alias3,(depth0 != null ? depth0.size : depth0),{"name":"file_size","hash":{},"data":data}))
+    + ")<input type=\"hidden\" name=\"blobs\" value=\""
+    + alias2(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias4),(typeof helper === alias5 ? helper.call(alias3,{"name":"id","hash":{},"data":data}) : helper)))
     + "\" /></td>\r\n    <td class=\"table-icon\"><button type=\"button\" class=\"btn btn-icon\" data-remove=\""
-    + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
-    + "\"><svg class=\"i\"><use xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:href=\"#close-circle\"></use></svg></button></td>\r\n</tr>\r\n";
+    + alias2(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias4),(typeof helper === alias5 ? helper.call(alias3,{"name":"id","hash":{},"data":data}) : helper)))
+    + "\"><svg class=\"i\"><use xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:href=\"#close\"></use></svg></button></td>\r\n</tr>\r\n";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1;
 

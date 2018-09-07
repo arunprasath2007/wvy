@@ -3,7 +3,7 @@
 @foreach (User user in Model) {
     <tr data-href="@user.Url()">
         <td class="table-icon">@user.AvatarImg(size:32)</td>
-        <td><a href="@user.Url()">@user.Title</a> <small>@@@user.Username</small></td>
+        <td><a href="@user.Url()">@user.GetTitle()</a> <small>@@@user.Username</small></td>
     </tr>
 }
 </table>

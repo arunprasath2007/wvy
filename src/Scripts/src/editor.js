@@ -177,11 +177,8 @@
                         },
                         index: 1,
                         template: function (item) {
-
-                            var itemIcon = item.icon != null && item.icon.indexOf("fa") === -1 ? item.icon : "file-hidden";
-                            var icon = "<svg class='i text-" + item.color + "'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='#" + itemIcon + "'></use></svg>"
-
-                            return icon + '<span>' + item.title + ' <small>' + item.type + '</small></span>';
+                            var icon = "<svg class='i text-" + item.icon.color + "'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='#" + item.icon.name + "'></use></svg>"
+                            return icon + '<span>' + item.title + ' <small class="text-muted">' + item.kind + '</small></span>';
                         },
                         replace: function (item) {
                             return "[" + item.title + "](" + item.url + ") ";
@@ -205,10 +202,10 @@
 
                         // init file upload                
                         $wrapper.fileupload({
-                            url: weavy.url.resolve("/api/files"),
+                            url: weavy.url.resolve("/api/blobs"),
                             dropZone: $wrapper,
                             dataType: "json",
-                            paramName: "files",
+                            paramName: "blobs",
                             singleFileUploads: false,
                             add: function (e, data) {
                                 // TODO: add logic here to prevent upload of certain files?                            
@@ -225,13 +222,13 @@
                                 $wrapper.find(".progress").css("width", percentage + "%").removeClass("d-none");
                             },
                             done: function (e, data) {
-                                var files = data.result; // todo: parse
+                                var blobs = data.result; // todo: parse
 
-                                $.each(files.data, function (index, file) {
+                                $.each(blobs.data, function (index, blob) {
                                     $wrapper.find(".uploads .table-attachments").append('<tr>' +
-                                        '<td class="table-icon"><svg class="i text-' + file.icon_color + '"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#' + file.icon + '"></use></svg></td>' +
-                                        '<td>' + file.title + '</td>' +
-                                        '<td class="table-icon"><a class="btn btn-icon remove"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#close-circle"></use></svg></a><input type="hidden" name="attachments" value="' + file.id + '" /></td>' +
+                                        '<td class="table-icon"><svg class="i text-' + blob.icon.color + '"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#' + blob.icon.name + '"></use></svg></td>' +
+                                        '<td>' + blob.name + '</td>' +
+                                        '<td class="table-icon"><a class="btn btn-icon remove"><svg class="i"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#close"></use></svg></a><input type="hidden" name="blobs" value="' + blob.id + '" /></td>' +
                                         '</tr>');
                                 });
 
@@ -296,7 +293,7 @@
                                             currentUrl = "http://" + currentUrl;
                                         }
 
-                                        if (removedEmbeds.indexOf(currentUrl) == -1) {
+                                        if (removedEmbeds.indexOf(currentUrl) === -1) {
                                             url = currentUrl;
                                             break;
                                         }
@@ -345,7 +342,7 @@
                             $(this).closest(".embed").remove();
 
                             // get the embed url and add it to the blacklist
-                            var url = $(this).data("url");
+                            var url = $(this).data("url");                            
                             removedEmbeds.push(url);
                             embedAdded = false;
                         })
@@ -429,17 +426,12 @@
 
                 // add context button
                 if (options.context) {
-                    //<svg class='i'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='#link-variant'></use></svg>
-                    /*var $context = $("<div class='context has-context'>" +
-                        "<div class='context-data'><img class='context-icon' src=''/><span class='context-url'></span><a href='#' title='Remove as context from this post' class='remove-context'><svg class='i i-18'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='#close-circle'></use></svg></a></div>" +
-                        "<a href='#' class='add-context'><img class='context-icon' src=''/>Attach current url</a>" +
-                        "</div>");*/
-
+                    
                     var $context = $("<div class='context'>" +
                         "<div class='context-data'><img class='context-icon' src=''/><span class='context-url'></span><a href='#' title='Remove url as context' class='remove-context btn btn-icon'><svg class='i i-18'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='#close-circle'></use></svg></a></div>" +
                         "</div>");
 
-                    var $contextButton = $("<button type='button' class='context btn btn-icon btn-add-context' title='Attach current url as context'><svg class='i'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='#link-context'></use></svg></button>");
+                    var $contextButton = $("<button type='button' class='context btn btn-icon btn-add-context' title='Embed current url as context'><svg class='i'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='#link-context'></use></svg></button>");
 
                     // Always hide context initially for comments
                     if ($wrapper.closest(".section-comments").length) {

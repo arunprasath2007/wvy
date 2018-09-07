@@ -1,0 +1,71 @@
+﻿@model FolderBase
+@{
+  Title = "Files";
+}
+
+@section navbar_middle {
+  <div class="navbar-middle">
+    <a href="@Space.Url()" class="navbar-text">
+      @Space.Name
+      @if (Space.Teamname != null) {
+        <small class="d-none d-sm-inline">@@@Space.Teamname</small>
+      }
+    </a>
+    @Html.StarToggle(Space)
+  </div>
+}
+
+@section navbar_secondary {
+  @{ Html.RenderPartial("_SpaceTabs"); }
+}
+
+@{ Html.RenderPartial("_Nav"); }
+
+<div class="my-3">
+  @if (ContentLayout == Weavy.Core.Models.Layout.Card) {
+    <div class="cards" id="infinite-scroll-target">
+      @{ Html.RenderPartial("_Cards", ContentResult); }
+    </div>
+  } else if (ContentLayout == Weavy.Core.Models.Layout.List) {
+    <div class="list-group" id="infinite-scroll-target">
+      @{ Html.RenderPartial("_ListItems", ContentResult); }
+    </div>
+  } else {
+    <table class="table table-hover table-content">
+      <thead>
+        <tr>
+          <th class="table-icon"></th>
+          <th>Name</th>
+          <th>Modified</th>
+          <th>Type</th>
+          <th>Size</th>
+          <th class="table-icon"></th>
+        </tr>
+      </thead>
+      @if (ContentResult.IsNullOrEmpty()) {
+        <tfoot>
+          <tr>
+            <td class="empty text-center text-muted py-4" colspan="6">
+              Nothing in this folder yet.
+              @if (Space.HasPermission(Permission.Insert)) {
+                <text>Go ahead and add some files!</text>
+              }
+            </td>
+          </tr>
+        </tfoot>
+      }
+      <tbody id="infinite-scroll-target">
+        @{ Html.RenderPartial("_Rows", ContentResult); }
+      </tbody>
+    </table>
+  }
+  @Html.ScrollMore(ContentResult)
+</div>
+
+@section fab {
+  @Content.FAB()
+}
+
+@section footer {
+  @Html.Partial("_Modals", Model)
+}

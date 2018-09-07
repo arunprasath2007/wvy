@@ -5,10 +5,10 @@
         <tr class="@($"{(user.IsTrashed() ? "table-trashed" : "")} {(user.IsSuspended ? "table-suspended": "")}")">
             <td class="table-icon">@user.AvatarImg(32, presence: true)</td>
             <td>
-                @if (user.Username == user.Title) {
+                @if (user.Username == user.GetTitle()) {
                     <a href="@user.Url()"><small>@@@user.Username</small></a>
                 } else {
-                    <a href="@user.Url()">@user.Title</a> <small>@@@user.Username</small>
+                    <a href="@user.Url()">@user.GetTitle()</a> <small>@@@user.Username</small>
                 }
                 @Html.Badge(user)
             </td>

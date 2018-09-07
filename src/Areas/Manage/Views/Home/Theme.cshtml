@@ -11,10 +11,10 @@
         @Html.Hidden("back", Back)
 
         <div class="text-center">
-            @Html.EditorsForModel(include: new string[] { nameof(Model.Icon) }, formLabels: false)
+            @Html.EditorFor(x => Model.Icon, additionalViewData: new { AvatarFor = WeavyRequestContext.Current.System })
         </div>
 
-        @Html.EditorsForModel(exclude: new string[] { nameof(Model.Icon) })
+        @Html.EditorsForModel()
 
         <div class="form-buttons">
             <button type="submit" class="btn btn-primary btn-load">Save</button>

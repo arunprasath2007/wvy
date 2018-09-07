@@ -2,7 +2,7 @@
 @model OfficeTaskpaneModel
 @{
     Layout = null;
-    var spaces = SpaceService.Search(new SpaceQuery() { Archived = false, Filter = true }).Where(x => x.HasPermission(Permission.Create));
+    var spaces = SpaceService.Search(new SpaceQuery() { Archived = false, Filter = true }).Where(x => x.HasPermission(Permission.Insert));
 }
 <!DOCTYPE html>
 <html class="@HtmlClasses()" lang="@System.Threading.Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName">
@@ -20,7 +20,7 @@
     @Html.SvgSprite()
 
     <main role="main">
-        <div class="container-fluid my-3" data-file-id="@(Model.Document?.Id)">
+        <div class="container-fluid my-3" data-type="content" data-id="@(Model.Document?.Id)" data-content-id="@(Model.Document?.Id)">
             <div class="actions">
                 @if (!Model.IsWebDav && Model.Document.HasPermission(Permission.Edit)) {
                     <button class="btn btn-icon btn-badge" title="Save to Weavy" data-id="@Model.Document.Id" data-save>@Html.SvgIcon("content-save") </button>
@@ -45,11 +45,13 @@
                     } else {
                         <h1 class="display-2">Attach file</h1>
                         <form action="" method="post" data-attach>
-                            @Html.EditorFor(x => x.ContentAttachModel.FolderId)
+                            @Html.EditorFor(x => x.ContentAttachModel.ParentId)
                             <label for="DocName">Name</label>
                             <div class="input-group">
                                 @Html.TextBox("DocName", Model.Name, new { @class = "form-control filename", placeholder = "Filename" })
-                                <span class="input-group-addon" id="extension">.@Model.Extension</span>
+                                <div class="input-group-append">
+                                    <span class="input-group-text" id="extension">.@Model.Extension</span>
+                                </div>
                             </div>
                             <div class="form-buttons">
                                 <button type="submit" class="btn btn-primary">Attach</button>
@@ -70,12 +72,12 @@
             } else {
                 <div class="comments">
                     <h1 class="display-2">Comments</h1>
-                    <section class="file-comments my-4" id="comments">
+                    <section class="content-comments my-4" id="comments">
                         <div class="list-group comments" data-container="comments">
-                            @if (Model.Document.Comments.IsNullOrEmpty()) {
+                            @if (Model.Document.CommentIds.IsNullOrEmpty()) {
                                 <p class="text-muted text-center">Start the conversation! @Html.SvgIcon("message-plus", null, null, new { @class = "i-inline" })</p>
                             }
-                            @Html.Partial("_Comments", Model.Document.Comments, new ViewDataDictionary() { { "preview", true } })
+                            @Html.Partial("_Comments", Model.Document.Comments())
                         </div>
                         @Html.Partial("_CommentForm", Model.Document, new ViewDataDictionary() { { "container", ".comments" } })
                     </section>

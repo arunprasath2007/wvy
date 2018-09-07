@@ -1,8 +1,0 @@
-﻿@model SearchResult<IContent, ContentQuery>
-
-@if (Model.Any()) {
-    foreach (var item in Model) {
-        Html.RenderPartialContent(ContentView.List, item);
-    }
-    @Html.ScrollNext(Model)
-}

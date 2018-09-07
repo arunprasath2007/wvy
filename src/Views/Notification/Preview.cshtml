@@ -1,14 +1,14 @@
 ﻿@model Notification
 @{
     Layout = null;
-    Title = Model.Title;
+    Title = Model.GetTitle();
     var entity = Model.Link.Value() as IEntity;
     var subject = Model.Link?.Value();
     IEntity commentable = null;
     if (subject is ICommentable && subject.HasPermission(Permission.Comment)) {
         commentable = subject;
-    } else if (subject is Comment && ((Comment)subject).AttachedTo != null && ((Comment)subject).AttachedTo.HasPermission(Permission.Comment)) {
-        commentable = ((Comment)subject).AttachedTo;
+    } else if (subject is Comment comment && comment.Parent != null && comment.Parent.HasPermission(Permission.Comment)) {
+        commentable = comment.Parent;
     }
 
     int? spaceId = null;
@@ -37,7 +37,7 @@
                     <button type="button" class="btn btn-icon close" role="button">
                         @Html.SvgIcon("close")
                     </button>
-                    <img class="img-32 d-flex mr-3" src="@Model.CreatedBy.AvatarUrl(32, retina: true)" alt="">
+                    <img class="img-32 d-flex mr-3" src="@Model.CreatedBy().AvatarUrl(32, retina: true)" alt="">
                     <div class="media-body">
                         <p class="mb-2"><a href="#">@Html.Raw(Model.Html.TruncateQuotes(64))</a></p>
                         <p class="mb-2 d-none"><a href="@Model.Url(absolute: true)" class="notification" data-entity="notification" data-spaceid="@spaceId">@Html.Raw(Model.Html.TruncateQuotes(128))</a></p>

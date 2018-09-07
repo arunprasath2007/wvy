@@ -1,12 +1,12 @@
 ﻿@if (Space.HasPermission(Permission.List)) {
-    <nav class="nav nav-tabs">
-            @(Html.ActionLink<SpaceController>(c => c.Get(Space.Id, null), text: "Posts", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Action))
-            @(Html.ActionLink<SpaceController>(c => c.Content(Space.Id, null, null), text: "Files", htmlAttributes: new { @class = "nav-link" + (Folder != null ? " active" : "") }, active: LinkActive.None))
-            @*@if (Space.HasPermission(Permission.Post)) {
-                <a class="nav-link disabled" href="#">Chat</a>
-            }*@
-            @(Html.ActionLink<SpaceController>(c => c.Activity(Space.Id, null, null), text: "Activity", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Action))
-            @(Html.ActionLink<SpaceController>(c => c.Search(Space.Id, null, null), icon: "magnify", htmlAttributes: new { @class = "nav-link nav-icon nav-search" }, active: LinkActive.Action))
-
-    </nav>
+<nav class="nav nav-tabs">
+  @(Html.ActionLink<SpaceController>(c => c.Get(Space.Id, null), text: "Posts", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Action))
+  @(Html.ActionLink<ContentController>(c => c.Index(Space.Id, null, null), text: "Files", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Controller))
+  @*@if (Space.HasPermission(Permission.Post)) {
+        <a class="nav-link disabled" href="#">Chat</a>
+    }*@
+  @(Html.ActionLink<SpaceController>(c => c.Activity(Space.Id, null, null), text: "Activity", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Action))
+  @(Html.ActionLink<SpaceController>(c => c.Search(Space.Id, null, null), text: "Search", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Action))
+  <div class="d-standalone ml-auto my-2 mr-sm-1 mr---1">@{ Html.RenderPartial("_SpaceMenu", Space); }</div>
+</nav>
 }

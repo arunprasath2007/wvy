@@ -50,12 +50,12 @@ weavy.posts = (function ($) {
             delete data["options.Index"];
         }
 
-        // make sure attachments is an array
-        if (data.attachments) {
-            if (!$.isArray(data.attachments)) {
-                var id = data.attachments;
-                data.attachments = [];
-                data.attachments[0] = id;
+        // make sure blobs is an array
+        if (data.blobs) {
+            if (!$.isArray(data.blobs)) {
+                var id = data.blobs;
+                data.blobs = [];
+                data.blobs[0] = id;
             }
         }
 
@@ -84,7 +84,8 @@ weavy.posts = (function ($) {
             url: url,
             data: JSON.stringify(data)
         }).then(function (post) {
-            // TODO: insert from rtm for now. Find a better solution later!...
+            // NOTE: insert from rtm for now
+            // TODO: find a better solution later...
             //var $container = $(".posts");
             //$(post).prependTo($container);
 
@@ -173,7 +174,7 @@ weavy.posts = (function ($) {
     $(document).on("click", "[data-trash=post][data-id]", function (e) {
         e.preventDefault();
         var id = this.dataset.id;
-        weavy.api.trashPost(id).then(function () {
+        weavy.api.trash("post", id).then(function () {
             $("[data-type=post][data-id=" + id + "]").slideUp("fast");
             weavy.alert.alert("success", "Post was trashed. <button type='button' class='btn btn-link alert-link' data-restore='post' data-id='" + id + "'>Undo</button>.", 5000, "alert-trash-post-" + id);
         });
@@ -183,7 +184,7 @@ weavy.posts = (function ($) {
     $(document).on("click", "[data-restore=post][data-id]", function (e) {
         e.preventDefault();
         var id = this.dataset.id;
-        weavy.api.restorePost(id).then(function () {
+        weavy.api.restore("post", id).then(function () {
             $("[data-type=post][data-id=" + id + "]").slideDown("fast");
             weavy.alert.alert("success", "Post was restored.", 5000, "alert-trash-post-" + id);
         });
@@ -219,12 +220,11 @@ weavy.posts = (function ($) {
 
     // rtm post
     weavy.realtime.on("post", function (e, post) {
-
         
         var uid = post.created_by.id;
 
         // do nothing of we are displaying another space
-        if (weavy.context.space !== post.space_id) {
+        if (weavy.context.space !== post.space) {
             return;
         }
 
@@ -305,7 +305,7 @@ weavy.posts = (function ($) {
         var $title = $(".modal-title", $div).text(title);
         var $spinner = $(".spinner", $div).addClass("spin");
         $div.removeClass("d-none");
-
+        
         // fetch modal content from server
         $.ajax({
             url: path,

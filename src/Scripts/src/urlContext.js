@@ -23,7 +23,7 @@ weavy.urlContext = (function () {
     }
 
     var checkForContext = function () {
-        var $input = $("input[name=contextUrl]");
+        var $input = $("input[name=contextUrl");
         if ($input.length) {
             weavy.postal.post({ name: 'request-url', space: weavy.context.space });
         }

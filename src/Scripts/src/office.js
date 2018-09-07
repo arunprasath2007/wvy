@@ -21,7 +21,7 @@ weavy.office = (function ($) {
         $(this).attr("disabled", "");
 
         var id = $(this).data("id");
-        weavy.postal.post({ name: "save", url: window.location.origin + "/office/save/" + id + "/" + weavy.guid.get() });
+        weavy.postal.post({ name: "save", url: window.location.origin + "/office/save/" + id + "/" + weavy.guid.get() }, undefined, true);
     });
 
     $(document).on("submit", "[data-attach]", function (e) {
@@ -31,13 +31,15 @@ weavy.office = (function ($) {
         var $btn = $(this).find(".btn-primary");
         $btn.attr("disabled", "");
 
-        var folderid = $(this).find("#ContentAttachModel_FolderId").val();
+        var spaceId = $(this).find("#ContentAttachModel_ParentId_space").val();
+        var parentId = $(this).find("#ContentAttachModel_ParentId").val();
+
         var $nameCtrl = $(this).find("#DocName");
         var name = $nameCtrl.val();
 
         $nameCtrl.removeClass("is-invalid").closest("form").find(".invalid-feedback").remove();
 
-        if (name.length == 0) {
+        if (name.length === 0) {
             $nameCtrl.addClass("is-invalid").parent().after("<div class='invalid-feedback d-block'>Document name is required.</div>");
             $btn.removeAttr("disabled", "");
             return;
@@ -46,10 +48,10 @@ weavy.office = (function ($) {
         // add extension
         name = name + $(this).find("#extension").text();
 
-        var compareName = name.toUpperCase()
+        var compareName = name.toUpperCase();
 
         $.ajax({
-            url: weavy.url.resolve("/api/apps/" + folderid + "/files"),
+            url: weavy.url.resolve("/api/content?space_id=" + spaceId + "&parent_id=" + parentId + "&depth=1"),
             method: "GET",
             cache: false
         }).done(function (response) {
@@ -62,7 +64,11 @@ weavy.office = (function ($) {
                 $nameCtrl.addClass("is-invalid").parent().after("<div class='invalid-feedback d-block'>The folder already contains a file with that name. Change the name or save in a different folder.</div>");
                 $btn.removeAttr("disabled", "");
             } else {
-                weavy.postal.post({ name: "attach", url: window.location.origin + "/office/attach/" + folderid + "/" + weavy.guid.get(), file_name: name });
+                if (parentId.length > 0) {
+                    weavy.postal.post({ name: "attach", url: window.location.origin + "/office/attach/" + spaceId + "/" + parentId + "/" + weavy.guid.get(), file_name: name }, undefined, true);
+                } else {
+                    weavy.postal.post({ name: "attach", url: window.location.origin + "/office/attach/" + spaceId + "/" + weavy.guid.get(), file_name: name }, undefined, true);
+                }                
             }
         }).fail(function () {
             $nameCtrl.addClass("is-invalid").parent().append("<div class='invalid-feedback'>An unexpected error occurred.</div>");
@@ -79,7 +85,7 @@ weavy.office = (function ($) {
     });
 
     weavy.realtime.on("insertedspace", function (e, data) {
-        if (data.permissions.includes("create") && $("body").data("spaces-count") == "0") {
+        if (data.permissions.includes("insert") && $("body").data("spaces-count") == "0") {
             // NOTE: reload page when a space (with create permission for the user) is created and no prior spaces exists
             window.location.href += ((window.location.href.indexOf("?") > 0 ? "&" : "?") + "created=1");
         }

@@ -257,7 +257,7 @@ weavy.messenger = (function ($) {
         var d2 = $.Deferred();
         if (insert) {
             d2 = $.ajax({
-                url: weavy.url.resolve("/messenger/c/" + message.attached_to.id),
+                url: weavy.url.resolve("/messenger/c/" + message.conversation),
                 cache: false
             });
         } else {
@@ -272,7 +272,7 @@ weavy.messenger = (function ($) {
             if (a1) {
                 var mhtml = a1[0];
                 // append message to conversation if it is loaded
-                if (_conversation === message.attached_to.id) {
+                if (_conversation === message.conversation) {
 
                     var $msg = $(".message[data-message=" + message.id + "]");
                     if ($msg.length) {
@@ -300,7 +300,7 @@ weavy.messenger = (function ($) {
                 }
 
                 // update cached header and messages
-                var cachedHeaderAndMessages = getCache("hm:" + message.attached_to.id);
+                var cachedHeaderAndMessages = getCache("hm:" + message.conversation);
                 if (cachedHeaderAndMessages != null) {
                     var $cachedHeaderAndMessages = $("<div>").append($(cachedHeaderAndMessages).clone());
                     var $cachedmsg = $cachedHeaderAndMessages.find(".message[data-message=" + message.id + "]");
@@ -327,7 +327,7 @@ weavy.messenger = (function ($) {
                     }
 
                     // update cache
-                    setCache("hm:" + message.attached_to.id, $cachedHeaderAndMessages.html());
+                    setCache("hm:" + message.conversation, $cachedHeaderAndMessages.html());
                 }
 
             }
@@ -335,11 +335,11 @@ weavy.messenger = (function ($) {
             if (a2) {
                 var chtml = a2[0];
                 var $html = $(chtml);
-                if (_conversation === message.attached_to.id) {
+                if (_conversation === message.conversation) {
                     $html.addClass("active");
                 }
 
-                var $cnv = $(".conversation[data-conversation=" + message.attached_to.id + "]");
+                var $cnv = $(".conversation[data-conversation=" + message.conversation + "]");
                 var isRoom = $html.data("room");
                 var listContainer = isRoom ? $("#rooms") : $("#direct");
                 if (!listContainer.length) {
@@ -391,7 +391,7 @@ weavy.messenger = (function ($) {
                     var event = $.Event("browsernotification.clicked");
                     $(document).triggerHandler(event, null);
 
-                    location.href = weavy.url.resolve("/messenger/" + message.attached_to.id);
+                    location.href = weavy.url.resolve("/messenger/" + message.conversation);
                     window.focus();
                     this.close();
                 });
@@ -657,10 +657,10 @@ weavy.messenger = (function ($) {
             console.debug("received message " + message.id);
 
             if (message.created_by.id !== weavy.context.user) {
-                if (_conversation === message.attached_to.id && !weavy.presence.idle && document.hasFocus()) {
+                if (_conversation === message.conversation && !weavy.presence.idle && document.hasFocus()) {
                     // mark conversation as read (also tells server that message was delivered)
-                    console.debug("marking conversation " + message.attached_to.id + " as read");
-                    $.post(weavy.url.resolve("/api/messenger/" + message.attached_to.id + "/read"));
+                    console.debug("marking conversation " + message.conversation + " as read");
+                    $.post(weavy.url.resolve("/api/messenger/" + message.conversation + "/read"));
                 } else {
                     // let server know that we received the message
                     console.debug("marking message " + message.id + " as delivered");
@@ -683,7 +683,7 @@ weavy.messenger = (function ($) {
 
         // called by server to let client know that a message was delivered
         weavy.realtime.on("messagedelivered", function (event, data) {
-            console.debug("message " + data.message.id + " in conversation " + data.message.attached_to.id + " was delivered to @" + data.user.username);
+            console.debug("message " + data.message.id + " in conversation " + data.message.conversation + " was delivered to @" + data.user.username);
             messageUpserted(data.message, false);
         });
 
@@ -1287,12 +1287,12 @@ weavy.messenger = (function ($) {
             // serialize form to json
             var data = $form.serializeObject(true);
 
-            // make sure attachments is an array
-            if (data.attachments) {
-                if (!$.isArray(data.attachments)) {
-                    var id = data.attachments;
-                    data.attachments = [];
-                    data.attachments[0] = id;
+            // make sure blobs is an array
+            if (data.blobs) {
+                if (!$.isArray(data.blobs)) {
+                    var id = data.blobs;
+                    data.blobs = [];
+                    data.blobs[0] = id;
                 }
             }
 
@@ -1302,7 +1302,7 @@ weavy.messenger = (function ($) {
                 url: weavy.url.resolve("/api/messenger/" + _conversation),
                 data: JSON.stringify(data),
                 beforeSend: function (xhr, settings) {
-                    if ((data.text && data.text.length) || (data.attachments && data.attachments.length)) {
+                    if ((data.text && data.text.length) || (data.blobs && data.blobs.length)) {
                         console.debug("sending message");
 
                         // append sending message
@@ -1350,13 +1350,7 @@ weavy.messenger = (function ($) {
         // remove uploaded file before submit
         $(document).on("click", ".table-uploads [data-remove]", function (evt) {
             evt.preventDefault();
-            // remove from DOM
             var $file = $(this).closest("tr").remove();
-            // and call server to delete file from storage
-            $.ajax({
-                url: weavy.url.resolve("/api/files/" + $(this).data("remove")),
-                type: 'DELETE'
-            });
         });
 
         // update user settings
@@ -1629,9 +1623,9 @@ weavy.messenger = (function ($) {
 
         // configure file uploads
         $("#main").fileupload({
-            url: weavy.url.resolve("/api/files"),
+            url: weavy.url.resolve("/api/blobs"),
             dataType: "json",
-            paramName: "files",
+            paramName: "blobs",
             singleFileUploads: false,
             add: function (e, data) {
                 // TODO: add logic here to prevent upload of certain files?

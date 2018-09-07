@@ -6,10 +6,15 @@
 
 <div class="container my-4">
     <h1 class="display-1">@Model.Code @Model.Description</h1>
-    @if (User.SystemPermissions.Contains(Permission.ManageSystem)) {
+    @if (PermissionService.HasSystemPermission(Permission.ManageSystem)) {
         <p>License expired. Please <a href="@Url.Action(nameof(Weavy.Web.Areas.Manage.Controllers.HomeController.License), typeof(Weavy.Web.Areas.Manage.Controllers.HomeController).ControllerName(), new { area = "Manage" })">update your license</a>.</p>
     } else {
-        <p>License expired. Please contact your system administrator.</p>
+        <p>
+            License expired. Please contact your system administrator
+            @if (!User.IsAuthenticated()) {
+                <text>or</text> <a href="@(Url.Action<AccountController>(c=>c.SignIn("")))">sign in</a><text>.</text>
+            }            
+        </p>
     }
     <a class="btn btn-icon no-ripple px-0" href="@Url.Back(WeavyRequestContext.Current.ApplicationPath)" data-turbolinks="false">@Html.SvgIcon("arrow-left")<span>Back</span></a>
 </div>

@@ -1,38 +1,29 @@
 /// <reference path="_bootstrap.scss" />
+
 // Overrides for vendor/bootstrap/_functions.scss
 
 // Added option to specify shade (100..900) when retreiving color from $colors map
 @function color($key: "blue", $shade: null) {
-    //@return map-get($colors, $key);
     $color: map-get($colors, $key);
-
     @if ($shade != null) {
         $lightness: map-get($shades, $shade);
         $color: hsl(hue($color), saturation($color), $lightness);
     }
-
     @return $color;
 }
 
 // Added option to specify shade (100..900) when retreiving color from $theme-colors map
 @function theme-color($key: "primary", $shade: null) {
-    //@return map-get($theme-colors, $key);
     $color: map-get($theme-colors, $key);
-
     @if ($shade != null) {
         $lightness: map-get($shades, $shade);
         $color: hsl(hue($color), saturation($color), $lightness);
     }
-
     @return $color;
 }
 
 // Changed function to internally use our color shades instead of the bootstrap color levels
 @function theme-color-level($color-name: "primary", $level: 0) {
-    //$color: theme-color($color-name);
-    //$color-base: if($level > 0, #000, #fff);
-    //$level: abs($level);
-    //@return mix($color-base, $color, $level * $theme-color-interval);
     $shade: map-get($levelshades, max(-12, min(12, $level)));
     @return theme-color($color-name, $shade);
 }

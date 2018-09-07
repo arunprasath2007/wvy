@@ -15,9 +15,9 @@
                     <input type="text" name="local" class="form-control" value="" placeholder="name" />
                     if (domains?.Count == 1) {
                         <input type="hidden" name="domain" value="@domains[0]" />
-                        <div class="input-group-addon">@@@domains[0]</div>
+                        <div class="input-group-append"><div class="input-group-text">@@@domains[0]</div></div>
                     } else if (domains?.Count > 1) {
-                        @Html.DropDownList("domain", domains.Select(x => new SelectListItem() { Text = "@" + x, Value = x }), new { @class = "custom-select input-group-addon" })
+                        @Html.DropDownList("domain", domains.Select(x => new SelectListItem() { Text = "@" + x, Value = x }), new { @class = "custom-select input-group-append" })
                     }
 
                 }

@@ -1,8 +1,8 @@
 ﻿<aside id="drawer-profile" class="drawer drawer-left">
     <header class="drawer-header">
-        <a class="text-center pt-3 pb-2" href="@(Url.Action<WidgetController>(c => c.Notifications()))" title="@User.Title Home">
+        <a class="text-center pt-3 pb-2" href="@(Url.Action<WidgetController>(c => c.Notifications()))" title="@User.GetTitle() Home">
             @User.AvatarImg(64)
-            <div class="drawer-title px-1"><span>@User.Title <small>@@@User.Username</small></span></div>
+            <div class="drawer-title px-1"><span>@User.GetTitle() <small>@@@User.Username</small></span></div>
         </a>
     </header>
     <div class="drawer-body scroll-y">
