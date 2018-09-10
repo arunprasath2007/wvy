@@ -945,7 +945,6 @@
                     frame.dataset.src = bubble.url;
                     frame.setAttribute('data-type', bubble.type);
 
-
                     strip.appendChild(renderControls.call(self, "weavy-strip-bubble-" + bubble.space_id));
                     strip.appendChild(frame);
 
@@ -961,7 +960,8 @@
                     var button = document.createElement("div");
                     button.setAttribute('data-name', bubble.name);
                     button.className = "weavy-button weavy-bubble-" + bubble.space_id;
-                    button.style.backgroundImage = "url(" + self.options.url + bubble.icon + ")";
+
+                    button.style.backgroundImage = "url(" + trimUrl(self.options.url) + bubble.icon + ")";
                     //button.innerHTML = '<img draggable="false" class="weavy-avatar" src="' + self.options.url + bubble.icon + '" />';
                     buttonContainer.appendChild(button);
 

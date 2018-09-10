@@ -6,7 +6,7 @@
 }
 <tr data-id="@Model.Id" data-item-guid="@Model.ContentGuid" data-allowed-children="@meta.AllowedChildren()" data-allowed-parents="@meta.AllowedParents()" data-href="@href" data-target="@target">
   <td class="table-icon">@Html.SvgIcon(Model)</td>
-  <td>
+  <td title="@Model.Name">
     <a href="@href" target="@target">@Model.Name</a>
   </td>
   <td>@Html.Time(Model.ModifiedAt, format: "g")</td>

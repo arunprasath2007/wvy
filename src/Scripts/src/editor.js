@@ -259,17 +259,21 @@
                         var $embeds = $("<div class='embeds'/>");
                         $embeds.appendTo($wrapper);
 
-                        // init existing embed
+                        // init existing embeds
                         var embedId = $textarea.data("editor-embed-id");
                         if (embedId) {
-                            $.ajax({
-                                url: weavy.url.resolve("/embeds/" + embedId),
-                                method: "GET"
-                            }).then(function (html) {
-                                $embeds.html(html).show();
-                                embedAdded = true;
-                            });
+                            var embedids = embedId.toString().split(",");
 
+                            // TODO: endpoint that takes array of embedid
+                            $.each(embedids, function (i, id) {
+                                $.ajax({
+                                    url: weavy.url.resolve("/embeds/" + id),
+                                    method: "GET"
+                                }).then(function (html) {
+                                    $embeds.append(html).show();
+                                    embedAdded = true;
+                                });
+                            });
                         }
 
                         // enable embeds

@@ -6,7 +6,7 @@
 }
 <tr data-id="@Model.Id" data-item-guid="@Model.ContentGuid" data-allowed-children="@meta.AllowedChildren()" data-allowed-parents="@meta.AllowedParents()" data-href="@Model.Url()">
   <td class="table-icon">@Html.SvgIcon(Model)</td>
-  <td class="py-2 align-middle">
+  <td class="py-2 align-middle" title="@Model.Name">
     <div class="d-flex align-items-center">
       <a href="@Model.Url()" class="text-truncate">@Model.Name</a>
       @Html.ContentBadge(Model)

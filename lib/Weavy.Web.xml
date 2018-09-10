@@ -8243,6 +8243,7 @@
             <summary>
             Gets or sets the post text.
             </summary>
+            <remarks>Decorated with AllowHtml attribute to supress "a potentially dangerous value was detected" validation exception.</remarks>
         </member>
         <member name="P:Weavy.Web.Models.PostUpdateModel.Blobs">
             <summary>
@@ -8459,6 +8460,21 @@
         <member name="P:Weavy.Web.Models.ConfigurationModel.AzureTenantId">
             <summary>
             Gets or sets the tenant id for Azure AD authentication.
+            </summary>
+        </member>
+        <member name="P:Weavy.Web.Models.ConfigurationModel.CustomAuthenticationEndpoint">
+            <summary>
+            Gets or sets the custom enpoint to use for authenticating users.
+            </summary>
+        </member>
+        <member name="P:Weavy.Web.Models.ConfigurationModel.ThemeColor">
+            <summary>
+            Gets or sets the themecolor to set during setup.
+            </summary>
+        </member>
+        <member name="P:Weavy.Web.Models.ConfigurationModel.ThemeName">
+            <summary>
+            Gets or sets the name of the theme e.i. the installation.
             </summary>
         </member>
         <member name="P:Weavy.Web.Models.ConfigurationModel.License">
