@@ -1,12 +1,12 @@
 ﻿@model HomeModel
 
 @{
-  Title = WeavyContext.Current.System.Name;
+  Title = WeavyContext.System.Name;
 }
 
 <div class="cover">
   <div class="container d-flex flex-column">
-    @if (PermissionService.HasSystemPermission(Permission.ManageSystem) && Theme.Icon == null) {
+    @if (PermissionService.HasSystemPermission(Permission.ManageSystem) && WeavyContext.Theme.Icon == null) {
       <a href="@(Url.Action<Weavy.Web.Areas.Manage.Controllers.HomeController>(c => c.Theme()))" class="my-4 d-flex flex-column align-items-center mx-auto btn btn-outline-primary border-transparent align-self-center">
         @Html.IconImg(128)
         <div class="small">Add your logo...</div>
@@ -39,11 +39,11 @@
   }
 </div>
 
-@if (WeavyContext.Current.HQ != null || PermissionService.HasSystemPermission(Permission.ManageSystem)) {
+@if (WeavyContext.HQ != null || PermissionService.HasSystemPermission(Permission.ManageSystem)) {
   <div class="container d-flex flex-column my-4">
-    @if (WeavyContext.Current.HQ != null) {
+    @if (WeavyContext.HQ != null) {
       <h5 class="d-flex">
-        <a href="@WeavyContext.Current.HQ.Url()" class="text-hyphens">@WeavyContext.Current.HQ.Name</a>
+        <a href="@WeavyContext.HQ.Url()" class="text-hyphens">@WeavyContext.HQ.Name</a>
         @if (PermissionService.HasSystemPermission(Permission.ManageSystem)) {
           <div class="dropdown ml-auto">
             <button type="button" class="btn btn-icon dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="Toggle Dropdown">
@@ -61,18 +61,18 @@
           </div>
         }
       </h5>
-      <a class="card card-action" href="@WeavyContext.Current.HQ.Url()">
+      <a class="card card-action" href="@WeavyContext.HQ.Url()">
         <div class="card-cover">
-          @Html.StarToggle(WeavyContext.Current.HQ, htmlAttributes: new { @class = "top-right" })
+          @Html.StarToggle(WeavyContext.HQ, htmlAttributes: new { @class = "top-right" })
           <div class="facepile">
-            @foreach (var member in SpaceService.GetMembers(WeavyContext.Current.HQ.Id, new MemberQuery { Top = 8, OrderBy = "Random" })) {
+            @foreach (var member in SpaceService.GetMembers(WeavyContext.HQ.Id, new MemberQuery { Top = 8, OrderBy = "Random" })) {
               @member.AvatarImg(24)
             }
           </div>
-          @WeavyContext.Current.HQ.AvatarImg(64)
+          @WeavyContext.HQ.AvatarImg(64)
         </div>
         <div class="card-body text-hyphens">
-          @(WeavyContext.Current.HQ.Description ?? WeavyContext.Current.HQ.Name)
+          @(WeavyContext.HQ.Description ?? WeavyContext.HQ.Name)
         </div>
       </a>
     } else if (PermissionService.HasSystemPermission(Permission.ManageSystem)) {
@@ -100,54 +100,17 @@
 }
 
 <div class="container d-flex flex-column my-4">
+
   <h5 class="d-flex">
-    <a href="@(Url.Action<SpaceController>(c => c.Index(null,"teams",null)))" class="text-hyphens">Teams</a>
+    <a href="@(Url.Action<SpaceController>(c => c.Index(null,null,null)))" class="text-hyphens">Spaces</a>
     @if (PermissionService.HasSystemPermission(Permission.CreateSpace)) {
-      <a href="@(Url.Action<SpaceController>(c => c.New(true)).ToLower())" class="btn btn-icon ml-auto" title="Add team">@Html.SvgIcon("plus")</a>
+      <a href="@(Url.Action<SpaceController>(c => c.New(null)))" class="btn btn-icon ml-auto" title="Add space">@Html.SvgIcon("plus")</a>
     }
   </h5>
 
-  @if (Teams.Any()) {
-    <div class="list-group">
-      @foreach (var space in Teams) {
-        <div class="list-group-item list-group-item-action d-flex justify-content-between">
-          <a href="@space.Url()" class="flex-scale d-flex w-0 align-items-center">
-            @space.AvatarImg(48)
-            <span class="ml-2 mr-auto mr-md-0">@space.Name @if (space.Teamname != null) {<small class="text-dark">@@@space.Teamname</small>}</span>
-            @Html.StarToggle(space)
-          </a>
-          <div class="facepile d-none d-md-flex">
-            @foreach (var member in SpaceService.GetMembers(space.Id, new MemberQuery { Top = 5, OrderBy = "Random" })) {
-              @member.AvatarLink(size: 32, presence: true)
-            }
-          </div>
-        </div>
-      }
-    </div>
-  } else {
-    <p class="text-muted">
-      You haven't joined any teams yet.
-      @if (PermissionService.HasSystemPermission(Permission.CreateSpace)) {
-        <text>Go ahead and <a href="@(Url.Action<SpaceController>(c => c.New(true)).ToLower())">create your first team</a> or <a href="@(Url.Action<SpaceController>(c => c.Index(null, "teams", null)))">find an existing team </a> to join.</text>
-      } else {
-        <text>Go ahead and <a href="@(Url.Action<SpaceController>(c => c.Index(null, "teams", null)))">find an existing team </a> to join.</text>
-      }
-    </p>
-  }
-</div>
-
-<div class="container d-flex flex-column my-4">
-
-  <h5 class="d-flex">
-    <a href="@(Url.Action<SpaceController>(c => c.Index(null,"projects",null)))" class="text-hyphens">Projects</a>
-    @if (PermissionService.HasSystemPermission(Permission.CreateSpace)) {
-      <a href="@(Url.Action<SpaceController>(c => c.New(null)))" class="btn btn-icon ml-auto" title="Add project">@Html.SvgIcon("plus")</a>
-    }
-  </h5>
-
-  @if (Projects.Any()) {
+  @if (WeavyContext.Spaces.Any(x => x.Id != WeavyContext.HQ?.Id)) {
     <div class="cards">
-      @foreach (var space in Projects) {
+      @foreach (var space in WeavyContext.Spaces.Where(x => x.Id != WeavyContext.HQ?.Id)) {
         <a class="card card-action" href="@space.Url()">
           <div class="card-cover">
             @Html.StarToggle(space, htmlAttributes: new { @class = "top-right" })
@@ -167,11 +130,11 @@
     </div>
   } else {
     <p class="text-muted">
-      Your're not a member of any active projects.
+      All your active spaces will show up right here.
       @if (PermissionService.HasSystemPermission(Permission.CreateSpace)) {
-        <text>You can <a href="@(Url.Action<SpaceController>(c => c.New(null)).ToLower())">create a new project</a> or <a href="@(Url.Action<SpaceController>(c => c.Index(null, "projects", null)))">find an existing project</a> to join.</text>
+        <text>For now, you can <a href="@(Url.Action<SpaceController>(c => c.New(null)).ToLower())">add a new space</a> or <a href="@(Url.Action<SpaceController>(c => c.Index(null, null, null)))">find an existing space</a> to join.</text>
       } else {
-        <text>Check out the <a href="@(Url.Action<SpaceController>(c => c.Index(null, "projects", null)))">projects page</a> to see if there are any interesting projects going on.</text>
+        <text>Check out the <a href="@(Url.Action<SpaceController>(c => c.Index(null, null, null)))">spaces page</a> to see if there are any interesting teams or projects to join.</text>
       }
 
     </p>
@@ -195,7 +158,7 @@
                 <label>Select an existing, or <a href="@(Url.Action<HomeController>(c => c.HQ()))">create a new</a>, space to use as your main space.</label>
                 <select class="form-control custom-select space-picker" name="id" id="id">
                   <option></option>
-                  @Html.SelectOptions(Model.HQSpaces, WeavyContext.Current.HQ?.Id)
+                  @Html.SelectOptions(Model.HQSpaces, WeavyContext.HQ?.Id)
                 </select>
               </div>
             </div>

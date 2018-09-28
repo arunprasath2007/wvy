@@ -1,0 +1,32 @@
+﻿@model IFrameApp
+@{
+    Title = Model.Name;
+}
+
+@section navbar_middle {
+<div class="navbar-middle">
+    <a href="@WeavyContext.Space.Url()" class="navbar-text">
+        @WeavyContext.Space.Name
+        @if (WeavyContext.Space.Teamname != null) {
+            <small class="d-none d-sm-inline">@@@WeavyContext.Space.Teamname</small>
+        }
+    </a>
+    @Html.StarToggle(WeavyContext.Space)
+</div>
+}
+
+@section navbar_secondary {
+    @{ Html.RenderPartial("_SpaceTabs"); }
+}
+
+<div class="container-fluid my-3">
+    <iframe style="width:100%;height:800px" src="@Model.Src"></iframe>
+
+</div>
+
+@section footer {
+    @{
+        Html.RenderPartial("_DrawerSpace");
+        Html.RenderPartial("_MembersAddModal");
+    }
+}

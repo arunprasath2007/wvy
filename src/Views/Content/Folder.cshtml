@@ -1,17 +1,19 @@
 ﻿@model FolderBase
 @{
-  Title = "Files";
+    Title = "Files";
+    var layout = ViewBag.Layout as Weavy.Core.Models.Layout?;
+    var items = ViewBag.Items as SearchResult<Content, ContentQuery>;
 }
 
 @section navbar_middle {
   <div class="navbar-middle">
-    <a href="@Space.Url()" class="navbar-text">
-      @Space.Name
-      @if (Space.Teamname != null) {
-        <small class="d-none d-sm-inline">@@@Space.Teamname</small>
+    <a href="@WeavyContext.Space.Url()" class="navbar-text">
+      @WeavyContext.Space.Name
+      @if (WeavyContext.Space.Teamname != null) {
+        <small class="d-none d-sm-inline">@@@WeavyContext.Space.Teamname</small>
       }
     </a>
-    @Html.StarToggle(Space)
+    @Html.StarToggle(WeavyContext.Space)
   </div>
 }
 
@@ -22,13 +24,13 @@
 @{ Html.RenderPartial("_Nav"); }
 
 <div class="my-3">
-  @if (ContentLayout == Weavy.Core.Models.Layout.Card) {
+  @if (layout == Weavy.Core.Models.Layout.Card) {
     <div class="cards" id="infinite-scroll-target">
-      @{ Html.RenderPartial("_Cards", ContentResult); }
+      @{ Html.RenderPartial("_Cards", items); }
     </div>
-  } else if (ContentLayout == Weavy.Core.Models.Layout.List) {
+  } else if (layout == Weavy.Core.Models.Layout.List) {
     <div class="list-group" id="infinite-scroll-target">
-      @{ Html.RenderPartial("_ListItems", ContentResult); }
+      @{ Html.RenderPartial("_ListItems", items); }
     </div>
   } else {
     <table class="table table-hover table-content">
@@ -42,12 +44,12 @@
           <th class="table-icon"></th>
         </tr>
       </thead>
-      @if (ContentResult.IsNullOrEmpty()) {
+      @if (items.IsNullOrEmpty()) {
         <tfoot>
           <tr>
             <td class="empty text-center text-muted py-4" colspan="6">
               Nothing in this folder yet.
-              @if (Space.HasPermission(Permission.Insert)) {
+              @if (WeavyContext.App.HasPermission(Permission.Content)) {
                 <text>Go ahead and add some files!</text>
               }
             </td>
@@ -55,17 +57,17 @@
         </tfoot>
       }
       <tbody id="infinite-scroll-target">
-        @{ Html.RenderPartial("_Rows", ContentResult); }
+        @{ Html.RenderPartial("_Rows", items); }
       </tbody>
     </table>
   }
-  @Html.ScrollMore(ContentResult)
+  @Html.ScrollMore(items)
 </div>
 
 @section fab {
-  @Content.FAB()
+  @Model.FAB()
 }
 
 @section footer {
-  @Html.Partial("_Modals", Model)
+  @Html.Partial("_Modals")
 }

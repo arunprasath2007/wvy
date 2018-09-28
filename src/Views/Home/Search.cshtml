@@ -1,7 +1,7 @@
 ﻿@model IndexResult
 @{
-    Title = WeavyContext.Current.System.Name;
-    Back = WeavyContext.Current.ApplicationPath;
+    Title = WeavyContext.System.Name;
+    Back = WeavyContext.ApplicationPath;
     string tab = ViewContext.RouteData.Values["tab"] as string;
     string qs = Request.QueryString.Rebuild("top", null, "skip", null).AsQueryString();
 }
@@ -12,7 +12,7 @@
     </div>
     <form action="@Url.Rebuild("q", null)" method="get" data-turboform>
       <div class="form-group" role="search">
-        <input class="form-control" type="search" name="q" value="@Model.Query.Text" placeholder="Search @WeavyContext.Current.System.Name" />
+        <input class="form-control" type="search" name="q" value="@Model.Query.Text" placeholder="Search @WeavyContext.System.Name" />
         @if (Model.Query.Text.IsNullOrEmpty()) {
           <button type="submit" class="btn btn-icon">@Html.SvgIcon("magnify")</button>
         } else {

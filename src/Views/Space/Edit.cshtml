@@ -2,6 +2,7 @@
 @{
     Title = "Edit space";
     Back = Model.Url();
+    List<AppSelectionModel> apps = (List<AppSelectionModel>)ViewBag.AppSelection;
 }
 
 @section navbar_secondary {
@@ -17,6 +18,11 @@
         </div>
 
         @Html.EditorsForModel()
+
+        <h3>Apps</h3>
+        <table class="table">
+            @Html.EditorFor(model => apps, "AppSelection")
+        </table>
 
         <div class="form-buttons">
             <button type="submit" name="button" value="@(nameof(SpaceController.Update))" class="btn btn-primary btn-load" title="Save">Save</button>

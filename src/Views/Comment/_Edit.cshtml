@@ -1,6 +1,4 @@
 ﻿@model CommentUpdateModel
-
-
 <form class="modal-content" action="@(Url.Action<CommentController>(x => x.Update(Model.Id, null)))" method="post">
     @Html.HttpMethodOverride(HttpVerbs.Put)    
     
@@ -10,7 +8,7 @@
         <button type="button" class="btn btn-icon" data-dismiss="modal">@Html.SvgIcon("close")</button>
     </div>
     <div class="modal-body">
-        <textarea id="text" class="form-control" name="text" data-editor-location="comment-edit"">@Model.Text</textarea>
+        <textarea id="text" class="form-control" name="text" data-editor-location="comment-edit" data-editor-embed-ids="@(String.Join(",", Model.Embeds))">@Model.Text</textarea>
 
         <div class="attachments">
             <table class="table table-attachments">

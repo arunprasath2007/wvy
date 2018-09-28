@@ -8,7 +8,7 @@
         <button type="button" class="btn btn-icon" data-dismiss="modal">@Html.SvgIcon("close")</button>
     </div>
     <div class="modal-body">
-        <textarea id="text" class="form-control" name="text" data-editor-location="post-edit" data-editor-embed-id="@(String.Join(",", Model.Embeds))" data-editor-poll-id="@(Model.PollId)">@Model.Text</textarea>
+        <textarea id="text" class="form-control" name="text" data-editor-location="post-edit" data-editor-embed-ids="@(String.Join(",", Model.Embeds))" data-editor-poll-id="@(Model.PollId)">@Model.Text</textarea>
 
         <div class="attachments">
             <table class="table table-attachments">

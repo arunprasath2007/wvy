@@ -1,0 +1,25 @@
+﻿@model App
+@{
+    Title = Model.Name;
+}
+
+@section navbar_middle {
+    <div class="navbar-middle">
+        <a href="@WeavyContext.Space.Url()" class="navbar-text">
+            @WeavyContext.Space.Name
+            @if (WeavyContext.Space.Teamname != null) {
+                <small class="d-none d-sm-inline">@@@WeavyContext.Space.Teamname</small>
+            }
+        </a>
+        @Html.StarToggle(WeavyContext.Space)
+    </div>
+}
+
+@section navbar_secondary {
+    @{ Html.RenderPartial("_SpaceTabs"); }
+}
+    <div class="container my-3">
+        <section class="properties">
+            @Html.DisplayGroups()
+        </section>
+    </div>

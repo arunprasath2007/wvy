@@ -1,7 +1,9 @@
 ﻿@model Space
+@using Weavy.Web.Models
 @{
     Title = "Add space";
     Back = Url.Back(Url.Action<SpaceController>(c => c.Index(null, null, null)));
+    List<AppSelectionModel> apps = (List<AppSelectionModel>)ViewBag.AppSelection;
 }
 
 @section navbar_secondary {
@@ -19,21 +21,25 @@
     </script>
 }
 
-<div class="container my-3">
-    @using (Html.BeginForm(nameof(SpaceController.Insert), typeof(SpaceController).ControllerName(), FormMethod.Post, new { autocomplete = "off", data_turboform = "", novalidate = "", id = "new-space" })) {
-        @Html.AntiForgeryToken()
-        @Html.Hidden("widget", false)
+    <div class="container my-3">
+        @using (Html.BeginForm(nameof(SpaceController.Insert), typeof(SpaceController).ControllerName(), FormMethod.Post, new { autocomplete = "off", data_turboform = "", novalidate = "", id = "new-space" })) {
+            @Html.AntiForgeryToken()
+            @Html.Hidden("widget", false)
 
-        <div class="text-center">
-            @Html.EditorFor(x => Model.Avatar, additionalViewData: new { Avatar = Model })
-        </div>
+            <div class="text-center">
+                @Html.EditorFor(x => Model.Avatar, additionalViewData: new { Avatar = Model })
+            </div>
 
-        @Html.EditorsForModel()
+            @Html.EditorsForModel()
 
+            <h3>Apps</h3>
+            <table class="table">
+                @Html.EditorFor(model => apps, "AppSelection")               
+            </table>
         <div class="form-buttons">
             <button type="submit" class="btn btn-primary btn-load" title="Save">Save</button>
             <a href="@Back" class="btn btn-outline-secondary mr-auto">Cancel</a>
         </div>
 
-    }
-</div>
+        }
+    </div>

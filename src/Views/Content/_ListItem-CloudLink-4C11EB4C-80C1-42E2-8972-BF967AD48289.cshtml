@@ -1,6 +1,6 @@
 ﻿@model CloudLink
 @{ 
-    var href = Model.Embedded || Model.Provider == "google-drive" ? Model.Url() : Model.Url;
+    var href = Model.Embedded || Model.Provider == "google-drive" ? Model.Url() : Model.Uri;
     var target = Model.Embedded || Model.Provider == "google-drive" ? "" : "_blank";
 }
 <a class="list-group-item list-group-item-action" href="@href" target="@target">

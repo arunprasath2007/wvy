@@ -188,7 +188,7 @@ weavy.messenger = (function ($) {
             } catch (e) {
                 // NOTE: history api is not working in office add-in: https://stackoverflow.com/questions/42642863/office-js-nullifies-browser-history-functions-breaking-history-usage
             }
-            
+
         } else {
             console.debug("Browser does not support push state.");
         }
@@ -379,7 +379,7 @@ weavy.messenger = (function ($) {
             console.debug("notification permission is " + Notification.permission + " and context.notify is " + weavy.context.notify);
 
             if (Notification.permission === "granted" && weavy.context.notify) {
-                var notification = new Notification("Message from " + message.created_by.title, {
+                var notification = new Notification("Message from " + (message.created_by.name || message.created_by.username), {
                     body: message.text,
                     tag: message.id,
                     // get user thumbnail (as .png since svgs are not supported in browser notifications)
@@ -437,7 +437,7 @@ weavy.messenger = (function ($) {
                 var text = "";
                 var names = _.map(grouped[key], function (item) {
                     console.debug("@" + item.user.username + " is typing in conversation " + key);
-                    return item.user.title;
+                    return item.user.username;
                 });
 
                 for (var i = 0; i < names.length; i++) {
@@ -1142,7 +1142,6 @@ weavy.messenger = (function ($) {
                 }
             });
 
-
             $app.removeClass("one two").addClass("three");
         });
 
@@ -1302,6 +1301,7 @@ weavy.messenger = (function ($) {
                 url: weavy.url.resolve("/api/messenger/" + _conversation),
                 data: JSON.stringify(data),
                 beforeSend: function (xhr, settings) {
+
                     if ((data.text && data.text.length) || (data.blobs && data.blobs.length)) {
                         console.debug("sending message");
 
@@ -1326,6 +1326,14 @@ weavy.messenger = (function ($) {
                 // replace message-sending with message-sent 
                 var html = Handlebars.templates["message-sent"](data);
                 $(".message.sending").replaceWith(html);
+
+                $form.find("#contextUrl").attr("disabled", true);
+                $form.find("input[name=hasContext]").val(false);
+                $form.find(".context").removeClass("has-context");
+
+                var $context = $form.find("div.context");
+                $context.find(".context-data").fadeOut(200);
+                $context.slideUp(200);
             }).fail(function (xhr, status, error) {
                 // REVIEW: update message to indicate that send failed?
                 // REVIEW: add button/link for re-sending the failed message?
@@ -1365,19 +1373,26 @@ weavy.messenger = (function ($) {
         // handle context
         $(document).on("click", ".context .remove-context", function (e) {
             e.preventDefault();
-            $(this).closest(".message-form").find(".context").removeClass("has-context");
-            var $context = $(this).closest(".context");
+            var $form = $(this).closest(".message-form");
+            $form.find("#contextUrl").attr("disabled", true);
+            $form.find("input[name=hasContext]").val(false);
+            $form.find(".context").removeClass("has-context");
+
+            var $context = $(this).closest("div.context");
             $context.find(".context-data").fadeOut(200);
-            $context.slideUp(200);
-            $(".message-form").find("input[name=hasContext]").val(false);
+            $context.slideUp(200);            
+            
         });
 
-        $(document).on("click", "button.btn-add-context", function (e) {            
-            $(this).closest(".message-form").find(".context").addClass("has-context");
-            var $context = $(this).closest(".message-form").find("div.context");
+        $(document).on("click", "button.btn-add-context", function (e) {
+            var $form = $(this).closest(".message-form");
+            $form.find("input[name=hasContext]").val(true);
+            $form.find("#contextUrl").attr("disabled", false);
+            $form.find(".context").addClass("has-context");
+
+            var $context = $form.find("div.context");            
             $context.find(".context-data").fadeIn(200);
-            $context.slideDown(200);
-            $(".message-form").find("input[name=hasContext]").val(true);
+            $context.slideDown(200);                        
         })
 
         // load conversation from widget
@@ -1564,16 +1579,20 @@ weavy.messenger = (function ($) {
                     },
                     index: 1,
                     template: function (item) {
-                        return Handlebars.templates["autocomplete-mention-template"](item);
+                        var html = '<img class="img-24 avatar mr-1" src="' + weavy.url.thumb(item.thumb_url, "48x48-crop,both") + '" alt="" /><span>' + (item.name || item.username);
+                        if (item.username) {
+                            html += ' <small>@' + item.username + '</small>';
+                        }
+                        html += "</span>";
+                        return html;
                     },
                     replace: function (mention) {
-                        return '<a href="#">@' + mention.username + (noPrefix ? ', ' : ' ') + "</a> ";
+                        return '<a href="#">@' + mention.username + (noPrefix ? ',' : '') + "</a> ";
                     },
                     cache: false
-
                 }], {
                         maxCount: 10, zIndex: 10000, listPosition: null, placement: "top"
-                    });
+                });
             }
 
             if (_emojiarea.editor.data("quicklinks")) {
@@ -1602,10 +1621,10 @@ weavy.messenger = (function ($) {
                         maxCount: 10, zIndex: 10000, placement: "top"
                     });
             }
-            var focusTarget;
 
             // Prevent emojiarea from losing focus when clicking send
-            $(".message-form button[type='submit']")[0].addEventListener("mousedown", function (e) {
+            // NOTE: listening on mousedown caused a double submit
+            $(".message-form button[type='submit']")[0].addEventListener("click", function (e) {
                 e.preventDefault();
                 $textarea.val(_emojiarea.getText());
                 $(".message-form").submit();

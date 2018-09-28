@@ -13,8 +13,9 @@ weavy.userspicker = (function ($) {
     }
 
     function formatUserSelection(user) {
-        if (user.invite) return user.title + " <span class='badge badge-info'>invite</span>";
-        return user.title;
+        var name = (user.profile && user.profile.name ? user.profile.name : user.username);
+        if (user.invite) return name + " <span class='badge badge-info'>invite</span>";
+        return name;
     }
 
     // init picker
