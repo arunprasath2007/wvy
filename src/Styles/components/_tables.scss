@@ -353,8 +353,14 @@ tr[data-href] {
         width: 100%;
         @include text-truncate;
     }
-    // members
+    // description
     td:nth-child(3), th:nth-child(3) {
+        width: 100%;
+        @include text-truncate;
+        display: none;
+    }
+    // members
+    td:nth-child(4), th:nth-child(4) {
         width: 5.5rem; // 85px;
         @include text-truncate;
         display: none;
@@ -363,6 +369,16 @@ tr[data-href] {
     @include media-breakpoint-up(sm) {
         thead {
             display: table-header-group;
+        }
+
+        td:nth-child(4), th:nth-child(4) {
+            display: table-cell;
+        }
+    }
+    // show columns on larger devices
+    @include media-breakpoint-up(lg) {
+        td:nth-child(2), th:nth-child(2) {
+            width: 20rem;
         }
 
         td:nth-child(3), th:nth-child(3) {
@@ -636,13 +652,19 @@ tr[data-href] {
         width: 100%;
         @include text-truncate;
     }
-    // trashed
+    // location
     td:nth-child(3), th:nth-child(3) {
+        width: 11.25rem;
+        @include text-truncate;
+        display: none;
+    }
+    // trashed
+    td:nth-child(4), th:nth-child(4) {
         width: 11.25rem; // 180px; // needs to be this wide to fit MM/DD/YYYY HH:mm AM/PM
         display: none;
     }
     // actions
-    td:nth-child(4), th:nth-child(4) {
+    td:nth-child(5), th:nth-child(5) {
         width: 5rem; // 80px;
     }
     // show columns on larger devices
@@ -650,6 +672,14 @@ tr[data-href] {
         thead {
             display: table-header-group;
         }
+
+        td:nth-child(4), th:nth-child(4) {
+            display: table-cell;
+        }
+    }
+
+        // show columns on larger devices
+    @include media-breakpoint-up(md) {
 
         td:nth-child(3), th:nth-child(3) {
             display: table-cell;

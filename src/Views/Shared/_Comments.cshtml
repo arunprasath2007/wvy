@@ -13,14 +13,6 @@
             <div class="media-body">
                 <p class="mb-1">@creator.Link() @Html.Raw(comment.Html)</p>
 
-                @*@if (!comment.ContextUrl.IsNullOrEmpty()) {
-            var origin = new Uri(comment.ContextUrl).GetLeftPart(System.UriPartial.Authority);
-            <div class="context-link">
-                <img class="icon" src="https://www.google.com/s2/favicons?domain=@origin">
-                <a class="text" href="@comment.ContextUrl" target="_blank" title="Open in context - @comment.ContextUrl" data-context-url="@comment.ContextUrl" data-weavy-context-url="@comment.Url(absolute: true)" data-weavy-context-space="@comment.SpaceId">@comment.ContextTitle</a>
-                <a class="link-open" href="@comment.ContextUrl" target="_blank" title="Open in context - @comment.ContextUrl" data-context-url="@comment.ContextUrl" data-weavy-context-url="@comment.Url(absolute: true)" data-weavy-context-space="@comment.SpaceId">@Html.SvgIcon("open-in-new", size: 18)</a>
-            </div>
-        }*@
 
                 @if (images.Any()) {
                     Html.RenderPartial("_ImageGrid", images);

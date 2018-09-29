@@ -2,14 +2,12 @@
 body.controller-home.action-index,
 body.controller-post.action-index,
 body.controller-post.action-get,
-body.controller-space.action-get,
-body.controller-space.action-discuss {
+body.app-5ebfa152-de85-48da-82dd-30a1b560c313 {
     background: $gray-100;
 }
 
-
-body.controller-post.action-get,
-body.controller-space.action-get {
+body.app-5ebfa152-de85-48da-82dd-30a1b560c313,
+body.controller-post.action-get {
     main, .cover {
         > .container {
             max-width: map-get($grid-breakpoints, sm);

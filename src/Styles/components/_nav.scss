@@ -66,7 +66,19 @@
     .btn-icon {
         align-self: center;
     }
-}
+
+    .btn-sm {
+        min-width:unset;
+        min-height:unset;
+        margin-bottom: .25rem;
+    }
+
+    > .dropdown .btn-sm {
+        padding-left:0;
+        padding-right:0;
+    }
+
+ }
 
 .nav-title {
     line-height: 2rem;

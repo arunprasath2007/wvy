@@ -110,7 +110,7 @@ weavy.attach = (function () {
 
         var data = [];
         for (var i = 0; i < links.length; i++) {
-            data.push({ guid: links[i].guid, name: links[i].title, provider: provider, kind: links[i].type, url: links[i].url });
+            data.push({ guid: links[i].guid, name: links[i].title, provider: provider, kind: links[i].type, uri: links[i].url });
         }
 
         $.ajax({

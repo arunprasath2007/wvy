@@ -14,7 +14,7 @@
       @if (hasBreadcrumbOverflow) {
         Html.RenderPartial("_BreadcrumbMenu", crumbs);
       }
-      @Content.Breadcrumb(htmlAttributes: new { @class = breadcrumbClasses })
+      @Model.Breadcrumb(htmlAttributes: new { @class = breadcrumbClasses })
     </div>
     <h6 class="nav-title mx-2 align-center text-truncate" title="@Model.Name">@Model.Name</h6>
   </div>

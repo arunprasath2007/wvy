@@ -1,4 +1,4 @@
-﻿<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <Import Project="..\packages\JavaScriptEngineSwitcher.V8.Native.win-x64.2.4.16\build\JavaScriptEngineSwitcher.V8.Native.win-x64.props" Condition="Exists('..\packages\JavaScriptEngineSwitcher.V8.Native.win-x64.2.4.16\build\JavaScriptEngineSwitcher.V8.Native.win-x64.props')" />
   <Import Project="..\packages\JavaScriptEngineSwitcher.V8.Native.win-x86.2.4.16\build\JavaScriptEngineSwitcher.V8.Native.win-x86.props" Condition="Exists('..\packages\JavaScriptEngineSwitcher.V8.Native.win-x86.2.4.16\build\JavaScriptEngineSwitcher.V8.Native.win-x86.props')" />
@@ -6,8 +6,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>
-    </ProductVersion>
+    <ProductVersion></ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{5F4FDE13-E20F-4767-ACE0-2DBEC27FA83F}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
@@ -23,8 +22,7 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
+    <NuGetPackageImportStamp></NuGetPackageImportStamp>
     <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -298,16 +296,16 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="Weavy, Version=2.0.0.179, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="Weavy, Version=2.0.0.184, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\lib\Weavy.exe</HintPath>
     </Reference>
-    <Reference Include="Weavy.Bundler, Version=2.0.0.179, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="Weavy.Bundler, Version=2.0.0.184, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\lib\Weavy.Bundler.dll</HintPath>
     </Reference>
-    <Reference Include="Weavy.Core, Version=2.0.0.179, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="Weavy.Core, Version=2.0.0.184, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\lib\Weavy.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Weavy.Web, Version=2.0.0.179, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="Weavy.Web, Version=2.0.0.184, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\lib\Weavy.Web.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
@@ -335,8 +333,10 @@
     <Content Include="Areas\Docs\Views\Home\DisplayTemplates\TextSample.cshtml" />
     <Content Include="Areas\Manage\Views\Web.config" />
     <Content Include="Areas\Manage\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\Manage\Views\ContentType\Get.cshtml" />
-    <Content Include="Areas\Manage\Views\ContentType\Index.cshtml" />
+    <Content Include="Areas\Manage\Views\Apps\Get.cshtml" />
+    <Content Include="Areas\Manage\Views\Apps\Index.cshtml" />
+    <Content Include="Areas\Manage\Views\ContentTypes\Get.cshtml" />
+    <Content Include="Areas\Manage\Views\ContentTypes\Index.cshtml" />
     <Content Include="Areas\Manage\Views\Daemons\Get.cshtml" />
     <Content Include="Areas\Manage\Views\Daemons\Index.cshtml" />
     <Content Include="Areas\Manage\Views\Home\About.cshtml" />
@@ -359,7 +359,6 @@
     <Content Include="Areas\Manage\Views\Tools\Get.cshtml" />
     <Content Include="Areas\Manage\Views\Tools\Index.cshtml" />
     <Content Include="Areas\Messenger\img\icon.svg" />
-    <Content Include="Areas\Messenger\Scripts\autocomplete-mention-template.handlebars" />
     <Content Include="Areas\Messenger\Scripts\fileuploads.handlebars" />
     <Content Include="Areas\Messenger\Scripts\handlebars-helpers.js" />
     <Content Include="Areas\Messenger\Scripts\handlebars-templates.js" />
@@ -2295,6 +2294,7 @@
     <Content Include="Scripts\_tinymce.bundle" />
     <Content Include="Scripts\src\alert.js" />
     <Content Include="Scripts\src\api.js" />
+    <Content Include="Scripts\src\app.js" />
     <Content Include="Scripts\src\attach.js" />
     <Content Include="Scripts\src\attachment.js" />
     <Content Include="Scripts\src\audio.js" />
@@ -2331,6 +2331,7 @@
     <Content Include="Scripts\src\presence.js" />
     <Content Include="Scripts\src\preview.js" />
     <Content Include="Scripts\src\realtime.js" />
+    <Content Include="Scripts\src\rename.js" />
     <Content Include="Scripts\src\rowlink.js" />
     <Content Include="Scripts\src\scroll.js" />
     <Content Include="Scripts\src\share.js" />
@@ -2350,6 +2351,7 @@
     <Content Include="Scripts\src\widget-personal.js" />
     <Content Include="Scripts\src\widget.js" />
     <Content Include="Scripts\src\bootstrap\modal.js" />
+    <Content Include="Scripts\src\signalr\jquery.signalR.js" />
     <Content Include="Scripts\src\tinymce\tiny.js" />
     <Content Include="Scripts\src\tinymce\plugins\autocomplete\plugin.js" />
     <Content Include="Scripts\src\tinymce\plugins\image\plugin.js" />
@@ -2581,7 +2583,6 @@
     <Content Include="Scripts\vendor\prismjs\prism-python.min.js" />
     <Content Include="Scripts\vendor\prismjs\prism-ruby.min.js" />
     <Content Include="Scripts\vendor\select2\select2.min.js" />
-    <Content Include="Scripts\vendor\signalr\jquery.signalR.min.js" />
     <Content Include="Scripts\vendor\tinymce\tinymce.min.js" />
     <Content Include="Scripts\vendor\tinymce\plugins\anchor\plugin.min.js" />
     <Content Include="Scripts\vendor\tinymce\plugins\autolink\plugin.min.js" />
@@ -2981,12 +2982,19 @@
     <Content Include="Views\Account\SignIn.cshtml" />
     <Content Include="Views\Account\SignUp.cshtml" />
     <Content Include="Views\Account\_Navbar.cshtml" />
+    <Content Include="Views\ActivityApp\Get.cshtml" />
+    <Content Include="Views\App\Edit.cshtml" />
+    <Content Include="Views\App\Get.cshtml" />
+    <Content Include="Views\App\Index.cshtml" />
+    <Content Include="Views\App\New.cshtml" />
+    <Content Include="Views\App\_Edit.cshtml" />
+    <Content Include="Views\App\_Index.cshtml" />
+    <Content Include="Views\App\_New.cshtml" />
     <Content Include="Views\Comment\_Edit.cshtml" />
     <Content Include="Views\Content\Edit-File-1809C7D6-130A-4B35-9B16-C62A2DD23C01.cshtml" />
     <Content Include="Views\Content\Edit.cshtml" />
     <Content Include="Views\Content\File.cshtml" />
     <Content Include="Views\Content\Folder.cshtml" />
-    <Content Include="Views\Content\Index.cshtml" />
     <Content Include="Views\Content\Item-CloudLink-4C11EB4C-80C1-42E2-8972-BF967AD48289.cshtml" />
     <Content Include="Views\Content\Item-Link-F1EB7D53-4219-485C-8970-CCE683F3232C.cshtml" />
     <Content Include="Views\Content\Item.cshtml" />
@@ -3027,9 +3035,11 @@
     <Content Include="Views\Error\NotFound.cshtml" />
     <Content Include="Views\Error\Unauthorized.cshtml" />
     <Content Include="Views\Error\Version.cshtml" />
+    <Content Include="Views\FilesApp\Get.cshtml" />
     <Content Include="Views\Home\HQ.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Search.cshtml" />
+    <Content Include="Views\IFrameApp\Get.cshtml" />
     <Content Include="Views\Notification\Preview.cshtml" />
     <Content Include="Views\Notification\_Index.cshtml" />
     <Content Include="Views\Notification\_Notification.cshtml" />
@@ -3046,6 +3056,10 @@
     <Content Include="Views\Post\Get.cshtml" />
     <Content Include="Views\Post\_Edit.cshtml" />
     <Content Include="Views\Post\_MoveModalContent.cshtml" />
+    <Content Include="Views\PostsApp\Get.cshtml" />
+    <Content Include="Views\SearchApp\Get.cshtml" />
+    <Content Include="Views\Shared\_AddAppModal.cshtml" />
+    <Content Include="Views\Shared\_AppMenu.cshtml" />
     <Content Include="Views\Shared\_Attachments.cshtml" />
     <Content Include="Views\Shared\_AttachModal.cshtml" />
     <Content Include="Views\Shared\_CommentFeedback.cshtml" />
@@ -3071,6 +3085,7 @@
     <Content Include="Views\Shared\_MoveModal.cshtml" />
     <Content Include="Views\Shared\_MoveModalContent.cshtml" />
     <Content Include="Views\Shared\_MovePostModal.cshtml" />
+    <Content Include="Views\Shared\_OfficeModal.cshtml" />
     <Content Include="Views\Shared\_PeopleTable.cshtml" />
     <Content Include="Views\Shared\_PhotoSwipe.cshtml" />
     <Content Include="Views\Shared\_Poll.cshtml" />
@@ -3081,6 +3096,7 @@
     <Content Include="Views\Shared\_Posts.cshtml" />
     <Content Include="Views\Shared\_Preview.cshtml" />
     <Content Include="Views\Shared\_ProfileModal.cshtml" />
+    <Content Include="Views\Shared\_RenameModal.cshtml" />
     <Content Include="Views\Shared\_SearchResult.cshtml" />
     <Content Include="Views\Shared\_ShareModal.cshtml" />
     <Content Include="Views\Shared\_SpaceMenu.cshtml" />
@@ -3094,6 +3110,7 @@
     <Content Include="Views\Shared\DisplayTemplates\EmailAddress.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\MultilineText.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Tags.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\AppSelection.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Blob.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Boolean.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Cron.cshtml" />
@@ -3122,13 +3139,11 @@
     <Content Include="Views\Shared\EditorTemplates\TimeZone.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Url.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Username.cshtml" />
-    <Content Include="Views\Space\Activity.cshtml" />
     <Content Include="Views\Space\Edit.cshtml" />
     <Content Include="Views\Space\Get.cshtml" />
     <Content Include="Views\Space\Index.cshtml" />
     <Content Include="Views\Space\Members.cshtml" />
     <Content Include="Views\Space\New.cshtml" />
-    <Content Include="Views\Space\Search.cshtml" />
     <Content Include="Views\Space\Settings.cshtml" />
     <Content Include="Views\Space\Widget.cshtml" />
     <Content Include="Views\Space\_MemberMenu.cshtml" />
@@ -3165,9 +3180,7 @@
     <Content Include="Views\Widget\_ProfileNavbar.cshtml" />
     <Content Include="Views\Widget\_WidgetLayout.cshtml" />
     <Content Include="Global.asax" />
-    <Content Include="Web.config">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">

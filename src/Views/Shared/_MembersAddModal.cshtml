@@ -1,7 +1,7 @@
 ﻿<div class="modal fade" id="add-dialog" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            @using (Html.BeginForm(nameof(SpaceController.InsertMembers), null, new { id = Space.Id }, FormMethod.Post, new { autocomplete = "off", data_turboform = "" })) {
+            @using (Html.BeginForm(nameof(SpaceController.InsertMembers), typeof(SpaceController).ControllerName(), new { id = WeavyContext.Space.Id }, FormMethod.Post, new { autocomplete = "off", data_turboform = "" })) {
                 @Html.AntiForgeryToken()
                 <div class="modal-header">
                     <h5 class="modal-title">Add or invite members</h5>

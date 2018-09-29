@@ -148,7 +148,13 @@
                         },
                         index: 1,
                         template: function (item) {
-                            return '<img class="img-24 avatar" src="' + weavy.url.thumb(item.thumb_url, "48x48-crop,both") + '" alt="" /><span>' + (item.name || item.username) + ' <small>@' + item.username + '</small></span>';
+                            //return '<img class="img-24 avatar" src="' + weavy.url.thumb(item.thumb_url, "48x48-crop,both") + '" alt="" /><span>' + (item.name || item.username) + ' <small>@' + item.username + '</small></span>';
+                            var html = '<img class="img-24 avatar" src="' + weavy.url.thumb(item.thumb_url, "48x48-crop,both") + '" alt="" /><span>' + (item.name || item.username);
+                            if (item.username) {
+                                html += ' <small>@' + item.username + '</small>';
+                            }
+                            html += "</span>";
+                            return html;
                         },
                         replace: function (mention) {
                             return '<a href="#">@' + mention.username + (noPrefix ? ',' : '') + "</a> ";
@@ -255,23 +261,28 @@
                     }
 
                     // embeds                
-                    if (options.embeds) {
+
+                    // init existing embeds
+                    var embedIds = $textarea.data("editor-embed-ids");
+                    
+                    if (embedIds || options.embeds) {
                         var $embeds = $("<div class='embeds'/>");
                         $embeds.appendTo($wrapper);
 
-                        // init existing embeds
-                        var embedId = $textarea.data("editor-embed-id");
-                        if (embedId) {
-                            var embedids = embedId.toString().split(",");
+                        if (embedIds) {
+                            var ids = embedIds.toString().split(",");
 
                             // TODO: endpoint that takes array of embedid
-                            $.each(embedids, function (i, id) {
+                            $.each(ids, function (i, id) {
                                 $.ajax({
                                     url: weavy.url.resolve("/embeds/" + id),
                                     method: "GET"
-                                }).then(function (html) {
+                                }).done(function (html) {
                                     $embeds.append(html).show();
                                     embedAdded = true;
+                                }).fail(function () {
+                                    // add embedid if we fail to load embed
+                                    $embeds.append("<input type='hidden' name='embeds' value='" + id + "' />")
                                 });
                             });
                         }
@@ -346,7 +357,7 @@
                             $(this).closest(".embed").remove();
 
                             // get the embed url and add it to the blacklist
-                            var url = $(this).data("url");                            
+                            var url = $(this).data("url");
                             removedEmbeds.push(url);
                             embedAdded = false;
                         })
@@ -430,7 +441,7 @@
 
                 // add context button
                 if (options.context) {
-                    
+
                     var $context = $("<div class='context'>" +
                         "<div class='context-data'><img class='context-icon' src=''/><span class='context-url'></span><a href='#' title='Remove url as context' class='remove-context btn btn-icon'><svg class='i i-18'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='#close-circle'></use></svg></a></div>" +
                         "</div>");
@@ -439,6 +450,7 @@
 
                     // Always hide context initially for comments
                     if ($wrapper.closest(".section-comments").length) {
+                        $wrapper.closest("form").find("#contextUrl").attr("disabled", true);
                         $context.hide();
                     } else {
                         $context.addClass("has-context");
@@ -453,12 +465,14 @@
                         $wrapper.find(".context").removeClass("has-context");
                         $context.find(".context-data").fadeOut(200);
                         $context.slideUp(200);
+                        $wrapper.closest("form").find("#contextUrl").attr("disabled", true);
                         hook("onContextChange", e, { has_context: false });
                     });
 
                     $($contextButton).on("click", function (e) {
                         e.preventDefault();
                         $wrapper.find(".context").addClass("has-context");
+                        $wrapper.closest("form").find("#contextUrl").attr("disabled", false);
                         $context.find(".context-data").fadeIn(200);
                         $context.slideDown(200);
                         hook("onContextChange", e, { has_context: true });
@@ -475,7 +489,6 @@
                     });
                 }
 
-
                 // add submit button
                 var $submit = $("<button tabindex='2' type='submit' class='btn-submit btn btn-icon btn-primary' title='Submit'><svg class='i'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='#send'></use></svg></button>");
                 if (options.submitButton) {
@@ -491,7 +504,6 @@
                     $wrapper.find(".context").removeClass("has-context");
                     $wrapper.find("div.context .context-data").fadeOut(200);
                     $wrapper.find("div.context").slideUp(200);
-
                     toggleMore(true);
 
                     hook("onSubmit", e, { text: _emojiarea.getText(), wrapper: $wrapper, editor: _emojiarea });

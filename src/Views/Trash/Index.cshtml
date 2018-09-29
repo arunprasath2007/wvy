@@ -13,10 +13,11 @@
         @(Html.ActionLink<TrashController>(c => c.Index(null, null), text: "Everything", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Path))
     }
     @(Html.ActionLink<TrashController>(c => c.Index("spaces", null), text: "Spaces", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Path))
+    @(Html.ActionLink<TrashController>(c => c.Index("tabs", null), text: "Tabs", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Path))
     @(Html.ActionLink<TrashController>(c => c.Index("posts", null), text: "Posts", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Path))
     @(Html.ActionLink<TrashController>(c => c.Index("files", null), text: "Files", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Path))
     @(Html.ActionLink<TrashController>(c => c.Index("comments", null), text: "Comments", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Path))
-    @(Html.ActionLink<TrashController>(c => c.Index("people", null), text: "People", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Path))
+    @(Html.ActionLink<TrashController>(c => c.Index("users", null), text: "Users", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Path))
 
     @*<a class="nav-link @(Model.Query.EntityTypes.Count > 1 ? "active" : null)" href="@(Request.Path + Request.QueryString.Rebuild("et", null, "skip", null).AsQueryString())">Everything</a>
     @foreach (EntityType et in ViewBag.EntityTypes) {
@@ -34,6 +35,7 @@
             <tr>
                 <th class="table-icon"></th>
                 <th>Name</th>
+                <th>Location</th>
                 <th>Trashed</th>
                 <th class="table-icon">Actions</th>
             </tr>
@@ -43,6 +45,7 @@
                 <tr>
                     <td class="table-icon">@Html.SvgIcon(item)</td>
                     <td>@item.Title.Ellipsis(128)</td>
+                    <td>@(item.Space(filter:false)?.Name)</td>
                     <td>@Html.Time(item.TrashedAt, format: "g")</td>
                     <td class="table-icon text-right">
                         <div>
@@ -74,6 +77,11 @@
     </table>
     @Html.Pagination(Model)
 } else {
-    <p>Nothing in trash. Items in trash are deleted after 30 days.</p>
+    if (tab == null) {
+        <p class="text-muted text-center">Nothing in trash. Items in trash are deleted after 30 days.</p>
+    } else {
+        <p class="text-muted text-center">No trashed @tab. Items in trash are deleted after 30 days.</p>
+    }
+    
 }
 </div>

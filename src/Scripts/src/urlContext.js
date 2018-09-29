@@ -44,6 +44,7 @@ weavy.urlContext = (function () {
                 var $url = $("input[name=contextUrl]");
                 var $title = $("input[name=contextTitle]");
                 var $hasContext = $("input[name=hasContext]");
+
                 if ($url.length) {
                     $url.val(e.data.value);
                     $title.val(e.data.title);                   
@@ -60,6 +61,7 @@ weavy.urlContext = (function () {
                 // check bubble type and opt in/out context
                 if (e.data.type === "personal" && $url.length) {
                     $hasContext.val(false);
+                    $url.attr("disabled", true);
                     $(".weavy-editor .context").removeClass("has-context");
                     $(".weavy-editor div.context").hide();
                 }

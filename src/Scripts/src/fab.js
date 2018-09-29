@@ -7,13 +7,14 @@
         var ext = $(e.relatedTarget).data("param");
         var $that = $(this);
         $(this).find("#filename-dialog-type").text($(e.relatedTarget).data("type"));
-        $(this).find(".input-group-text").text(ext);
-        $(this).find("#ext").val(ext);
         $(this).find("#name").val("");
+        $(this).find("#ext").val(ext);
+        $(this).find(".input-group-append .btn").text(ext);
+        
         setTimeout(function () { $that.find("#name").focus() }, 1);
     });    
 
-    // create google drive docs
+    // create google drive document
     $(document).on("show.bs.modal", "#google-create-modal", function (e) {
         
         $("#google-modal").modal('hide')

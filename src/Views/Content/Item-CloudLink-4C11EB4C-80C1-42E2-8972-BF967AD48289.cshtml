@@ -1,7 +1,7 @@
 ﻿@model CloudLink
 @{
   Title = Model.Name ?? "Untitled";
-  Back = Url.Back(Content.Parent().Url() ?? Space.ContentUrl());
+  Back = Url.Back(WeavyContext.Content.Parent().Url() ?? WeavyContext.App.Url());
   var creator = Model.CreatedBy();
 }
 
@@ -30,13 +30,13 @@
       }
 
       <div class="navbar-icons ml-auto">
-          <a class="btn btn-icon" href="@Model.Url" target="_blank" title="Open in Google Drive">@Html.SvgIcon(Model.GetIcon())</a>
+          <a class="btn btn-icon" href="@Model.Uri" target="_blank" title="Open in Google Drive">@Html.SvgIcon(Model.GetIcon())</a>
         @{ Html.RenderPartial("_ContentMenu", Model); }
       </div>
     </header>
 
     <section class="properties">
-        <iframe src="@Model.Url" class="google-drive-iframe"></iframe>      
+        <iframe src="@Model.Uri" class="google-drive-iframe"></iframe>      
     </section>
   </article>
 </div>

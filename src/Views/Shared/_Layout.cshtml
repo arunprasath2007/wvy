@@ -25,10 +25,10 @@
           @if (Back != null) {
             <a class="btn btn-icon" href="@Back" data-link>@Html.SvgIcon("arrow-left")</a>
           } else {
-            <button type="button" class="btn btn-icon d-standalone" data-toggle="drawer" data-target="#drawer-spaces">@(Space != null ? Space.AvatarImg(24) : Html.SvgIcon("menu"))</button>
+            <button type="button" class="btn btn-icon d-standalone" data-toggle="drawer" data-target="#drawer-spaces">@(WeavyContext.Space != null ? WeavyContext.Space.AvatarImg(24) : Html.SvgIcon("menu"))</button>
 
-            if (Space != null) {
-              <button type="button" class="btn btn-icon d-embedded" data-toggle="drawer" data-target="#drawer-space">@Space.AvatarImg(24)</button>
+            if (WeavyContext.Space != null) {
+              <button type="button" class="btn btn-icon d-embedded" data-toggle="drawer" data-target="#drawer-space">@WeavyContext.Space.AvatarImg(24)</button>
             } else {
               <button type="button" class="btn btn-icon d-embedded" data-toggle="drawer" data-target="#drawer-spaces">@Html.IconImg(24)</button>
             }
@@ -64,12 +64,13 @@
     @RenderSection("fab", required: false)
   </main>
   @{
-    Html.RenderPartial("_DrawerSpaces");
-    Html.RenderPartial("_DrawerPersonal");
-    Html.RenderPartial("_PhotoSwipe");
-    Html.RenderPartial("_Preview");
-    Html.RenderPartial("_ProfileModal");
-    Html.RenderPartial("_ConnectModal");
+      Html.RenderPartial("_DrawerSpaces");
+      Html.RenderPartial("_DrawerPersonal");
+      Html.RenderPartial("_PhotoSwipe");
+      Html.RenderPartial("_Preview");
+      Html.RenderPartial("_ProfileModal");
+      Html.RenderPartial("_ConnectModal");
+      Html.RenderPartial("_AddAppModal");
     @RenderSection("footer", required: false)
   }
   <div class="drawer-backdrop"></div>

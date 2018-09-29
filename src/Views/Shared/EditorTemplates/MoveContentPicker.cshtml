@@ -17,7 +17,13 @@
     }
 
     var source = ViewData["Source"] as Content;
-    var spaces = SpaceService.Search(new SpaceQuery() { Archived = false, Filter = true, OrderBy = "Name" }).Where(x=>x.HasPermission(Permission.Insert));
+    var app = source?.App() as FilesApp;
+
+    // get spaces where we have content permission
+    var spaces = SpaceService.Search(new SpaceQuery() { Archived = false, Filter = true, OrderBy = "Name" }).Where(x => x.HasPermission(Permission.Content));
+
+    //  get FileApps for each space above
+    var apps = spaces.Select(s => AppService.GetApps<FilesApp>(s.Id).FirstOrDefault()).Where(a => a != null);
 }
 
 
@@ -26,11 +32,13 @@
 }
 
 @if (label) {
-    <label for="@ViewData.TemplateInfo.GetFullHtmlFieldId("space")">Space</label>
+    <label for="@ViewData.TemplateInfo.GetFullHtmlFieldId("AppId")">Space</label>
 }
 
-<select class="form-control custom-select space-picker" id="@ViewData.TemplateInfo.GetFullHtmlFieldId("space")" name="SpaceId" data-folder-picker="@ViewData.TemplateInfo.GetFullHtmlFieldId("")">
-    @Html.SelectOptions(spaces, source?.SpaceId.Value)
+<select class="form-control custom-select app-picker" id="@ViewData.TemplateInfo.GetFullHtmlFieldId("AppId")" name="AppId" data-content-picker="@ViewData.TemplateInfo.GetFullHtmlFieldId("")">
+    @foreach (var a in apps) {
+        <option value="@a.Id" @if (a.SpaceId == source?.SpaceId.Value) { <text> selected</text>}>@a.Space().Name</option>
+    }
 </select>
 
 @if (group) {
@@ -46,11 +54,11 @@
     @Html.LabelFor(m => m)
 }
 
-<select class="form-control custom-select folder-picker" name="@ViewData.TemplateInfo.GetFullHtmlFieldName("")" id="@ViewData.TemplateInfo.GetFullHtmlFieldId("")" data-source="@(source?.Id)">
+<select class="form-control custom-select content-picker" name="@ViewData.TemplateInfo.GetFullHtmlFieldName("")" id="@ViewData.TemplateInfo.GetFullHtmlFieldId("")" data-source="@(source?.Id)">
     @if (source != null) {
-        @Html.ContentPickerOptions(source.SpaceId.Value, source)
+        @Html.ContentPickerOptions(app, source)
     } else if (!spaces.IsNullOrEmpty()) {
-        @Html.ContentPickerOptions(spaces.First().Id)
+        @Html.ContentPickerOptions(app)
     }
 
 </select>

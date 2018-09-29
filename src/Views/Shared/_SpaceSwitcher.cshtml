@@ -1,29 +1,29 @@
 ﻿@{
-    var spaces = Spaces.Take(5).ToList();
-    if (WeavyContext.Current.HQ != null) {
-        spaces.Insert(0, WeavyContext.Current.HQ);
+    var spaces = WeavyContext.Spaces.Take(5).ToList();
+    if (WeavyContext.HQ != null) {
+        spaces.Insert(0, WeavyContext.HQ);
     }
-    Title = Space?.Name ?? "Home";
+    Title = WeavyContext.Space?.Name ?? "Home";
 }
 <div class="navbar-middle d-embedded">
-    @Html.StarToggle(Space, true)   
+    @Html.StarToggle(WeavyContext.Space, true)   
     <span class="navbar-text">@Title</span>
 </div>
 <div class="navbar-middle d-standalone">    
-    @Html.StarToggle(Space, true)
+    @Html.StarToggle(WeavyContext.Space, true)
     <div class="dropdown">
         <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
             <span class="navbar-text">@Title</span>
             @Html.SvgIcon("menu-down")
         </button>
         <div class="dropdown-menu">
-            <a class="dropdown-item @(Space == null ? " active" : "")" href="@(Url.Action<HomeController>(c => c.Index()))">
+            <a class="dropdown-item @(WeavyContext.Space == null ? " active" : "")" href="@(Url.Action<HomeController>(c => c.Index()))">
                 @Html.IconImg(24)<span class="ml-2">Home</span>
             </a>
             <div class="dropdown-divider"></div>
             
             @foreach (var space in spaces.Take(5)) {
-                <a class="dropdown-item@(space.Id == Space?.Id ? " active" : "")" href="@space.Url()">
+                <a class="dropdown-item@(space.Id == WeavyContext.Space?.Id ? " active" : "")" href="@space.Url()">
                     @space.AvatarImg(24)<span class="ml-2">@space.Name</span>
                     @Html.StarToggle(space, true)
                 </a>

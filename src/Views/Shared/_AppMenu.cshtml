@@ -1,0 +1,15 @@
+﻿@model App
+@if (Model.HasPermission(Permission.Edit)) {
+<div class="dropdown align-self-center ml--1">
+    <button type="button" class="btn btn-sm btn-icon dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="Toggle Dropdown">@Html.SvgIcon("chevron-down")</button>
+    <div class="dropdown-menu">
+        <a class="dropdown-item" href="@Model.Url()/edit">@Html.SvgIcon("settings") Settings</a>
+        <a class="dropdown-item" href="@Model.Url()/rename" data-toggle="modal" data-target="#rename-modal" data-path="TODO: url to action that returns partial for modal body" data-title="Rename tab">@Html.SvgIcon("textbox") Rename</a>
+        @if (Model.HasPermission(Permission.Delete)) {
+            <form action="@(Url.Action(nameof(AppController.Trash), typeof(AppController).ControllerName(), new { id = Model.Id }))" method="post" data-turboform>
+                <button type="submit" class="dropdown-item">@Html.SvgIcon("delete") Remove</button>
+            </form>
+        }
+    </div>
+</div>
+}

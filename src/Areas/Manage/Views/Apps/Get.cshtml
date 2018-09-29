@@ -1,13 +1,13 @@
 ﻿@model IPlugin
 @{
     Title = "Content types";
-    Back = Url.Action<ContentTypeController>(c => c.Index());
+    Back = Url.Action<AppsController>(c => c.Index());
 }
 
 
 <div class="container my-3">
 
-    @using (Html.BeginForm(nameof(ContentTypeController.Update), null, FormMethod.Post, new { data_turboform = "" })) {
+    @using (Html.BeginForm(nameof(AppsController.Update), null, FormMethod.Post, new { data_turboform = "" })) {
         @Html.HttpMethodOverride(HttpVerbs.Put)
         <div class="form-group">
             <label class="control-label">Id</label>
@@ -34,15 +34,14 @@
             <a href="@Back" class="btn btn-outline-secondary mr-auto" data-shortcut="Esc">Back</a>
 
             @if (!Model.IsLoaded()) {
-                <button type="submit" name="button" value="@nameof(ContentTypeController.Delete)" class="btn btn-danger btn-load" @if (Model.IsCore()) { <text> disabled</text> }>Delete</button>
+                <button type="submit" name="button" value="@nameof(AppsController.Delete)" class="btn btn-danger btn-load" @if (Model.IsCore()) { <text> disabled</text> }>Delete</button>
             } else if (!Model.IsCore()) {
                 if (Model.IsEnabled) {
-                    <button type="submit" name="button" value="@nameof(ContentTypeController.Disable)" class="btn btn-outline-warning btn-load">Disable</button>
+                    <button type="submit" name="button" value="@nameof(AppsController.Disable)" class="btn btn-outline-warning btn-load">Disable</button>
                 } else {
-                    <button type="submit" name="button" value="@nameof(ContentTypeController.Enable)" class="btn btn-outline-success btn-load">Enable</button>
+                    <button type="submit" name="button" value="@nameof(AppsController.Enable)" class="btn btn-outline-success btn-load">Enable</button>
                 }
             }
-
 
         </div>
     }
