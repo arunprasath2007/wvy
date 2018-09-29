@@ -1,16 +1,5 @@
 this["Handlebars"] = this["Handlebars"] || {};
 this["Handlebars"]["templates"] = this["Handlebars"]["templates"] || {};
-this["Handlebars"]["templates"]["autocomplete-mention-template"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    var helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=helpers.helperMissing, alias3=container.escapeExpression, alias4="function";
-
-  return "<img class=\"avatar-24 img-24\" src=\""
-    + alias3((helpers.thumb || (depth0 && depth0.thumb) || alias2).call(alias1,(depth0 != null ? depth0.thumb_url : depth0),"24x24-crop,both",{"name":"thumb","hash":{},"data":data}))
-    + "\" alt=\"\" />"
-    + alias3(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias4 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
-    + " <small>@"
-    + alias3(((helper = (helper = helpers.username || (depth0 != null ? depth0.username : depth0)) != null ? helper : alias2),(typeof helper === alias4 ? helper.call(alias1,{"name":"username","hash":{},"data":data}) : helper)))
-    + "</small>\r\n";
-},"useData":true});
 this["Handlebars"]["templates"]["fileuploads"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var stack1, helper, alias1=container.lambda, alias2=container.escapeExpression, alias3=depth0 != null ? depth0 : (container.nullContext || {}), alias4=helpers.helperMissing, alias5="function";
 

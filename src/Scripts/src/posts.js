@@ -360,8 +360,6 @@ weavy.posts = (function ($) {
         });
     });
 
-
-
     return {
         insert: insertPost,
         updateFeedback: updateFeedback

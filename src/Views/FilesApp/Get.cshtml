@@ -1,17 +1,17 @@
-﻿@model Space
+﻿@model FilesModel
 @{
-  Title = "Files";
+  Title = WeavyContext.App.Name;
 }
 
 @section navbar_middle {
   <div class="navbar-middle">
-    <a href="@Space.Url()" class="navbar-text">
-      @Space.Name
-      @if (Space.Teamname != null) {
-        <small class="d-none d-sm-inline">@@@Space.Teamname</small>
+    <a href="@WeavyContext.Space.Url()" class="navbar-text">
+      @WeavyContext.Space.Name
+      @if (WeavyContext.Space.Teamname != null) {
+        <small class="d-none d-sm-inline">@@@WeavyContext.Space.Teamname</small>
       }
     </a>
-    @Html.StarToggle(Space)
+    @Html.StarToggle(WeavyContext.Space)
   </div>
 }
 
@@ -21,18 +21,18 @@
 
 <nav class="navbar navbar-light navbar-files sticky-top">
   <ol class="breadcrumb px-2">
-    <li class="breadcrumb-item" title="Files"><a href="@Space.ContentUrl()">Files</a></li>
+    <li class="breadcrumb-item" title="@WeavyContext.App.Name"><a href="@WeavyContext.App.Url()">@WeavyContext.App.Name</a></li>
   </ol>
 </nav>
 
 <div class="my-3">
-  @if (ContentLayout == Weavy.Core.Models.Layout.Card) {
+  @if (Model.Layout == Weavy.Core.Models.Layout.Card) {
     <div class="cards" id="infinite-scroll-target">
-      @{ Html.RenderPartial("_Cards", ContentResult); }
+      @{ Html.RenderPartial("~/Views/Content/_Cards.cshtml", Model.Items); }
     </div>
-  } else if (ContentLayout == Weavy.Core.Models.Layout.List) {
+  } else if (Model.Layout == Weavy.Core.Models.Layout.List) {
     <div class="list-group" id="infinite-scroll-target">
-      @{ Html.RenderPartial("_ListItems", ContentResult); }
+      @{ Html.RenderPartial("~/Views/Content/_ListItems.cshtml", Model.Items); }
     </div>
   } else {
     <table class="table table-hover table-content">
@@ -46,12 +46,12 @@
           <th class="table-icon"></th>
         </tr>
       </thead>
-      @if (ContentResult.IsNullOrEmpty()) {
+      @if (Model.Items.IsNullOrEmpty()) {
         <tfoot>
           <tr>
             <td class="empty text-center text-muted py-4" colspan="6">
               Nothing in this folder yet.
-              @if (Model.HasPermission(Permission.Insert)) {
+              @if (Model.App.HasPermission(Permission.Content)) {
                 <text>Go ahead and add some files!</text>
               }
             </td>
@@ -59,17 +59,17 @@
         </tfoot>
       }
       <tbody id="infinite-scroll-target">
-        @{ Html.RenderPartial("_Rows", ContentResult); }
+        @{ Html.RenderPartial("~/Views/Content/_Rows.cshtml", Model.Items); }
       </tbody>
     </table>
   }
-  @Html.ScrollMore(ContentResult)
+  @Html.ScrollMore(Model.Items)
 </div>
 
 @section fab {
-  @Model.FAB()
+  @Model.App.FAB()
 }
 
 @section footer {
-  @Html.Partial("_Modals")
+  @Html.Partial("~/Views/Content/_Modals.cshtml")
 }

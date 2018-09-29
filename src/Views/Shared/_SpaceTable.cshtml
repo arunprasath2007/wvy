@@ -24,11 +24,12 @@
                 }
               </div>
             </td>
+            <td>@space.Description</td>
             <td class="text-right">
                 @if (visible) {
-                    <a href="@(Url.Action<SpaceController>(c => c.Members(space.Id, null, null)))" class="badge align-text-top @(space.IsMember ? "badge-info" : "badge-secondary")">@space.MemberIds.Count()</a>
+                    <a href="@(Url.Action<SpaceController>(c => c.Members(space.Id, null, null)))" class="badge @(space.IsMember ? "badge-info" : "badge-secondary")">@space.MemberIds.Count()</a>
                 } else {
-                    <span class="badge badge-secondary opacity-muted align-text-top">@space.MemberIds.Count()</span>
+                    <span class="badge badge-secondary opacity-muted">@space.MemberIds.Count()</span>
                 }
             </td>
             <td class="table-icon">@{ Html.RenderPartial("_SpaceMenu", space);}</td>

@@ -1,7 +1,7 @@
 ﻿@model Content
 @{
   Title = "New " + Model.MetaData().Name;
-  Back = Url.Back(Content.Url() ?? Space.Url());
+  Back = Url.Back(WeavyContext.Content.Url() ?? WeavyContext.App.Url());
 }
 
 <div class="container my-3">

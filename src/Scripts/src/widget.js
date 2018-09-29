@@ -543,6 +543,15 @@
                 this.personalButton.innerHTML = '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12,19.2C9.5,19.2 7.29,17.92 6,16C6.03,14 10,12.9 12,12.9C14,12.9 17.97,14 18,16C16.71,17.92 14.5,19.2 12,19.2M12,5A3,3 0 0,1 15,8A3,3 0 0,1 12,11A3,3 0 0,1 9,8A3,3 0 0,1 12,5M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12C22,6.47 17.5,2 12,2Z"></path></svg>'
                 this.personalTooltipText.innerHTML = this.options.personal_title;
 
+                this.statusFrame.addEventListener("load", function (a, b, c) {
+                    // start testing for blocked iframe             
+                    self.isBlocked = true;
+                    try {
+                        this.contentWindow.postMessage({ "name": "ping" }, "*");
+                    } catch (e) { console.warn("Frame postMessage is blocked", e); }
+
+                }, false);
+
                 this.container.appendChild(this.dragImage);
                 this.container.appendChild(this.statusFrame);
                 this.strips.appendChild(this.spaces);
@@ -559,16 +568,6 @@
                 this.container.appendChild(this.buttons);
                 this.container.appendChild(this.strips);
                 this.container.appendChild(this.notifications);
-
-                this.statusFrame.addEventListener("load", function (a, b, c) {
-                    // start testing for blocked iframe             
-                    self.isBlocked = true;
-                    try {
-                        this.contentWindow.postMessage({ "name": "ping" }, "*");
-                    } catch (e) { console.warn("Frame postMessage is blocked", e); }
-
-                }, false);
-
 
                 this.personalButton.addEventListener("click", this.toggle.bind(this, "personal"));
 
@@ -1643,6 +1642,9 @@
         }
 
         function onMessageReceived(e) {
+            if (typeof (e.data.name) === "undefined") {
+                return;
+            }
 
             switch (e.data.name) {
                 case "requestOrigin":

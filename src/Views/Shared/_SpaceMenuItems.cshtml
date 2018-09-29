@@ -14,14 +14,18 @@
 
     @Html.SubscribeToggle(Model, new { @class = "dropdown-item" })
 
-    if (Model.IsMember) {
+    if (Model.IsMember || Model.Privacy != Privacy.Secret) {
         <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="@(Url.Action<SpaceController>(c => c.Members(Model.Id, null, null)))">@Html.SvgIcon("account-multiple", "success") Members</a>
+    }
+
+    if (Model.IsMember) {
         if (User.IsAdmin && !Model.HasPermission(Permission.Admin)) {
             // admins can take admin control of any space
             <form action="@(Url.Action<SpaceController>(c => c.Admin(Model.Id)))" method="post" data-turboform>
                 @Html.AntiForgeryToken()
                 @Html.HttpMethodOverride(HttpVerbs.Put)
-                <button type="submit" class="dropdown-item">@Html.SvgIcon("account-key", "success") Make me admin</button>
+                <button type="submit" class="dropdown-item">@Html.SvgIcon("account-key", "warning") Make me admin</button>
             </form>
         }
 
@@ -33,7 +37,6 @@
         }
     } else {
         if (Model.HasPermission(Permission.Join)) {
-            <div class="dropdown-divider"></div>
             if (!Model.IsMember) {
                 var pending = SpaceService.HasPendingMembershipRequest(Model.Id);
                 if (pending) {
@@ -43,7 +46,7 @@
                     </form>
                 } else {
                     <form action="@(Url.Action<SpaceController>(c => c.Join(Model.Id)))" method="post" data-turboform>
-                        <button type="submit" class="dropdown-item">@Html.SvgIcon("account-plus", "primary") Join space</button>
+                        <button type="submit" class="dropdown-item">@Html.SvgIcon("account-plus", "success") Join space</button>
                     </form>
                 }
             }
@@ -53,7 +56,7 @@
             <form action="@(Url.Action<SpaceController>(c => c.Admin(Model.Id)))" method="post" data-turboform>
                 @Html.AntiForgeryToken()
                 @Html.HttpMethodOverride(HttpVerbs.Put)
-                <button type="submit" class="dropdown-item">@Html.SvgIcon("account-key", "success") Join as admin</button>
+                <button type="submit" class="dropdown-item">@Html.SvgIcon("account-key", "warning") Join as admin</button>
             </form>
         }
     }

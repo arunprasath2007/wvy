@@ -1,11 +1,11 @@
 ﻿<aside id="drawer-spaces" class="drawer drawer-left">
     <header class="drawer-header">
         @if (PermissionService.HasSystemPermission(Permission.ManageSystem)) {
-            <a class="btn btn-icon" href="@(Url.Action<Weavy.Web.Areas.Manage.Controllers.HomeController>(c => c.Index()))" title=" Manage @WeavyContext.Current.System.Name">@Html.SvgIcon("settings")</a>
+            <a class="btn btn-icon" href="@(Url.Action<Weavy.Web.Areas.Manage.Controllers.HomeController>(c => c.Index()))" title=" Manage @WeavyContext.System.Name">@Html.SvgIcon("settings")</a>
         }
         <a class="text-center pt-3" href="@(Url.Action<HomeController>(c => c.Index()))" title="Open Home">
             @Html.IconImg(64)
-            <div class="drawer-title">@WeavyContext.Current.System.Name</div>
+            <div class="drawer-title">@WeavyContext.System.Name</div>
         </a>
     </header>
     <div class="drawer-body scroll-y">
@@ -15,23 +15,20 @@
             @(Html.ActionLink<SpaceController>(c => c.Index(null, null, null), icon: "view-grid", color: "primary", text: "Spaces", htmlAttributes: new { @class = "dropdown-item" }, active: LinkActive.Path))
             <a class="dropdown-item" href="/messenger"><svg class="text-primary i"><use xlink:href="#message"></use></svg><span>Messenger</span></a>
 
-            @if (WeavyContext.Current.HQ != null)
-            {
-                var space = WeavyContext.Current.HQ;
+            @if (WeavyContext.HQ != null) {
+                var space = WeavyContext.HQ;
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item@(space.Id == Space?.Id ? " active" : "")" href="@space.Url()">
+                <a class="dropdown-item@(space.Id == WeavyContext.Space?.Id ? " active" : "")" href="@space.Url()">
                     @space.AvatarImg(24)<span class="mx-2 text-muted"><span class="text-dark">@space.Name</span>@if (space.Teamname != null)
                     {<small>&nbsp;@@@space.Teamname</small>}</span>
                     @Html.StarToggle(space, true)
                 </a>
             }
 
-            @if (Spaces.Where(x => !x.IsHQ).Any())
-            {
+            @if (WeavyContext.Spaces.Where(x => !x.IsHQ).Any()) {
                 <div class="dropdown-divider"></div>
-                foreach (var space in Spaces.Where(x => !x.IsHQ))
-                {
-                    <a class="dropdown-item@(space.Id == Space?.Id ? " active" : "")" href="@space.Url()">
+                foreach (var space in WeavyContext.Spaces.Where(x => !x.IsHQ)) {
+                    <a class="dropdown-item@(space.Id == WeavyContext.Space?.Id ? " active" : "")" href="@space.Url()">
                         @space.AvatarImg(24)<span class="mx-2 text-muted"><span class="text-dark">@space.Name</span>@if (space.Teamname != null)
                         {<small>&nbsp;@@@space.Teamname</small>}</span>
                         @Html.StarToggle(space, true)

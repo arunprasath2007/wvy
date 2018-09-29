@@ -1,11 +1,11 @@
 ﻿@model FileBase
 @{
-  Title = Model.Name ?? "Untitled";
-  Back = Url.Back(Content.Parent().Url() ?? Space.ContentUrl());
-  var creator = Model.CreatedBy();
-  var versionable = Model as IVersionable;
-  var fmt = FileHelper.GetPreviewFormat(Model.Blob.Name);
-  Back = versionable == null || versionable.IsCurrent() ? Url.Back(Content.Parent().Url() ?? Space.ContentUrl()) : Url.Back(versionable.Url() + "/versions");
+    Title = Model.Name ?? "Untitled";
+    Back = Url.Back(WeavyContext.Content.Parent().Url() ?? WeavyContext.App.Url());
+    var creator = Model.CreatedBy();
+    var versionable = Model as IVersionable;
+    var fmt = FileHelper.GetPreviewFormat(Model.Blob.Name);
+    Back = versionable == null || versionable.IsCurrent() ? Url.Back(WeavyContext.Content.Parent().Url() ?? WeavyContext.App.Url()) : Url.Back(versionable.Url() + "/versions");
 }
 
 @section navbar_middle {

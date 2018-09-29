@@ -7,10 +7,10 @@
         window.addEventListener("message", function (e) {
             switch (e.data.name) {
                 case "ping":
-                    e.source.postMessage({ 
+                    window.parent.postMessage({
                         name: "pong",
                         context: localStorage.getItem("weavy-context")
-                    }, e.origin);
+                    }, "*");
                     localStorage.removeItem("weavy-context");
                     break;
                 default:

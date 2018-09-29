@@ -2,10 +2,11 @@
 @{
     Title = Model.Name ?? "Untitled";
     Back = Url.Back(Model.Url());
+    ViewData["turboform"] = true;
     
 }
 <div class="container mt-3">
-    @{ Html.RenderPartial("_Edit", Model, new ViewDataDictionary { { "turboform", true } }); }    
+    @{ Html.RenderPartial("_Edit", Model); }    
 </div>
 
 @if (Model.HasHtmlProperty()) {

@@ -1,12 +1,18 @@
-﻿@if (Space.HasPermission(Permission.List)) {
-<nav class="nav nav-tabs">
-  @(Html.ActionLink<SpaceController>(c => c.Get(Space.Id, null), text: "Posts", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Action))
-  @(Html.ActionLink<ContentController>(c => c.Index(Space.Id, null, null), text: "Files", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Controller))
-  @*@if (Space.HasPermission(Permission.Post)) {
-        <a class="nav-link disabled" href="#">Chat</a>
-    }*@
-  @(Html.ActionLink<SpaceController>(c => c.Activity(Space.Id, null, null), text: "Activity", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Action))
-  @(Html.ActionLink<SpaceController>(c => c.Search(Space.Id, null, null), text: "Search", htmlAttributes: new { @class = "nav-link" }, active: LinkActive.Action))
-  <div class="d-standalone ml-auto my-2 mr-sm-1 mr---1">@{ Html.RenderPartial("_SpaceMenu", Space); }</div>
-</nav>
+﻿@if (WeavyContext.Space.HasPermission(Permission.List)) {
+    var apps = AppService.GetApps(WeavyContext.Space.Id);
+
+    <nav class="nav nav-tabs">
+        @foreach (var app in apps) {
+            if (app.Id == WeavyContext.App?.Id) {
+                <a href="@app.Url()" class="nav-link active">@app.Name</a>
+                Html.RenderPartial("_AppMenu", app);
+            } else {
+                <a href="@app.Url()" class="nav-link">@app.Name</a>
+            }
+        }
+        @if (WeavyContext.Space.HasPermission(Permission.Apps)) {
+            <a href="@(Url.Action<AppController>(c => c.Index(WeavyContext.Space.Id)))" class="btn btn-sm btn-icon" data-toggle="modal" data-target="#add-app-modal" data-path="@(Url.Action<AppController>(c => c.Index(WeavyContext.Space.Id)))" title="Add tab">@Html.SvgIcon("plus")</a>
+        }
+        <div class="d-standalone ml-auto my-2 mr-sm-1 mr---1">@{ Html.RenderPartial("_SpaceMenu", WeavyContext.Space); }</div>
+    </nav>
 }

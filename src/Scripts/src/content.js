@@ -29,21 +29,19 @@ weavy.content = (function ($) {
         });
     });
 
-    // populate folder picker when space is selected
-    $(document).on("change", ".space-picker[data-folder-picker]", function (e) {
-        var $spacepicker = $(this);
-        var spaceid = $spacepicker.val();
-
-        var $folderpicker = $("#" + $spacepicker.data("folder-picker"));
-        var sourceid = $folderpicker.data("source");
-        var url = sourceid ? "/ui/content/" + sourceid + "/move?spaceid=" + $spacepicker.val() : "ui/spaces/" + $spacepicker.val() + "/attach";
+    // populate content picker when space/app is selected
+    $(document).on("change", ".app-picker[data-content-picker]", function (e) {
+        var $appPicker = $(this);
+        var $contentPicker = $("#" + $appPicker.data("content-picker"));
+        var sourceid = $contentPicker.data("source");
+        var url = sourceid ? "/ui/content/" + sourceid + "/move?appid=" + $appPicker.val() : "ui/apps/" + $appPicker.val() + "/attach";
 
         // fetch select options for folder picker from server
         $.ajax({
             url: weavy.url.resolve(url),
             type: "GET"
         }).then(function (html) {
-            $folderpicker.html(html);
+            $contentPicker.html(html);
         });
 
     });

@@ -1,0 +1,18 @@
+﻿<div class="modal fade" id="rename-modal" tabindex="-1" role="dialog" aria-labelledby="feedback-modal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title">Rename</h5>
+                <button type="button" class="btn btn-icon" data-dismiss="modal" aria-label="Close">
+                    @Html.SvgIcon("close")
+                </button>
+            </div>
+            @Html.SvgSpinner()
+            <div class="modal-body">
+                @Html.Hidden("type")
+                @Html.Hidden("id")
+                @Html.TextBox("name", null, htmlAttributes: new { @class="form-control"})
+            </div>
+        </div>
+    </div>
+</div>

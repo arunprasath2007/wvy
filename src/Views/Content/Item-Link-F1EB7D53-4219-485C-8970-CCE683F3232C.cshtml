@@ -1,8 +1,8 @@
 ﻿@model Link
 @{
-  Title = Model.Name ?? "Untitled";
-  Back = Url.Back(Content.Parent().Url() ?? Space.ContentUrl());
-  var creator = Model.CreatedBy();
+    Title = Model.Name ?? "Untitled";
+    Back = Url.Back(WeavyContext.Content.Parent().Url() ?? WeavyContext.App.Url());
+    var creator = Model.CreatedBy();
 }
 
 @section navbar_middle {
@@ -30,14 +30,14 @@
       }
 
       <div class="navbar-icons ml-auto">
-        <a class="btn btn-icon" href="@Model.Url" target="_blank">@Html.SvgIcon("open-in-new") </a>
+        <a class="btn btn-icon" href="@Model.Uri" target="_blank">@Html.SvgIcon("open-in-new") </a>
         @{ Html.RenderPartial("_ContentMenu", Model); }
       </div>
     </header>
 
     <section class="properties">
       @if (Model.Embedded) {        
-        <iframe src="@Model.Url" class="google-drive-iframe"></iframe>        
+        <iframe src="@Model.Uri" class="google-drive-iframe"></iframe>        
       } else {
         @Html.DisplayGroups()
       }

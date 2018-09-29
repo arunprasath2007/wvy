@@ -40,6 +40,7 @@ weavy.comments = (function ($) {
             placeholder: 'Your comment...',
             onSubmit: function (e, d) {
                 insertComment(e, d, this);
+                $(this).closest("form").find("#contextUrl").attr("disabled", true);
             },
             onContextChange: function (e, data) {
                 var $editor = $(this);                
@@ -62,7 +63,6 @@ weavy.comments = (function ($) {
         var $commentsContainer = $form.parent().find($form.data("comments-container"));
 
         var data = $form.serializeObject(true);
-        console.log("Form data", data)
         data["text"] = d.text;
 
         var method = "POST";
@@ -144,11 +144,8 @@ weavy.comments = (function ($) {
     // get comments for an entity, i.e. post or content
     function getComments(id, type, expand) {
 
-        
-
         // check if the entity is present on the page
         var selector = "[data-type=" + type + "][data-id=" + id + "]";
-        console.log(selector);
         var $entity = $(selector)
         if ($entity.length === 0) {
             return false;

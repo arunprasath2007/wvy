@@ -3,9 +3,8 @@ weavy.context = {
     path: "/",
     area: null,
     user: -1,
-    guid: null,
-    thumb: null,
     space: null,
+    app: null,
     content: null,
     culture: "en-US",
     uiculture: "en-US",
@@ -26,9 +25,8 @@ weavy.context = {
         weavy.context.path = document.body.getAttribute("data-path") || "/";
         weavy.context.area = document.body.getAttribute("data-area");
         weavy.context.user = Number(document.body.getAttribute("data-user")) || -1;
-        weavy.context.guid = document.body.getAttribute("data-guid");
-        weavy.context.thumb = document.body.getAttribute("data-thumb");
         weavy.context.space = Number(document.body.getAttribute("data-space")) || null;
+        weavy.context.app = Number(document.body.getAttribute("data-app")) || null;
         weavy.context.content = Number(document.body.getAttribute("data-content")) || null;
         weavy.context.culture = document.body.getAttribute("data-culture") || "en-US";
         weavy.context.uiculture = document.body.getAttribute("data-ui-culture") || "en-US";

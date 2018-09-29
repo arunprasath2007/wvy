@@ -2,7 +2,7 @@
 @model OfficeTaskpaneModel
 @{
     Layout = null;
-    var spaces = SpaceService.Search(new SpaceQuery() { Archived = false, Filter = true }).Where(x => x.HasPermission(Permission.Insert));
+    var spaces = SpaceService.Search(new SpaceQuery() { Archived = false, Filter = true }).Where(x => x.HasPermission(Permission.Content));
 }
 <!DOCTYPE html>
 <html class="@HtmlClasses()" lang="@System.Threading.Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName">

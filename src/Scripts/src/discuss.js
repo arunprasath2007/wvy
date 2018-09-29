@@ -14,6 +14,7 @@ weavy.discuss = (function ($) {
                 $(".post-form").removeClass("focused");
                 data.wrapper.removeClass("active");
                 weavy.posts.insert(e, data, this);
+                $(this).closest("form").find("#contextUrl").attr("disabled", true);
             },
             onContextChange: function (e, data) {
                 $(".post-form").find("input[name=hasContext]").val(data.has_context);

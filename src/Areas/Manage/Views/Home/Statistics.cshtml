@@ -15,6 +15,11 @@
     </thead>
     <tbody>
         <tr>
+            <td>Apps</td>
+            <td class="text-right">@Model.AppCount</td>
+            <td class="text-right">--</td>
+        </tr>
+        <tr>
             <td>Blobs</td>
             <td class="text-right">@Model.BlobCount</td>
             <td class="text-right">@FileHelper.FileSizeAsString(Model.BlobSize)</td>
@@ -48,37 +53,37 @@
             <td>Messages</td>
             <td class="text-right">@Model.MessageCount</td>
             <td class="text-right">--</td>
-            
+
         </tr>
         <tr>
             <td>Posts</td>
             <td class="text-right">@Model.PostCount</td>
             <td class="text-right">--</td>
-            
+
         </tr>
         <tr>
             <td>Spaces</td>
             <td class="text-right">@Model.SpaceCount</td>
             <td class="text-right">--</td>
-            
+
         </tr>
         <tr>
             <td>Stars</td>
             <td class="text-right">@Model.StarCount</td>
             <td class="text-right">--</td>
-            
+
         </tr>
         <tr>
             <td>Tags</td>
             <td class="text-right">@Model.TagCount</td>
             <td class="text-right">--</td>
-            
+
         </tr>
         <tr>
             <td>Users</td>
             <td class="text-right">@Model.UserCount</td>
             <td class="text-right">--</td>
-            
+
         </tr>
     </tbody>
 </table>

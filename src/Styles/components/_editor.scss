@@ -222,6 +222,7 @@
 
     .embeds {
         width: 100%;
+        border-top: $border-width solid $border-color;        
     }
 
     .poll-options {
