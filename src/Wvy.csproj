@@ -1,4 +1,4 @@
-<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <Import Project="..\packages\JavaScriptEngineSwitcher.V8.Native.win-x64.2.4.16\build\JavaScriptEngineSwitcher.V8.Native.win-x64.props" Condition="Exists('..\packages\JavaScriptEngineSwitcher.V8.Native.win-x64.2.4.16\build\JavaScriptEngineSwitcher.V8.Native.win-x64.props')" />
   <Import Project="..\packages\JavaScriptEngineSwitcher.V8.Native.win-x86.2.4.16\build\JavaScriptEngineSwitcher.V8.Native.win-x86.props" Condition="Exists('..\packages\JavaScriptEngineSwitcher.V8.Native.win-x86.2.4.16\build\JavaScriptEngineSwitcher.V8.Native.win-x86.props')" />
@@ -6,7 +6,8 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion></ProductVersion>
+    <ProductVersion>
+    </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{5F4FDE13-E20F-4767-ACE0-2DBEC27FA83F}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
@@ -22,7 +23,8 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
-    <NuGetPackageImportStamp></NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
     <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -2278,6 +2280,7 @@
     <Content Include="media\message.mp3" />
     <Content Include="media\notification.mp3" />
     <Content Include="media\ringing.mp3" />
+    <Content Include="ping.html" />
     <Content Include="Scripts\ie.bundle" />
     <Content Include="Scripts\msofba.bundle" />
     <Content Include="Scripts\notification.bundle" />
