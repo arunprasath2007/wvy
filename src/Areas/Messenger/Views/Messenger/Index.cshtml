@@ -24,6 +24,7 @@
         <header class="navbar-theme">
             <div class="navbar navbar-primary">
                 <div class="navbar-icons">
+                    <a class="btn btn-icon" href="/"><svg class="i"><use xlink:href="#home"></use></svg></a>
                     <button type="button" class="btn btn-icon" data-toggle="drawer-settings" title="Settings">@User.AvatarImg(24, presence: true)</button>
                 </div>
                 <div class="navbar-middle conversation-title">@(Model.Conversation?.GetTitle() ?? "Messenger")</div>
@@ -39,6 +40,7 @@
             <header class="pane-header navbar-theme">
                 <div class="navbar navbar-primary">
                     <div class="navbar-icons">
+                        <a class="btn btn-icon" href="/"><svg class="i"><use xlink:href="#home"></use></svg></a>
                         <button type="button" class="btn btn-icon" data-toggle="drawer-settings" title="Settings">@User.AvatarImg(24, presence: true)</button>
                     </div>
                     <div class="navbar-middle">&nbsp;</div>
